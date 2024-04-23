@@ -8,7 +8,6 @@ sources:
           mode: wrap
           value: Eth_
           includeRootOperations: true
-          # includeTypes: false
   - name: Ethereum_Ancillary
     handler:
       graphql:
@@ -18,11 +17,142 @@ sources:
           mode: wrap
           value: Eth_
           includeRootOperations: true
-          # includeTypes: false
+  - name: Optimism_Main
+    handler:
+      graphql:
+        endpoint: https://gateway-arbitrum.network.thegraph.com/api/{env.GRAPH_NETWORK_API_KEY}/subgraphs/id/9nmXXk3ysDVY4sFygWQNQknwiJLCPnrUNzDRw8bxw61q
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Op_
+          includeRootOperations: true
+  - name: Optimism_Ancillary
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-optimism-ancillary/v0.0.12
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Op_
+          includeRootOperations: true
+  - name: Arbitrum_Main
+    handler:
+      graphql:
+        endpoint: https://gateway-arbitrum.network.thegraph.com/api/{env.GRAPH_NETWORK_API_KEY}/subgraphs/id/4CiXQPjzKshBbyK2dgJiknTNWcj8cGUJsopTsXfm5HEk
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Arb_
+          includeRootOperations: true
+  - name: Arbitrum_Ancillary
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-arbitrum-ancillary/v0.0.12
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Arb_
+          includeRootOperations: true
+  - name: Gnosis_Main
+    handler:
+      graphql:
+        endpoint: https://gateway-arbitrum.network.thegraph.com/api/{env.GRAPH_NETWORK_API_KEY}/subgraphs/id/2VPQUuAeS9Xy8VtinpjHRJEMnZS1sqzFQyCHAys1wb5n
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Gno_
+          includeRootOperations: true
+  - name: Gnosis_Ancillary
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-gnosis-chain-ancillary/v0.0.12
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Gno_
+          includeRootOperations: true
+  - name: Celo_Main
+    handler:
+      graphql:
+        endpoint: https://gateway-arbitrum.network.thegraph.com/api/{env.GRAPH_NETWORK_API_KEY}/subgraphs/id/GpKseh3Z4nX2X8W5HjQPp5hpSSxPxsaQ3t1KpEjhvz7t
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Celo_
+          includeRootOperations: true
+  - name: Celo_Ancillary
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-celo-ancillary/v0.0.12
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Celo_
+          includeRootOperations: true
+  - name: Base_Main
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-base/v1.1.0
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Base_
+          includeRootOperations: true
+  - name: Base_Ancillary
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-base-ancillary/v0.0.12
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Base_
+          includeRootOperations: true
+  - name: Polygon_Main
+    handler:
+      graphql:
+        endpoint: https://gateway-arbitrum.network.thegraph.com/api/{env.GRAPH_NETWORK_API_KEY}/subgraphs/id/7MxsRb1p4UQNET8AgrWd93h3GUgeQ7NWrk5SHLEPCxBP
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Pol_
+          includeRootOperations: true
+  - name: Polygon_Ancillary
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-polygon-ancillary/v0.0.12
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Pol_
+          includeRootOperations: true
 additionalTypeDefs: |
   extend type Eth_Hat {
     detailsMetadata: String
     authorities: Eth_HatAuthority!
+  }
+  extend type Op_Hat {
+    detailsMetadata: String
+    authorities: Op_HatAuthority!
+  }
+  extend type Arb_Hat {
+    detailsMetadata: String
+    authorities: Arb_HatAuthority!
+  }
+  extend type Gno_Hat {
+    detailsMetadata: String
+    authorities: Gno_HatAuthority!
+  }
+  extend type Celo_Hat {
+    detailsMetadata: String
+    authorities: Celo_HatAuthority!
+  }
+  extend type Base_Hat {
+    detailsMetadata: String
+    authorities: Base_HatAuthority!
+  }
+  extend type Pol_Hat {
+    detailsMetadata: String
+    authorities: Pol_HatAuthority!
   }
 additionalResolvers:
   - "./resolvers"
