@@ -2,7 +2,7 @@ sources:
   - name: Ethereum_Main
     handler:
       graphql:
-        endpoint: https://gateway-arbitrum.network.thegraph.com/api/1859b207ef5670804a4abb0de875e006/subgraphs/id/AtrhAMCcVfPbmejxTez3G59Kdfu5tMFoiPsTUjdCzpKx
+        endpoint: https://gateway-arbitrum.network.thegraph.com/api/{env.GRAPH_NETWORK_API_KEY}/subgraphs/id/AtrhAMCcVfPbmejxTez3G59Kdfu5tMFoiPsTUjdCzpKx
     transforms:
       - prefix:
           mode: wrap
