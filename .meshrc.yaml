@@ -1,0 +1,37 @@
+sources:
+  - name: Ethereum_Main
+    handler:
+      graphql:
+        endpoint: https://gateway-arbitrum.network.thegraph.com/api/1859b207ef5670804a4abb0de875e006/subgraphs/id/AtrhAMCcVfPbmejxTez3G59Kdfu5tMFoiPsTUjdCzpKx
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Eth_
+          includeRootOperations: true
+          # includeTypes: false
+  - name: Ethereum_Ancillary
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-ethereum-ancillary/v0.0.12
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Eth_
+          includeRootOperations: true
+          # includeTypes: false
+additionalTypeDefs: |
+  extend type Eth_Hat {
+    detailsMetadata: String
+    authorities: Eth_HatAuthority!
+  }
+additionalResolvers:
+  - "./resolvers"
+plugins:
+  - responseCache:
+      # cache operations for 1 hour
+      ttl: 60 * 60 * 1000,
+cache:
+  redis:
+    host: "{env.REDIS_HOST}"
+    port: "{env.REDIS_PORT}" # port should be a string
+    password: "{env.REDIS_PASSWORD}"
