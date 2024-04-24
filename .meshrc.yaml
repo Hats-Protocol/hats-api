@@ -155,7 +155,7 @@ additionalTypeDefs: |
     authorities: Pol_HatAuthority!
   }
 additionalResolvers:
-  - "./resolvers"
+  - "./src/resolvers"
 plugins:
   - responseCache:
       # cache operations for 1 hour

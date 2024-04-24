@@ -1,4 +1,4 @@
-import { Resolvers } from "./.mesh";
+import { Resolvers } from "../.mesh";
 import axios from "axios";
 
 const resolvers: Resolvers = {

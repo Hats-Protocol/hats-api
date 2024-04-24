@@ -22,7 +22,12 @@ export type Scalars = {
   BigInt: { input: any; output: any; }
   Pol_Bytes: { input: any; output: any; }
   Pol_Int8: { input: any; output: any; }
+  Timestamp: { input: any; output: any; }
 };
+
+export type Pol_Aggregation_interval =
+  | 'hour'
+  | 'day';
 
 export type Pol_BlockChangedFilter = {
   number_gte: Scalars['Int']['input'];
@@ -3426,6 +3431,8 @@ export type Pol__Block_ = {
   number: Scalars['Int']['output'];
   /** Integer representation of the timestamp stored in blocks for the chain */
   timestamp?: Maybe<Scalars['Int']['output']>;
+  /** The hash of the parent block */
+  parentHash?: Maybe<Scalars['Pol_Bytes']['output']>;
 };
 
 /** The type for the top-level _meta field */
