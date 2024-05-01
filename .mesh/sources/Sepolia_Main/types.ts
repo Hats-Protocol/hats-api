@@ -3,7 +3,7 @@
 import { InContextSdkMethod } from '@graphql-mesh/types';
 import { MeshContext } from '@graphql-mesh/runtime';
 
-export namespace PolygonMainTypes {
+export namespace SepoliaMainTypes {
   export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -18,47 +18,52 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  Pol_BigDecimal: { input: any; output: any; }
+  Sep_BigDecimal: { input: any; output: any; }
   BigInt: { input: any; output: any; }
-  Pol_Bytes: { input: any; output: any; }
-  Pol_Int8: { input: any; output: any; }
+  Sep_Bytes: { input: any; output: any; }
+  Sep_Int8: { input: any; output: any; }
+  Timestamp: { input: any; output: any; }
 };
 
-export type Pol_BlockChangedFilter = {
+export type Sep_Aggregation_interval =
+  | 'hour'
+  | 'day';
+
+export type Sep_BlockChangedFilter = {
   number_gte: Scalars['Int']['input'];
 };
 
-export type Pol_Block_height = {
-  hash?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+export type Sep_Block_height = {
+  hash?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   number?: InputMaybe<Scalars['Int']['input']>;
   number_gte?: InputMaybe<Scalars['Int']['input']>;
 };
 
-export type Pol_ClaimsHatter = {
+export type Sep_ClaimsHatter = {
   id: Scalars['ID']['output'];
-  claimableHats: Array<Pol_Hat>;
-  claimableForHats: Array<Pol_Hat>;
+  claimableHats: Array<Sep_Hat>;
+  claimableForHats: Array<Sep_Hat>;
 };
 
 
-export type Pol_ClaimsHatterclaimableHatsArgs = {
+export type Sep_ClaimsHatterclaimableHatsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Hat_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Hat_filter>;
+  orderBy?: InputMaybe<Sep_Hat_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Hat_filter>;
 };
 
 
-export type Pol_ClaimsHatterclaimableForHatsArgs = {
+export type Sep_ClaimsHatterclaimableForHatsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Hat_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Hat_filter>;
+  orderBy?: InputMaybe<Sep_Hat_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Hat_filter>;
 };
 
-export type Pol_ClaimsHatter_filter = {
+export type Sep_ClaimsHatter_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -73,26 +78,26 @@ export type Pol_ClaimsHatter_filter = {
   claimableHats_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
   claimableHats_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
   claimableHats_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
-  claimableHats_?: InputMaybe<Pol_Hat_filter>;
+  claimableHats_?: InputMaybe<Sep_Hat_filter>;
   claimableForHats?: InputMaybe<Array<Scalars['String']['input']>>;
   claimableForHats_not?: InputMaybe<Array<Scalars['String']['input']>>;
   claimableForHats_contains?: InputMaybe<Array<Scalars['String']['input']>>;
   claimableForHats_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
   claimableForHats_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
   claimableForHats_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
-  claimableForHats_?: InputMaybe<Pol_Hat_filter>;
+  claimableForHats_?: InputMaybe<Sep_Hat_filter>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_ClaimsHatter_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_ClaimsHatter_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_ClaimsHatter_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_ClaimsHatter_filter>>>;
 };
 
-export type Pol_ClaimsHatter_orderBy =
+export type Sep_ClaimsHatter_orderBy =
   | 'id'
   | 'claimableHats'
   | 'claimableForHats';
 
-export type Pol_Hat = {
+export type Sep_Hat = {
   id: Scalars['ID']['output'];
   prettyId: Scalars['String']['output'];
   status: Scalars['Boolean']['output'];
@@ -105,102 +110,102 @@ export type Pol_Hat = {
   imageUri: Scalars['String']['output'];
   levelAtLocalTree: Scalars['Int']['output'];
   currentSupply: Scalars['BigInt']['output'];
-  tree: Pol_Tree;
-  wearers: Array<Pol_Wearer>;
-  admin: Pol_Hat;
-  badStandings: Array<Pol_Wearer>;
-  claimableBy: Array<Pol_ClaimsHatter>;
-  claimableForBy: Array<Pol_ClaimsHatter>;
-  linkRequestFromTree: Array<Pol_Tree>;
-  subHats: Array<Pol_Hat>;
-  linkedTrees: Array<Pol_Tree>;
-  events: Array<Pol_HatsEvent>;
+  tree: Sep_Tree;
+  wearers: Array<Sep_Wearer>;
+  admin: Sep_Hat;
+  badStandings: Array<Sep_Wearer>;
+  claimableBy: Array<Sep_ClaimsHatter>;
+  claimableForBy: Array<Sep_ClaimsHatter>;
+  linkRequestFromTree: Array<Sep_Tree>;
+  subHats: Array<Sep_Hat>;
+  linkedTrees: Array<Sep_Tree>;
+  events: Array<Sep_HatsEvent>;
 };
 
 
-export type Pol_HatwearersArgs = {
+export type Sep_HatwearersArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Wearer_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Wearer_filter>;
+  orderBy?: InputMaybe<Sep_Wearer_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Wearer_filter>;
 };
 
 
-export type Pol_HatbadStandingsArgs = {
+export type Sep_HatbadStandingsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Wearer_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Wearer_filter>;
+  orderBy?: InputMaybe<Sep_Wearer_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Wearer_filter>;
 };
 
 
-export type Pol_HatclaimableByArgs = {
+export type Sep_HatclaimableByArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_ClaimsHatter_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_ClaimsHatter_filter>;
+  orderBy?: InputMaybe<Sep_ClaimsHatter_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_ClaimsHatter_filter>;
 };
 
 
-export type Pol_HatclaimableForByArgs = {
+export type Sep_HatclaimableForByArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_ClaimsHatter_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_ClaimsHatter_filter>;
+  orderBy?: InputMaybe<Sep_ClaimsHatter_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_ClaimsHatter_filter>;
 };
 
 
-export type Pol_HatlinkRequestFromTreeArgs = {
+export type Sep_HatlinkRequestFromTreeArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Tree_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Tree_filter>;
+  orderBy?: InputMaybe<Sep_Tree_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Tree_filter>;
 };
 
 
-export type Pol_HatsubHatsArgs = {
+export type Sep_HatsubHatsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Hat_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Hat_filter>;
+  orderBy?: InputMaybe<Sep_Hat_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Hat_filter>;
 };
 
 
-export type Pol_HatlinkedTreesArgs = {
+export type Sep_HatlinkedTreesArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Tree_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Tree_filter>;
+  orderBy?: InputMaybe<Sep_Tree_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Tree_filter>;
 };
 
 
-export type Pol_HateventsArgs = {
+export type Sep_HateventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatsEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatsEvent_filter>;
+  orderBy?: InputMaybe<Sep_HatsEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsEvent_filter>;
 };
 
-export type Pol_HatBurnedEvent = Pol_HatsEvent & {
+export type Sep_HatBurnedEvent = Sep_HatsEvent & {
   id: Scalars['ID']['output'];
-  tree: Pol_Tree;
-  hat: Pol_Hat;
+  tree: Sep_Tree;
+  hat: Sep_Hat;
   blockNumber: Scalars['Int']['output'];
   timestamp: Scalars['BigInt']['output'];
-  transactionID: Scalars['Pol_Bytes']['output'];
-  wearer: Pol_Wearer;
+  transactionID: Scalars['Sep_Bytes']['output'];
+  wearer: Sep_Wearer;
   operator: Scalars['String']['output'];
 };
 
-export type Pol_HatBurnedEvent_filter = {
+export type Sep_HatBurnedEvent_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -229,7 +234,7 @@ export type Pol_HatBurnedEvent_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   hat?: InputMaybe<Scalars['String']['input']>;
   hat_not?: InputMaybe<Scalars['String']['input']>;
   hat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -250,7 +255,7 @@ export type Pol_HatBurnedEvent_filter = {
   hat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  hat_?: InputMaybe<Pol_Hat_filter>;
+  hat_?: InputMaybe<Sep_Hat_filter>;
   blockNumber?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -267,16 +272,16 @@ export type Pol_HatBurnedEvent_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  transactionID?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_not_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   wearer?: InputMaybe<Scalars['String']['input']>;
   wearer_not?: InputMaybe<Scalars['String']['input']>;
   wearer_gt?: InputMaybe<Scalars['String']['input']>;
@@ -297,7 +302,7 @@ export type Pol_HatBurnedEvent_filter = {
   wearer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   wearer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   wearer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  wearer_?: InputMaybe<Pol_Wearer_filter>;
+  wearer_?: InputMaybe<Sep_Wearer_filter>;
   operator?: InputMaybe<Scalars['String']['input']>;
   operator_not?: InputMaybe<Scalars['String']['input']>;
   operator_gt?: InputMaybe<Scalars['String']['input']>;
@@ -319,12 +324,12 @@ export type Pol_HatBurnedEvent_filter = {
   operator_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   operator_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_HatBurnedEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_HatBurnedEvent_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatBurnedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatBurnedEvent_filter>>>;
 };
 
-export type Pol_HatBurnedEvent_orderBy =
+export type Sep_HatBurnedEvent_orderBy =
   | 'id'
   | 'tree'
   | 'tree__id'
@@ -348,13 +353,13 @@ export type Pol_HatBurnedEvent_orderBy =
   | 'wearer__id'
   | 'operator';
 
-export type Pol_HatCreatedEvent = Pol_HatsEvent & {
+export type Sep_HatCreatedEvent = Sep_HatsEvent & {
   id: Scalars['ID']['output'];
-  tree: Pol_Tree;
-  hat: Pol_Hat;
+  tree: Sep_Tree;
+  hat: Sep_Hat;
   blockNumber: Scalars['Int']['output'];
   timestamp: Scalars['BigInt']['output'];
-  transactionID: Scalars['Pol_Bytes']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
   hatDetails: Scalars['String']['output'];
   hatMaxSupply: Scalars['BigInt']['output'];
   hatEligibility: Scalars['String']['output'];
@@ -363,7 +368,7 @@ export type Pol_HatCreatedEvent = Pol_HatsEvent & {
   hatImageUri: Scalars['String']['output'];
 };
 
-export type Pol_HatCreatedEvent_filter = {
+export type Sep_HatCreatedEvent_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -392,7 +397,7 @@ export type Pol_HatCreatedEvent_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   hat?: InputMaybe<Scalars['String']['input']>;
   hat_not?: InputMaybe<Scalars['String']['input']>;
   hat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -413,7 +418,7 @@ export type Pol_HatCreatedEvent_filter = {
   hat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  hat_?: InputMaybe<Pol_Hat_filter>;
+  hat_?: InputMaybe<Sep_Hat_filter>;
   blockNumber?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -430,16 +435,16 @@ export type Pol_HatCreatedEvent_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  transactionID?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_not_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   hatDetails?: InputMaybe<Scalars['String']['input']>;
   hatDetails_not?: InputMaybe<Scalars['String']['input']>;
   hatDetails_gt?: InputMaybe<Scalars['String']['input']>;
@@ -533,12 +538,12 @@ export type Pol_HatCreatedEvent_filter = {
   hatImageUri_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hatImageUri_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_HatCreatedEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_HatCreatedEvent_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatCreatedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatCreatedEvent_filter>>>;
 };
 
-export type Pol_HatCreatedEvent_orderBy =
+export type Sep_HatCreatedEvent_orderBy =
   | 'id'
   | 'tree'
   | 'tree__id'
@@ -565,17 +570,17 @@ export type Pol_HatCreatedEvent_orderBy =
   | 'hatMutable'
   | 'hatImageUri';
 
-export type Pol_HatDetailsChangedEvent = Pol_HatsEvent & {
+export type Sep_HatDetailsChangedEvent = Sep_HatsEvent & {
   id: Scalars['ID']['output'];
-  tree: Pol_Tree;
-  hat: Pol_Hat;
+  tree: Sep_Tree;
+  hat: Sep_Hat;
   blockNumber: Scalars['Int']['output'];
   timestamp: Scalars['BigInt']['output'];
-  transactionID: Scalars['Pol_Bytes']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
   hatNewDetails: Scalars['String']['output'];
 };
 
-export type Pol_HatDetailsChangedEvent_filter = {
+export type Sep_HatDetailsChangedEvent_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -604,7 +609,7 @@ export type Pol_HatDetailsChangedEvent_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   hat?: InputMaybe<Scalars['String']['input']>;
   hat_not?: InputMaybe<Scalars['String']['input']>;
   hat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -625,7 +630,7 @@ export type Pol_HatDetailsChangedEvent_filter = {
   hat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  hat_?: InputMaybe<Pol_Hat_filter>;
+  hat_?: InputMaybe<Sep_Hat_filter>;
   blockNumber?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -642,16 +647,16 @@ export type Pol_HatDetailsChangedEvent_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  transactionID?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_not_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   hatNewDetails?: InputMaybe<Scalars['String']['input']>;
   hatNewDetails_not?: InputMaybe<Scalars['String']['input']>;
   hatNewDetails_gt?: InputMaybe<Scalars['String']['input']>;
@@ -673,12 +678,12 @@ export type Pol_HatDetailsChangedEvent_filter = {
   hatNewDetails_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hatNewDetails_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_HatDetailsChangedEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_HatDetailsChangedEvent_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatDetailsChangedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatDetailsChangedEvent_filter>>>;
 };
 
-export type Pol_HatDetailsChangedEvent_orderBy =
+export type Sep_HatDetailsChangedEvent_orderBy =
   | 'id'
   | 'tree'
   | 'tree__id'
@@ -700,17 +705,17 @@ export type Pol_HatDetailsChangedEvent_orderBy =
   | 'transactionID'
   | 'hatNewDetails';
 
-export type Pol_HatEligibilityChangedEvent = Pol_HatsEvent & {
+export type Sep_HatEligibilityChangedEvent = Sep_HatsEvent & {
   id: Scalars['ID']['output'];
-  tree: Pol_Tree;
-  hat: Pol_Hat;
+  tree: Sep_Tree;
+  hat: Sep_Hat;
   blockNumber: Scalars['Int']['output'];
   timestamp: Scalars['BigInt']['output'];
-  transactionID: Scalars['Pol_Bytes']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
   hatNewEligibility: Scalars['String']['output'];
 };
 
-export type Pol_HatEligibilityChangedEvent_filter = {
+export type Sep_HatEligibilityChangedEvent_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -739,7 +744,7 @@ export type Pol_HatEligibilityChangedEvent_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   hat?: InputMaybe<Scalars['String']['input']>;
   hat_not?: InputMaybe<Scalars['String']['input']>;
   hat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -760,7 +765,7 @@ export type Pol_HatEligibilityChangedEvent_filter = {
   hat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  hat_?: InputMaybe<Pol_Hat_filter>;
+  hat_?: InputMaybe<Sep_Hat_filter>;
   blockNumber?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -777,16 +782,16 @@ export type Pol_HatEligibilityChangedEvent_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  transactionID?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_not_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   hatNewEligibility?: InputMaybe<Scalars['String']['input']>;
   hatNewEligibility_not?: InputMaybe<Scalars['String']['input']>;
   hatNewEligibility_gt?: InputMaybe<Scalars['String']['input']>;
@@ -808,12 +813,12 @@ export type Pol_HatEligibilityChangedEvent_filter = {
   hatNewEligibility_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hatNewEligibility_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_HatEligibilityChangedEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_HatEligibilityChangedEvent_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatEligibilityChangedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatEligibilityChangedEvent_filter>>>;
 };
 
-export type Pol_HatEligibilityChangedEvent_orderBy =
+export type Sep_HatEligibilityChangedEvent_orderBy =
   | 'id'
   | 'tree'
   | 'tree__id'
@@ -835,17 +840,17 @@ export type Pol_HatEligibilityChangedEvent_orderBy =
   | 'transactionID'
   | 'hatNewEligibility';
 
-export type Pol_HatImageURIChangedEvent = Pol_HatsEvent & {
+export type Sep_HatImageURIChangedEvent = Sep_HatsEvent & {
   id: Scalars['ID']['output'];
-  tree: Pol_Tree;
-  hat: Pol_Hat;
+  tree: Sep_Tree;
+  hat: Sep_Hat;
   blockNumber: Scalars['Int']['output'];
   timestamp: Scalars['BigInt']['output'];
-  transactionID: Scalars['Pol_Bytes']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
   hatNewImageURI: Scalars['String']['output'];
 };
 
-export type Pol_HatImageURIChangedEvent_filter = {
+export type Sep_HatImageURIChangedEvent_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -874,7 +879,7 @@ export type Pol_HatImageURIChangedEvent_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   hat?: InputMaybe<Scalars['String']['input']>;
   hat_not?: InputMaybe<Scalars['String']['input']>;
   hat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -895,7 +900,7 @@ export type Pol_HatImageURIChangedEvent_filter = {
   hat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  hat_?: InputMaybe<Pol_Hat_filter>;
+  hat_?: InputMaybe<Sep_Hat_filter>;
   blockNumber?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -912,16 +917,16 @@ export type Pol_HatImageURIChangedEvent_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  transactionID?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_not_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   hatNewImageURI?: InputMaybe<Scalars['String']['input']>;
   hatNewImageURI_not?: InputMaybe<Scalars['String']['input']>;
   hatNewImageURI_gt?: InputMaybe<Scalars['String']['input']>;
@@ -943,12 +948,12 @@ export type Pol_HatImageURIChangedEvent_filter = {
   hatNewImageURI_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hatNewImageURI_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_HatImageURIChangedEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_HatImageURIChangedEvent_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatImageURIChangedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatImageURIChangedEvent_filter>>>;
 };
 
-export type Pol_HatImageURIChangedEvent_orderBy =
+export type Sep_HatImageURIChangedEvent_orderBy =
   | 'id'
   | 'tree'
   | 'tree__id'
@@ -970,17 +975,17 @@ export type Pol_HatImageURIChangedEvent_orderBy =
   | 'transactionID'
   | 'hatNewImageURI';
 
-export type Pol_HatMaxSupplyChangedEvent = Pol_HatsEvent & {
+export type Sep_HatMaxSupplyChangedEvent = Sep_HatsEvent & {
   id: Scalars['ID']['output'];
-  tree: Pol_Tree;
-  hat: Pol_Hat;
+  tree: Sep_Tree;
+  hat: Sep_Hat;
   blockNumber: Scalars['Int']['output'];
   timestamp: Scalars['BigInt']['output'];
-  transactionID: Scalars['Pol_Bytes']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
   hatNewMaxSupply: Scalars['BigInt']['output'];
 };
 
-export type Pol_HatMaxSupplyChangedEvent_filter = {
+export type Sep_HatMaxSupplyChangedEvent_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -1009,7 +1014,7 @@ export type Pol_HatMaxSupplyChangedEvent_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   hat?: InputMaybe<Scalars['String']['input']>;
   hat_not?: InputMaybe<Scalars['String']['input']>;
   hat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -1030,7 +1035,7 @@ export type Pol_HatMaxSupplyChangedEvent_filter = {
   hat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  hat_?: InputMaybe<Pol_Hat_filter>;
+  hat_?: InputMaybe<Sep_Hat_filter>;
   blockNumber?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -1047,16 +1052,16 @@ export type Pol_HatMaxSupplyChangedEvent_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  transactionID?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_not_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   hatNewMaxSupply?: InputMaybe<Scalars['BigInt']['input']>;
   hatNewMaxSupply_not?: InputMaybe<Scalars['BigInt']['input']>;
   hatNewMaxSupply_gt?: InputMaybe<Scalars['BigInt']['input']>;
@@ -1066,12 +1071,12 @@ export type Pol_HatMaxSupplyChangedEvent_filter = {
   hatNewMaxSupply_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   hatNewMaxSupply_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_HatMaxSupplyChangedEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_HatMaxSupplyChangedEvent_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatMaxSupplyChangedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatMaxSupplyChangedEvent_filter>>>;
 };
 
-export type Pol_HatMaxSupplyChangedEvent_orderBy =
+export type Sep_HatMaxSupplyChangedEvent_orderBy =
   | 'id'
   | 'tree'
   | 'tree__id'
@@ -1093,18 +1098,18 @@ export type Pol_HatMaxSupplyChangedEvent_orderBy =
   | 'transactionID'
   | 'hatNewMaxSupply';
 
-export type Pol_HatMintedEvent = Pol_HatsEvent & {
+export type Sep_HatMintedEvent = Sep_HatsEvent & {
   id: Scalars['ID']['output'];
-  tree: Pol_Tree;
-  hat: Pol_Hat;
+  tree: Sep_Tree;
+  hat: Sep_Hat;
   blockNumber: Scalars['Int']['output'];
   timestamp: Scalars['BigInt']['output'];
-  transactionID: Scalars['Pol_Bytes']['output'];
-  wearer: Pol_Wearer;
+  transactionID: Scalars['Sep_Bytes']['output'];
+  wearer: Sep_Wearer;
   operator: Scalars['String']['output'];
 };
 
-export type Pol_HatMintedEvent_filter = {
+export type Sep_HatMintedEvent_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -1133,7 +1138,7 @@ export type Pol_HatMintedEvent_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   hat?: InputMaybe<Scalars['String']['input']>;
   hat_not?: InputMaybe<Scalars['String']['input']>;
   hat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -1154,7 +1159,7 @@ export type Pol_HatMintedEvent_filter = {
   hat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  hat_?: InputMaybe<Pol_Hat_filter>;
+  hat_?: InputMaybe<Sep_Hat_filter>;
   blockNumber?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -1171,16 +1176,16 @@ export type Pol_HatMintedEvent_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  transactionID?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_not_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   wearer?: InputMaybe<Scalars['String']['input']>;
   wearer_not?: InputMaybe<Scalars['String']['input']>;
   wearer_gt?: InputMaybe<Scalars['String']['input']>;
@@ -1201,7 +1206,7 @@ export type Pol_HatMintedEvent_filter = {
   wearer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   wearer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   wearer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  wearer_?: InputMaybe<Pol_Wearer_filter>;
+  wearer_?: InputMaybe<Sep_Wearer_filter>;
   operator?: InputMaybe<Scalars['String']['input']>;
   operator_not?: InputMaybe<Scalars['String']['input']>;
   operator_gt?: InputMaybe<Scalars['String']['input']>;
@@ -1223,12 +1228,12 @@ export type Pol_HatMintedEvent_filter = {
   operator_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   operator_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_HatMintedEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_HatMintedEvent_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatMintedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatMintedEvent_filter>>>;
 };
 
-export type Pol_HatMintedEvent_orderBy =
+export type Sep_HatMintedEvent_orderBy =
   | 'id'
   | 'tree'
   | 'tree__id'
@@ -1252,16 +1257,16 @@ export type Pol_HatMintedEvent_orderBy =
   | 'wearer__id'
   | 'operator';
 
-export type Pol_HatMutabilityChangedEvent = Pol_HatsEvent & {
+export type Sep_HatMutabilityChangedEvent = Sep_HatsEvent & {
   id: Scalars['ID']['output'];
-  tree: Pol_Tree;
-  hat: Pol_Hat;
+  tree: Sep_Tree;
+  hat: Sep_Hat;
   blockNumber: Scalars['Int']['output'];
   timestamp: Scalars['BigInt']['output'];
-  transactionID: Scalars['Pol_Bytes']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
 };
 
-export type Pol_HatMutabilityChangedEvent_filter = {
+export type Sep_HatMutabilityChangedEvent_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -1290,7 +1295,7 @@ export type Pol_HatMutabilityChangedEvent_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   hat?: InputMaybe<Scalars['String']['input']>;
   hat_not?: InputMaybe<Scalars['String']['input']>;
   hat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -1311,7 +1316,7 @@ export type Pol_HatMutabilityChangedEvent_filter = {
   hat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  hat_?: InputMaybe<Pol_Hat_filter>;
+  hat_?: InputMaybe<Sep_Hat_filter>;
   blockNumber?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -1328,23 +1333,23 @@ export type Pol_HatMutabilityChangedEvent_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  transactionID?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_not_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_HatMutabilityChangedEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_HatMutabilityChangedEvent_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatMutabilityChangedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatMutabilityChangedEvent_filter>>>;
 };
 
-export type Pol_HatMutabilityChangedEvent_orderBy =
+export type Sep_HatMutabilityChangedEvent_orderBy =
   | 'id'
   | 'tree'
   | 'tree__id'
@@ -1365,17 +1370,17 @@ export type Pol_HatMutabilityChangedEvent_orderBy =
   | 'timestamp'
   | 'transactionID';
 
-export type Pol_HatStatusChangedEvent = Pol_HatsEvent & {
+export type Sep_HatStatusChangedEvent = Sep_HatsEvent & {
   id: Scalars['ID']['output'];
-  tree: Pol_Tree;
-  hat: Pol_Hat;
+  tree: Sep_Tree;
+  hat: Sep_Hat;
   blockNumber: Scalars['Int']['output'];
   timestamp: Scalars['BigInt']['output'];
-  transactionID: Scalars['Pol_Bytes']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
   hatNewStatus: Scalars['Boolean']['output'];
 };
 
-export type Pol_HatStatusChangedEvent_filter = {
+export type Sep_HatStatusChangedEvent_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -1404,7 +1409,7 @@ export type Pol_HatStatusChangedEvent_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   hat?: InputMaybe<Scalars['String']['input']>;
   hat_not?: InputMaybe<Scalars['String']['input']>;
   hat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -1425,7 +1430,7 @@ export type Pol_HatStatusChangedEvent_filter = {
   hat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  hat_?: InputMaybe<Pol_Hat_filter>;
+  hat_?: InputMaybe<Sep_Hat_filter>;
   blockNumber?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -1442,27 +1447,27 @@ export type Pol_HatStatusChangedEvent_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  transactionID?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_not_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   hatNewStatus?: InputMaybe<Scalars['Boolean']['input']>;
   hatNewStatus_not?: InputMaybe<Scalars['Boolean']['input']>;
   hatNewStatus_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
   hatNewStatus_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_HatStatusChangedEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_HatStatusChangedEvent_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatStatusChangedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatStatusChangedEvent_filter>>>;
 };
 
-export type Pol_HatStatusChangedEvent_orderBy =
+export type Sep_HatStatusChangedEvent_orderBy =
   | 'id'
   | 'tree'
   | 'tree__id'
@@ -1484,17 +1489,17 @@ export type Pol_HatStatusChangedEvent_orderBy =
   | 'transactionID'
   | 'hatNewStatus';
 
-export type Pol_HatToggleChangedEvent = Pol_HatsEvent & {
+export type Sep_HatToggleChangedEvent = Sep_HatsEvent & {
   id: Scalars['ID']['output'];
-  tree: Pol_Tree;
-  hat: Pol_Hat;
+  tree: Sep_Tree;
+  hat: Sep_Hat;
   blockNumber: Scalars['Int']['output'];
   timestamp: Scalars['BigInt']['output'];
-  transactionID: Scalars['Pol_Bytes']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
   hatNewToggle: Scalars['String']['output'];
 };
 
-export type Pol_HatToggleChangedEvent_filter = {
+export type Sep_HatToggleChangedEvent_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -1523,7 +1528,7 @@ export type Pol_HatToggleChangedEvent_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   hat?: InputMaybe<Scalars['String']['input']>;
   hat_not?: InputMaybe<Scalars['String']['input']>;
   hat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -1544,7 +1549,7 @@ export type Pol_HatToggleChangedEvent_filter = {
   hat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  hat_?: InputMaybe<Pol_Hat_filter>;
+  hat_?: InputMaybe<Sep_Hat_filter>;
   blockNumber?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -1561,16 +1566,16 @@ export type Pol_HatToggleChangedEvent_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  transactionID?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_not_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   hatNewToggle?: InputMaybe<Scalars['String']['input']>;
   hatNewToggle_not?: InputMaybe<Scalars['String']['input']>;
   hatNewToggle_gt?: InputMaybe<Scalars['String']['input']>;
@@ -1592,12 +1597,12 @@ export type Pol_HatToggleChangedEvent_filter = {
   hatNewToggle_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hatNewToggle_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_HatToggleChangedEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_HatToggleChangedEvent_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatToggleChangedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatToggleChangedEvent_filter>>>;
 };
 
-export type Pol_HatToggleChangedEvent_orderBy =
+export type Sep_HatToggleChangedEvent_orderBy =
   | 'id'
   | 'tree'
   | 'tree__id'
@@ -1619,7 +1624,7 @@ export type Pol_HatToggleChangedEvent_orderBy =
   | 'transactionID'
   | 'hatNewToggle';
 
-export type Pol_Hat_filter = {
+export type Sep_Hat_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -1788,14 +1793,14 @@ export type Pol_Hat_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   wearers?: InputMaybe<Array<Scalars['String']['input']>>;
   wearers_not?: InputMaybe<Array<Scalars['String']['input']>>;
   wearers_contains?: InputMaybe<Array<Scalars['String']['input']>>;
   wearers_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
   wearers_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
   wearers_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
-  wearers_?: InputMaybe<Pol_Wearer_filter>;
+  wearers_?: InputMaybe<Sep_Wearer_filter>;
   admin?: InputMaybe<Scalars['String']['input']>;
   admin_not?: InputMaybe<Scalars['String']['input']>;
   admin_gt?: InputMaybe<Scalars['String']['input']>;
@@ -1816,27 +1821,27 @@ export type Pol_Hat_filter = {
   admin_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   admin_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   admin_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  admin_?: InputMaybe<Pol_Hat_filter>;
+  admin_?: InputMaybe<Sep_Hat_filter>;
   badStandings?: InputMaybe<Array<Scalars['String']['input']>>;
   badStandings_not?: InputMaybe<Array<Scalars['String']['input']>>;
   badStandings_contains?: InputMaybe<Array<Scalars['String']['input']>>;
   badStandings_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
   badStandings_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
   badStandings_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
-  badStandings_?: InputMaybe<Pol_Wearer_filter>;
-  claimableBy_?: InputMaybe<Pol_ClaimsHatter_filter>;
-  claimableForBy_?: InputMaybe<Pol_ClaimsHatter_filter>;
-  linkRequestFromTree_?: InputMaybe<Pol_Tree_filter>;
-  subHats_?: InputMaybe<Pol_Hat_filter>;
-  linkedTrees_?: InputMaybe<Pol_Tree_filter>;
-  events_?: InputMaybe<Pol_HatsEvent_filter>;
+  badStandings_?: InputMaybe<Sep_Wearer_filter>;
+  claimableBy_?: InputMaybe<Sep_ClaimsHatter_filter>;
+  claimableForBy_?: InputMaybe<Sep_ClaimsHatter_filter>;
+  linkRequestFromTree_?: InputMaybe<Sep_Tree_filter>;
+  subHats_?: InputMaybe<Sep_Hat_filter>;
+  linkedTrees_?: InputMaybe<Sep_Tree_filter>;
+  events_?: InputMaybe<Sep_HatsEvent_filter>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_Hat_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_Hat_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_Hat_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_Hat_filter>>>;
 };
 
-export type Pol_Hat_orderBy =
+export type Sep_Hat_orderBy =
   | 'id'
   | 'prettyId'
   | 'status'
@@ -1873,16 +1878,16 @@ export type Pol_Hat_orderBy =
   | 'linkedTrees'
   | 'events';
 
-export type Pol_HatsEvent = {
+export type Sep_HatsEvent = {
   id: Scalars['ID']['output'];
-  tree: Pol_Tree;
-  hat: Pol_Hat;
+  tree: Sep_Tree;
+  hat: Sep_Hat;
   blockNumber: Scalars['Int']['output'];
   timestamp: Scalars['BigInt']['output'];
-  transactionID: Scalars['Pol_Bytes']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
 };
 
-export type Pol_HatsEvent_filter = {
+export type Sep_HatsEvent_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -1911,7 +1916,7 @@ export type Pol_HatsEvent_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   hat?: InputMaybe<Scalars['String']['input']>;
   hat_not?: InputMaybe<Scalars['String']['input']>;
   hat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -1932,7 +1937,7 @@ export type Pol_HatsEvent_filter = {
   hat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  hat_?: InputMaybe<Pol_Hat_filter>;
+  hat_?: InputMaybe<Sep_Hat_filter>;
   blockNumber?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -1949,23 +1954,23 @@ export type Pol_HatsEvent_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  transactionID?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_not_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_HatsEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_HatsEvent_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsEvent_filter>>>;
 };
 
-export type Pol_HatsEvent_orderBy =
+export type Sep_HatsEvent_orderBy =
   | 'id'
   | 'tree'
   | 'tree__id'
@@ -1987,762 +1992,762 @@ export type Pol_HatsEvent_orderBy =
   | 'transactionID';
 
 /** Defines the order direction, either ascending or descending */
-export type Pol_OrderDirection =
+export type Sep_OrderDirection =
   | 'asc'
   | 'desc';
 
 export type Query = {
-  Pol_hat?: Maybe<Pol_Hat>;
-  Pol_hats: Array<Pol_Hat>;
-  Pol_wearer?: Maybe<Pol_Wearer>;
-  Pol_wearers: Array<Pol_Wearer>;
-  Pol_tree?: Maybe<Pol_Tree>;
-  Pol_trees: Array<Pol_Tree>;
-  Pol_hatCreatedEvent?: Maybe<Pol_HatCreatedEvent>;
-  Pol_hatCreatedEvents: Array<Pol_HatCreatedEvent>;
-  Pol_hatMintedEvent?: Maybe<Pol_HatMintedEvent>;
-  Pol_hatMintedEvents: Array<Pol_HatMintedEvent>;
-  Pol_hatBurnedEvent?: Maybe<Pol_HatBurnedEvent>;
-  Pol_hatBurnedEvents: Array<Pol_HatBurnedEvent>;
-  Pol_hatStatusChangedEvent?: Maybe<Pol_HatStatusChangedEvent>;
-  Pol_hatStatusChangedEvents: Array<Pol_HatStatusChangedEvent>;
-  Pol_hatDetailsChangedEvent?: Maybe<Pol_HatDetailsChangedEvent>;
-  Pol_hatDetailsChangedEvents: Array<Pol_HatDetailsChangedEvent>;
-  Pol_hatEligibilityChangedEvent?: Maybe<Pol_HatEligibilityChangedEvent>;
-  Pol_hatEligibilityChangedEvents: Array<Pol_HatEligibilityChangedEvent>;
-  Pol_hatToggleChangedEvent?: Maybe<Pol_HatToggleChangedEvent>;
-  Pol_hatToggleChangedEvents: Array<Pol_HatToggleChangedEvent>;
-  Pol_hatMutabilityChangedEvent?: Maybe<Pol_HatMutabilityChangedEvent>;
-  Pol_hatMutabilityChangedEvents: Array<Pol_HatMutabilityChangedEvent>;
-  Pol_hatMaxSupplyChangedEvent?: Maybe<Pol_HatMaxSupplyChangedEvent>;
-  Pol_hatMaxSupplyChangedEvents: Array<Pol_HatMaxSupplyChangedEvent>;
-  Pol_hatImageURIChangedEvent?: Maybe<Pol_HatImageURIChangedEvent>;
-  Pol_hatImageURIChangedEvents: Array<Pol_HatImageURIChangedEvent>;
-  Pol_topHatLinkRequestedEvent?: Maybe<Pol_TopHatLinkRequestedEvent>;
-  Pol_topHatLinkRequestedEvents: Array<Pol_TopHatLinkRequestedEvent>;
-  Pol_topHatLinkedEvent?: Maybe<Pol_TopHatLinkedEvent>;
-  Pol_topHatLinkedEvents: Array<Pol_TopHatLinkedEvent>;
-  Pol_wearerStandingChangedEvent?: Maybe<Pol_WearerStandingChangedEvent>;
-  Pol_wearerStandingChangedEvents: Array<Pol_WearerStandingChangedEvent>;
-  Pol_claimsHatter?: Maybe<Pol_ClaimsHatter>;
-  Pol_claimsHatters: Array<Pol_ClaimsHatter>;
-  Pol_hatsEvent?: Maybe<Pol_HatsEvent>;
-  Pol_hatsEvents: Array<Pol_HatsEvent>;
+  Sep_hat?: Maybe<Sep_Hat>;
+  Sep_hats: Array<Sep_Hat>;
+  Sep_wearer?: Maybe<Sep_Wearer>;
+  Sep_wearers: Array<Sep_Wearer>;
+  Sep_tree?: Maybe<Sep_Tree>;
+  Sep_trees: Array<Sep_Tree>;
+  Sep_hatCreatedEvent?: Maybe<Sep_HatCreatedEvent>;
+  Sep_hatCreatedEvents: Array<Sep_HatCreatedEvent>;
+  Sep_hatMintedEvent?: Maybe<Sep_HatMintedEvent>;
+  Sep_hatMintedEvents: Array<Sep_HatMintedEvent>;
+  Sep_hatBurnedEvent?: Maybe<Sep_HatBurnedEvent>;
+  Sep_hatBurnedEvents: Array<Sep_HatBurnedEvent>;
+  Sep_hatStatusChangedEvent?: Maybe<Sep_HatStatusChangedEvent>;
+  Sep_hatStatusChangedEvents: Array<Sep_HatStatusChangedEvent>;
+  Sep_hatDetailsChangedEvent?: Maybe<Sep_HatDetailsChangedEvent>;
+  Sep_hatDetailsChangedEvents: Array<Sep_HatDetailsChangedEvent>;
+  Sep_hatEligibilityChangedEvent?: Maybe<Sep_HatEligibilityChangedEvent>;
+  Sep_hatEligibilityChangedEvents: Array<Sep_HatEligibilityChangedEvent>;
+  Sep_hatToggleChangedEvent?: Maybe<Sep_HatToggleChangedEvent>;
+  Sep_hatToggleChangedEvents: Array<Sep_HatToggleChangedEvent>;
+  Sep_hatMutabilityChangedEvent?: Maybe<Sep_HatMutabilityChangedEvent>;
+  Sep_hatMutabilityChangedEvents: Array<Sep_HatMutabilityChangedEvent>;
+  Sep_hatMaxSupplyChangedEvent?: Maybe<Sep_HatMaxSupplyChangedEvent>;
+  Sep_hatMaxSupplyChangedEvents: Array<Sep_HatMaxSupplyChangedEvent>;
+  Sep_hatImageURIChangedEvent?: Maybe<Sep_HatImageURIChangedEvent>;
+  Sep_hatImageURIChangedEvents: Array<Sep_HatImageURIChangedEvent>;
+  Sep_topHatLinkRequestedEvent?: Maybe<Sep_TopHatLinkRequestedEvent>;
+  Sep_topHatLinkRequestedEvents: Array<Sep_TopHatLinkRequestedEvent>;
+  Sep_topHatLinkedEvent?: Maybe<Sep_TopHatLinkedEvent>;
+  Sep_topHatLinkedEvents: Array<Sep_TopHatLinkedEvent>;
+  Sep_wearerStandingChangedEvent?: Maybe<Sep_WearerStandingChangedEvent>;
+  Sep_wearerStandingChangedEvents: Array<Sep_WearerStandingChangedEvent>;
+  Sep_claimsHatter?: Maybe<Sep_ClaimsHatter>;
+  Sep_claimsHatters: Array<Sep_ClaimsHatter>;
+  Sep_hatsEvent?: Maybe<Sep_HatsEvent>;
+  Sep_hatsEvents: Array<Sep_HatsEvent>;
   /** Access to subgraph metadata */
-  Pol__meta?: Maybe<Pol__Meta_>;
+  Sep__meta?: Maybe<Sep__Meta_>;
 };
 
 
-export type QueryPol_hatArgs = {
+export type QuerySep_hatArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatsArgs = {
+export type QuerySep_hatsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Hat_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Hat_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_Hat_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Hat_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_wearerArgs = {
+export type QuerySep_wearerArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_wearersArgs = {
+export type QuerySep_wearersArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Wearer_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Wearer_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_Wearer_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Wearer_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_treeArgs = {
+export type QuerySep_treeArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_treesArgs = {
+export type QuerySep_treesArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Tree_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Tree_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_Tree_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Tree_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatCreatedEventArgs = {
+export type QuerySep_hatCreatedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatCreatedEventsArgs = {
+export type QuerySep_hatCreatedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatCreatedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatCreatedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatCreatedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatCreatedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatMintedEventArgs = {
+export type QuerySep_hatMintedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatMintedEventsArgs = {
+export type QuerySep_hatMintedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatMintedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatMintedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatMintedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatMintedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatBurnedEventArgs = {
+export type QuerySep_hatBurnedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatBurnedEventsArgs = {
+export type QuerySep_hatBurnedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatBurnedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatBurnedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatBurnedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatBurnedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatStatusChangedEventArgs = {
+export type QuerySep_hatStatusChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatStatusChangedEventsArgs = {
+export type QuerySep_hatStatusChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatStatusChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatStatusChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatStatusChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatStatusChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatDetailsChangedEventArgs = {
+export type QuerySep_hatDetailsChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatDetailsChangedEventsArgs = {
+export type QuerySep_hatDetailsChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatDetailsChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatDetailsChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatDetailsChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatDetailsChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatEligibilityChangedEventArgs = {
+export type QuerySep_hatEligibilityChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatEligibilityChangedEventsArgs = {
+export type QuerySep_hatEligibilityChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatEligibilityChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatEligibilityChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatEligibilityChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatEligibilityChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatToggleChangedEventArgs = {
+export type QuerySep_hatToggleChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatToggleChangedEventsArgs = {
+export type QuerySep_hatToggleChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatToggleChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatToggleChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatToggleChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatToggleChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatMutabilityChangedEventArgs = {
+export type QuerySep_hatMutabilityChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatMutabilityChangedEventsArgs = {
+export type QuerySep_hatMutabilityChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatMutabilityChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatMutabilityChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatMutabilityChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatMutabilityChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatMaxSupplyChangedEventArgs = {
+export type QuerySep_hatMaxSupplyChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatMaxSupplyChangedEventsArgs = {
+export type QuerySep_hatMaxSupplyChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatMaxSupplyChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatMaxSupplyChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatMaxSupplyChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatMaxSupplyChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatImageURIChangedEventArgs = {
+export type QuerySep_hatImageURIChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatImageURIChangedEventsArgs = {
+export type QuerySep_hatImageURIChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatImageURIChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatImageURIChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatImageURIChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatImageURIChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_topHatLinkRequestedEventArgs = {
+export type QuerySep_topHatLinkRequestedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_topHatLinkRequestedEventsArgs = {
+export type QuerySep_topHatLinkRequestedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_TopHatLinkRequestedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_TopHatLinkRequestedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_TopHatLinkRequestedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_TopHatLinkRequestedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_topHatLinkedEventArgs = {
+export type QuerySep_topHatLinkedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_topHatLinkedEventsArgs = {
+export type QuerySep_topHatLinkedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_TopHatLinkedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_TopHatLinkedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_TopHatLinkedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_TopHatLinkedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_wearerStandingChangedEventArgs = {
+export type QuerySep_wearerStandingChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_wearerStandingChangedEventsArgs = {
+export type QuerySep_wearerStandingChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_WearerStandingChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_WearerStandingChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_WearerStandingChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_WearerStandingChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_claimsHatterArgs = {
+export type QuerySep_claimsHatterArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_claimsHattersArgs = {
+export type QuerySep_claimsHattersArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_ClaimsHatter_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_ClaimsHatter_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_ClaimsHatter_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_ClaimsHatter_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatsEventArgs = {
+export type QuerySep_hatsEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol_hatsEventsArgs = {
+export type QuerySep_hatsEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatsEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatsEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatsEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type QueryPol__metaArgs = {
-  block?: InputMaybe<Pol_Block_height>;
+export type QuerySep__metaArgs = {
+  block?: InputMaybe<Sep_Block_height>;
 };
 
 export type Subscription = {
-  Pol_hat?: Maybe<Pol_Hat>;
-  Pol_hats: Array<Pol_Hat>;
-  Pol_wearer?: Maybe<Pol_Wearer>;
-  Pol_wearers: Array<Pol_Wearer>;
-  Pol_tree?: Maybe<Pol_Tree>;
-  Pol_trees: Array<Pol_Tree>;
-  Pol_hatCreatedEvent?: Maybe<Pol_HatCreatedEvent>;
-  Pol_hatCreatedEvents: Array<Pol_HatCreatedEvent>;
-  Pol_hatMintedEvent?: Maybe<Pol_HatMintedEvent>;
-  Pol_hatMintedEvents: Array<Pol_HatMintedEvent>;
-  Pol_hatBurnedEvent?: Maybe<Pol_HatBurnedEvent>;
-  Pol_hatBurnedEvents: Array<Pol_HatBurnedEvent>;
-  Pol_hatStatusChangedEvent?: Maybe<Pol_HatStatusChangedEvent>;
-  Pol_hatStatusChangedEvents: Array<Pol_HatStatusChangedEvent>;
-  Pol_hatDetailsChangedEvent?: Maybe<Pol_HatDetailsChangedEvent>;
-  Pol_hatDetailsChangedEvents: Array<Pol_HatDetailsChangedEvent>;
-  Pol_hatEligibilityChangedEvent?: Maybe<Pol_HatEligibilityChangedEvent>;
-  Pol_hatEligibilityChangedEvents: Array<Pol_HatEligibilityChangedEvent>;
-  Pol_hatToggleChangedEvent?: Maybe<Pol_HatToggleChangedEvent>;
-  Pol_hatToggleChangedEvents: Array<Pol_HatToggleChangedEvent>;
-  Pol_hatMutabilityChangedEvent?: Maybe<Pol_HatMutabilityChangedEvent>;
-  Pol_hatMutabilityChangedEvents: Array<Pol_HatMutabilityChangedEvent>;
-  Pol_hatMaxSupplyChangedEvent?: Maybe<Pol_HatMaxSupplyChangedEvent>;
-  Pol_hatMaxSupplyChangedEvents: Array<Pol_HatMaxSupplyChangedEvent>;
-  Pol_hatImageURIChangedEvent?: Maybe<Pol_HatImageURIChangedEvent>;
-  Pol_hatImageURIChangedEvents: Array<Pol_HatImageURIChangedEvent>;
-  Pol_topHatLinkRequestedEvent?: Maybe<Pol_TopHatLinkRequestedEvent>;
-  Pol_topHatLinkRequestedEvents: Array<Pol_TopHatLinkRequestedEvent>;
-  Pol_topHatLinkedEvent?: Maybe<Pol_TopHatLinkedEvent>;
-  Pol_topHatLinkedEvents: Array<Pol_TopHatLinkedEvent>;
-  Pol_wearerStandingChangedEvent?: Maybe<Pol_WearerStandingChangedEvent>;
-  Pol_wearerStandingChangedEvents: Array<Pol_WearerStandingChangedEvent>;
-  Pol_claimsHatter?: Maybe<Pol_ClaimsHatter>;
-  Pol_claimsHatters: Array<Pol_ClaimsHatter>;
-  Pol_hatsEvent?: Maybe<Pol_HatsEvent>;
-  Pol_hatsEvents: Array<Pol_HatsEvent>;
+  Sep_hat?: Maybe<Sep_Hat>;
+  Sep_hats: Array<Sep_Hat>;
+  Sep_wearer?: Maybe<Sep_Wearer>;
+  Sep_wearers: Array<Sep_Wearer>;
+  Sep_tree?: Maybe<Sep_Tree>;
+  Sep_trees: Array<Sep_Tree>;
+  Sep_hatCreatedEvent?: Maybe<Sep_HatCreatedEvent>;
+  Sep_hatCreatedEvents: Array<Sep_HatCreatedEvent>;
+  Sep_hatMintedEvent?: Maybe<Sep_HatMintedEvent>;
+  Sep_hatMintedEvents: Array<Sep_HatMintedEvent>;
+  Sep_hatBurnedEvent?: Maybe<Sep_HatBurnedEvent>;
+  Sep_hatBurnedEvents: Array<Sep_HatBurnedEvent>;
+  Sep_hatStatusChangedEvent?: Maybe<Sep_HatStatusChangedEvent>;
+  Sep_hatStatusChangedEvents: Array<Sep_HatStatusChangedEvent>;
+  Sep_hatDetailsChangedEvent?: Maybe<Sep_HatDetailsChangedEvent>;
+  Sep_hatDetailsChangedEvents: Array<Sep_HatDetailsChangedEvent>;
+  Sep_hatEligibilityChangedEvent?: Maybe<Sep_HatEligibilityChangedEvent>;
+  Sep_hatEligibilityChangedEvents: Array<Sep_HatEligibilityChangedEvent>;
+  Sep_hatToggleChangedEvent?: Maybe<Sep_HatToggleChangedEvent>;
+  Sep_hatToggleChangedEvents: Array<Sep_HatToggleChangedEvent>;
+  Sep_hatMutabilityChangedEvent?: Maybe<Sep_HatMutabilityChangedEvent>;
+  Sep_hatMutabilityChangedEvents: Array<Sep_HatMutabilityChangedEvent>;
+  Sep_hatMaxSupplyChangedEvent?: Maybe<Sep_HatMaxSupplyChangedEvent>;
+  Sep_hatMaxSupplyChangedEvents: Array<Sep_HatMaxSupplyChangedEvent>;
+  Sep_hatImageURIChangedEvent?: Maybe<Sep_HatImageURIChangedEvent>;
+  Sep_hatImageURIChangedEvents: Array<Sep_HatImageURIChangedEvent>;
+  Sep_topHatLinkRequestedEvent?: Maybe<Sep_TopHatLinkRequestedEvent>;
+  Sep_topHatLinkRequestedEvents: Array<Sep_TopHatLinkRequestedEvent>;
+  Sep_topHatLinkedEvent?: Maybe<Sep_TopHatLinkedEvent>;
+  Sep_topHatLinkedEvents: Array<Sep_TopHatLinkedEvent>;
+  Sep_wearerStandingChangedEvent?: Maybe<Sep_WearerStandingChangedEvent>;
+  Sep_wearerStandingChangedEvents: Array<Sep_WearerStandingChangedEvent>;
+  Sep_claimsHatter?: Maybe<Sep_ClaimsHatter>;
+  Sep_claimsHatters: Array<Sep_ClaimsHatter>;
+  Sep_hatsEvent?: Maybe<Sep_HatsEvent>;
+  Sep_hatsEvents: Array<Sep_HatsEvent>;
   /** Access to subgraph metadata */
-  Pol__meta?: Maybe<Pol__Meta_>;
+  Sep__meta?: Maybe<Sep__Meta_>;
 };
 
 
-export type SubscriptionPol_hatArgs = {
+export type SubscriptionSep_hatArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatsArgs = {
+export type SubscriptionSep_hatsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Hat_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Hat_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_Hat_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Hat_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_wearerArgs = {
+export type SubscriptionSep_wearerArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_wearersArgs = {
+export type SubscriptionSep_wearersArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Wearer_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Wearer_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_Wearer_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Wearer_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_treeArgs = {
+export type SubscriptionSep_treeArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_treesArgs = {
+export type SubscriptionSep_treesArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Tree_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Tree_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_Tree_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Tree_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatCreatedEventArgs = {
+export type SubscriptionSep_hatCreatedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatCreatedEventsArgs = {
+export type SubscriptionSep_hatCreatedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatCreatedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatCreatedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatCreatedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatCreatedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatMintedEventArgs = {
+export type SubscriptionSep_hatMintedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatMintedEventsArgs = {
+export type SubscriptionSep_hatMintedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatMintedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatMintedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatMintedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatMintedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatBurnedEventArgs = {
+export type SubscriptionSep_hatBurnedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatBurnedEventsArgs = {
+export type SubscriptionSep_hatBurnedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatBurnedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatBurnedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatBurnedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatBurnedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatStatusChangedEventArgs = {
+export type SubscriptionSep_hatStatusChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatStatusChangedEventsArgs = {
+export type SubscriptionSep_hatStatusChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatStatusChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatStatusChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatStatusChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatStatusChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatDetailsChangedEventArgs = {
+export type SubscriptionSep_hatDetailsChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatDetailsChangedEventsArgs = {
+export type SubscriptionSep_hatDetailsChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatDetailsChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatDetailsChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatDetailsChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatDetailsChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatEligibilityChangedEventArgs = {
+export type SubscriptionSep_hatEligibilityChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatEligibilityChangedEventsArgs = {
+export type SubscriptionSep_hatEligibilityChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatEligibilityChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatEligibilityChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatEligibilityChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatEligibilityChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatToggleChangedEventArgs = {
+export type SubscriptionSep_hatToggleChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatToggleChangedEventsArgs = {
+export type SubscriptionSep_hatToggleChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatToggleChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatToggleChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatToggleChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatToggleChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatMutabilityChangedEventArgs = {
+export type SubscriptionSep_hatMutabilityChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatMutabilityChangedEventsArgs = {
+export type SubscriptionSep_hatMutabilityChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatMutabilityChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatMutabilityChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatMutabilityChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatMutabilityChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatMaxSupplyChangedEventArgs = {
+export type SubscriptionSep_hatMaxSupplyChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatMaxSupplyChangedEventsArgs = {
+export type SubscriptionSep_hatMaxSupplyChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatMaxSupplyChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatMaxSupplyChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatMaxSupplyChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatMaxSupplyChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatImageURIChangedEventArgs = {
+export type SubscriptionSep_hatImageURIChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatImageURIChangedEventsArgs = {
+export type SubscriptionSep_hatImageURIChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatImageURIChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatImageURIChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatImageURIChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatImageURIChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_topHatLinkRequestedEventArgs = {
+export type SubscriptionSep_topHatLinkRequestedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_topHatLinkRequestedEventsArgs = {
+export type SubscriptionSep_topHatLinkRequestedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_TopHatLinkRequestedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_TopHatLinkRequestedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_TopHatLinkRequestedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_TopHatLinkRequestedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_topHatLinkedEventArgs = {
+export type SubscriptionSep_topHatLinkedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_topHatLinkedEventsArgs = {
+export type SubscriptionSep_topHatLinkedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_TopHatLinkedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_TopHatLinkedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_TopHatLinkedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_TopHatLinkedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_wearerStandingChangedEventArgs = {
+export type SubscriptionSep_wearerStandingChangedEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_wearerStandingChangedEventsArgs = {
+export type SubscriptionSep_wearerStandingChangedEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_WearerStandingChangedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_WearerStandingChangedEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_WearerStandingChangedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_WearerStandingChangedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_claimsHatterArgs = {
+export type SubscriptionSep_claimsHatterArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_claimsHattersArgs = {
+export type SubscriptionSep_claimsHattersArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_ClaimsHatter_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_ClaimsHatter_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_ClaimsHatter_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_ClaimsHatter_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatsEventArgs = {
+export type SubscriptionSep_hatsEventArgs = {
   id: Scalars['ID']['input'];
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol_hatsEventsArgs = {
+export type SubscriptionSep_hatsEventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatsEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatsEvent_filter>;
-  block?: InputMaybe<Pol_Block_height>;
-  subgraphError?: Pol__SubgraphErrorPolicy_;
+  orderBy?: InputMaybe<Sep_HatsEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptionPol__metaArgs = {
-  block?: InputMaybe<Pol_Block_height>;
+export type SubscriptionSep__metaArgs = {
+  block?: InputMaybe<Sep_Block_height>;
 };
 
-export type Pol_TopHatLinkRequestedEvent = Pol_HatsEvent & {
+export type Sep_TopHatLinkRequestedEvent = Sep_HatsEvent & {
   /** tree field is the tree that is being linked, hat field is the tree top hat */
   id: Scalars['ID']['output'];
-  tree: Pol_Tree;
-  hat: Pol_Hat;
+  tree: Sep_Tree;
+  hat: Sep_Hat;
   blockNumber: Scalars['Int']['output'];
   timestamp: Scalars['BigInt']['output'];
-  transactionID: Scalars['Pol_Bytes']['output'];
-  newAdmin: Pol_Hat;
+  transactionID: Scalars['Sep_Bytes']['output'];
+  newAdmin: Sep_Hat;
 };
 
-export type Pol_TopHatLinkRequestedEvent_filter = {
+export type Sep_TopHatLinkRequestedEvent_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -2771,7 +2776,7 @@ export type Pol_TopHatLinkRequestedEvent_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   hat?: InputMaybe<Scalars['String']['input']>;
   hat_not?: InputMaybe<Scalars['String']['input']>;
   hat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -2792,7 +2797,7 @@ export type Pol_TopHatLinkRequestedEvent_filter = {
   hat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  hat_?: InputMaybe<Pol_Hat_filter>;
+  hat_?: InputMaybe<Sep_Hat_filter>;
   blockNumber?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -2809,16 +2814,16 @@ export type Pol_TopHatLinkRequestedEvent_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  transactionID?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_not_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   newAdmin?: InputMaybe<Scalars['String']['input']>;
   newAdmin_not?: InputMaybe<Scalars['String']['input']>;
   newAdmin_gt?: InputMaybe<Scalars['String']['input']>;
@@ -2839,14 +2844,14 @@ export type Pol_TopHatLinkRequestedEvent_filter = {
   newAdmin_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   newAdmin_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   newAdmin_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  newAdmin_?: InputMaybe<Pol_Hat_filter>;
+  newAdmin_?: InputMaybe<Sep_Hat_filter>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_TopHatLinkRequestedEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_TopHatLinkRequestedEvent_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_TopHatLinkRequestedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_TopHatLinkRequestedEvent_filter>>>;
 };
 
-export type Pol_TopHatLinkRequestedEvent_orderBy =
+export type Sep_TopHatLinkRequestedEvent_orderBy =
   | 'id'
   | 'tree'
   | 'tree__id'
@@ -2880,18 +2885,18 @@ export type Pol_TopHatLinkRequestedEvent_orderBy =
   | 'newAdmin__levelAtLocalTree'
   | 'newAdmin__currentSupply';
 
-export type Pol_TopHatLinkedEvent = Pol_HatsEvent & {
+export type Sep_TopHatLinkedEvent = Sep_HatsEvent & {
   /** tree field is the tree that is being linked, hat field is the tree top hat */
   id: Scalars['ID']['output'];
-  tree: Pol_Tree;
-  hat: Pol_Hat;
+  tree: Sep_Tree;
+  hat: Sep_Hat;
   blockNumber: Scalars['Int']['output'];
   timestamp: Scalars['BigInt']['output'];
-  transactionID: Scalars['Pol_Bytes']['output'];
-  newAdmin: Pol_Hat;
+  transactionID: Scalars['Sep_Bytes']['output'];
+  newAdmin: Sep_Hat;
 };
 
-export type Pol_TopHatLinkedEvent_filter = {
+export type Sep_TopHatLinkedEvent_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -2920,7 +2925,7 @@ export type Pol_TopHatLinkedEvent_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   hat?: InputMaybe<Scalars['String']['input']>;
   hat_not?: InputMaybe<Scalars['String']['input']>;
   hat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -2941,7 +2946,7 @@ export type Pol_TopHatLinkedEvent_filter = {
   hat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  hat_?: InputMaybe<Pol_Hat_filter>;
+  hat_?: InputMaybe<Sep_Hat_filter>;
   blockNumber?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -2958,16 +2963,16 @@ export type Pol_TopHatLinkedEvent_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  transactionID?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_not_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   newAdmin?: InputMaybe<Scalars['String']['input']>;
   newAdmin_not?: InputMaybe<Scalars['String']['input']>;
   newAdmin_gt?: InputMaybe<Scalars['String']['input']>;
@@ -2988,14 +2993,14 @@ export type Pol_TopHatLinkedEvent_filter = {
   newAdmin_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   newAdmin_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   newAdmin_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  newAdmin_?: InputMaybe<Pol_Hat_filter>;
+  newAdmin_?: InputMaybe<Sep_Hat_filter>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_TopHatLinkedEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_TopHatLinkedEvent_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_TopHatLinkedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_TopHatLinkedEvent_filter>>>;
 };
 
-export type Pol_TopHatLinkedEvent_orderBy =
+export type Sep_TopHatLinkedEvent_orderBy =
   | 'id'
   | 'tree'
   | 'tree__id'
@@ -3029,56 +3034,56 @@ export type Pol_TopHatLinkedEvent_orderBy =
   | 'newAdmin__levelAtLocalTree'
   | 'newAdmin__currentSupply';
 
-export type Pol_Tree = {
+export type Sep_Tree = {
   /** Tree ID is its top hat domain - first 4 bytes of the top hat ID */
   id: Scalars['ID']['output'];
-  childOfTree?: Maybe<Pol_Tree>;
-  linkedToHat?: Maybe<Pol_Hat>;
-  requestedLinkToTree?: Maybe<Pol_Tree>;
-  requestedLinkToHat?: Maybe<Pol_Hat>;
-  linkRequestFromTree: Array<Pol_Tree>;
-  hats: Array<Pol_Hat>;
-  parentOfTrees: Array<Pol_Tree>;
-  events: Array<Pol_HatsEvent>;
+  childOfTree?: Maybe<Sep_Tree>;
+  linkedToHat?: Maybe<Sep_Hat>;
+  requestedLinkToTree?: Maybe<Sep_Tree>;
+  requestedLinkToHat?: Maybe<Sep_Hat>;
+  linkRequestFromTree: Array<Sep_Tree>;
+  hats: Array<Sep_Hat>;
+  parentOfTrees: Array<Sep_Tree>;
+  events: Array<Sep_HatsEvent>;
 };
 
 
-export type Pol_TreelinkRequestFromTreeArgs = {
+export type Sep_TreelinkRequestFromTreeArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Tree_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Tree_filter>;
+  orderBy?: InputMaybe<Sep_Tree_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Tree_filter>;
 };
 
 
-export type Pol_TreehatsArgs = {
+export type Sep_TreehatsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Hat_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Hat_filter>;
+  orderBy?: InputMaybe<Sep_Hat_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Hat_filter>;
 };
 
 
-export type Pol_TreeparentOfTreesArgs = {
+export type Sep_TreeparentOfTreesArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Tree_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Tree_filter>;
+  orderBy?: InputMaybe<Sep_Tree_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Tree_filter>;
 };
 
 
-export type Pol_TreeeventsArgs = {
+export type Sep_TreeeventsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatsEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatsEvent_filter>;
+  orderBy?: InputMaybe<Sep_HatsEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsEvent_filter>;
 };
 
-export type Pol_Tree_filter = {
+export type Sep_Tree_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -3107,7 +3112,7 @@ export type Pol_Tree_filter = {
   childOfTree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   childOfTree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   childOfTree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  childOfTree_?: InputMaybe<Pol_Tree_filter>;
+  childOfTree_?: InputMaybe<Sep_Tree_filter>;
   linkedToHat?: InputMaybe<Scalars['String']['input']>;
   linkedToHat_not?: InputMaybe<Scalars['String']['input']>;
   linkedToHat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -3128,7 +3133,7 @@ export type Pol_Tree_filter = {
   linkedToHat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   linkedToHat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   linkedToHat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  linkedToHat_?: InputMaybe<Pol_Hat_filter>;
+  linkedToHat_?: InputMaybe<Sep_Hat_filter>;
   requestedLinkToTree?: InputMaybe<Scalars['String']['input']>;
   requestedLinkToTree_not?: InputMaybe<Scalars['String']['input']>;
   requestedLinkToTree_gt?: InputMaybe<Scalars['String']['input']>;
@@ -3149,7 +3154,7 @@ export type Pol_Tree_filter = {
   requestedLinkToTree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   requestedLinkToTree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   requestedLinkToTree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  requestedLinkToTree_?: InputMaybe<Pol_Tree_filter>;
+  requestedLinkToTree_?: InputMaybe<Sep_Tree_filter>;
   requestedLinkToHat?: InputMaybe<Scalars['String']['input']>;
   requestedLinkToHat_not?: InputMaybe<Scalars['String']['input']>;
   requestedLinkToHat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -3170,18 +3175,18 @@ export type Pol_Tree_filter = {
   requestedLinkToHat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   requestedLinkToHat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   requestedLinkToHat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  requestedLinkToHat_?: InputMaybe<Pol_Hat_filter>;
-  linkRequestFromTree_?: InputMaybe<Pol_Tree_filter>;
-  hats_?: InputMaybe<Pol_Hat_filter>;
-  parentOfTrees_?: InputMaybe<Pol_Tree_filter>;
-  events_?: InputMaybe<Pol_HatsEvent_filter>;
+  requestedLinkToHat_?: InputMaybe<Sep_Hat_filter>;
+  linkRequestFromTree_?: InputMaybe<Sep_Tree_filter>;
+  hats_?: InputMaybe<Sep_Hat_filter>;
+  parentOfTrees_?: InputMaybe<Sep_Tree_filter>;
+  events_?: InputMaybe<Sep_HatsEvent_filter>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_Tree_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_Tree_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_Tree_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_Tree_filter>>>;
 };
 
-export type Pol_Tree_orderBy =
+export type Sep_Tree_orderBy =
   | 'id'
   | 'childOfTree'
   | 'childOfTree__id'
@@ -3218,52 +3223,52 @@ export type Pol_Tree_orderBy =
   | 'parentOfTrees'
   | 'events';
 
-export type Pol_Wearer = {
+export type Sep_Wearer = {
   id: Scalars['ID']['output'];
-  currentHats: Array<Pol_Hat>;
-  mintEvent: Array<Pol_HatMintedEvent>;
-  burnEvent: Array<Pol_HatBurnedEvent>;
+  currentHats: Array<Sep_Hat>;
+  mintEvent: Array<Sep_HatMintedEvent>;
+  burnEvent: Array<Sep_HatBurnedEvent>;
 };
 
 
-export type Pol_WearercurrentHatsArgs = {
+export type Sep_WearercurrentHatsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_Hat_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_Hat_filter>;
+  orderBy?: InputMaybe<Sep_Hat_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_Hat_filter>;
 };
 
 
-export type Pol_WearermintEventArgs = {
+export type Sep_WearermintEventArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatMintedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatMintedEvent_filter>;
+  orderBy?: InputMaybe<Sep_HatMintedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatMintedEvent_filter>;
 };
 
 
-export type Pol_WearerburnEventArgs = {
+export type Sep_WearerburnEventArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Pol_HatBurnedEvent_orderBy>;
-  orderDirection?: InputMaybe<Pol_OrderDirection>;
-  where?: InputMaybe<Pol_HatBurnedEvent_filter>;
+  orderBy?: InputMaybe<Sep_HatBurnedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatBurnedEvent_filter>;
 };
 
-export type Pol_WearerStandingChangedEvent = Pol_HatsEvent & {
+export type Sep_WearerStandingChangedEvent = Sep_HatsEvent & {
   id: Scalars['ID']['output'];
-  tree: Pol_Tree;
-  hat: Pol_Hat;
+  tree: Sep_Tree;
+  hat: Sep_Hat;
   blockNumber: Scalars['Int']['output'];
   timestamp: Scalars['BigInt']['output'];
-  transactionID: Scalars['Pol_Bytes']['output'];
-  wearer: Pol_Wearer;
+  transactionID: Scalars['Sep_Bytes']['output'];
+  wearer: Sep_Wearer;
   wearerStanding: Scalars['Boolean']['output'];
 };
 
-export type Pol_WearerStandingChangedEvent_filter = {
+export type Sep_WearerStandingChangedEvent_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -3292,7 +3297,7 @@ export type Pol_WearerStandingChangedEvent_filter = {
   tree_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   tree_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  tree_?: InputMaybe<Pol_Tree_filter>;
+  tree_?: InputMaybe<Sep_Tree_filter>;
   hat?: InputMaybe<Scalars['String']['input']>;
   hat_not?: InputMaybe<Scalars['String']['input']>;
   hat_gt?: InputMaybe<Scalars['String']['input']>;
@@ -3313,7 +3318,7 @@ export type Pol_WearerStandingChangedEvent_filter = {
   hat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   hat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  hat_?: InputMaybe<Pol_Hat_filter>;
+  hat_?: InputMaybe<Sep_Hat_filter>;
   blockNumber?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
@@ -3330,16 +3335,16 @@ export type Pol_WearerStandingChangedEvent_filter = {
   timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
   timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  transactionID?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lt?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_gte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_lte?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_not_in?: InputMaybe<Array<Scalars['Pol_Bytes']['input']>>;
-  transactionID_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
-  transactionID_not_contains?: InputMaybe<Scalars['Pol_Bytes']['input']>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
   wearer?: InputMaybe<Scalars['String']['input']>;
   wearer_not?: InputMaybe<Scalars['String']['input']>;
   wearer_gt?: InputMaybe<Scalars['String']['input']>;
@@ -3360,18 +3365,18 @@ export type Pol_WearerStandingChangedEvent_filter = {
   wearer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
   wearer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
   wearer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
-  wearer_?: InputMaybe<Pol_Wearer_filter>;
+  wearer_?: InputMaybe<Sep_Wearer_filter>;
   wearerStanding?: InputMaybe<Scalars['Boolean']['input']>;
   wearerStanding_not?: InputMaybe<Scalars['Boolean']['input']>;
   wearerStanding_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
   wearerStanding_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_WearerStandingChangedEvent_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_WearerStandingChangedEvent_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_WearerStandingChangedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_WearerStandingChangedEvent_filter>>>;
 };
 
-export type Pol_WearerStandingChangedEvent_orderBy =
+export type Sep_WearerStandingChangedEvent_orderBy =
   | 'id'
   | 'tree'
   | 'tree__id'
@@ -3395,7 +3400,7 @@ export type Pol_WearerStandingChangedEvent_orderBy =
   | 'wearer__id'
   | 'wearerStanding';
 
-export type Pol_Wearer_filter = {
+export type Sep_Wearer_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
   id_not?: InputMaybe<Scalars['ID']['input']>;
   id_gt?: InputMaybe<Scalars['ID']['input']>;
@@ -3404,32 +3409,34 @@ export type Pol_Wearer_filter = {
   id_lte?: InputMaybe<Scalars['ID']['input']>;
   id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
   id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
-  currentHats_?: InputMaybe<Pol_Hat_filter>;
-  mintEvent_?: InputMaybe<Pol_HatMintedEvent_filter>;
-  burnEvent_?: InputMaybe<Pol_HatBurnedEvent_filter>;
+  currentHats_?: InputMaybe<Sep_Hat_filter>;
+  mintEvent_?: InputMaybe<Sep_HatMintedEvent_filter>;
+  burnEvent_?: InputMaybe<Sep_HatBurnedEvent_filter>;
   /** Filter for the block changed event. */
-  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<Pol_Wearer_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<Pol_Wearer_filter>>>;
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_Wearer_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_Wearer_filter>>>;
 };
 
-export type Pol_Wearer_orderBy =
+export type Sep_Wearer_orderBy =
   | 'id'
   | 'currentHats'
   | 'mintEvent'
   | 'burnEvent';
 
-export type Pol__Block_ = {
+export type Sep__Block_ = {
   /** The hash of the block */
-  hash?: Maybe<Scalars['Pol_Bytes']['output']>;
+  hash?: Maybe<Scalars['Sep_Bytes']['output']>;
   /** The block number */
   number: Scalars['Int']['output'];
   /** Integer representation of the timestamp stored in blocks for the chain */
   timestamp?: Maybe<Scalars['Int']['output']>;
+  /** The hash of the parent block */
+  parentHash?: Maybe<Scalars['Sep_Bytes']['output']>;
 };
 
 /** The type for the top-level _meta field */
-export type Pol__Meta_ = {
+export type Sep__Meta_ = {
   /**
    * Information about a specific subgraph block. The hash of the block
    * will be null if the _meta field has a block constraint that asks for
@@ -3437,14 +3444,14 @@ export type Pol__Meta_ = {
    * and therefore asks for the latest  block
    *
    */
-  block: Pol__Block_;
+  block: Sep__Block_;
   /** The deployment ID */
   deployment: Scalars['String']['output'];
   /** If `true`, the subgraph encountered indexing errors at some past block */
   hasIndexingErrors: Scalars['Boolean']['output'];
 };
 
-export type Pol__SubgraphErrorPolicy_ =
+export type Sep__SubgraphErrorPolicy_ =
   /** Data will be returned even if the subgraph has indexing errors */
   | 'allow'
   /** If the subgraph has indexing errors, data will be omitted. The default. */
@@ -3452,79 +3459,79 @@ export type Pol__SubgraphErrorPolicy_ =
 
   export type QuerySdk = {
       /** null **/
-  Pol_hat: InContextSdkMethod<Query['Pol_hat'], QueryPol_hatArgs, MeshContext>,
+  Sep_hat: InContextSdkMethod<Query['Sep_hat'], QuerySep_hatArgs, MeshContext>,
   /** null **/
-  Pol_hats: InContextSdkMethod<Query['Pol_hats'], QueryPol_hatsArgs, MeshContext>,
+  Sep_hats: InContextSdkMethod<Query['Sep_hats'], QuerySep_hatsArgs, MeshContext>,
   /** null **/
-  Pol_wearer: InContextSdkMethod<Query['Pol_wearer'], QueryPol_wearerArgs, MeshContext>,
+  Sep_wearer: InContextSdkMethod<Query['Sep_wearer'], QuerySep_wearerArgs, MeshContext>,
   /** null **/
-  Pol_wearers: InContextSdkMethod<Query['Pol_wearers'], QueryPol_wearersArgs, MeshContext>,
+  Sep_wearers: InContextSdkMethod<Query['Sep_wearers'], QuerySep_wearersArgs, MeshContext>,
   /** null **/
-  Pol_tree: InContextSdkMethod<Query['Pol_tree'], QueryPol_treeArgs, MeshContext>,
+  Sep_tree: InContextSdkMethod<Query['Sep_tree'], QuerySep_treeArgs, MeshContext>,
   /** null **/
-  Pol_trees: InContextSdkMethod<Query['Pol_trees'], QueryPol_treesArgs, MeshContext>,
+  Sep_trees: InContextSdkMethod<Query['Sep_trees'], QuerySep_treesArgs, MeshContext>,
   /** null **/
-  Pol_hatCreatedEvent: InContextSdkMethod<Query['Pol_hatCreatedEvent'], QueryPol_hatCreatedEventArgs, MeshContext>,
+  Sep_hatCreatedEvent: InContextSdkMethod<Query['Sep_hatCreatedEvent'], QuerySep_hatCreatedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatCreatedEvents: InContextSdkMethod<Query['Pol_hatCreatedEvents'], QueryPol_hatCreatedEventsArgs, MeshContext>,
+  Sep_hatCreatedEvents: InContextSdkMethod<Query['Sep_hatCreatedEvents'], QuerySep_hatCreatedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatMintedEvent: InContextSdkMethod<Query['Pol_hatMintedEvent'], QueryPol_hatMintedEventArgs, MeshContext>,
+  Sep_hatMintedEvent: InContextSdkMethod<Query['Sep_hatMintedEvent'], QuerySep_hatMintedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatMintedEvents: InContextSdkMethod<Query['Pol_hatMintedEvents'], QueryPol_hatMintedEventsArgs, MeshContext>,
+  Sep_hatMintedEvents: InContextSdkMethod<Query['Sep_hatMintedEvents'], QuerySep_hatMintedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatBurnedEvent: InContextSdkMethod<Query['Pol_hatBurnedEvent'], QueryPol_hatBurnedEventArgs, MeshContext>,
+  Sep_hatBurnedEvent: InContextSdkMethod<Query['Sep_hatBurnedEvent'], QuerySep_hatBurnedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatBurnedEvents: InContextSdkMethod<Query['Pol_hatBurnedEvents'], QueryPol_hatBurnedEventsArgs, MeshContext>,
+  Sep_hatBurnedEvents: InContextSdkMethod<Query['Sep_hatBurnedEvents'], QuerySep_hatBurnedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatStatusChangedEvent: InContextSdkMethod<Query['Pol_hatStatusChangedEvent'], QueryPol_hatStatusChangedEventArgs, MeshContext>,
+  Sep_hatStatusChangedEvent: InContextSdkMethod<Query['Sep_hatStatusChangedEvent'], QuerySep_hatStatusChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatStatusChangedEvents: InContextSdkMethod<Query['Pol_hatStatusChangedEvents'], QueryPol_hatStatusChangedEventsArgs, MeshContext>,
+  Sep_hatStatusChangedEvents: InContextSdkMethod<Query['Sep_hatStatusChangedEvents'], QuerySep_hatStatusChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatDetailsChangedEvent: InContextSdkMethod<Query['Pol_hatDetailsChangedEvent'], QueryPol_hatDetailsChangedEventArgs, MeshContext>,
+  Sep_hatDetailsChangedEvent: InContextSdkMethod<Query['Sep_hatDetailsChangedEvent'], QuerySep_hatDetailsChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatDetailsChangedEvents: InContextSdkMethod<Query['Pol_hatDetailsChangedEvents'], QueryPol_hatDetailsChangedEventsArgs, MeshContext>,
+  Sep_hatDetailsChangedEvents: InContextSdkMethod<Query['Sep_hatDetailsChangedEvents'], QuerySep_hatDetailsChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatEligibilityChangedEvent: InContextSdkMethod<Query['Pol_hatEligibilityChangedEvent'], QueryPol_hatEligibilityChangedEventArgs, MeshContext>,
+  Sep_hatEligibilityChangedEvent: InContextSdkMethod<Query['Sep_hatEligibilityChangedEvent'], QuerySep_hatEligibilityChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatEligibilityChangedEvents: InContextSdkMethod<Query['Pol_hatEligibilityChangedEvents'], QueryPol_hatEligibilityChangedEventsArgs, MeshContext>,
+  Sep_hatEligibilityChangedEvents: InContextSdkMethod<Query['Sep_hatEligibilityChangedEvents'], QuerySep_hatEligibilityChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatToggleChangedEvent: InContextSdkMethod<Query['Pol_hatToggleChangedEvent'], QueryPol_hatToggleChangedEventArgs, MeshContext>,
+  Sep_hatToggleChangedEvent: InContextSdkMethod<Query['Sep_hatToggleChangedEvent'], QuerySep_hatToggleChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatToggleChangedEvents: InContextSdkMethod<Query['Pol_hatToggleChangedEvents'], QueryPol_hatToggleChangedEventsArgs, MeshContext>,
+  Sep_hatToggleChangedEvents: InContextSdkMethod<Query['Sep_hatToggleChangedEvents'], QuerySep_hatToggleChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatMutabilityChangedEvent: InContextSdkMethod<Query['Pol_hatMutabilityChangedEvent'], QueryPol_hatMutabilityChangedEventArgs, MeshContext>,
+  Sep_hatMutabilityChangedEvent: InContextSdkMethod<Query['Sep_hatMutabilityChangedEvent'], QuerySep_hatMutabilityChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatMutabilityChangedEvents: InContextSdkMethod<Query['Pol_hatMutabilityChangedEvents'], QueryPol_hatMutabilityChangedEventsArgs, MeshContext>,
+  Sep_hatMutabilityChangedEvents: InContextSdkMethod<Query['Sep_hatMutabilityChangedEvents'], QuerySep_hatMutabilityChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatMaxSupplyChangedEvent: InContextSdkMethod<Query['Pol_hatMaxSupplyChangedEvent'], QueryPol_hatMaxSupplyChangedEventArgs, MeshContext>,
+  Sep_hatMaxSupplyChangedEvent: InContextSdkMethod<Query['Sep_hatMaxSupplyChangedEvent'], QuerySep_hatMaxSupplyChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatMaxSupplyChangedEvents: InContextSdkMethod<Query['Pol_hatMaxSupplyChangedEvents'], QueryPol_hatMaxSupplyChangedEventsArgs, MeshContext>,
+  Sep_hatMaxSupplyChangedEvents: InContextSdkMethod<Query['Sep_hatMaxSupplyChangedEvents'], QuerySep_hatMaxSupplyChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatImageURIChangedEvent: InContextSdkMethod<Query['Pol_hatImageURIChangedEvent'], QueryPol_hatImageURIChangedEventArgs, MeshContext>,
+  Sep_hatImageURIChangedEvent: InContextSdkMethod<Query['Sep_hatImageURIChangedEvent'], QuerySep_hatImageURIChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatImageURIChangedEvents: InContextSdkMethod<Query['Pol_hatImageURIChangedEvents'], QueryPol_hatImageURIChangedEventsArgs, MeshContext>,
+  Sep_hatImageURIChangedEvents: InContextSdkMethod<Query['Sep_hatImageURIChangedEvents'], QuerySep_hatImageURIChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_topHatLinkRequestedEvent: InContextSdkMethod<Query['Pol_topHatLinkRequestedEvent'], QueryPol_topHatLinkRequestedEventArgs, MeshContext>,
+  Sep_topHatLinkRequestedEvent: InContextSdkMethod<Query['Sep_topHatLinkRequestedEvent'], QuerySep_topHatLinkRequestedEventArgs, MeshContext>,
   /** null **/
-  Pol_topHatLinkRequestedEvents: InContextSdkMethod<Query['Pol_topHatLinkRequestedEvents'], QueryPol_topHatLinkRequestedEventsArgs, MeshContext>,
+  Sep_topHatLinkRequestedEvents: InContextSdkMethod<Query['Sep_topHatLinkRequestedEvents'], QuerySep_topHatLinkRequestedEventsArgs, MeshContext>,
   /** null **/
-  Pol_topHatLinkedEvent: InContextSdkMethod<Query['Pol_topHatLinkedEvent'], QueryPol_topHatLinkedEventArgs, MeshContext>,
+  Sep_topHatLinkedEvent: InContextSdkMethod<Query['Sep_topHatLinkedEvent'], QuerySep_topHatLinkedEventArgs, MeshContext>,
   /** null **/
-  Pol_topHatLinkedEvents: InContextSdkMethod<Query['Pol_topHatLinkedEvents'], QueryPol_topHatLinkedEventsArgs, MeshContext>,
+  Sep_topHatLinkedEvents: InContextSdkMethod<Query['Sep_topHatLinkedEvents'], QuerySep_topHatLinkedEventsArgs, MeshContext>,
   /** null **/
-  Pol_wearerStandingChangedEvent: InContextSdkMethod<Query['Pol_wearerStandingChangedEvent'], QueryPol_wearerStandingChangedEventArgs, MeshContext>,
+  Sep_wearerStandingChangedEvent: InContextSdkMethod<Query['Sep_wearerStandingChangedEvent'], QuerySep_wearerStandingChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_wearerStandingChangedEvents: InContextSdkMethod<Query['Pol_wearerStandingChangedEvents'], QueryPol_wearerStandingChangedEventsArgs, MeshContext>,
+  Sep_wearerStandingChangedEvents: InContextSdkMethod<Query['Sep_wearerStandingChangedEvents'], QuerySep_wearerStandingChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_claimsHatter: InContextSdkMethod<Query['Pol_claimsHatter'], QueryPol_claimsHatterArgs, MeshContext>,
+  Sep_claimsHatter: InContextSdkMethod<Query['Sep_claimsHatter'], QuerySep_claimsHatterArgs, MeshContext>,
   /** null **/
-  Pol_claimsHatters: InContextSdkMethod<Query['Pol_claimsHatters'], QueryPol_claimsHattersArgs, MeshContext>,
+  Sep_claimsHatters: InContextSdkMethod<Query['Sep_claimsHatters'], QuerySep_claimsHattersArgs, MeshContext>,
   /** null **/
-  Pol_hatsEvent: InContextSdkMethod<Query['Pol_hatsEvent'], QueryPol_hatsEventArgs, MeshContext>,
+  Sep_hatsEvent: InContextSdkMethod<Query['Sep_hatsEvent'], QuerySep_hatsEventArgs, MeshContext>,
   /** null **/
-  Pol_hatsEvents: InContextSdkMethod<Query['Pol_hatsEvents'], QueryPol_hatsEventsArgs, MeshContext>,
+  Sep_hatsEvents: InContextSdkMethod<Query['Sep_hatsEvents'], QuerySep_hatsEventsArgs, MeshContext>,
   /** Access to subgraph metadata **/
-  Pol__meta: InContextSdkMethod<Query['Pol__meta'], QueryPol__metaArgs, MeshContext>
+  Sep__meta: InContextSdkMethod<Query['Sep__meta'], QuerySep__metaArgs, MeshContext>
   };
 
   export type MutationSdk = {
@@ -3533,83 +3540,83 @@ export type Pol__SubgraphErrorPolicy_ =
 
   export type SubscriptionSdk = {
       /** null **/
-  Pol_hat: InContextSdkMethod<Subscription['Pol_hat'], SubscriptionPol_hatArgs, MeshContext>,
+  Sep_hat: InContextSdkMethod<Subscription['Sep_hat'], SubscriptionSep_hatArgs, MeshContext>,
   /** null **/
-  Pol_hats: InContextSdkMethod<Subscription['Pol_hats'], SubscriptionPol_hatsArgs, MeshContext>,
+  Sep_hats: InContextSdkMethod<Subscription['Sep_hats'], SubscriptionSep_hatsArgs, MeshContext>,
   /** null **/
-  Pol_wearer: InContextSdkMethod<Subscription['Pol_wearer'], SubscriptionPol_wearerArgs, MeshContext>,
+  Sep_wearer: InContextSdkMethod<Subscription['Sep_wearer'], SubscriptionSep_wearerArgs, MeshContext>,
   /** null **/
-  Pol_wearers: InContextSdkMethod<Subscription['Pol_wearers'], SubscriptionPol_wearersArgs, MeshContext>,
+  Sep_wearers: InContextSdkMethod<Subscription['Sep_wearers'], SubscriptionSep_wearersArgs, MeshContext>,
   /** null **/
-  Pol_tree: InContextSdkMethod<Subscription['Pol_tree'], SubscriptionPol_treeArgs, MeshContext>,
+  Sep_tree: InContextSdkMethod<Subscription['Sep_tree'], SubscriptionSep_treeArgs, MeshContext>,
   /** null **/
-  Pol_trees: InContextSdkMethod<Subscription['Pol_trees'], SubscriptionPol_treesArgs, MeshContext>,
+  Sep_trees: InContextSdkMethod<Subscription['Sep_trees'], SubscriptionSep_treesArgs, MeshContext>,
   /** null **/
-  Pol_hatCreatedEvent: InContextSdkMethod<Subscription['Pol_hatCreatedEvent'], SubscriptionPol_hatCreatedEventArgs, MeshContext>,
+  Sep_hatCreatedEvent: InContextSdkMethod<Subscription['Sep_hatCreatedEvent'], SubscriptionSep_hatCreatedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatCreatedEvents: InContextSdkMethod<Subscription['Pol_hatCreatedEvents'], SubscriptionPol_hatCreatedEventsArgs, MeshContext>,
+  Sep_hatCreatedEvents: InContextSdkMethod<Subscription['Sep_hatCreatedEvents'], SubscriptionSep_hatCreatedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatMintedEvent: InContextSdkMethod<Subscription['Pol_hatMintedEvent'], SubscriptionPol_hatMintedEventArgs, MeshContext>,
+  Sep_hatMintedEvent: InContextSdkMethod<Subscription['Sep_hatMintedEvent'], SubscriptionSep_hatMintedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatMintedEvents: InContextSdkMethod<Subscription['Pol_hatMintedEvents'], SubscriptionPol_hatMintedEventsArgs, MeshContext>,
+  Sep_hatMintedEvents: InContextSdkMethod<Subscription['Sep_hatMintedEvents'], SubscriptionSep_hatMintedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatBurnedEvent: InContextSdkMethod<Subscription['Pol_hatBurnedEvent'], SubscriptionPol_hatBurnedEventArgs, MeshContext>,
+  Sep_hatBurnedEvent: InContextSdkMethod<Subscription['Sep_hatBurnedEvent'], SubscriptionSep_hatBurnedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatBurnedEvents: InContextSdkMethod<Subscription['Pol_hatBurnedEvents'], SubscriptionPol_hatBurnedEventsArgs, MeshContext>,
+  Sep_hatBurnedEvents: InContextSdkMethod<Subscription['Sep_hatBurnedEvents'], SubscriptionSep_hatBurnedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatStatusChangedEvent: InContextSdkMethod<Subscription['Pol_hatStatusChangedEvent'], SubscriptionPol_hatStatusChangedEventArgs, MeshContext>,
+  Sep_hatStatusChangedEvent: InContextSdkMethod<Subscription['Sep_hatStatusChangedEvent'], SubscriptionSep_hatStatusChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatStatusChangedEvents: InContextSdkMethod<Subscription['Pol_hatStatusChangedEvents'], SubscriptionPol_hatStatusChangedEventsArgs, MeshContext>,
+  Sep_hatStatusChangedEvents: InContextSdkMethod<Subscription['Sep_hatStatusChangedEvents'], SubscriptionSep_hatStatusChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatDetailsChangedEvent: InContextSdkMethod<Subscription['Pol_hatDetailsChangedEvent'], SubscriptionPol_hatDetailsChangedEventArgs, MeshContext>,
+  Sep_hatDetailsChangedEvent: InContextSdkMethod<Subscription['Sep_hatDetailsChangedEvent'], SubscriptionSep_hatDetailsChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatDetailsChangedEvents: InContextSdkMethod<Subscription['Pol_hatDetailsChangedEvents'], SubscriptionPol_hatDetailsChangedEventsArgs, MeshContext>,
+  Sep_hatDetailsChangedEvents: InContextSdkMethod<Subscription['Sep_hatDetailsChangedEvents'], SubscriptionSep_hatDetailsChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatEligibilityChangedEvent: InContextSdkMethod<Subscription['Pol_hatEligibilityChangedEvent'], SubscriptionPol_hatEligibilityChangedEventArgs, MeshContext>,
+  Sep_hatEligibilityChangedEvent: InContextSdkMethod<Subscription['Sep_hatEligibilityChangedEvent'], SubscriptionSep_hatEligibilityChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatEligibilityChangedEvents: InContextSdkMethod<Subscription['Pol_hatEligibilityChangedEvents'], SubscriptionPol_hatEligibilityChangedEventsArgs, MeshContext>,
+  Sep_hatEligibilityChangedEvents: InContextSdkMethod<Subscription['Sep_hatEligibilityChangedEvents'], SubscriptionSep_hatEligibilityChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatToggleChangedEvent: InContextSdkMethod<Subscription['Pol_hatToggleChangedEvent'], SubscriptionPol_hatToggleChangedEventArgs, MeshContext>,
+  Sep_hatToggleChangedEvent: InContextSdkMethod<Subscription['Sep_hatToggleChangedEvent'], SubscriptionSep_hatToggleChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatToggleChangedEvents: InContextSdkMethod<Subscription['Pol_hatToggleChangedEvents'], SubscriptionPol_hatToggleChangedEventsArgs, MeshContext>,
+  Sep_hatToggleChangedEvents: InContextSdkMethod<Subscription['Sep_hatToggleChangedEvents'], SubscriptionSep_hatToggleChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatMutabilityChangedEvent: InContextSdkMethod<Subscription['Pol_hatMutabilityChangedEvent'], SubscriptionPol_hatMutabilityChangedEventArgs, MeshContext>,
+  Sep_hatMutabilityChangedEvent: InContextSdkMethod<Subscription['Sep_hatMutabilityChangedEvent'], SubscriptionSep_hatMutabilityChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatMutabilityChangedEvents: InContextSdkMethod<Subscription['Pol_hatMutabilityChangedEvents'], SubscriptionPol_hatMutabilityChangedEventsArgs, MeshContext>,
+  Sep_hatMutabilityChangedEvents: InContextSdkMethod<Subscription['Sep_hatMutabilityChangedEvents'], SubscriptionSep_hatMutabilityChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatMaxSupplyChangedEvent: InContextSdkMethod<Subscription['Pol_hatMaxSupplyChangedEvent'], SubscriptionPol_hatMaxSupplyChangedEventArgs, MeshContext>,
+  Sep_hatMaxSupplyChangedEvent: InContextSdkMethod<Subscription['Sep_hatMaxSupplyChangedEvent'], SubscriptionSep_hatMaxSupplyChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatMaxSupplyChangedEvents: InContextSdkMethod<Subscription['Pol_hatMaxSupplyChangedEvents'], SubscriptionPol_hatMaxSupplyChangedEventsArgs, MeshContext>,
+  Sep_hatMaxSupplyChangedEvents: InContextSdkMethod<Subscription['Sep_hatMaxSupplyChangedEvents'], SubscriptionSep_hatMaxSupplyChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_hatImageURIChangedEvent: InContextSdkMethod<Subscription['Pol_hatImageURIChangedEvent'], SubscriptionPol_hatImageURIChangedEventArgs, MeshContext>,
+  Sep_hatImageURIChangedEvent: InContextSdkMethod<Subscription['Sep_hatImageURIChangedEvent'], SubscriptionSep_hatImageURIChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_hatImageURIChangedEvents: InContextSdkMethod<Subscription['Pol_hatImageURIChangedEvents'], SubscriptionPol_hatImageURIChangedEventsArgs, MeshContext>,
+  Sep_hatImageURIChangedEvents: InContextSdkMethod<Subscription['Sep_hatImageURIChangedEvents'], SubscriptionSep_hatImageURIChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_topHatLinkRequestedEvent: InContextSdkMethod<Subscription['Pol_topHatLinkRequestedEvent'], SubscriptionPol_topHatLinkRequestedEventArgs, MeshContext>,
+  Sep_topHatLinkRequestedEvent: InContextSdkMethod<Subscription['Sep_topHatLinkRequestedEvent'], SubscriptionSep_topHatLinkRequestedEventArgs, MeshContext>,
   /** null **/
-  Pol_topHatLinkRequestedEvents: InContextSdkMethod<Subscription['Pol_topHatLinkRequestedEvents'], SubscriptionPol_topHatLinkRequestedEventsArgs, MeshContext>,
+  Sep_topHatLinkRequestedEvents: InContextSdkMethod<Subscription['Sep_topHatLinkRequestedEvents'], SubscriptionSep_topHatLinkRequestedEventsArgs, MeshContext>,
   /** null **/
-  Pol_topHatLinkedEvent: InContextSdkMethod<Subscription['Pol_topHatLinkedEvent'], SubscriptionPol_topHatLinkedEventArgs, MeshContext>,
+  Sep_topHatLinkedEvent: InContextSdkMethod<Subscription['Sep_topHatLinkedEvent'], SubscriptionSep_topHatLinkedEventArgs, MeshContext>,
   /** null **/
-  Pol_topHatLinkedEvents: InContextSdkMethod<Subscription['Pol_topHatLinkedEvents'], SubscriptionPol_topHatLinkedEventsArgs, MeshContext>,
+  Sep_topHatLinkedEvents: InContextSdkMethod<Subscription['Sep_topHatLinkedEvents'], SubscriptionSep_topHatLinkedEventsArgs, MeshContext>,
   /** null **/
-  Pol_wearerStandingChangedEvent: InContextSdkMethod<Subscription['Pol_wearerStandingChangedEvent'], SubscriptionPol_wearerStandingChangedEventArgs, MeshContext>,
+  Sep_wearerStandingChangedEvent: InContextSdkMethod<Subscription['Sep_wearerStandingChangedEvent'], SubscriptionSep_wearerStandingChangedEventArgs, MeshContext>,
   /** null **/
-  Pol_wearerStandingChangedEvents: InContextSdkMethod<Subscription['Pol_wearerStandingChangedEvents'], SubscriptionPol_wearerStandingChangedEventsArgs, MeshContext>,
+  Sep_wearerStandingChangedEvents: InContextSdkMethod<Subscription['Sep_wearerStandingChangedEvents'], SubscriptionSep_wearerStandingChangedEventsArgs, MeshContext>,
   /** null **/
-  Pol_claimsHatter: InContextSdkMethod<Subscription['Pol_claimsHatter'], SubscriptionPol_claimsHatterArgs, MeshContext>,
+  Sep_claimsHatter: InContextSdkMethod<Subscription['Sep_claimsHatter'], SubscriptionSep_claimsHatterArgs, MeshContext>,
   /** null **/
-  Pol_claimsHatters: InContextSdkMethod<Subscription['Pol_claimsHatters'], SubscriptionPol_claimsHattersArgs, MeshContext>,
+  Sep_claimsHatters: InContextSdkMethod<Subscription['Sep_claimsHatters'], SubscriptionSep_claimsHattersArgs, MeshContext>,
   /** null **/
-  Pol_hatsEvent: InContextSdkMethod<Subscription['Pol_hatsEvent'], SubscriptionPol_hatsEventArgs, MeshContext>,
+  Sep_hatsEvent: InContextSdkMethod<Subscription['Sep_hatsEvent'], SubscriptionSep_hatsEventArgs, MeshContext>,
   /** null **/
-  Pol_hatsEvents: InContextSdkMethod<Subscription['Pol_hatsEvents'], SubscriptionPol_hatsEventsArgs, MeshContext>,
+  Sep_hatsEvents: InContextSdkMethod<Subscription['Sep_hatsEvents'], SubscriptionSep_hatsEventsArgs, MeshContext>,
   /** Access to subgraph metadata **/
-  Pol__meta: InContextSdkMethod<Subscription['Pol__meta'], SubscriptionPol__metaArgs, MeshContext>
+  Sep__meta: InContextSdkMethod<Subscription['Sep__meta'], SubscriptionSep__metaArgs, MeshContext>
   };
 
   export type Context = {
-      ["Polygon_Main"]: { Query: QuerySdk, Mutation: MutationSdk, Subscription: SubscriptionSdk },
+      ["Sepolia_Main"]: { Query: QuerySdk, Mutation: MutationSdk, Subscription: SubscriptionSdk },
       
     };
 }

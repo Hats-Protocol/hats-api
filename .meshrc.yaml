@@ -125,6 +125,24 @@ sources:
           mode: wrap
           value: Pol_
           includeRootOperations: true
+  - name: Sepolia_Main
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-sepolia/v1.1.0
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Sep_
+          includeRootOperations: true
+  - name: Sepolia_Ancillary
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-sepolia-ancillary/v0.0.13
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Sep_
+          includeRootOperations: true
 additionalTypeDefs: |
   extend type Eth_Hat {
     detailsMetadata: String
@@ -153,6 +171,10 @@ additionalTypeDefs: |
   extend type Pol_Hat {
     detailsMetadata: String
     authorities: Pol_HatAuthority!
+  }
+  extend type Sep_Hat {
+    detailsMetadata: String
+    authorities: Sep_HatAuthority!
   }
 additionalResolvers:
   - "./src/resolvers"
