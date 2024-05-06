@@ -180,8 +180,23 @@ additionalResolvers:
   - "./src/resolvers"
 plugins:
   - responseCache:
-      # cache operations for 1 hour
-      ttl: 60 * 60 * 1000,
+      ignoredTypes:
+        - Sep_ClaimsHatter
+        - Pol_ClaimsHatter
+        - Base_ClaimsHatter
+        - Op_ClaimsHatter
+        - Eth_ClaimsHatter
+        - Arb_ClaimsHatter
+        - Gno_ClaimsHatter
+        - Celo_ClaimsHatter
+        - Sep_HatAuthority
+        - Pol_HatAuthority
+        - Base_HatAuthority
+        - Op_HatAuthority
+        - Eth_HatAuthority
+        - Arb_HatAuthority
+        - Gno_HatAuthority
+        - Celo_HatAuthority
 cache:
   redis:
     host: "{env.REDIS_HOST}"
