@@ -16,6 +16,11 @@ creates a virtual field on the entity that may be queried but cannot be set manu
 """
 directive @derivedFrom(field: String!) on FIELD_DEFINITION
 
+enum Pol_Aggregation_interval {
+  hour
+  day
+}
+
 scalar Pol_BigDecimal
 
 scalar BigInt
@@ -2865,6 +2870,12 @@ type Subscription {
   Pol__meta(block: Pol_Block_height): Pol__Meta_
 }
 
+"""
+A string representation of microseconds UNIX timestamp (16 digits)
+
+"""
+scalar Timestamp
+
 type Pol_TopHatLinkRequestedEvent implements Pol_HatsEvent {
   """
   tree field is the tree that is being linked, hat field is the tree top hat
@@ -3506,6 +3517,8 @@ type Pol__Block_ {
   number: Int!
   """Integer representation of the timestamp stored in blocks for the chain"""
   timestamp: Int
+  """The hash of the parent block"""
+  parentHash: Pol_Bytes
 }
 
 """The type for the top-level _meta field"""

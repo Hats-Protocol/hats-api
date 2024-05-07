@@ -1,3 +1,5 @@
+export const HATS_ADDRESS = "0x3bc1A0Ad72417f2d411118085256fC53CBdDd137";
+
 export const HATS_ABI = [
   {
     inputs: [

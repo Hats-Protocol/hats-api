@@ -1,18 +1,15 @@
 import express from "express";
 import { createBuiltMeshHTTPHandler } from "../.mesh";
 import { cacheInvalidationService } from "./invalidation";
+import "dotenv/config";
 
-async function main() {
-  cacheInvalidationService();
+cacheInvalidationService();
 
-  const app = express();
-  const PORT = process.env.EXPRESS_PORT || 4000;
+const app = express();
+const PORT = process.env.EXPRESS_PORT || 4000;
 
-  app.use("/graphql", createBuiltMeshHTTPHandler());
+app.use("/graphql", createBuiltMeshHTTPHandler());
 
-  app.listen(PORT, () => {
-    console.log(`[server]: Server is running at http://localhost:${PORT}`);
-  });
-}
-
-main();
+app.listen(PORT, () => {
+  console.log(`[server]: Server is running at http://localhost:${PORT}`);
+});
