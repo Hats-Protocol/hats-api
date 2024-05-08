@@ -6,7 +6,7 @@ import "dotenv/config";
 cacheInvalidationService();
 
 const app = express();
-const PORT = process.env.EXPRESS_PORT || 4000;
+const PORT = process.env.PORT || 4000;
 
 app.use("/graphql", createBuiltMeshHTTPHandler());
 
