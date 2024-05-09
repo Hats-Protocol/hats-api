@@ -6,10 +6,10 @@ export class RedisCacheClient {
 
   constructor() {
     this._client = new Redis({
-      port: 14207,
-      host: "redis-14207.c322.us-east-1-2.ec2.redns.redis-cloud.com",
+      port: Number(process.env.REDIS_PORT),
+      host: process.env.REDIS_HOST,
       username: "default",
-      password: "e2WXvkiSBnKJv4GwnQNUaApeu1py7unT",
+      password: process.env.REDIS_PASSWORD,
     });
   }
 
