@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import { HATS_ABI, HATS_ADDRESS } from "./constants";
 import { RedisCacheClient } from "./redis";
+import log from "./log";
 import {
   hatIdDecimalToHex,
   hatIdToTreeId,
@@ -11,7 +12,7 @@ export async function cacheInvalidationService() {
   const cache = new RedisCacheClient();
 
   // providers
-  console.log("starting invalidation service");
+  log.info("starting invalidation service");
   const providerSepolia = new ethers.WebSocketProvider(
     process.env.SEPOLIA_SOCKET_URL as string
   );
@@ -109,8 +110,7 @@ export async function cacheInvalidationService() {
 function handleEvent(cache: RedisCacheClient, event: any) {
   const eventName: string = event.fragment.name;
   const eventArgs: unknown[] = event.args;
-  console.log("event name: ", eventName);
-  console.log("event args:", eventArgs);
+  log.info(`processing event ${eventName} with arguments ${eventArgs}`);
 
   if (
     eventName === "HatDetailsChanged" ||

@@ -1,4 +1,5 @@
 import { Redis } from "ioredis";
+import log from "./log";
 
 export class RedisCacheClient {
   private readonly _client: Redis;
@@ -28,9 +29,6 @@ export class RedisCacheClient {
         this._client.del(...keysToDelete);
       }
     });
-    stream.on("end", () => {
-      console.log(`Deleted all keys of mapping entities for ID ${entryId} `);
-    });
   }
 
   invalidateEntity(entityName: string, entityId: string) {
@@ -42,15 +40,12 @@ export class RedisCacheClient {
       for (let i = 0; i < resultKeys.length; i++) {
         const hash = (resultKeys[i] as string).substring(matchParam.length - 1);
 
-        console.log(`deleting response-cache:${hash}`);
         this._client.del(`response-cache:${hash}`);
         this.deleteMappingEntities(hash);
       }
     });
     stream.on("end", () => {
-      console.log(
-        `Deleted all keys of entity ${entityName} with ID ${entityId}`
-      );
+      log.info(`Invalidated entity ${entityName} with ID ${entityId}`);
     });
   }
 }
