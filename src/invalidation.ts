@@ -1,7 +1,22 @@
-import { ethers } from "ethers";
-import { HATS_ABI, HATS_ADDRESS } from "./constants";
+import {
+  mainnet,
+  polygon,
+  optimism,
+  arbitrum,
+  celo,
+  sepolia,
+  base,
+  gnosis,
+} from "viem/chains";
+import { createPublicClient, webSocket, parseEventLogs } from "viem";
+import {
+  HATS_ABI,
+  HATS_ADDRESS,
+  CLAIMS_HATTER_EVENTS,
+  HATS_EVENTS,
+} from "./constants";
 import { RedisCacheClient } from "./redis";
-import log from "./log";
+import expressLog from "./log";
 import {
   hatIdDecimalToHex,
   hatIdToTreeId,
@@ -11,145 +26,695 @@ import {
 export async function cacheInvalidationService() {
   const cache = new RedisCacheClient();
 
-  // providers
-  log.info("starting invalidation service");
-  const providerSepolia = new ethers.WebSocketProvider(
-    process.env.SEPOLIA_SOCKET_URL as string
-  );
-  const providerEthereum = new ethers.WebSocketProvider(
-    process.env.ETHEREUM_SOCKET_URL as string
-  );
-  const providerOptimism = new ethers.WebSocketProvider(
-    process.env.OPTIMISM_SOCKET_URL as string
-  );
-  const providerArbitrum = new ethers.WebSocketProvider(
-    process.env.ARBITRUM_SOCKET_URL as string
-  );
-  const providerBase = new ethers.WebSocketProvider(
-    process.env.BASE_SOCKET_URL as string
-  );
-  const providerPolygon = new ethers.WebSocketProvider(
-    process.env.POLYGON_SOCKET_URL as string
-  );
-  const providerCelo = new ethers.WebSocketProvider(
-    process.env.CELO_SOCKET_URL as string
-  );
-  const providerGnosis = new ethers.WebSocketProvider(
-    process.env.GNOSIS_SOCKET_URL as string
-  );
+  // viem public clients
+  const publicClientEthereum = createPublicClient({
+    chain: mainnet,
+    transport: webSocket(process.env.ETHEREUM_SOCKET_URL),
+  });
+  const publicClientOptimism = createPublicClient({
+    chain: optimism,
+    transport: webSocket(process.env.OPTIMISM_SOCKET_URL),
+  });
+  const publicClientArbitrum = createPublicClient({
+    chain: arbitrum,
+    transport: webSocket(process.env.ARBITRUM_SOCKET_URL),
+  });
+  const publicClientGnosis = createPublicClient({
+    chain: gnosis,
+    transport: webSocket(process.env.GNOSIS_SOCKET_URL),
+  });
+  const publicClientBase = createPublicClient({
+    chain: base,
+    transport: webSocket(process.env.BASE_SOCKET_URL),
+  });
+  const publicClientCelo = createPublicClient({
+    chain: celo,
+    transport: webSocket(process.env.CELO_SOCKET_URL),
+  });
+  const publicClientSepolia = createPublicClient({
+    chain: sepolia,
+    transport: webSocket(process.env.SEPOLIA_SOCKET_URL),
+  });
+  const publicClientPolygon = createPublicClient({
+    chain: polygon,
+    transport: webSocket(process.env.POLYGON_SOCKET_URL),
+  });
 
-  // contracts
-  const hatsContractSepolia = new ethers.Contract(
-    HATS_ADDRESS,
-    JSON.stringify(HATS_ABI),
-    providerSepolia
-  );
-  const hatsContractEthereum = new ethers.Contract(
-    HATS_ADDRESS,
-    JSON.stringify(HATS_ABI),
-    providerEthereum
-  );
-  const hatsContractOptimism = new ethers.Contract(
-    HATS_ADDRESS,
-    JSON.stringify(HATS_ABI),
-    providerOptimism
-  );
-  const hatsContractArbitrum = new ethers.Contract(
-    HATS_ADDRESS,
-    JSON.stringify(HATS_ABI),
-    providerArbitrum
-  );
-  const hatsContractBase = new ethers.Contract(
-    HATS_ADDRESS,
-    JSON.stringify(HATS_ABI),
-    providerBase
-  );
-  const hatsContractPolygon = new ethers.Contract(
-    HATS_ADDRESS,
-    JSON.stringify(HATS_ABI),
-    providerPolygon
-  );
-  const hatsContractCelo = new ethers.Contract(
-    HATS_ADDRESS,
-    JSON.stringify(HATS_ABI),
-    providerCelo
-  );
-  const hatsContractGnosis = new ethers.Contract(
-    HATS_ADDRESS,
-    JSON.stringify(HATS_ABI),
-    providerGnosis
-  );
+  // watch Calims Hatters events
+  publicClientEthereum.watchEvent({
+    events: CLAIMS_HATTER_EVENTS,
+    onLogs: (logs) =>
+      handleClaimsHatterEvents(
+        cache,
+        logs.map((log) => log.address)
+      ),
+  });
+  publicClientSepolia.watchEvent({
+    events: CLAIMS_HATTER_EVENTS,
+    onLogs: (logs) =>
+      handleClaimsHatterEvents(
+        cache,
+        logs.map((log) => log.address)
+      ),
+  });
+  publicClientOptimism.watchEvent({
+    events: CLAIMS_HATTER_EVENTS,
+    onLogs: (logs) =>
+      handleClaimsHatterEvents(
+        cache,
+        logs.map((log) => log.address)
+      ),
+  });
+  publicClientArbitrum.watchEvent({
+    events: CLAIMS_HATTER_EVENTS,
+    onLogs: (logs) =>
+      handleClaimsHatterEvents(
+        cache,
+        logs.map((log) => log.address)
+      ),
+  });
+  publicClientCelo.watchEvent({
+    events: CLAIMS_HATTER_EVENTS,
+    onLogs: (logs) =>
+      handleClaimsHatterEvents(
+        cache,
+        logs.map((log) => log.address)
+      ),
+  });
+  publicClientBase.watchEvent({
+    events: CLAIMS_HATTER_EVENTS,
+    onLogs: (logs) =>
+      handleClaimsHatterEvents(
+        cache,
+        logs.map((log) => log.address)
+      ),
+  });
+  publicClientGnosis.watchEvent({
+    events: CLAIMS_HATTER_EVENTS,
+    onLogs: (logs) =>
+      handleClaimsHatterEvents(
+        cache,
+        logs.map((log) => log.address)
+      ),
+  });
+  publicClientPolygon.watchEvent({
+    events: CLAIMS_HATTER_EVENTS,
+    onLogs: (logs) =>
+      handleClaimsHatterEvents(
+        cache,
+        logs.map((log) => log.address)
+      ),
+  });
 
-  // event listeners
-  hatsContractSepolia.on("*", (event) => {
-    handleEvent(cache, event);
+  // watch Hats events
+  publicClientEthereum.watchEvent({
+    address: HATS_ADDRESS,
+    events: HATS_EVENTS,
+    onLogs: (logs) => {
+      const parsedLogs = parseEventLogs({
+        abi: HATS_ABI,
+        logs,
+      });
+
+      parsedLogs.forEach((log) => {
+        expressLog.info(
+          `processing event ${log.eventName} on tx hash ${log.transactionHash} on Ethereum`
+        );
+        if (
+          log.eventName === "HatDetailsChanged" ||
+          log.eventName === "HatStatusChanged" ||
+          log.eventName === "HatEligibilityChanged" ||
+          log.eventName === "HatToggleChanged" ||
+          log.eventName === "HatMutabilityChanged" ||
+          log.eventName === "HatMaxSupplyChanged" ||
+          log.eventName === "HatImageURIChanged"
+        ) {
+          const hatId = log.args.hatId;
+          if (hatId !== undefined) {
+            cache.invalidateEntity("Eth_Hat", hatIdDecimalToHex(hatId));
+          }
+        } else if (log.eventName === "HatCreated") {
+          const hatId = log.args.id;
+          if (hatId !== undefined) {
+            cache.invalidateEntity(
+              "Eth_Tree",
+              treeIdDecimalToHex(hatIdToTreeId(hatId))
+            );
+          }
+        } else if (log.eventName === "WearerStandingChanged") {
+          const wearerAddress = log.args.wearer;
+          if (wearerAddress !== undefined) {
+            cache.invalidateEntity("Eth_Wearer", wearerAddress.toLowerCase());
+          }
+        } else if (
+          log.eventName === "TopHatLinkRequested" ||
+          log.eventName === "TopHatLinked"
+        ) {
+          const treeId = log.args.domain;
+          const adminHatId = log.args.newAdmin;
+          if (treeId !== undefined && adminHatId !== undefined) {
+            cache.invalidateEntity("Eth_Tree", treeIdDecimalToHex(treeId));
+            cache.invalidateEntity("Eth_Hat", hatIdDecimalToHex(adminHatId));
+          }
+        } else if (log.eventName === "TransferSingle") {
+          const from = log.args.from;
+          const to = log.args.to;
+          const hatId = log.args.id;
+          if (from !== undefined && to !== undefined && hatId !== undefined) {
+            cache.invalidateEntity("Eth_Hat", hatIdDecimalToHex(hatId));
+            if (to !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Eth_Wearer",
+                (to as string).toLowerCase()
+              );
+            }
+            if (from !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Eth_Wearer",
+                (from as string).toLowerCase()
+              );
+            }
+          }
+        }
+      });
+    },
   });
-  hatsContractEthereum.on("*", (event) => {
-    handleEvent(cache, event);
+
+  publicClientSepolia.watchEvent({
+    address: HATS_ADDRESS,
+    events: HATS_EVENTS,
+    onLogs: (logs) => {
+      const parsedLogs = parseEventLogs({
+        abi: HATS_ABI,
+        logs,
+      });
+
+      parsedLogs.forEach((log) => {
+        expressLog.info(
+          `processing event ${log.eventName} on tx hash ${log.transactionHash} on Sepolia`
+        );
+        if (
+          log.eventName === "HatDetailsChanged" ||
+          log.eventName === "HatStatusChanged" ||
+          log.eventName === "HatEligibilityChanged" ||
+          log.eventName === "HatToggleChanged" ||
+          log.eventName === "HatMutabilityChanged" ||
+          log.eventName === "HatMaxSupplyChanged" ||
+          log.eventName === "HatImageURIChanged"
+        ) {
+          const hatId = log.args.hatId;
+          if (hatId !== undefined) {
+            cache.invalidateEntity("Sep_Hat", hatIdDecimalToHex(hatId));
+          }
+        } else if (log.eventName === "HatCreated") {
+          const hatId = log.args.id;
+          if (hatId !== undefined) {
+            cache.invalidateEntity(
+              "Sep_Tree",
+              treeIdDecimalToHex(hatIdToTreeId(hatId))
+            );
+          }
+        } else if (log.eventName === "WearerStandingChanged") {
+          const wearerAddress = log.args.wearer;
+          if (wearerAddress !== undefined) {
+            cache.invalidateEntity("Sep_Wearer", wearerAddress.toLowerCase());
+          }
+        } else if (
+          log.eventName === "TopHatLinkRequested" ||
+          log.eventName === "TopHatLinked"
+        ) {
+          const treeId = log.args.domain;
+          const adminHatId = log.args.newAdmin;
+          if (treeId !== undefined && adminHatId !== undefined) {
+            cache.invalidateEntity("Sep_Tree", treeIdDecimalToHex(treeId));
+            cache.invalidateEntity("Sep_Hat", hatIdDecimalToHex(adminHatId));
+          }
+        } else if (log.eventName === "TransferSingle") {
+          const from = log.args.from;
+          const to = log.args.to;
+          const hatId = log.args.id;
+          if (from !== undefined && to !== undefined && hatId !== undefined) {
+            cache.invalidateEntity("Sep_Hat", hatIdDecimalToHex(hatId));
+            if (to !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Sep_Wearer",
+                (to as string).toLowerCase()
+              );
+            }
+            if (from !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Sep_Wearer",
+                (from as string).toLowerCase()
+              );
+            }
+          }
+        }
+      });
+    },
   });
-  hatsContractOptimism.on("*", (event) => {
-    handleEvent(cache, event);
+
+  publicClientOptimism.watchEvent({
+    address: HATS_ADDRESS,
+    events: HATS_EVENTS,
+    onLogs: (logs) => {
+      const parsedLogs = parseEventLogs({
+        abi: HATS_ABI,
+        logs,
+      });
+
+      parsedLogs.forEach((log) => {
+        expressLog.info(
+          `processing event ${log.eventName} on tx hash ${log.transactionHash} on Optimism`
+        );
+        if (
+          log.eventName === "HatDetailsChanged" ||
+          log.eventName === "HatStatusChanged" ||
+          log.eventName === "HatEligibilityChanged" ||
+          log.eventName === "HatToggleChanged" ||
+          log.eventName === "HatMutabilityChanged" ||
+          log.eventName === "HatMaxSupplyChanged" ||
+          log.eventName === "HatImageURIChanged"
+        ) {
+          const hatId = log.args.hatId;
+          if (hatId !== undefined) {
+            cache.invalidateEntity("Op_Hat", hatIdDecimalToHex(hatId));
+          }
+        } else if (log.eventName === "HatCreated") {
+          const hatId = log.args.id;
+          if (hatId !== undefined) {
+            cache.invalidateEntity(
+              "Op_Tree",
+              treeIdDecimalToHex(hatIdToTreeId(hatId))
+            );
+          }
+        } else if (log.eventName === "WearerStandingChanged") {
+          const wearerAddress = log.args.wearer;
+          if (wearerAddress !== undefined) {
+            cache.invalidateEntity("Op_Wearer", wearerAddress.toLowerCase());
+          }
+        } else if (
+          log.eventName === "TopHatLinkRequested" ||
+          log.eventName === "TopHatLinked"
+        ) {
+          const treeId = log.args.domain;
+          const adminHatId = log.args.newAdmin;
+          if (treeId !== undefined && adminHatId !== undefined) {
+            cache.invalidateEntity("Op_Tree", treeIdDecimalToHex(treeId));
+            cache.invalidateEntity("Op_Hat", hatIdDecimalToHex(adminHatId));
+          }
+        } else if (log.eventName === "TransferSingle") {
+          const from = log.args.from;
+          const to = log.args.to;
+          const hatId = log.args.id;
+          if (from !== undefined && to !== undefined && hatId !== undefined) {
+            cache.invalidateEntity("Op_Hat", hatIdDecimalToHex(hatId));
+            if (to !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity("Op_Wearer", (to as string).toLowerCase());
+            }
+            if (from !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Op_Wearer",
+                (from as string).toLowerCase()
+              );
+            }
+          }
+        }
+      });
+    },
   });
-  hatsContractArbitrum.on("*", (event) => {
-    handleEvent(cache, event);
+
+  publicClientArbitrum.watchEvent({
+    address: HATS_ADDRESS,
+    events: HATS_EVENTS,
+    onLogs: (logs) => {
+      const parsedLogs = parseEventLogs({
+        abi: HATS_ABI,
+        logs,
+      });
+
+      parsedLogs.forEach((log) => {
+        expressLog.info(
+          `processing event ${log.eventName} on tx hash ${log.transactionHash} on Arbitrum`
+        );
+        if (
+          log.eventName === "HatDetailsChanged" ||
+          log.eventName === "HatStatusChanged" ||
+          log.eventName === "HatEligibilityChanged" ||
+          log.eventName === "HatToggleChanged" ||
+          log.eventName === "HatMutabilityChanged" ||
+          log.eventName === "HatMaxSupplyChanged" ||
+          log.eventName === "HatImageURIChanged"
+        ) {
+          const hatId = log.args.hatId;
+          if (hatId !== undefined) {
+            cache.invalidateEntity("Arb_Hat", hatIdDecimalToHex(hatId));
+          }
+        } else if (log.eventName === "HatCreated") {
+          const hatId = log.args.id;
+          if (hatId !== undefined) {
+            cache.invalidateEntity(
+              "Arb_Tree",
+              treeIdDecimalToHex(hatIdToTreeId(hatId))
+            );
+          }
+        } else if (log.eventName === "WearerStandingChanged") {
+          const wearerAddress = log.args.wearer;
+          if (wearerAddress !== undefined) {
+            cache.invalidateEntity("Arb_Wearer", wearerAddress.toLowerCase());
+          }
+        } else if (
+          log.eventName === "TopHatLinkRequested" ||
+          log.eventName === "TopHatLinked"
+        ) {
+          const treeId = log.args.domain;
+          const adminHatId = log.args.newAdmin;
+          if (treeId !== undefined && adminHatId !== undefined) {
+            cache.invalidateEntity("Arb_Tree", treeIdDecimalToHex(treeId));
+            cache.invalidateEntity("Arb_Hat", hatIdDecimalToHex(adminHatId));
+          }
+        } else if (log.eventName === "TransferSingle") {
+          const from = log.args.from;
+          const to = log.args.to;
+          const hatId = log.args.id;
+          if (from !== undefined && to !== undefined && hatId !== undefined) {
+            cache.invalidateEntity("Arb_Hat", hatIdDecimalToHex(hatId));
+            if (to !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Arb_Wearer",
+                (to as string).toLowerCase()
+              );
+            }
+            if (from !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Arb_Wearer",
+                (from as string).toLowerCase()
+              );
+            }
+          }
+        }
+      });
+    },
   });
-  hatsContractBase.on("*", (event) => {
-    handleEvent(cache, event);
+
+  publicClientPolygon.watchEvent({
+    address: HATS_ADDRESS,
+    events: HATS_EVENTS,
+    onLogs: (logs) => {
+      const parsedLogs = parseEventLogs({
+        abi: HATS_ABI,
+        logs,
+      });
+
+      parsedLogs.forEach((log) => {
+        expressLog.info(
+          `processing event ${log.eventName} on tx hash ${log.transactionHash} on Polygon`
+        );
+        if (
+          log.eventName === "HatDetailsChanged" ||
+          log.eventName === "HatStatusChanged" ||
+          log.eventName === "HatEligibilityChanged" ||
+          log.eventName === "HatToggleChanged" ||
+          log.eventName === "HatMutabilityChanged" ||
+          log.eventName === "HatMaxSupplyChanged" ||
+          log.eventName === "HatImageURIChanged"
+        ) {
+          const hatId = log.args.hatId;
+          if (hatId !== undefined) {
+            cache.invalidateEntity("Pol_Hat", hatIdDecimalToHex(hatId));
+          }
+        } else if (log.eventName === "HatCreated") {
+          const hatId = log.args.id;
+          if (hatId !== undefined) {
+            cache.invalidateEntity(
+              "Pol_Tree",
+              treeIdDecimalToHex(hatIdToTreeId(hatId))
+            );
+          }
+        } else if (log.eventName === "WearerStandingChanged") {
+          const wearerAddress = log.args.wearer;
+          if (wearerAddress !== undefined) {
+            cache.invalidateEntity("Pol_Wearer", wearerAddress.toLowerCase());
+          }
+        } else if (
+          log.eventName === "TopHatLinkRequested" ||
+          log.eventName === "TopHatLinked"
+        ) {
+          const treeId = log.args.domain;
+          const adminHatId = log.args.newAdmin;
+          if (treeId !== undefined && adminHatId !== undefined) {
+            cache.invalidateEntity("Pol_Tree", treeIdDecimalToHex(treeId));
+            cache.invalidateEntity("Pol_Hat", hatIdDecimalToHex(adminHatId));
+          }
+        } else if (log.eventName === "TransferSingle") {
+          const from = log.args.from;
+          const to = log.args.to;
+          const hatId = log.args.id;
+          if (from !== undefined && to !== undefined && hatId !== undefined) {
+            cache.invalidateEntity("Pol_Hat", hatIdDecimalToHex(hatId));
+            if (to !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Pol_Wearer",
+                (to as string).toLowerCase()
+              );
+            }
+            if (from !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Pol_Wearer",
+                (from as string).toLowerCase()
+              );
+            }
+          }
+        }
+      });
+    },
   });
-  hatsContractPolygon.on("*", (event) => {
-    handleEvent(cache, event);
+
+  publicClientBase.watchEvent({
+    address: HATS_ADDRESS,
+    events: HATS_EVENTS,
+    onLogs: (logs) => {
+      const parsedLogs = parseEventLogs({
+        abi: HATS_ABI,
+        logs,
+      });
+
+      parsedLogs.forEach((log) => {
+        expressLog.info(
+          `processing event ${log.eventName} on tx hash ${log.transactionHash} on Base`
+        );
+        if (
+          log.eventName === "HatDetailsChanged" ||
+          log.eventName === "HatStatusChanged" ||
+          log.eventName === "HatEligibilityChanged" ||
+          log.eventName === "HatToggleChanged" ||
+          log.eventName === "HatMutabilityChanged" ||
+          log.eventName === "HatMaxSupplyChanged" ||
+          log.eventName === "HatImageURIChanged"
+        ) {
+          const hatId = log.args.hatId;
+          if (hatId !== undefined) {
+            cache.invalidateEntity("Base_Hat", hatIdDecimalToHex(hatId));
+          }
+        } else if (log.eventName === "HatCreated") {
+          const hatId = log.args.id;
+          if (hatId !== undefined) {
+            cache.invalidateEntity(
+              "Base_Tree",
+              treeIdDecimalToHex(hatIdToTreeId(hatId))
+            );
+          }
+        } else if (log.eventName === "WearerStandingChanged") {
+          const wearerAddress = log.args.wearer;
+          if (wearerAddress !== undefined) {
+            cache.invalidateEntity("Base_Wearer", wearerAddress.toLowerCase());
+          }
+        } else if (
+          log.eventName === "TopHatLinkRequested" ||
+          log.eventName === "TopHatLinked"
+        ) {
+          const treeId = log.args.domain;
+          const adminHatId = log.args.newAdmin;
+          if (treeId !== undefined && adminHatId !== undefined) {
+            cache.invalidateEntity("Base_Tree", treeIdDecimalToHex(treeId));
+            cache.invalidateEntity("Base_Hat", hatIdDecimalToHex(adminHatId));
+          }
+        } else if (log.eventName === "TransferSingle") {
+          const from = log.args.from;
+          const to = log.args.to;
+          const hatId = log.args.id;
+          if (from !== undefined && to !== undefined && hatId !== undefined) {
+            cache.invalidateEntity("Base_Hat", hatIdDecimalToHex(hatId));
+            if (to !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Base_Wearer",
+                (to as string).toLowerCase()
+              );
+            }
+            if (from !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Base_Wearer",
+                (from as string).toLowerCase()
+              );
+            }
+          }
+        }
+      });
+    },
   });
-  hatsContractCelo.on("*", (event) => {
-    handleEvent(cache, event);
+
+  publicClientCelo.watchEvent({
+    address: HATS_ADDRESS,
+    events: HATS_EVENTS,
+    onLogs: (logs) => {
+      const parsedLogs = parseEventLogs({
+        abi: HATS_ABI,
+        logs,
+      });
+
+      parsedLogs.forEach((log) => {
+        expressLog.info(
+          `processing event ${log.eventName} on tx hash ${log.transactionHash} on Celo`
+        );
+        if (
+          log.eventName === "HatDetailsChanged" ||
+          log.eventName === "HatStatusChanged" ||
+          log.eventName === "HatEligibilityChanged" ||
+          log.eventName === "HatToggleChanged" ||
+          log.eventName === "HatMutabilityChanged" ||
+          log.eventName === "HatMaxSupplyChanged" ||
+          log.eventName === "HatImageURIChanged"
+        ) {
+          const hatId = log.args.hatId;
+          if (hatId !== undefined) {
+            cache.invalidateEntity("Celo_Hat", hatIdDecimalToHex(hatId));
+          }
+        } else if (log.eventName === "HatCreated") {
+          const hatId = log.args.id;
+          if (hatId !== undefined) {
+            cache.invalidateEntity(
+              "Celo_Tree",
+              treeIdDecimalToHex(hatIdToTreeId(hatId))
+            );
+          }
+        } else if (log.eventName === "WearerStandingChanged") {
+          const wearerAddress = log.args.wearer;
+          if (wearerAddress !== undefined) {
+            cache.invalidateEntity("Celo_Wearer", wearerAddress.toLowerCase());
+          }
+        } else if (
+          log.eventName === "TopHatLinkRequested" ||
+          log.eventName === "TopHatLinked"
+        ) {
+          const treeId = log.args.domain;
+          const adminHatId = log.args.newAdmin;
+          if (treeId !== undefined && adminHatId !== undefined) {
+            cache.invalidateEntity("Celo_Tree", treeIdDecimalToHex(treeId));
+            cache.invalidateEntity("Celo_Hat", hatIdDecimalToHex(adminHatId));
+          }
+        } else if (log.eventName === "TransferSingle") {
+          const from = log.args.from;
+          const to = log.args.to;
+          const hatId = log.args.id;
+          if (from !== undefined && to !== undefined && hatId !== undefined) {
+            cache.invalidateEntity("Celo_Hat", hatIdDecimalToHex(hatId));
+            if (to !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Celo_Wearer",
+                (to as string).toLowerCase()
+              );
+            }
+            if (from !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Celo_Wearer",
+                (from as string).toLowerCase()
+              );
+            }
+          }
+        }
+      });
+    },
   });
-  hatsContractGnosis.on("*", (event) => {
-    handleEvent(cache, event);
+
+  publicClientGnosis.watchEvent({
+    address: HATS_ADDRESS,
+    events: HATS_EVENTS,
+    onLogs: (logs) => {
+      const parsedLogs = parseEventLogs({
+        abi: HATS_ABI,
+        logs,
+      });
+
+      parsedLogs.forEach((log) => {
+        expressLog.info(
+          `processing event ${log.eventName} on tx hash ${log.transactionHash} on Gnosis`
+        );
+        if (
+          log.eventName === "HatDetailsChanged" ||
+          log.eventName === "HatStatusChanged" ||
+          log.eventName === "HatEligibilityChanged" ||
+          log.eventName === "HatToggleChanged" ||
+          log.eventName === "HatMutabilityChanged" ||
+          log.eventName === "HatMaxSupplyChanged" ||
+          log.eventName === "HatImageURIChanged"
+        ) {
+          const hatId = log.args.hatId;
+          if (hatId !== undefined) {
+            cache.invalidateEntity("Gno_Hat", hatIdDecimalToHex(hatId));
+          }
+        } else if (log.eventName === "HatCreated") {
+          const hatId = log.args.id;
+          if (hatId !== undefined) {
+            cache.invalidateEntity(
+              "Gno_Tree",
+              treeIdDecimalToHex(hatIdToTreeId(hatId))
+            );
+          }
+        } else if (log.eventName === "WearerStandingChanged") {
+          const wearerAddress = log.args.wearer;
+          if (wearerAddress !== undefined) {
+            cache.invalidateEntity("Gno_Wearer", wearerAddress.toLowerCase());
+          }
+        } else if (
+          log.eventName === "TopHatLinkRequested" ||
+          log.eventName === "TopHatLinked"
+        ) {
+          const treeId = log.args.domain;
+          const adminHatId = log.args.newAdmin;
+          if (treeId !== undefined && adminHatId !== undefined) {
+            cache.invalidateEntity("Gno_Tree", treeIdDecimalToHex(treeId));
+            cache.invalidateEntity("Gno_Hat", hatIdDecimalToHex(adminHatId));
+          }
+        } else if (log.eventName === "TransferSingle") {
+          const from = log.args.from;
+          const to = log.args.to;
+          const hatId = log.args.id;
+          if (from !== undefined && to !== undefined && hatId !== undefined) {
+            cache.invalidateEntity("Gno_Hat", hatIdDecimalToHex(hatId));
+            if (to !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Gno_Wearer",
+                (to as string).toLowerCase()
+              );
+            }
+            if (from !== "0x0000000000000000000000000000000000000000") {
+              cache.invalidateEntity(
+                "Gno_Wearer",
+                (from as string).toLowerCase()
+              );
+            }
+          }
+        }
+      });
+    },
   });
 }
 
-function handleEvent(cache: RedisCacheClient, event: any) {
-  const eventName: string = event.fragment.name;
-  const eventArgs: unknown[] = event.args;
-  log.info(`processing event ${eventName} with arguments ${eventArgs}`);
-
-  if (
-    eventName === "HatDetailsChanged" ||
-    eventName === "HatStatusChanged" ||
-    eventName === "HatEligibilityChanged" ||
-    eventName === "HatToggleChanged" ||
-    eventName === "HatMutabilityChanged" ||
-    eventName === "HatMaxSupplyChanged" ||
-    eventName === "HatImageURIChanged"
-  ) {
-    const hatId = eventArgs[0] as bigint;
-    cache.invalidateEntity("Sep_Hat", hatIdDecimalToHex(hatId));
-  } else if (eventName === "HatCreated") {
-    const hatId = eventArgs[0] as bigint;
-    cache.invalidateEntity(
-      "Sep_Tree",
-      treeIdDecimalToHex(hatIdToTreeId(hatId))
-    );
-  } else if (eventName === "WearerStandingChanged") {
-    const wearerAddress = eventArgs[1] as `0x${string}`;
-    cache.invalidateEntity("Sep_Wearer", wearerAddress.toLowerCase());
-  } else if (
-    eventName === "TopHatLinkRequested" ||
-    eventName === "TopHatLinked"
-  ) {
-    const treeId = eventArgs[0] as number;
-    const adminHatId = eventArgs[1] as bigint;
-    cache.invalidateEntity("Sep_Tree", treeIdDecimalToHex(treeId));
-    cache.invalidateEntity("Sep_Hat", hatIdDecimalToHex(adminHatId));
-  } else if (eventName === "TransferSingle") {
-    const from = eventArgs[1] as `0x${string}`;
-    const to = eventArgs[2] as `0x${string}`;
-    const hatId = eventArgs[3] as bigint;
-    cache.invalidateEntity("Sep_Hat", hatIdDecimalToHex(hatId));
-    if (to !== "0x0000000000000000000000000000000000000000") {
-      cache.invalidateEntity("Sep_Wearer", (to as string).toLowerCase());
-    }
-    if (from !== "0x0000000000000000000000000000000000000000") {
-      cache.invalidateEntity("Sep_Wearer", (from as string).toLowerCase());
-    }
-  }
+function handleClaimsHatterEvents(
+  cache: RedisCacheClient,
+  claimsHatters: `0x${string}`[]
+) {
+  claimsHatters.forEach((hatter) => {
+    expressLog.info(`processing claims hatter event of address ${hatter}`);
+    cache.invalidateEntity("Sep_ClaimsHatter", hatter.toLowerCase());
+  });
 }

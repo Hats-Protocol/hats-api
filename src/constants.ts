@@ -1,4 +1,309 @@
+import { parseAbi } from "viem";
+
 export const HATS_ADDRESS = "0x3bc1A0Ad72417f2d411118085256fC53CBdDd137";
+
+export const CLAIMS_HATTER_EVENTS = parseAbi([
+  "event HatsClaimabilitySet(uint256[] hatIds, uint8[] claimTypes)",
+  "event HatClaimabilitySet(uint256 hatId, uint8 claimType)",
+]);
+
+export const HATS_EVENTS = [
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "hatId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "newDetails",
+        type: "string",
+      },
+    ],
+    name: "HatDetailsChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "details",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "uint32",
+        name: "maxSupply",
+        type: "uint32",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "eligibility",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "toggle",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "mutable_",
+        type: "bool",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "imageURI",
+        type: "string",
+      },
+    ],
+    name: "HatCreated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "hatId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "newDetails",
+        type: "string",
+      },
+    ],
+    name: "HatDetailsChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "hatId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "newEligibility",
+        type: "address",
+      },
+    ],
+    name: "HatEligibilityChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "hatId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "newImageURI",
+        type: "string",
+      },
+    ],
+    name: "HatImageURIChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "hatId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint32",
+        name: "newMaxSupply",
+        type: "uint32",
+      },
+    ],
+    name: "HatMaxSupplyChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "hatId",
+        type: "uint256",
+      },
+    ],
+    name: "HatMutabilityChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "hatId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "newStatus",
+        type: "bool",
+      },
+    ],
+    name: "HatStatusChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "hatId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "newToggle",
+        type: "address",
+      },
+    ],
+    name: "HatToggleChanged",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint32",
+        name: "domain",
+        type: "uint32",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newAdmin",
+        type: "uint256",
+      },
+    ],
+    name: "TopHatLinkRequested",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint32",
+        name: "domain",
+        type: "uint32",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "newAdmin",
+        type: "uint256",
+      },
+    ],
+    name: "TopHatLinked",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "operator",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "to",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "id",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+    ],
+    name: "TransferSingle",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "hatId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "wearer",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "wearerStanding",
+        type: "bool",
+      },
+    ],
+    name: "WearerStandingChanged",
+    type: "event",
+  },
+] as const;
 
 export const HATS_ABI = [
   {

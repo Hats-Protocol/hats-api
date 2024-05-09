@@ -181,14 +181,6 @@ additionalResolvers:
 plugins:
   - responseCache:
       ignoredTypes:
-        - Sep_ClaimsHatter
-        - Pol_ClaimsHatter
-        - Base_ClaimsHatter
-        - Op_ClaimsHatter
-        - Eth_ClaimsHatter
-        - Arb_ClaimsHatter
-        - Gno_ClaimsHatter
-        - Celo_ClaimsHatter
         - Sep_HatAuthority
         - Pol_HatAuthority
         - Base_HatAuthority
