@@ -9,7 +9,8 @@ const resolvers: Resolvers = {
           const cid = root.details.slice(7);
           try {
             const res = await axios.get(
-              `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`
+              `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
+              { timeout: 7000 }
             );
             if (res.status === 200) {
               return JSON.stringify(res.data);
