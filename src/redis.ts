@@ -32,16 +32,27 @@ export class RedisCacheClient {
   }
 
   invalidateEntity(entityName: string, entityId: string) {
-    const matchParam = `response-cache:${entityName}.${entityId}:*`;
+    const entity = `${entityName}.${entityId}`;
+    const matchParam = `*${entity}*`;
     const stream = this._client.scanStream({
       match: matchParam,
     });
-    stream.on("data", (resultKeys) => {
+    stream.on("data", (resultKeys: string[]) => {
+      const deleted: string[] = [];
       for (let i = 0; i < resultKeys.length; i++) {
-        const hash = (resultKeys[i] as string).substring(matchParam.length - 1);
+        const key = resultKeys[i].slice(15);
+        let hash: string | undefined = undefined;
+        if (key.startsWith(entity)) {
+          hash = key.slice(entity.length + 1);
+        } else if (key.endsWith(entity)) {
+          hash = key.slice(0, key.length - entity.length - 1);
+        }
 
-        this._client.del(`response-cache:${hash}`);
-        this.deleteMappingEntities(hash);
+        if (hash !== undefined && !deleted.includes(hash)) {
+          deleted.push(hash);
+          this._client.del(`response-cache:${hash}`);
+          this.deleteMappingEntities(hash);
+        }
       }
     });
     stream.on("end", () => {
