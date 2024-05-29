@@ -22,7 +22,12 @@ export type Scalars = {
   BigInt: { input: any; output: any; }
   Eth_Bytes: { input: any; output: any; }
   Eth_Int8: { input: any; output: any; }
+  Timestamp: { input: any; output: any; }
 };
+
+export type Eth_Aggregation_interval =
+  | 'hour'
+  | 'day';
 
 export type Eth_BlockChangedFilter = {
   number_gte: Scalars['Int']['input'];
@@ -3426,6 +3431,8 @@ export type Eth__Block_ = {
   number: Scalars['Int']['output'];
   /** Integer representation of the timestamp stored in blocks for the chain */
   timestamp?: Maybe<Scalars['Int']['output']>;
+  /** The hash of the parent block */
+  parentHash?: Maybe<Scalars['Eth_Bytes']['output']>;
 };
 
 /** The type for the top-level _meta field */
