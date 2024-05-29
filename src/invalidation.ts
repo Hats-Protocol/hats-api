@@ -239,7 +239,7 @@ export class CacheInvalidationClient {
           } catch (error) {
             console.error(`Error on keep alive for Sepolia:`, error);
           }
-        }, 1 * 60 * 1000); // 2 min
+        }, 10 * 60 * 1000); // 2 min
       });
 
     this.publicClientEthereum.transport
@@ -273,7 +273,7 @@ export class CacheInvalidationClient {
           } catch (error) {
             console.error(`Error on keep alive for Ethereum:`, error);
           }
-        }, 1 * 60 * 1000); // 2 min
+        }, 10 * 60 * 1000); // 2 min
       });
 
     this.publicClientOptimism.transport
@@ -307,7 +307,7 @@ export class CacheInvalidationClient {
           } catch (error) {
             console.error(`Error on keep alive for Optimism:`, error);
           }
-        }, 1 * 60 * 1000); // 2 min
+        }, 10 * 60 * 1000); // 2 min
       });
 
     this.publicClientArbitrum.transport
@@ -341,7 +341,7 @@ export class CacheInvalidationClient {
           } catch (error) {
             console.error(`Error on keep alive for Arbitrum:`, error);
           }
-        }, 1 * 60 * 1000); // 2 min
+        }, 10 * 60 * 1000); // 2 min
       });
 
     this.publicClientGnosis.transport
@@ -375,7 +375,7 @@ export class CacheInvalidationClient {
           } catch (error) {
             console.error(`Error on keep alive for Gnosis:`, error);
           }
-        }, 1 * 60 * 1000); // 2 min
+        }, 10 * 60 * 1000); // 2 min
       });
 
     this.publicClientBase.transport
@@ -409,7 +409,7 @@ export class CacheInvalidationClient {
           } catch (error) {
             console.error(`Error on keep alive for Base:`, error);
           }
-        }, 1 * 60 * 1000); // 2 min
+        }, 10 * 60 * 1000); // 2 min
       });
 
     this.publicClientCelo.transport
@@ -443,7 +443,7 @@ export class CacheInvalidationClient {
           } catch (error) {
             console.error(`Error on keep alive for Celo:`, error);
           }
-        }, 1 * 60 * 1000); // 2 min
+        }, 10 * 60 * 1000); // 2 min
       });
 
     this.publicClientPolygon.transport
@@ -477,7 +477,7 @@ export class CacheInvalidationClient {
           } catch (error) {
             console.error(`Error on keep alive for Polygon:`, error);
           }
-        }, 1 * 60 * 1000); // 2 min
+        }, 10 * 60 * 1000); // 2 min
       });
   }
 
