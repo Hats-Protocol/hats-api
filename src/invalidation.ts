@@ -224,7 +224,9 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          logger.info(`Sepolia webSocket closed: ${JSON.stringify(event)}`);
+          logger.info(
+            `Sepolia webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
+          );
         });
       })
       .then(() => {
@@ -266,7 +268,9 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          logger.info(`Ethereum webSocket closed: ${JSON.stringify(event)}`);
+          logger.info(
+            `Ethereum webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
+          );
         });
       })
       .then(() => {
@@ -308,7 +312,9 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          logger.info(`Optimism webSocket closed: ${JSON.stringify(event)}`);
+          logger.info(
+            `Optimism webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
+          );
         });
       })
       .then(() => {
@@ -350,7 +356,9 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          logger.info(`Arbitrum webSocket closed: ${JSON.stringify(event)}`);
+          logger.info(
+            `Arbitrum webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
+          );
         });
       })
       .then(() => {
@@ -392,7 +400,9 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          logger.info(`Gnosis webSocket closed: ${JSON.stringify(event)}`);
+          logger.info(
+            `Gnosis webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
+          );
         });
       })
       .then(() => {
@@ -434,7 +444,9 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          logger.info(`Base webSocket closed: ${JSON.stringify(event)}`);
+          logger.info(
+            `Base webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
+          );
         });
       })
       .then(() => {
@@ -476,7 +488,9 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          logger.info(`Celo webSocket closed: ${JSON.stringify(event)}`);
+          logger.info(
+            `Celo webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
+          );
         });
       })
       .then(() => {
@@ -518,7 +532,9 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          logger.info(`Polygon webSocket closed: ${JSON.stringify(event)}`);
+          logger.info(
+            `Polygon webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
+          );
         });
       })
       .then(() => {
