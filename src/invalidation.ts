@@ -23,7 +23,6 @@ import {
   treeIdDecimalToHex,
 } from "@hatsprotocol/sdk-v1-core";
 import type { Log, PublicClient, RpcLog } from "viem";
-import { log } from "console";
 
 export class CacheInvalidationClient {
   private readonly cache: RedisCacheClient;
@@ -221,11 +220,11 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("error", (error: any) => {
-          console.error("Sepolia webSocket error:", error);
+          logger.info("Sepolia webSocket error:", error);
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          console.log("Sepolia webSocket closed:", event);
+          logger.info("Sepolia webSocket closed:", event);
         });
       })
       .then(() => {
@@ -245,7 +244,7 @@ export class CacheInvalidationClient {
               });
             logger.info("ping to: Sepolia");
           } catch (error) {
-            console.error(`Error on keep alive for Sepolia:`, error);
+            logger.info(`Error on keep alive for Sepolia:`, error);
           }
         }, 10 * 60 * 1000); // 2 min
       });
@@ -263,11 +262,11 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("error", (error: any) => {
-          console.error("Ethereum webSocket error:", error);
+          logger.info("Ethereum webSocket error:", error);
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          console.log("Ethereum webSocket closed:", event);
+          logger.info("Ethereum webSocket closed:", event);
         });
       })
       .then(() => {
@@ -287,7 +286,7 @@ export class CacheInvalidationClient {
               });
             logger.info("ping to: Ethereum");
           } catch (error) {
-            console.error(`Error on keep alive for Ethereum:`, error);
+            logger.info(`Error on keep alive for Ethereum:`, error);
           }
         }, 10 * 60 * 1000); // 2 min
       });
@@ -305,11 +304,11 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("error", (error: any) => {
-          console.error("Optimism webSocket error:", error);
+          logger.info("Optimism webSocket error:", error);
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          console.log("Optimism webSocket closed:", event);
+          logger.info("Optimism webSocket closed:", event);
         });
       })
       .then(() => {
@@ -329,7 +328,7 @@ export class CacheInvalidationClient {
               });
             logger.info("ping to: Optimism");
           } catch (error) {
-            console.error(`Error on keep alive for Optimism:`, error);
+            logger.info(`Error on keep alive for Optimism:`, error);
           }
         }, 10 * 60 * 1000); // 2 min
       });
@@ -347,11 +346,11 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("error", (error: any) => {
-          console.error("Arbitrum webSocket error:", error);
+          logger.info("Arbitrum webSocket error:", error);
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          console.log("Arbitrum webSocket closed:", event);
+          logger.info("Arbitrum webSocket closed:", event);
         });
       })
       .then(() => {
@@ -371,7 +370,7 @@ export class CacheInvalidationClient {
               });
             logger.info("ping to: Arbitrum");
           } catch (error) {
-            console.error(`Error on keep alive for Arbitrum:`, error);
+            logger.info(`Error on keep alive for Arbitrum:`, error);
           }
         }, 10 * 60 * 1000); // 2 min
       });
@@ -389,11 +388,11 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("error", (error: any) => {
-          console.error("Gnosis webSocket error:", error);
+          logger.info("Gnosis webSocket error:", error);
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          console.log("Gnosis webSocket closed:", event);
+          logger.info("Gnosis webSocket closed:", event);
         });
       })
       .then(() => {
@@ -413,7 +412,7 @@ export class CacheInvalidationClient {
               });
             logger.info("ping to: Gnosis");
           } catch (error) {
-            console.error(`Error on keep alive for Gnosis:`, error);
+            logger.info(`Error on keep alive for Gnosis:`, error);
           }
         }, 10 * 60 * 1000); // 2 min
       });
@@ -431,11 +430,11 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("error", (error: any) => {
-          console.error("Base webSocket error:", error);
+          logger.info("Base webSocket error:", error);
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          console.log("Base webSocket closed:", event);
+          logger.info("Base webSocket closed:", event);
         });
       })
       .then(() => {
@@ -455,7 +454,7 @@ export class CacheInvalidationClient {
               });
             logger.info("ping to: Base");
           } catch (error) {
-            console.error(`Error on keep alive for Base:`, error);
+            logger.info(`Error on keep alive for Base:`, error);
           }
         }, 10 * 60 * 1000); // 2 min
       });
@@ -473,11 +472,11 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("error", (error: any) => {
-          console.error("Celo webSocket error:", error);
+          logger.info("Celo webSocket error:", error);
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          console.log("Celo webSocket closed:", event);
+          logger.info("Celo webSocket closed:", event);
         });
       })
       .then(() => {
@@ -497,7 +496,7 @@ export class CacheInvalidationClient {
               });
             logger.info("ping to: Celo");
           } catch (error) {
-            console.error(`Error on keep alive for Celo:`, error);
+            logger.info(`Error on keep alive for Celo:`, error);
           }
         }, 10 * 60 * 1000); // 2 min
       });
@@ -515,11 +514,11 @@ export class CacheInvalidationClient {
         });
 
         client.socket.addEventListener("error", (error: any) => {
-          console.error("Polygon webSocket error:", error);
+          logger.info("Polygon webSocket error:", error);
         });
 
         client.socket.addEventListener("close", (event: any) => {
-          console.log("Polygon webSocket closed:", event);
+          logger.info("Polygon webSocket closed:", event);
         });
       })
       .then(() => {
@@ -539,7 +538,7 @@ export class CacheInvalidationClient {
               });
             logger.info("ping to: Polygon");
           } catch (error) {
-            console.error(`Error on keep alive for Polygon:`, error);
+            logger.info(`Error on keep alive for Polygon:`, error);
           }
         }, 10 * 60 * 1000); // 2 min
       });
