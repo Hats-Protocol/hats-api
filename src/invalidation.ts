@@ -219,6 +219,14 @@ export class CacheInvalidationClient {
             logger.info("pong from: Sepolia");
           }
         });
+
+        client.socket.addEventListener("error", (error: any) => {
+          console.error("Sepolia webSocket error:", error);
+        });
+
+        client.socket.addEventListener("close", (event: any) => {
+          console.log("Sepolia webSocket closed:", event);
+        });
       })
       .then(() => {
         setInterval(async () => {
@@ -252,6 +260,14 @@ export class CacheInvalidationClient {
           if (response.id === 1111) {
             logger.info("pong from: Ethereum");
           }
+        });
+
+        client.socket.addEventListener("error", (error: any) => {
+          console.error("Ethereum webSocket error:", error);
+        });
+
+        client.socket.addEventListener("close", (event: any) => {
+          console.log("Ethereum webSocket closed:", event);
         });
       })
       .then(() => {
@@ -287,6 +303,14 @@ export class CacheInvalidationClient {
             logger.info("pong from: Optimism");
           }
         });
+
+        client.socket.addEventListener("error", (error: any) => {
+          console.error("Optimism webSocket error:", error);
+        });
+
+        client.socket.addEventListener("close", (event: any) => {
+          console.log("Optimism webSocket closed:", event);
+        });
       })
       .then(() => {
         setInterval(async () => {
@@ -320,6 +344,14 @@ export class CacheInvalidationClient {
           if (response.id === 1111) {
             logger.info("pong from: Arbitrum");
           }
+        });
+
+        client.socket.addEventListener("error", (error: any) => {
+          console.error("Arbitrum webSocket error:", error);
+        });
+
+        client.socket.addEventListener("close", (event: any) => {
+          console.log("Arbitrum webSocket closed:", event);
         });
       })
       .then(() => {
@@ -355,6 +387,14 @@ export class CacheInvalidationClient {
             logger.info("pong from: Gnosis");
           }
         });
+
+        client.socket.addEventListener("error", (error: any) => {
+          console.error("Gnosis webSocket error:", error);
+        });
+
+        client.socket.addEventListener("close", (event: any) => {
+          console.log("Gnosis webSocket closed:", event);
+        });
       })
       .then(() => {
         setInterval(async () => {
@@ -388,6 +428,14 @@ export class CacheInvalidationClient {
           if (response.id === 1111) {
             logger.info("pong from: Base");
           }
+        });
+
+        client.socket.addEventListener("error", (error: any) => {
+          console.error("Base webSocket error:", error);
+        });
+
+        client.socket.addEventListener("close", (event: any) => {
+          console.log("Base webSocket closed:", event);
         });
       })
       .then(() => {
@@ -423,6 +471,14 @@ export class CacheInvalidationClient {
             logger.info("pong from: Celo");
           }
         });
+
+        client.socket.addEventListener("error", (error: any) => {
+          console.error("Celo webSocket error:", error);
+        });
+
+        client.socket.addEventListener("close", (event: any) => {
+          console.log("Celo webSocket closed:", event);
+        });
       })
       .then(() => {
         setInterval(async () => {
@@ -456,6 +512,14 @@ export class CacheInvalidationClient {
           if (response.id === 1111) {
             logger.info("pong from: Polygon");
           }
+        });
+
+        client.socket.addEventListener("error", (error: any) => {
+          console.error("Polygon webSocket error:", error);
+        });
+
+        client.socket.addEventListener("close", (event: any) => {
+          console.log("Polygon webSocket closed:", event);
         });
       })
       .then(() => {
