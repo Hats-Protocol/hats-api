@@ -1,13 +1,12 @@
 import express from "express";
 import cors from "cors";
 import { createBuiltMeshHTTPHandler } from "../.mesh";
-import { CacheInvalidationClient } from "./invalidation";
+import { CacheInvalidationManager } from "./invalidation";
 import log from "./log";
 import "dotenv/config";
 
-const cachaeInvalidationClient = new CacheInvalidationClient();
-cachaeInvalidationClient.watchEvents();
-cachaeInvalidationClient.keepAlive();
+const cachaeInvalidationManager = new CacheInvalidationManager();
+cachaeInvalidationManager.startServices();
 
 const app = express();
 const PORT = process.env.PORT || 4000;

@@ -1,19 +1,13 @@
-import {
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  celo,
-  sepolia,
-  base,
-  gnosis,
-} from "viem/chains";
 import { createPublicClient, webSocket, parseEventLogs } from "viem";
 import {
   HATS_ABI,
   HATS_ADDRESS,
   CLAIMS_HATTER_EVENTS,
   HATS_EVENTS,
+  CHAIN_ID_TO_SOCKET_URL,
+  CHAIN_ID_TO_ENTITY_PREFIX,
+  CHAIN_ID_TO_NETWORK_NAME,
+  CHAIN_ID_TO_VIEM_CHAIN,
 } from "./constants";
 import { RedisCacheClient } from "./redis";
 import logger from "./log";
@@ -24,540 +18,157 @@ import {
 } from "@hatsprotocol/sdk-v1-core";
 import type { Log, PublicClient, RpcLog } from "viem";
 
-export class CacheInvalidationClient {
-  private readonly cache: RedisCacheClient;
-  private readonly publicClientEthereum: PublicClient;
-  private readonly publicClientOptimism: PublicClient;
-  private readonly publicClientArbitrum: PublicClient;
-  private readonly publicClientGnosis: PublicClient;
-  private readonly publicClientBase: PublicClient;
-  private readonly publicClientCelo: PublicClient;
-  private readonly publicClientSepolia: PublicClient;
-  private readonly publicClientPolygon: PublicClient;
+export class CacheInvalidationManager {
+  private cache: RedisCacheClient;
+  private mainnetInvalidationClient: CacheInvalidationClient;
+  private polygonInvalidationClient: CacheInvalidationClient;
+  private gnosisInvalidationClient: CacheInvalidationClient;
+  private sepoliaInvalidationClient: CacheInvalidationClient;
+  private baseInvalidationClient: CacheInvalidationClient;
+  private celoInvalidationClient: CacheInvalidationClient;
+  private optimismInvalidationClient: CacheInvalidationClient;
+  private arbitrumInvalidationClient: CacheInvalidationClient;
 
   constructor() {
     this.cache = new RedisCacheClient();
+    this.mainnetInvalidationClient = new CacheInvalidationClient(
+      this.cache,
+      "1"
+    );
+    this.polygonInvalidationClient = new CacheInvalidationClient(
+      this.cache,
+      "137"
+    );
+    this.gnosisInvalidationClient = new CacheInvalidationClient(
+      this.cache,
+      "100"
+    );
+    this.celoInvalidationClient = new CacheInvalidationClient(
+      this.cache,
+      "42220"
+    );
+    this.baseInvalidationClient = new CacheInvalidationClient(
+      this.cache,
+      "8453"
+    );
+    this.optimismInvalidationClient = new CacheInvalidationClient(
+      this.cache,
+      "10"
+    );
+    this.arbitrumInvalidationClient = new CacheInvalidationClient(
+      this.cache,
+      "42161"
+    );
+    this.sepoliaInvalidationClient = new CacheInvalidationClient(
+      this.cache,
+      "11155111"
+    );
+  }
 
-    // viem public clients
-    this.publicClientEthereum = createPublicClient({
-      chain: mainnet,
-      transport: webSocket(process.env.ETHEREUM_SOCKET_URL),
-    });
-    this.publicClientOptimism = createPublicClient({
-      chain: optimism,
-      transport: webSocket(process.env.OPTIMISM_SOCKET_URL),
-    }) as PublicClient;
-    this.publicClientArbitrum = createPublicClient({
-      chain: arbitrum,
-      transport: webSocket(process.env.ARBITRUM_SOCKET_URL),
-    });
-    this.publicClientGnosis = createPublicClient({
-      chain: gnosis,
-      transport: webSocket(process.env.GNOSIS_SOCKET_URL),
-    });
-    this.publicClientBase = createPublicClient({
-      chain: base,
-      transport: webSocket(process.env.BASE_SOCKET_URL),
-    }) as PublicClient;
-    this.publicClientCelo = createPublicClient({
-      chain: celo,
-      transport: webSocket(process.env.CELO_SOCKET_URL),
-    }) as PublicClient;
-    this.publicClientSepolia = createPublicClient({
-      chain: sepolia,
-      transport: webSocket(process.env.SEPOLIA_SOCKET_URL),
-    });
-    this.publicClientPolygon = createPublicClient({
-      chain: polygon,
-      transport: webSocket(process.env.POLYGON_SOCKET_URL),
+  startServices() {
+    this.mainnetInvalidationClient.watchEvents();
+    this.gnosisInvalidationClient.watchEvents();
+    this.arbitrumInvalidationClient.watchEvents();
+    this.optimismInvalidationClient.watchEvents();
+    this.baseInvalidationClient.watchEvents();
+    this.celoInvalidationClient.watchEvents();
+    this.sepoliaInvalidationClient.watchEvents();
+    this.polygonInvalidationClient.watchEvents();
+    this.mainnetInvalidationClient.keepAlive();
+    this.gnosisInvalidationClient.keepAlive();
+    this.arbitrumInvalidationClient.keepAlive();
+    this.optimismInvalidationClient.keepAlive();
+    this.baseInvalidationClient.keepAlive();
+    this.celoInvalidationClient.keepAlive();
+    this.sepoliaInvalidationClient.keepAlive();
+    this.polygonInvalidationClient.keepAlive();
+  }
+}
+
+export class CacheInvalidationClient {
+  private cache: RedisCacheClient;
+  private publicClient: PublicClient;
+  private chainId: string;
+
+  constructor(cacheClient: RedisCacheClient, chainId: string) {
+    this.cache = cacheClient;
+    this.chainId = chainId;
+    this.publicClient = createPublicClient({
+      chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
+      transport: webSocket(CHAIN_ID_TO_SOCKET_URL[chainId]),
     });
   }
 
   watchEvents() {
     // watch Calims Hatters events
-    this.publicClientEthereum.watchEvent({
+    this.publicClient.watchEvent({
       events: CLAIMS_HATTER_EVENTS,
       onLogs: (logs) =>
         this.handleClaimsHatterEvents(
           logs.map((log) => log.address),
-          "Eth"
-        ),
-    });
-    this.publicClientSepolia.watchEvent({
-      events: CLAIMS_HATTER_EVENTS,
-      onLogs: (logs) =>
-        this.handleClaimsHatterEvents(
-          logs.map((log) => log.address),
-          "Sep"
-        ),
-    });
-    this.publicClientOptimism.watchEvent({
-      events: CLAIMS_HATTER_EVENTS,
-      onLogs: (logs) =>
-        this.handleClaimsHatterEvents(
-          logs.map((log) => log.address),
-          "Op"
-        ),
-    });
-    this.publicClientArbitrum.watchEvent({
-      events: CLAIMS_HATTER_EVENTS,
-      onLogs: (logs) =>
-        this.handleClaimsHatterEvents(
-          logs.map((log) => log.address),
-          "Arb"
-        ),
-    });
-    this.publicClientCelo.watchEvent({
-      events: CLAIMS_HATTER_EVENTS,
-      onLogs: (logs) =>
-        this.handleClaimsHatterEvents(
-          logs.map((log) => log.address),
-          "Celo"
-        ),
-    });
-    this.publicClientBase.watchEvent({
-      events: CLAIMS_HATTER_EVENTS,
-      onLogs: (logs) =>
-        this.handleClaimsHatterEvents(
-          logs.map((log) => log.address),
-          "Base"
-        ),
-    });
-    this.publicClientGnosis.watchEvent({
-      events: CLAIMS_HATTER_EVENTS,
-      onLogs: (logs) =>
-        this.handleClaimsHatterEvents(
-          logs.map((log) => log.address),
-          "Gno"
-        ),
-    });
-    this.publicClientPolygon.watchEvent({
-      events: CLAIMS_HATTER_EVENTS,
-      onLogs: (logs) =>
-        this.handleClaimsHatterEvents(
-          logs.map((log) => log.address),
-          "Pol"
+          CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
         ),
     });
 
     // watch Hats events
-    this.publicClientEthereum.watchEvent({
+    this.publicClient.watchEvent({
       address: HATS_ADDRESS,
       events: HATS_EVENTS,
       onLogs: (logs) => {
-        this.handleHatsEvent(logs, "Ethereum", "Eth");
-      },
-    });
-
-    this.publicClientSepolia.watchEvent({
-      address: HATS_ADDRESS,
-      events: HATS_EVENTS,
-      onLogs: (logs) => {
-        this.handleHatsEvent(logs, "Sepolia", "Sep");
-      },
-    });
-
-    this.publicClientOptimism.watchEvent({
-      address: HATS_ADDRESS,
-      events: HATS_EVENTS,
-      onLogs: (logs) => {
-        this.handleHatsEvent(logs, "Optimism", "Op");
-      },
-    });
-
-    this.publicClientArbitrum.watchEvent({
-      address: HATS_ADDRESS,
-      events: HATS_EVENTS,
-      onLogs: (logs) => {
-        this.handleHatsEvent(logs, "Arbitrum", "Arb");
-      },
-    });
-
-    this.publicClientPolygon.watchEvent({
-      address: HATS_ADDRESS,
-      events: HATS_EVENTS,
-      onLogs: (logs) => {
-        this.handleHatsEvent(logs, "Polygon", "Pol");
-      },
-    });
-
-    this.publicClientBase.watchEvent({
-      address: HATS_ADDRESS,
-      events: HATS_EVENTS,
-      onLogs: (logs) => {
-        this.handleHatsEvent(logs, "Base", "Base");
-      },
-    });
-
-    this.publicClientCelo.watchEvent({
-      address: HATS_ADDRESS,
-      events: HATS_EVENTS,
-      onLogs: (logs) => {
-        this.handleHatsEvent(logs, "Celo", "Celo");
-      },
-    });
-
-    this.publicClientGnosis.watchEvent({
-      address: HATS_ADDRESS,
-      events: HATS_EVENTS,
-      onLogs: (logs) => {
-        this.handleHatsEvent(logs, "Gnosis", "Gno");
+        this.handleHatsEvent(
+          logs,
+          CHAIN_ID_TO_NETWORK_NAME[this.chainId],
+          CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
+        );
       },
     });
   }
 
-  keepAlive() {
-    this.publicClientSepolia.transport
-      .getRpcClient()
-      .then((client: any) => {
-        logger.info(`Sepolia socket readyState: ${client.socket.readyState}`);
-        client.socket.addEventListener("message", (ev: any) => {
-          const response = JSON.parse(ev.data);
-          // console.log("Received message:", response); // Log all incoming messages
-          if (response.id === 1111) {
-            logger.info("pong from: Sepolia");
-          }
-        });
+  async keepAlive() {
+    logger.info(`connecting network ${this.chainId}`);
 
-        client.socket.addEventListener("error", (error: any) => {
-          logger.info(`Sepolia webSocket error: ${JSON.stringify(error)}`);
-        });
+    const socketRpcClient = await this.publicClient.transport.getRpcClient();
 
-        client.socket.addEventListener("close", (event: any) => {
-          logger.info(
-            `Sepolia webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
-          );
-        });
-      })
-      .then(() => {
-        setInterval(async () => {
-          try {
-            this.publicClientSepolia.transport
-              .getRpcClient()
-              .then((client: any) => {
-                client.socket.send(
-                  JSON.stringify({
-                    jsonrpc: "2.0",
-                    method: "eth_blockNumber",
-                    params: [],
-                    id: 1111,
-                  })
-                );
-              });
-            logger.info("ping to: Sepolia");
-          } catch (error) {
-            logger.info(`Error on keep alive for Sepolia:`, error);
-          }
-        }, 10 * 60 * 1000); // 2 min
+    const heartbeat = () => {
+      logger.info(`ping network ${this.chainId}`);
+      this.publicClient
+        .getBlockNumber()
+        .then((_) => {
+          logger.info(`pong network ${this.chainId}`);
+        })
+        .catch((err) => logger.info(`error in chain ${this.chainId}: ${err}`));
+    };
+
+    const intervalId = setInterval(heartbeat, 5 * 60 * 1000);
+
+    const onError = (ev: Event) => {
+      logger.info(`error in chain ${this.chainId}: ${ev}`);
+    };
+    const onClose = async () => {
+      logger.info(`Websocket connection closed in network ${this.chainId}`);
+      socketRpcClient.socket.removeEventListener("error", onError);
+      socketRpcClient.socket.removeEventListener("close", onClose);
+      // NOTE: IMPORTANT: invalidate viem's socketClientCache! When close
+      // happens on socket level, the same socketClient with the closed websocket will be
+      // re-used from cache leading to 'Socket is closed.' error.
+      socketRpcClient.close();
+      clearInterval(intervalId);
+      this.publicClient = createPublicClient({
+        chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
+        transport: webSocket(CHAIN_ID_TO_SOCKET_URL[this.chainId]),
       });
+      logger.info(`Re-establishing connection in network ${this.chainId}`);
+      this.keepAlive();
+    };
 
-    this.publicClientEthereum.transport
-      .getRpcClient()
-      .then((client: any) => {
-        logger.info(`Ethereum socket readyState: ${client.socket.readyState}`);
-        client.socket.addEventListener("message", (ev: any) => {
-          const response = JSON.parse(ev.data);
-          // console.log("Received message:", response); // Log all incoming messages
-          if (response.id === 1111) {
-            logger.info("pong from: Ethereum");
-          }
-        });
+    const setupEventListeners = () => {
+      socketRpcClient.socket.addEventListener("error", onError);
+      socketRpcClient.socket.addEventListener("close", onClose);
+    };
 
-        client.socket.addEventListener("error", (error: any) => {
-          logger.info(`Ethereum webSocket error: ${JSON.stringify(error)}`);
-        });
+    setupEventListeners();
 
-        client.socket.addEventListener("close", (event: any) => {
-          logger.info(
-            `Ethereum webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
-          );
-        });
-      })
-      .then(() => {
-        setInterval(async () => {
-          try {
-            this.publicClientEthereum.transport
-              .getRpcClient()
-              .then((client: any) => {
-                client.socket.send(
-                  JSON.stringify({
-                    jsonrpc: "2.0",
-                    method: "eth_blockNumber",
-                    params: [],
-                    id: 1111,
-                  })
-                );
-              });
-            logger.info("ping to: Ethereum");
-          } catch (error) {
-            logger.info(`Error on keep alive for Ethereum:`, error);
-          }
-        }, 10 * 60 * 1000); // 2 min
-      });
-
-    this.publicClientOptimism.transport
-      .getRpcClient()
-      .then((client: any) => {
-        logger.info(`Optimism socket readyState: ${client.socket.readyState}`);
-        client.socket.addEventListener("message", (ev: any) => {
-          const response = JSON.parse(ev.data);
-          // console.log("Received message:", response); // Log all incoming messages
-          if (response.id === 1111) {
-            logger.info("pong from: Optimism");
-          }
-        });
-
-        client.socket.addEventListener("error", (error: any) => {
-          logger.info(`Optimism webSocket error: ${JSON.stringify(error)}`);
-        });
-
-        client.socket.addEventListener("close", (event: any) => {
-          logger.info(
-            `Optimism webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
-          );
-        });
-      })
-      .then(() => {
-        setInterval(async () => {
-          try {
-            this.publicClientOptimism.transport
-              .getRpcClient()
-              .then((client: any) => {
-                client.socket.send(
-                  JSON.stringify({
-                    jsonrpc: "2.0",
-                    method: "eth_blockNumber",
-                    params: [],
-                    id: 1111,
-                  })
-                );
-              });
-            logger.info("ping to: Optimism");
-          } catch (error) {
-            logger.info(`Error on keep alive for Optimism:`, error);
-          }
-        }, 10 * 60 * 1000); // 2 min
-      });
-
-    this.publicClientArbitrum.transport
-      .getRpcClient()
-      .then((client: any) => {
-        logger.info(`Arbitrum socket readyState: ${client.socket.readyState}`);
-        client.socket.addEventListener("message", (ev: any) => {
-          const response = JSON.parse(ev.data);
-          // console.log("Received message:", response); // Log all incoming messages
-          if (response.id === 1111) {
-            logger.info("pong from: Arbitrum");
-          }
-        });
-
-        client.socket.addEventListener("error", (error: any) => {
-          logger.info(`Arbitrum webSocket error: ${JSON.stringify(error)}`);
-        });
-
-        client.socket.addEventListener("close", (event: any) => {
-          logger.info(
-            `Arbitrum webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
-          );
-        });
-      })
-      .then(() => {
-        setInterval(async () => {
-          try {
-            this.publicClientArbitrum.transport
-              .getRpcClient()
-              .then((client: any) => {
-                client.socket.send(
-                  JSON.stringify({
-                    jsonrpc: "2.0",
-                    method: "eth_blockNumber",
-                    params: [],
-                    id: 1111,
-                  })
-                );
-              });
-            logger.info("ping to: Arbitrum");
-          } catch (error) {
-            logger.info(`Error on keep alive for Arbitrum:`, error);
-          }
-        }, 10 * 60 * 1000); // 2 min
-      });
-
-    this.publicClientGnosis.transport
-      .getRpcClient()
-      .then((client: any) => {
-        logger.info(`Gnosis socket readyState: ${client.socket.readyState}`);
-        client.socket.addEventListener("message", (ev: any) => {
-          const response = JSON.parse(ev.data);
-          // console.log("Received message:", response); // Log all incoming messages
-          if (response.id === 1111) {
-            logger.info("pong from: Gnosis");
-          }
-        });
-
-        client.socket.addEventListener("error", (error: any) => {
-          logger.info(`Gnosis webSocket error: ${JSON.stringify(error)}`);
-        });
-
-        client.socket.addEventListener("close", (event: any) => {
-          logger.info(
-            `Gnosis webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
-          );
-        });
-      })
-      .then(() => {
-        setInterval(async () => {
-          try {
-            this.publicClientGnosis.transport
-              .getRpcClient()
-              .then((client: any) => {
-                client.socket.send(
-                  JSON.stringify({
-                    jsonrpc: "2.0",
-                    method: "eth_blockNumber",
-                    params: [],
-                    id: 1111,
-                  })
-                );
-              });
-            logger.info("ping to: Gnosis");
-          } catch (error) {
-            logger.info(`Error on keep alive for Gnosis:`, error);
-          }
-        }, 10 * 60 * 1000); // 2 min
-      });
-
-    this.publicClientBase.transport
-      .getRpcClient()
-      .then((client: any) => {
-        logger.info(`Base socket readyState: ${client.socket.readyState}`);
-        client.socket.addEventListener("message", (ev: any) => {
-          const response = JSON.parse(ev.data);
-          // console.log("Received message:", response); // Log all incoming messages
-          if (response.id === 1111) {
-            logger.info("pong from: Base");
-          }
-        });
-
-        client.socket.addEventListener("error", (error: any) => {
-          logger.info(`Base webSocket error: ${JSON.stringify(error)}`);
-        });
-
-        client.socket.addEventListener("close", (event: any) => {
-          logger.info(
-            `Base webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
-          );
-        });
-      })
-      .then(() => {
-        setInterval(async () => {
-          try {
-            this.publicClientBase.transport
-              .getRpcClient()
-              .then((client: any) => {
-                client.socket.send(
-                  JSON.stringify({
-                    jsonrpc: "2.0",
-                    method: "eth_blockNumber",
-                    params: [],
-                    id: 1111,
-                  })
-                );
-              });
-            logger.info("ping to: Base");
-          } catch (error) {
-            logger.info(`Error on keep alive for Base:`, error);
-          }
-        }, 10 * 60 * 1000); // 2 min
-      });
-
-    this.publicClientCelo.transport
-      .getRpcClient()
-      .then((client: any) => {
-        logger.info(`Celo socket readyState: ${client.socket.readyState}`);
-        client.socket.addEventListener("message", (ev: any) => {
-          const response = JSON.parse(ev.data);
-          // console.log("Received message:", response); // Log all incoming messages
-          if (response.id === 1111) {
-            logger.info("pong from: Celo");
-          }
-        });
-
-        client.socket.addEventListener("error", (error: any) => {
-          logger.info(`Celo webSocket error: ${JSON.stringify(error)}`);
-        });
-
-        client.socket.addEventListener("close", (event: any) => {
-          logger.info(
-            `Celo webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
-          );
-        });
-      })
-      .then(() => {
-        setInterval(async () => {
-          try {
-            this.publicClientCelo.transport
-              .getRpcClient()
-              .then((client: any) => {
-                client.socket.send(
-                  JSON.stringify({
-                    jsonrpc: "2.0",
-                    method: "eth_blockNumber",
-                    params: [],
-                    id: 1111,
-                  })
-                );
-              });
-            logger.info("ping to: Celo");
-          } catch (error) {
-            logger.info(`Error on keep alive for Celo:`, error);
-          }
-        }, 10 * 60 * 1000); // 2 min
-      });
-
-    this.publicClientPolygon.transport
-      .getRpcClient()
-      .then((client: any) => {
-        logger.info(`Polygon socket readyState: ${client.socket.readyState}`);
-        client.socket.addEventListener("message", (ev: any) => {
-          const response = JSON.parse(ev.data);
-          // console.log("Received message:", response); // Log all incoming messages
-          if (response.id === 1111) {
-            logger.info("pong from: Polygon");
-          }
-        });
-
-        client.socket.addEventListener("error", (error: any) => {
-          logger.info(`Polygon webSocket error: ${JSON.stringify(error)}`);
-        });
-
-        client.socket.addEventListener("close", (event: any) => {
-          logger.info(
-            `Polygon webSocket closed. Code: ${event.code}, Reason: ${event.reason}`
-          );
-        });
-      })
-      .then(() => {
-        setInterval(async () => {
-          try {
-            this.publicClientPolygon.transport
-              .getRpcClient()
-              .then((client: any) => {
-                client.socket.send(
-                  JSON.stringify({
-                    jsonrpc: "2.0",
-                    method: "eth_blockNumber",
-                    params: [],
-                    id: 1111,
-                  })
-                );
-              });
-            logger.info("ping to: Polygon");
-          } catch (error) {
-            logger.info(`Error on keep alive for Polygon:`, error);
-          }
-        }, 10 * 60 * 1000); // 2 min
-      });
+    heartbeat();
   }
 
   handleHatsEvent(
