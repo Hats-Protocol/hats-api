@@ -137,18 +137,18 @@ export class CacheInvalidationService {
       const onError = (ev: any) => {
         logger.info(`error in chain ${this.chainId}: ${ev}`);
       };
-      const onClose = (ev: any) => {
+      const onClose = async (ev: any) => {
         logger.info(
           `Websocket connection closed in network ${this.chainId}. Code: ${ev.code}, Reason: ${ev.reason}`
         );
-        socketRpcClient.socket.removeEventListener("error", onError);
-        socketRpcClient.socket.removeEventListener("close", onClose);
-        unwatchClaimsHatter();
-        unwatchHats();
+        // socketRpcClient.socket.removeEventListener("error", onError);
+        // socketRpcClient.socket.removeEventListener("close", onClose);
+        await unwatchClaimsHatter();
+        await unwatchHats();
         // NOTE: IMPORTANT: invalidate viem's socketClientCache! When close
         // happens on socket level, the same socketClient with the closed websocket will be
         // re-used from cache leading to 'Socket is closed.' error.
-        socketRpcClient.close();
+        await socketRpcClient.close();
         clearInterval(intervalId);
         this.publicClient = createPublicClient({
           chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
