@@ -134,11 +134,13 @@ export class CacheInvalidationService {
 
       const intervalId = setInterval(heartbeat, 5 * 60 * 1000);
 
-      const onError = (ev: Event) => {
+      const onError = (ev: any) => {
         logger.info(`error in chain ${this.chainId}: ${ev}`);
       };
-      const onClose = async () => {
-        logger.info(`Websocket connection closed in network ${this.chainId}`);
+      const onClose = (ev: any) => {
+        logger.info(
+          `Websocket connection closed in network ${this.chainId}. Code: ${ev.code}, Reason: ${ev.reason}`
+        );
         socketRpcClient.socket.removeEventListener("error", onError);
         socketRpcClient.socket.removeEventListener("close", onClose);
         unwatchClaimsHatter();
@@ -163,7 +165,7 @@ export class CacheInvalidationService {
       setupEventListeners();
       heartbeat();
     } catch (error) {
-      logger.info(`Error in start method: ${error}`);
+      logger.info(`Error in start method: ${JSON.stringify(error)}`);
     }
   }
 
