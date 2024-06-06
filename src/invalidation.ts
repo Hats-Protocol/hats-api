@@ -149,7 +149,7 @@ export class CacheInvalidationService {
         // NOTE: IMPORTANT: invalidate viem's socketClientCache! When close
         // happens on socket level, the same socketClient with the closed websocket will be
         // re-used from cache leading to 'Socket is closed.' error.
-        // socketRpcClient.close();
+        socketRpcClient.close();
         this.publicClient = createPublicClient({
           chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
           transport: webSocket(CHAIN_ID_TO_SOCKET_URL[this.chainId]),
