@@ -20,72 +20,64 @@ import type { Log, PublicClient, RpcLog } from "viem";
 
 export class CacheInvalidationManager {
   private cache: RedisCacheClient;
-  private mainnetInvalidationClient: CacheInvalidationClient;
-  private polygonInvalidationClient: CacheInvalidationClient;
-  private gnosisInvalidationClient: CacheInvalidationClient;
-  private sepoliaInvalidationClient: CacheInvalidationClient;
-  private baseInvalidationClient: CacheInvalidationClient;
-  private celoInvalidationClient: CacheInvalidationClient;
-  private optimismInvalidationClient: CacheInvalidationClient;
-  private arbitrumInvalidationClient: CacheInvalidationClient;
+  private mainnetInvalidationClient: CacheInvalidationService;
+  private polygonInvalidationClient: CacheInvalidationService;
+  private gnosisInvalidationClient: CacheInvalidationService;
+  private sepoliaInvalidationClient: CacheInvalidationService;
+  private baseInvalidationClient: CacheInvalidationService;
+  private celoInvalidationClient: CacheInvalidationService;
+  private optimismInvalidationClient: CacheInvalidationService;
+  private arbitrumInvalidationClient: CacheInvalidationService;
 
   constructor() {
     this.cache = new RedisCacheClient();
-    this.mainnetInvalidationClient = new CacheInvalidationClient(
+    this.mainnetInvalidationClient = new CacheInvalidationService(
       this.cache,
       "1"
     );
-    this.polygonInvalidationClient = new CacheInvalidationClient(
+    this.polygonInvalidationClient = new CacheInvalidationService(
       this.cache,
       "137"
     );
-    this.gnosisInvalidationClient = new CacheInvalidationClient(
+    this.gnosisInvalidationClient = new CacheInvalidationService(
       this.cache,
       "100"
     );
-    this.celoInvalidationClient = new CacheInvalidationClient(
+    this.celoInvalidationClient = new CacheInvalidationService(
       this.cache,
       "42220"
     );
-    this.baseInvalidationClient = new CacheInvalidationClient(
+    this.baseInvalidationClient = new CacheInvalidationService(
       this.cache,
       "8453"
     );
-    this.optimismInvalidationClient = new CacheInvalidationClient(
+    this.optimismInvalidationClient = new CacheInvalidationService(
       this.cache,
       "10"
     );
-    this.arbitrumInvalidationClient = new CacheInvalidationClient(
+    this.arbitrumInvalidationClient = new CacheInvalidationService(
       this.cache,
       "42161"
     );
-    this.sepoliaInvalidationClient = new CacheInvalidationClient(
+    this.sepoliaInvalidationClient = new CacheInvalidationService(
       this.cache,
       "11155111"
     );
   }
 
   startServices() {
-    this.mainnetInvalidationClient.watchEvents();
-    this.gnosisInvalidationClient.watchEvents();
-    this.arbitrumInvalidationClient.watchEvents();
-    this.optimismInvalidationClient.watchEvents();
-    this.baseInvalidationClient.watchEvents();
-    this.celoInvalidationClient.watchEvents();
-    this.sepoliaInvalidationClient.watchEvents();
-    this.polygonInvalidationClient.watchEvents();
-    this.mainnetInvalidationClient.keepAlive();
-    this.gnosisInvalidationClient.keepAlive();
-    this.arbitrumInvalidationClient.keepAlive();
-    this.optimismInvalidationClient.keepAlive();
-    this.baseInvalidationClient.keepAlive();
-    this.celoInvalidationClient.keepAlive();
-    this.sepoliaInvalidationClient.keepAlive();
-    this.polygonInvalidationClient.keepAlive();
+    this.mainnetInvalidationClient.start();
+    this.gnosisInvalidationClient.start();
+    this.arbitrumInvalidationClient.start();
+    this.optimismInvalidationClient.start();
+    this.baseInvalidationClient.start();
+    this.celoInvalidationClient.start();
+    this.sepoliaInvalidationClient.start();
+    this.polygonInvalidationClient.start();
   }
 }
 
-export class CacheInvalidationClient {
+export class CacheInvalidationService {
   private cache: RedisCacheClient;
   private publicClient: PublicClient;
   private chainId: string;
@@ -99,9 +91,13 @@ export class CacheInvalidationClient {
     });
   }
 
-  watchEvents() {
+  async start() {
+    logger.info(`connecting network ${this.chainId}`);
+
+    const socketRpcClient = await this.publicClient.transport.getRpcClient();
+
     // watch Calims Hatters events
-    this.publicClient.watchEvent({
+    const unwatchClaimsHatter = this.publicClient.watchEvent({
       events: CLAIMS_HATTER_EVENTS,
       onLogs: (logs) =>
         this.handleClaimsHatterEvents(
@@ -111,7 +107,7 @@ export class CacheInvalidationClient {
     });
 
     // watch Hats events
-    this.publicClient.watchEvent({
+    const unwatchHats = this.publicClient.watchEvent({
       address: HATS_ADDRESS,
       events: HATS_EVENTS,
       onLogs: (logs) => {
@@ -122,12 +118,6 @@ export class CacheInvalidationClient {
         );
       },
     });
-  }
-
-  async keepAlive() {
-    logger.info(`connecting network ${this.chainId}`);
-
-    const socketRpcClient = await this.publicClient.transport.getRpcClient();
 
     const heartbeat = () => {
       logger.info(`ping network ${this.chainId}`);
@@ -148,6 +138,8 @@ export class CacheInvalidationClient {
       logger.info(`Websocket connection closed in network ${this.chainId}`);
       socketRpcClient.socket.removeEventListener("error", onError);
       socketRpcClient.socket.removeEventListener("close", onClose);
+      unwatchClaimsHatter();
+      unwatchHats();
       // NOTE: IMPORTANT: invalidate viem's socketClientCache! When close
       // happens on socket level, the same socketClient with the closed websocket will be
       // re-used from cache leading to 'Socket is closed.' error.
@@ -157,8 +149,7 @@ export class CacheInvalidationClient {
         chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
         transport: webSocket(CHAIN_ID_TO_SOCKET_URL[this.chainId]),
       });
-      logger.info(`Re-establishing connection in network ${this.chainId}`);
-      this.keepAlive();
+      this.start();
     };
 
     const setupEventListeners = () => {
@@ -167,7 +158,6 @@ export class CacheInvalidationClient {
     };
 
     setupEventListeners();
-
     heartbeat();
   }
 
