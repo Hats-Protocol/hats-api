@@ -17,6 +17,7 @@ import {
   treeIdDecimalToHex,
 } from "@hatsprotocol/sdk-v1-core";
 import type { Log, PublicClient, RpcLog } from "viem";
+import { log } from "console";
 
 export class CacheInvalidationManager {
   private cache: RedisCacheClient;
@@ -81,63 +82,70 @@ export class CacheInvalidationService {
   private cache: RedisCacheClient;
   private publicClient: PublicClient;
   private chainId: string;
+  private key: number;
 
   constructor(cacheClient: RedisCacheClient, chainId: string) {
     this.cache = cacheClient;
     this.chainId = chainId;
+    this.key = 0;
     this.publicClient = createPublicClient({
       chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
-      transport: webSocket(CHAIN_ID_TO_SOCKET_URL[chainId]),
+      transport: webSocket(CHAIN_ID_TO_SOCKET_URL[chainId], {
+        key: this.key.toString(),
+      }),
     });
   }
 
   async start() {
+    logger.info(`connecting network ${this.chainId}`);
+
+    let socketRpcClient: any;
     try {
-      logger.info(`connecting network ${this.chainId}`);
+      socketRpcClient = await this.publicClient.transport.getRpcClient();
+    } catch (error) {
+      logger.info(`fetching rpc client in network ${this.chainId} failed`);
+    }
 
-      const socketRpcClient = await this.publicClient.transport.getRpcClient();
+    // watch Calims Hatters events
+    const unwatchClaimsHatter = this.publicClient.watchEvent({
+      events: CLAIMS_HATTER_EVENTS,
+      onLogs: (logs) =>
+        this.handleClaimsHatterEvents(
+          logs.map((log) => log.address),
+          CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
+        ),
+    });
 
-      // watch Calims Hatters events
-      const unwatchClaimsHatter = this.publicClient.watchEvent({
-        events: CLAIMS_HATTER_EVENTS,
-        onLogs: (logs) =>
-          this.handleClaimsHatterEvents(
-            logs.map((log) => log.address),
-            CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
-          ),
-      });
+    // watch Hats events
+    const unwatchHats = this.publicClient.watchEvent({
+      address: HATS_ADDRESS,
+      events: HATS_EVENTS,
+      onLogs: (logs) => {
+        this.handleHatsEvent(
+          logs,
+          CHAIN_ID_TO_NETWORK_NAME[this.chainId],
+          CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
+        );
+      },
+    });
 
-      // watch Hats events
-      const unwatchHats = this.publicClient.watchEvent({
-        address: HATS_ADDRESS,
-        events: HATS_EVENTS,
-        onLogs: (logs) => {
-          this.handleHatsEvent(
-            logs,
-            CHAIN_ID_TO_NETWORK_NAME[this.chainId],
-            CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
-          );
-        },
-      });
+    const heartbeat = () => {
+      logger.info(`ping network ${this.chainId}`);
+      this.publicClient
+        .getBlockNumber()
+        .then((_) => {
+          logger.info(`pong network ${this.chainId}`);
+        })
+        .catch((err) => logger.info(`error in chain ${this.chainId}: ${err}`));
+    };
 
-      const heartbeat = () => {
-        logger.info(`ping network ${this.chainId}`);
-        this.publicClient
-          .getBlockNumber()
-          .then((_) => {
-            logger.info(`pong network ${this.chainId}`);
-          })
-          .catch((err) =>
-            logger.info(`error in chain ${this.chainId}: ${err}`)
-          );
-      };
+    const intervalId = setInterval(heartbeat, 5 * 60 * 1000);
 
-      const intervalId = setInterval(heartbeat, 5 * 60 * 1000);
-
-      const onError = (ev: any) => {
-        logger.info(`error in chain ${this.chainId}: ${ev}`);
-      };
-      const onClose = (ev: any) => {
+    const onError = (ev: any) => {
+      logger.info(`error in chain ${this.chainId}: ${ev}`);
+    };
+    const onClose = (ev: any) => {
+      try {
         logger.info(
           `Websocket connection closed in network ${this.chainId}. Code: ${ev.code}, Reason: ${ev.reason}`
         );
@@ -150,23 +158,26 @@ export class CacheInvalidationService {
         // happens on socket level, the same socketClient with the closed websocket will be
         // re-used from cache leading to 'Socket is closed.' error.
         socketRpcClient.close();
+        this.key += 1;
         this.publicClient = createPublicClient({
           chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
-          transport: webSocket(CHAIN_ID_TO_SOCKET_URL[this.chainId]),
+          transport: webSocket(CHAIN_ID_TO_SOCKET_URL[this.chainId], {
+            key: this.key.toString(),
+          }),
         });
         this.start();
-      };
+      } catch (error) {
+        logger.info(`error in onClose handler in network ${this.chainId}`);
+      }
+    };
 
-      const setupEventListeners = () => {
-        socketRpcClient.socket.addEventListener("error", onError);
-        socketRpcClient.socket.addEventListener("close", onClose);
-      };
+    const setupEventListeners = () => {
+      socketRpcClient.socket.addEventListener("error", onError);
+      socketRpcClient.socket.addEventListener("close", onClose);
+    };
 
-      setupEventListeners();
-      heartbeat();
-    } catch (error) {
-      logger.info(`Error in start method: ${JSON.stringify(error)}`);
-    }
+    setupEventListeners();
+    heartbeat();
   }
 
   handleHatsEvent(
