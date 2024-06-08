@@ -1,4 +1,59 @@
 import { parseAbi } from "viem";
+import {
+  mainnet,
+  optimism,
+  gnosis,
+  celo,
+  base,
+  sepolia,
+  arbitrum,
+  polygon,
+} from "viem/chains";
+import type { Chain } from "viem";
+
+export const CHAIN_ID_TO_SOCKET_URL: { [key: string]: string } = {
+  1: process.env.ETHEREUM_SOCKET_URL as string,
+  10: process.env.OPTIMISM_SOCKET_URL as string,
+  42161: process.env.ARBITRUM_SOCKET_URL as string,
+  100: process.env.GNOSIS_SOCKET_URL as string,
+  8453: process.env.BASE_SOCKET_URL as string,
+  42220: process.env.CELO_SOCKET_URL as string,
+  11155111: process.env.SEPOLIA_SOCKET_URL as string,
+  137: process.env.POLYGON_SOCKET_URL as string,
+};
+
+export const CHAIN_ID_TO_ENTITY_PREFIX: { [key: string]: string } = {
+  1: "Eth",
+  10: "Op",
+  42161: "Arb",
+  100: "Gno",
+  8453: "Base",
+  42220: "Celo",
+  11155111: "Sep",
+  137: "Pol",
+};
+
+export const CHAIN_ID_TO_NETWORK_NAME: { [key: string]: string } = {
+  1: "Ethereum",
+  10: "Optimism",
+  42161: "Arbitrum",
+  100: "Gnosis",
+  8453: "Base",
+  42220: "Celo",
+  11155111: "Sepolia",
+  137: "Polygon",
+};
+
+export const CHAIN_ID_TO_VIEM_CHAIN: { [key: string]: Chain } = {
+  1: mainnet,
+  10: optimism,
+  42161: arbitrum,
+  100: gnosis,
+  8453: base,
+  42220: celo,
+  11155111: sepolia,
+  137: polygon,
+};
 
 export const HATS_ADDRESS = "0x3bc1A0Ad72417f2d411118085256fC53CBdDd137";
 
