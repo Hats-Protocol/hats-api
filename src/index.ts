@@ -1,12 +1,12 @@
 import express from "express";
 import cors from "cors";
+import "dotenv/config";
 import { createBuiltMeshHTTPHandler } from "../.mesh";
 import { CacheInvalidationManager } from "./invalidation";
 import log from "./log";
-import "dotenv/config";
 
 const cachaeInvalidationManager = new CacheInvalidationManager();
-// cachaeInvalidationManager.startServices();
+cachaeInvalidationManager.startServices();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -26,8 +26,15 @@ app.post("/invalidate", async (req, res) => {
     return res.status(400).send("Missing transaction hash or network ID");
   }
 
-  await cachaeInvalidationManager.processTransaction(transactionId, networkId);
-  res.send("success");
+  try {
+    await cachaeInvalidationManager.processTransaction(
+      transactionId,
+      networkId
+    );
+    res.send("success");
+  } catch (error) {
+    res.status(500);
+  }
 });
 
 app.listen(PORT, () => {

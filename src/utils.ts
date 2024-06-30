@@ -17,9 +17,11 @@ export const parentHat: (hatId: `0x${string}`) => `0x${string}` | null = (
   if (hatLevel === 0) {
     return null;
   } else if (hatLevel < 15) {
-    return hatId
-      .substring(0, 10 + hatLevel * 4)
+    const parent = hatId
+      .substring(0, 10 + (hatLevel - 1) * 4)
       .padEnd(66, "0") as `0x${string}`;
+
+    return parent;
   } else {
     throw new Error("Invalid hatId");
   }

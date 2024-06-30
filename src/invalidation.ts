@@ -246,7 +246,7 @@ export class CacheInvalidationService {
     }
 
     const hatsLogs = transaction.logs.filter(
-      (log) => log.address === HATS_ADDRESS
+      (log) => log.address === HATS_ADDRESS.toLowerCase()
     );
 
     try {
