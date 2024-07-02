@@ -11,6 +11,7 @@ import {
   CLAIMS_HATTER_EVENTS,
   HATS_EVENTS,
   CHAIN_ID_TO_SOCKET_URL,
+  CHAIN_ID_TO_HTTP_URL,
   CHAIN_ID_TO_ENTITY_PREFIX,
   CHAIN_ID_TO_NETWORK_NAME,
   CHAIN_ID_TO_VIEM_CHAIN,
@@ -140,7 +141,7 @@ export class CacheInvalidationService {
     });
     this.publicHttpClient = createPublicClient({
       chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
-      transport: http(),
+      transport: http(CHAIN_ID_TO_HTTP_URL[chainId]),
     });
   }
 
@@ -231,8 +232,9 @@ export class CacheInvalidationService {
   async processTransaction(txHash: `0x${string}`) {
     let transaction: TransactionReceipt;
     try {
-      transaction = await this.publicHttpClient.getTransactionReceipt({
+      transaction = await this.publicHttpClient.waitForTransactionReceipt({
         hash: txHash,
+        timeout: 3000,
       });
 
       if (!transaction) {

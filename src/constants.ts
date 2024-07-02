@@ -22,6 +22,17 @@ export const CHAIN_ID_TO_SOCKET_URL: { [key: string]: string } = {
   137: process.env.POLYGON_SOCKET_URL as string,
 };
 
+export const CHAIN_ID_TO_HTTP_URL: { [key: string]: string } = {
+  1: process.env.ETHEREUM_HTTP_URL as string,
+  10: process.env.OPTIMISM_HTTP_URL as string,
+  42161: process.env.ARBITRUM_HTTP_URL as string,
+  100: process.env.GNOSIS_HTTP_URL as string,
+  8453: process.env.BASE_HTTP_URL as string,
+  42220: process.env.CELO_HTTP_URL as string,
+  11155111: process.env.SEPOLIA_HTTP_URL as string,
+  137: process.env.POLYGON_HTTP_URL as string,
+};
+
 export const CHAIN_ID_TO_ENTITY_PREFIX: { [key: string]: string } = {
   1: "Eth",
   10: "Op",
