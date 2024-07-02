@@ -15,6 +15,13 @@ export class RedisCacheClient {
 
   async invalidateEntity(entityName: string, entityId: string): Promise<void> {
     const entity = `${entityName}.${entityId}`;
+    log.info(
+      `${JSON.stringify({
+        type: "invalidation start",
+        name: entityName,
+        id: entityId,
+      })}`
+    );
     const matchParam = `*${entity}*`;
     const stream = this._client.scanStream({
       match: matchParam,
@@ -23,51 +30,67 @@ export class RedisCacheClient {
     const keysToDelete: string[] = [];
     const operations: Promise<any>[] = [];
 
-    await new Promise((resolve, reject) => {
-      stream.on("data", (resultKeys: string[]) => {
-        for (let key of resultKeys) {
-          key = key.slice(15);
-          let hash: string | undefined = undefined;
-          if (key.startsWith(entity)) {
-            hash = key.slice(entity.length + 1);
-          } else if (key.endsWith(entity)) {
-            hash = key.slice(0, key.length - entity.length - 1);
+    try {
+      await new Promise((resolve, reject) => {
+        stream.on("data", (resultKeys: string[]) => {
+          for (let key of resultKeys) {
+            key = key.slice(15);
+            let hash: string | undefined = undefined;
+            if (key.startsWith(entity)) {
+              hash = key.slice(entity.length + 1);
+            } else if (key.endsWith(entity)) {
+              hash = key.slice(0, key.length - entity.length - 1);
+            }
+
+            if (hash !== undefined && !keysToDelete.includes(hash)) {
+              keysToDelete.push(hash);
+              const delPromise = this._client.del(`response-cache:${hash}`);
+              operations.push(delPromise);
+            }
           }
+        });
 
-          if (hash !== undefined && !keysToDelete.includes(hash)) {
-            keysToDelete.push(hash);
-            const delPromise = this._client.del(`response-cache:${hash}`);
-            operations.push(delPromise);
-          }
-        }
+        stream.on("end", resolve);
+        stream.on("error", reject);
       });
+    } catch (error) {
+      log.error(
+        `${JSON.stringify({
+          type: "invalidation error",
+          name: entityName,
+          id: entityId,
+          hashes: keysToDelete,
+          error: error,
+        })}`
+      );
+      throw new Error(
+        `Error invalidating entity ${entityName} with ID ${entityId}: ${error}`
+      );
+    }
 
-      stream.on("end", resolve);
-      stream.on("error", reject);
-    });
-
-    Promise.all(operations)
-      .then(() => {
-        log.info(
-          `Invalidation: ${JSON.stringify({
-            name: entityName,
-            id: entityId,
-            hashes: keysToDelete,
-          })}`
-        );
-      })
-      .catch((error) => {
-        log.error(
-          `Invalidation Error: ${JSON.stringify({
-            name: entityName,
-            id: entityId,
-            hashes: keysToDelete,
-            error: error,
-          })}`
-        );
-        throw new Error(
-          `Error invalidating entity ${entityName} with ID ${entityId}: ${error}`
-        );
-      });
+    try {
+      await Promise.all(operations);
+      log.info(
+        `${JSON.stringify({
+          type: "invalidation success",
+          name: entityName,
+          id: entityId,
+          hashes: keysToDelete,
+        })}`
+      );
+    } catch (error) {
+      log.error(
+        `${JSON.stringify({
+          type: "invalidation error",
+          name: entityName,
+          id: entityId,
+          hashes: keysToDelete,
+          error: error,
+        })}`
+      );
+      throw new Error(
+        `Error invalidating entity ${entityName} with ID ${entityId}: ${error}`
+      );
+    }
   }
 }
