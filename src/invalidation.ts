@@ -277,9 +277,6 @@ export class CacheInvalidationService {
     for (let i = 0; i < parsedLogs.length; i++) {
       const log = parsedLogs[i];
       logger.info(
-        `processing event ${log.eventName}, index ${i} on tx hash ${log.transactionHash} on ${networkName}`
-      );
-      logger.info(
         `${JSON.stringify({
           type: "processing event",
           eventName: log.eventName,

@@ -24,7 +24,7 @@ app.post("/invalidate", async (req, res) => {
 
   log.info(
     `${JSON.stringify({
-      type: "post request to /graphql/invalidate",
+      type: "post request to /invalidate",
       transactionId,
       networkId,
     })}`
