@@ -1,4 +1,10 @@
-import { createPublicClient, webSocket, parseEventLogs } from "viem";
+import {
+  createPublicClient,
+  webSocket,
+  http,
+  parseEventLogs,
+  verifyMessage,
+} from "viem";
 import {
   HATS_ABI,
   HATS_ADDRESS,
@@ -16,8 +22,14 @@ import {
   hatIdToTreeId,
   treeIdDecimalToHex,
 } from "@hatsprotocol/sdk-v1-core";
-import type { Log, PublicClient, RpcLog } from "viem";
-import { log } from "console";
+import type {
+  Log,
+  PublicClient,
+  RpcLog,
+  Transaction,
+  TransactionReceipt,
+} from "viem";
+import { parentHat } from "./utils";
 
 export class CacheInvalidationManager {
   private cache: RedisCacheClient;
@@ -76,11 +88,43 @@ export class CacheInvalidationManager {
     this.sepoliaInvalidationClient.start();
     this.polygonInvalidationClient.start();
   }
+
+  async processTransaction(txHash: `0x${string}`, networkId: string) {
+    switch (networkId) {
+      case "1":
+        await this.mainnetInvalidationClient.processTransaction(txHash);
+        break;
+      case "137":
+        await this.polygonInvalidationClient.processTransaction(txHash);
+        break;
+      case "100":
+        await this.gnosisInvalidationClient.processTransaction(txHash);
+        break;
+      case "42220":
+        await this.celoInvalidationClient.processTransaction(txHash);
+        break;
+      case "8453":
+        await this.baseInvalidationClient.processTransaction(txHash);
+        break;
+      case "10":
+        await this.optimismInvalidationClient.processTransaction(txHash);
+        break;
+      case "42161":
+        await this.arbitrumInvalidationClient.processTransaction(txHash);
+        break;
+      case "11155111":
+        await this.sepoliaInvalidationClient.processTransaction(txHash);
+        break;
+      default:
+        logger.info(`network ${networkId} not supported`);
+    }
+  }
 }
 
 export class CacheInvalidationService {
   private cache: RedisCacheClient;
-  private publicClient: PublicClient;
+  private publicSocketClient: PublicClient;
+  private publicHttpClient: PublicClient;
   private chainId: string;
   private key: number;
 
@@ -88,11 +132,15 @@ export class CacheInvalidationService {
     this.cache = cacheClient;
     this.chainId = chainId;
     this.key = 0;
-    this.publicClient = createPublicClient({
+    this.publicSocketClient = createPublicClient({
       chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
       transport: webSocket(CHAIN_ID_TO_SOCKET_URL[chainId], {
         key: this.key.toString(),
       }),
+    });
+    this.publicHttpClient = createPublicClient({
+      chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
+      transport: http(),
     });
   }
 
@@ -101,13 +149,13 @@ export class CacheInvalidationService {
 
     let socketRpcClient: any;
     try {
-      socketRpcClient = await this.publicClient.transport.getRpcClient();
+      socketRpcClient = await this.publicSocketClient.transport.getRpcClient();
     } catch (error) {
       logger.info(`fetching rpc client in network ${this.chainId} failed`);
     }
 
     // watch Calims Hatters events
-    const unwatchClaimsHatter = this.publicClient.watchEvent({
+    const unwatchClaimsHatter = this.publicSocketClient.watchEvent({
       events: CLAIMS_HATTER_EVENTS,
       onLogs: (logs) =>
         this.handleClaimsHatterEvents(
@@ -117,11 +165,11 @@ export class CacheInvalidationService {
     });
 
     // watch Hats events
-    const unwatchHats = this.publicClient.watchEvent({
+    const unwatchHats = this.publicSocketClient.watchEvent({
       address: HATS_ADDRESS,
       events: HATS_EVENTS,
       onLogs: (logs) => {
-        this.handleHatsEvent(
+        this.handleHatsEvents(
           logs,
           CHAIN_ID_TO_NETWORK_NAME[this.chainId],
           CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
@@ -131,7 +179,7 @@ export class CacheInvalidationService {
 
     const heartbeat = () => {
       logger.info(`ping network ${this.chainId}`);
-      this.publicClient
+      this.publicSocketClient
         .getBlockNumber()
         .then((_) => {
           logger.info(`pong network ${this.chainId}`);
@@ -159,7 +207,7 @@ export class CacheInvalidationService {
         // re-used from cache leading to 'Socket is closed.' error.
         socketRpcClient.close();
         this.key += 1;
-        this.publicClient = createPublicClient({
+        this.publicSocketClient = createPublicClient({
           chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
           transport: webSocket(CHAIN_ID_TO_SOCKET_URL[this.chainId], {
             key: this.key.toString(),
@@ -180,7 +228,41 @@ export class CacheInvalidationService {
     heartbeat();
   }
 
-  handleHatsEvent(
+  async processTransaction(txHash: `0x${string}`) {
+    let transaction: TransactionReceipt;
+    try {
+      transaction = await this.publicHttpClient.getTransactionReceipt({
+        hash: txHash,
+      });
+
+      if (!transaction) {
+        return;
+      }
+    } catch (err) {
+      logger.info(
+        `error fetching transaction ${txHash} in chain ${this.chainId}: ${err}`
+      );
+      return;
+    }
+
+    const hatsLogs = transaction.logs.filter(
+      (log) => log.address === HATS_ADDRESS.toLowerCase()
+    );
+
+    try {
+      await this.handleHatsEvents(
+        hatsLogs,
+        CHAIN_ID_TO_NETWORK_NAME[this.chainId],
+        CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
+      );
+    } catch (err) {
+      logger.info(
+        `error processing hats events for transaction ${txHash} in chain ${this.chainId}: ${err}`
+      );
+    }
+  }
+
+  async handleHatsEvents(
     logs: (Log | RpcLog)[],
     networkName: string,
     entityPrefix: string
@@ -190,9 +272,19 @@ export class CacheInvalidationService {
       logs,
     });
 
-    parsedLogs.forEach((log) => {
+    const processed: string[] = [];
+
+    for (let i = 0; i < parsedLogs.length; i++) {
+      const log = parsedLogs[i];
       logger.info(
-        `processing event ${log.eventName} on tx hash ${log.transactionHash} on ${networkName}`
+        `${JSON.stringify({
+          type: "processing event",
+          eventName: log.eventName,
+          logIndex: log.logIndex,
+          index: i,
+          transactionHash: log.transactionHash,
+          networkName: networkName,
+        })}`
       );
       if (
         log.eventName === "HatDetailsChanged" ||
@@ -204,27 +296,33 @@ export class CacheInvalidationService {
         log.eventName === "HatImageURIChanged"
       ) {
         const hatId = log.args.hatId;
-        if (hatId !== undefined) {
-          this.cache.invalidateEntity(
+        const key = `${entityPrefix}_Hat.${hatIdDecimalToHex(hatId)}`;
+        if (!processed.includes(key)) {
+          processed.push(key);
+          await this.cache.invalidateEntity(
             `${entityPrefix}_Hat`,
             hatIdDecimalToHex(hatId)
           );
         }
       } else if (log.eventName === "HatCreated") {
         const hatId = log.args.id;
-        if (hatId !== undefined) {
-          this.cache.invalidateEntity(
+        const adminHat = parentHat(hatIdDecimalToHex(hatId));
+        const treeKey = `${entityPrefix}_Tree.${treeIdDecimalToHex(
+          hatIdToTreeId(hatId)
+        )}`;
+        if (!processed.includes(treeKey)) {
+          processed.push(treeKey);
+          await this.cache.invalidateEntity(
             `${entityPrefix}_Tree`,
             treeIdDecimalToHex(hatIdToTreeId(hatId))
           );
         }
-      } else if (log.eventName === "WearerStandingChanged") {
-        const wearerAddress = log.args.wearer;
-        if (wearerAddress !== undefined) {
-          this.cache.invalidateEntity(
-            `${entityPrefix}_Wearer`,
-            wearerAddress.toLowerCase()
-          );
+        if (adminHat !== null) {
+          const hatKey = `${entityPrefix}_Hat.${adminHat}`;
+          if (!processed.includes(hatKey)) {
+            processed.push(hatKey);
+            await this.cache.invalidateEntity(`${entityPrefix}_Hat`, adminHat);
+          }
         }
       } else if (
         log.eventName === "TopHatLinkRequested" ||
@@ -232,12 +330,18 @@ export class CacheInvalidationService {
       ) {
         const treeId = log.args.domain;
         const adminHatId = log.args.newAdmin;
-        if (treeId !== undefined && adminHatId !== undefined) {
-          this.cache.invalidateEntity(
+        const treeKey = `${entityPrefix}_Tree.${treeIdDecimalToHex(treeId)}`;
+        const hatKey = `${entityPrefix}_Hat.${hatIdDecimalToHex(adminHatId)}`;
+        if (!processed.includes(treeKey)) {
+          processed.push(treeKey);
+          await this.cache.invalidateEntity(
             `${entityPrefix}_Tree`,
             treeIdDecimalToHex(treeId)
           );
-          this.cache.invalidateEntity(
+        }
+        if (!processed.includes(hatKey)) {
+          processed.push(hatKey);
+          await this.cache.invalidateEntity(
             `${entityPrefix}_Hat`,
             hatIdDecimalToHex(adminHatId)
           );
@@ -246,38 +350,56 @@ export class CacheInvalidationService {
         const from = log.args.from;
         const to = log.args.to;
         const hatId = log.args.id;
-        if (from !== undefined && to !== undefined && hatId !== undefined) {
-          this.cache.invalidateEntity(
+
+        const fromKey = `${entityPrefix}_Wearer.${(
+          from as string
+        ).toLowerCase()}`;
+        const toKey = `${entityPrefix}_Wearer.${(to as string).toLowerCase()}`;
+        const hatKey = `${entityPrefix}_Hat.${hatIdDecimalToHex(hatId)}`;
+
+        if (!processed.includes(hatKey)) {
+          processed.push(hatKey);
+          await this.cache.invalidateEntity(
             `${entityPrefix}_Hat`,
             hatIdDecimalToHex(hatId)
           );
-          if (to !== "0x0000000000000000000000000000000000000000") {
-            this.cache.invalidateEntity(
-              `${entityPrefix}_Wearer`,
-              (to as string).toLowerCase()
-            );
-          }
-          if (from !== "0x0000000000000000000000000000000000000000") {
-            this.cache.invalidateEntity(
-              `${entityPrefix}_Wearer`,
-              (from as string).toLowerCase()
-            );
-          }
+        }
+        if (
+          to !== "0x0000000000000000000000000000000000000000" &&
+          !processed.includes(toKey)
+        ) {
+          processed.push(toKey);
+          await this.cache.invalidateEntity(
+            `${entityPrefix}_Wearer`,
+            (to as string).toLowerCase()
+          );
+        }
+        if (
+          from !== "0x0000000000000000000000000000000000000000" &&
+          !processed.includes(fromKey)
+        ) {
+          processed.push(fromKey);
+          await this.cache.invalidateEntity(
+            `${entityPrefix}_Wearer`,
+            (from as string).toLowerCase()
+          );
         }
       }
-    });
+    }
   }
 
-  handleClaimsHatterEvents(
+  async handleClaimsHatterEvents(
     claimsHatters: `0x${string}`[],
     entityPrefix: string
   ) {
-    claimsHatters.forEach((hatter) => {
-      logger.info(`processing claims hatter event of address ${hatter}`);
-      this.cache.invalidateEntity(
-        `${entityPrefix}_ClaimsHatter`,
-        hatter.toLowerCase()
-      );
-    });
+    await Promise.all(
+      claimsHatters.map((hatter) => {
+        logger.info(`processing claims hatter event of address ${hatter}`);
+        return this.cache.invalidateEntity(
+          `${entityPrefix}_ClaimsHatter`,
+          hatter.toLowerCase()
+        );
+      })
+    );
   }
 }
