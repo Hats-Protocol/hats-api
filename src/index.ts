@@ -16,7 +16,7 @@ app.use(express.json());
 
 app.use("/graphql", createBuiltMeshHTTPHandler());
 
-app.post("/invalidate", async (req, res) => {
+app.post("graphql/invalidate", async (req, res) => {
   const {
     transactionId,
     networkId,
