@@ -283,7 +283,7 @@ export class CacheInvalidationService {
         `${JSON.stringify({
           type: "processing event",
           eventName: log.eventName,
-          args: log.args,
+          logIndex: log.logIndex,
           index: i,
           transactionHash: log.transactionHash,
           networkName: networkName,
