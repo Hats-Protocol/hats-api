@@ -16,11 +16,19 @@ app.use(express.json());
 
 app.use("/graphql", createBuiltMeshHTTPHandler());
 
-app.post("graphql/invalidate", async (req, res) => {
+app.post("/graphql/invalidate", async (req, res) => {
   const {
     transactionId,
     networkId,
   }: { transactionId: `0x${string}`; networkId: string } = req.body;
+
+  log.info(
+    `${JSON.stringify({
+      type: "post request to /graphql/invalidate",
+      transactionId,
+      networkId,
+    })}`
+  );
 
   if (!transactionId || !networkId) {
     return res.status(400).send("Missing transaction hash or network ID");
@@ -33,7 +41,7 @@ app.post("graphql/invalidate", async (req, res) => {
     );
     res.send("success");
   } catch (error) {
-    res.status(500);
+    res.status(500).send("Internal Server Error");
   }
 });
 
