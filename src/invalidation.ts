@@ -186,12 +186,12 @@ export class CacheInvalidationService {
     });
 
     const heartbeat = () => {
-      logger.log({ level: "debug", message: `ping network ${this.chainId}` });
+      logger.log({ level: "info", message: `ping network ${this.chainId}` });
       this.publicSocketClient
         .getBlockNumber()
         .then((_) => {
           logger.log({
-            level: "debug",
+            level: "info",
             message: `pong network ${this.chainId}`,
           });
         })

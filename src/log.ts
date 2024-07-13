@@ -4,7 +4,7 @@ const { combine, timestamp, prettyPrint, json } = format;
 
 const log = createLogger({
   transports: [new transports.Console()],
-  format: combine(json(), timestamp() /* prettyPrint() */),
+  format: combine(json(), timestamp()),
 });
 
 export default log;
