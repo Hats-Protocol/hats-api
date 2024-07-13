@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import { createBuiltMeshHTTPHandler } from "../.mesh/index";
+import { createBuiltMeshHTTPHandler } from "../.mesh";
 import { CacheInvalidationManager } from "./invalidation";
 import logger from "./log";
 import {
