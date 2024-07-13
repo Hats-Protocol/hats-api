@@ -66,6 +66,17 @@ export const CHAIN_ID_TO_VIEM_CHAIN: { [key: string]: Chain } = {
   137: polygon,
 };
 
+export const CHAIN_ID_TO_MAIN_SUBGRAPH: { [key: string]: string } = {
+  1: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/subgraphs/id/AtrhAMCcVfPbmejxTez3G59Kdfu5tMFoiPsTUjdCzpKx`,
+  10: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/subgraphs/id/9nmXXk3ysDVY4sFygWQNQknwiJLCPnrUNzDRw8bxw61q`,
+  42161: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/subgraphs/id/4CiXQPjzKshBbyK2dgJiknTNWcj8cGUJsopTsXfm5HEk`,
+  100: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/subgraphs/id/2VPQUuAeS9Xy8VtinpjHRJEMnZS1sqzFQyCHAys1wb5n`,
+  42220: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/subgraphs/id/GpKseh3Z4nX2X8W5HjQPp5hpSSxPxsaQ3t1KpEjhvz7t`,
+  11155111: `https://api.studio.thegraph.com/query/55784/hats-v1-sepolia/v1.1.0`,
+  137: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/subgraphs/id/7MxsRb1p4UQNET8AgrWd93h3GUgeQ7NWrk5SHLEPCxBP`,
+  8453: `https://api.studio.thegraph.com/query/55784/hats-v1-base/v1.1.0`,
+};
+
 export const HATS_ADDRESS = "0x3bc1A0Ad72417f2d411118085256fC53CBdDd137";
 
 export const CLAIMS_HATTER_EVENTS = parseAbi([

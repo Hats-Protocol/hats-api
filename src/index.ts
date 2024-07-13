@@ -4,6 +4,12 @@ import "dotenv/config";
 import { createBuiltMeshHTTPHandler } from "../.mesh";
 import { CacheInvalidationManager } from "./invalidation";
 import logger from "./log";
+import {
+  ValidationError,
+  TransactionNotFoundError,
+  SubgraphSyncError,
+  InvalidationError,
+} from "./errors";
 
 const cachaeInvalidationManager = new CacheInvalidationManager();
 cachaeInvalidationManager.startServices();
@@ -40,7 +46,15 @@ app.post("/invalidate", async (req, res) => {
     );
     res.send("success");
   } catch (error) {
-    res.status(500).send("Internal Server Error");
+    if (error instanceof TransactionNotFoundError) {
+      res.status(400).send(error.message);
+    } else if (error instanceof SubgraphSyncError) {
+      res.status(400).send(error.message);
+    } else if (error instanceof InvalidationError) {
+      res.status(500).send(error.message);
+    } else {
+      res.status(500).send("Internal Server Error");
+    }
   }
 });
 

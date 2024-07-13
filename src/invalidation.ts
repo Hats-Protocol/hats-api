@@ -15,6 +15,7 @@ import {
   CHAIN_ID_TO_ENTITY_PREFIX,
   CHAIN_ID_TO_NETWORK_NAME,
   CHAIN_ID_TO_VIEM_CHAIN,
+  CHAIN_ID_TO_MAIN_SUBGRAPH,
 } from "./constants";
 import { RedisCacheClient } from "./redis";
 import logger from "./log";
@@ -31,6 +32,13 @@ import type {
   TransactionReceipt,
 } from "viem";
 import { parentHat } from "./utils";
+import {
+  ValidationError,
+  TransactionNotFoundError,
+  SubgraphSyncError,
+  InvalidationError,
+} from "./errors";
+import { GraphQLClient, gql } from "graphql-request";
 
 export class CacheInvalidationManager {
   private cache: RedisCacheClient;
@@ -126,6 +134,7 @@ export class CacheInvalidationService {
   private cache: RedisCacheClient;
   private publicSocketClient: PublicClient;
   private publicHttpClient: PublicClient;
+  private graphqlClient: GraphQLClient;
   private chainId: string;
   private key: number;
 
@@ -143,6 +152,7 @@ export class CacheInvalidationService {
       chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
       transport: http(CHAIN_ID_TO_HTTP_URL[chainId]),
     });
+    this.graphqlClient = new GraphQLClient(CHAIN_ID_TO_MAIN_SUBGRAPH[chainId]);
   }
 
   async start() {
@@ -177,11 +187,11 @@ export class CacheInvalidationService {
       address: HATS_ADDRESS,
       events: HATS_EVENTS,
       onLogs: (logs) => {
-        this.handleHatsEvents(
-          logs,
-          CHAIN_ID_TO_NETWORK_NAME[this.chainId],
-          CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
-        );
+        for (let i = 0; i < logs.length; i++) {
+          const log = logs[i];
+          const logTx = log.transactionHash;
+          this.processTransaction(logTx);
+        }
       },
     });
 
@@ -258,6 +268,8 @@ export class CacheInvalidationService {
 
   async processTransaction(txHash: `0x${string}`) {
     let transaction: TransactionReceipt;
+
+    // fetch transaction receipt
     try {
       transaction = await this.publicHttpClient.waitForTransactionReceipt({
         hash: txHash,
@@ -273,7 +285,54 @@ export class CacheInvalidationService {
         message: `error fetching transaction ${txHash} in chain ${this.chainId}`,
         error: err,
       });
+      throw new TransactionNotFoundError(
+        `Error: failed fetching transaction with ID ${txHash} from chain ${this.chainId}`
+      );
+    }
+
+    // skip if transaction already processed
+    const isProcessed = await this.cache.isTransactionProcessed(txHash);
+    if (isProcessed) {
+      logger.log({
+        level: "info",
+        message: `transaction ${txHash} already processed in chain ${this.chainId}`,
+      });
       return;
+    }
+
+    // wait for the subgraph to sync before invalidating
+    try {
+      const subgraphSynced = await this.waitForBlockMainSubgraph(
+        transaction.blockNumber
+      );
+      if (!subgraphSynced) {
+        logger.log({
+          level: "error",
+          message: `Timeout while waiting for block number ${transaction.blockNumber.toString()} in chain ${
+            this.chainId
+          }`,
+        });
+
+        throw new SubgraphSyncError(
+          `Error: failed waiting for block number ${transaction.blockNumber.toString()} in chain ${
+            this.chainId
+          }`
+        );
+      }
+    } catch (error) {
+      logger.log({
+        level: "error",
+        message: `Unexpected error while waiting for block number ${transaction.blockNumber.toString()} in chain ${
+          this.chainId
+        }`,
+        error: error,
+      });
+
+      throw new SubgraphSyncError(
+        `Error: failed waiting for block number ${transaction.blockNumber.toString()} in chain ${
+          this.chainId
+        }`
+      );
     }
 
     const hatsLogs = transaction.logs.filter(
@@ -286,12 +345,17 @@ export class CacheInvalidationService {
         CHAIN_ID_TO_NETWORK_NAME[this.chainId],
         CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
       );
+      await this.cache.markTransactionProcessed(txHash);
     } catch (err) {
       logger.log({
         level: "error",
         message: `error processing hats events for transaction ${txHash} in chain ${this.chainId}`,
         error: err,
       });
+
+      throw new InvalidationError(
+        `Error: failed processing events for transaction ${txHash} in chain ${this.chainId}`
+      );
     }
   }
 
@@ -436,5 +500,64 @@ export class CacheInvalidationService {
         );
       })
     );
+  }
+
+  async waitForBlockMainSubgraph(blockNumber: bigint): Promise<boolean> {
+    const delay = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
+
+    const timeoutPromise = (timeout: number) =>
+      new Promise((_, reject) =>
+        setTimeout(
+          () =>
+            reject(new Error("Timeout waiting for block number to be reached")),
+          timeout
+        )
+      );
+    const timeoutDuration = 10000; // Timeout after 10 seconds
+
+    // Poll for block number with timeout
+    const pollForBlockNumber = async () => {
+      while (true) {
+        const latestBlockNumber = await this.getLatestBlockMainSubgraph();
+        if (latestBlockNumber >= blockNumber) {
+          return;
+        }
+        await delay(1000); // Wait for 1 second before checking again
+      }
+    };
+
+    try {
+      await Promise.race([
+        pollForBlockNumber(),
+        timeoutPromise(timeoutDuration),
+      ]);
+    } catch (error) {
+      logger.log({
+        level: "error",
+        message: `Failed to reach desired block number within timeout`,
+        blockNumber: blockNumber.toString(),
+        network: this.chainId,
+      });
+      return false;
+    }
+
+    return true;
+  }
+
+  async getLatestBlockMainSubgraph(): Promise<bigint> {
+    const entityPrefix = CHAIN_ID_TO_ENTITY_PREFIX[this.chainId];
+    const query = gql`
+      {
+        ${entityPrefix}_meta {
+          block {
+            number
+          }
+        }
+      }
+    `;
+
+    const data: any = await this.graphqlClient.request(query);
+    return BigInt(data[`${entityPrefix}_meta`].block.number);
   }
 }

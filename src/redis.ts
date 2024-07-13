@@ -13,6 +13,17 @@ export class RedisCacheClient {
     });
   }
 
+  async isTransactionProcessed(transactionId: string): Promise<boolean> {
+    const key = `transaction:${transactionId}`;
+    const result = await this._client.get(key);
+    return result !== null;
+  }
+
+  async markTransactionProcessed(transactionId: string): Promise<void> {
+    const key = `transaction:${transactionId}`;
+    await this._client.set(key, "true", "EX", 60);
+  }
+
   async invalidateEntity(entityName: string, entityId: string): Promise<void> {
     const entity = `${entityName}.${entityId}`;
     logger.log({
