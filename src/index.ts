@@ -3,7 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import { createBuiltMeshHTTPHandler } from "../.mesh";
 import { CacheInvalidationManager } from "./invalidation";
-import log from "./log";
+import logger from "./log";
 
 const cachaeInvalidationManager = new CacheInvalidationManager();
 cachaeInvalidationManager.startServices();
@@ -22,13 +22,12 @@ app.post("/invalidate", async (req, res) => {
     networkId,
   }: { transactionId: `0x${string}`; networkId: string } = req.body;
 
-  log.info(
-    `${JSON.stringify({
-      type: "post request to /invalidate",
-      transactionId,
-      networkId,
-    })}`
-  );
+  logger.log({
+    level: "info",
+    message: "POST /invalidate",
+    transactionId: transactionId,
+    networkId: networkId,
+  });
 
   if (!transactionId || !networkId) {
     return res.status(400).send("Missing transaction hash or network ID");
@@ -46,5 +45,5 @@ app.post("/invalidate", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  log.info(`server started on port ${PORT}`);
+  logger.log({ level: "info", message: `server started on port ${PORT}` });
 });

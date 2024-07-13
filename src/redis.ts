@@ -1,5 +1,5 @@
 import { Redis } from "ioredis";
-import log from "./log";
+import logger from "./log";
 
 export class RedisCacheClient {
   private readonly _client: Redis;
@@ -15,13 +15,12 @@ export class RedisCacheClient {
 
   async invalidateEntity(entityName: string, entityId: string): Promise<void> {
     const entity = `${entityName}.${entityId}`;
-    log.info(
-      `${JSON.stringify({
-        type: "invalidation start",
-        name: entityName,
-        id: entityId,
-      })}`
-    );
+    logger.log({
+      level: "info",
+      message: `Invalidating entity ${entityName} with ID ${entityId}`,
+      entity: `${entityName}.${entityId}`,
+    });
+
     const matchParam = `*${entity}*`;
     const stream = this._client.scanStream({
       match: matchParam,
@@ -54,15 +53,14 @@ export class RedisCacheClient {
         stream.on("error", reject);
       });
     } catch (error) {
-      log.error(
-        `${JSON.stringify({
-          type: "invalidation error",
-          name: entityName,
-          id: entityId,
-          hashes: keysToDelete,
-          error: error,
-        })}`
-      );
+      logger.log({
+        level: "error",
+        message: `Invalidation error`,
+        entity: `${entityName}.${entityId}`,
+        keysToDelete: keysToDelete,
+        error: error,
+      });
+
       throw new Error(
         `Error invalidating entity ${entityName} with ID ${entityId}: ${error}`
       );
@@ -70,24 +68,21 @@ export class RedisCacheClient {
 
     try {
       await Promise.all(operations);
-      log.info(
-        `${JSON.stringify({
-          type: "invalidation success",
-          name: entityName,
-          id: entityId,
-          hashes: keysToDelete,
-        })}`
-      );
+      logger.log({
+        level: "info",
+        message: "Invalidation success",
+        entity: `${entityName}.${entityId}`,
+        keysToDelete: keysToDelete,
+      });
     } catch (error) {
-      log.error(
-        `${JSON.stringify({
-          type: "invalidation error",
-          name: entityName,
-          id: entityId,
-          hashes: keysToDelete,
-          error: error,
-        })}`
-      );
+      logger.log({
+        level: "error",
+        message: `Invalidation error`,
+        entity: `${entityName}.${entityId}`,
+        keysToDelete: keysToDelete,
+        error: error,
+      });
+
       throw new Error(
         `Error invalidating entity ${entityName} with ID ${entityId}: ${error}`
       );

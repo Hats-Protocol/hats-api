@@ -146,13 +146,20 @@ export class CacheInvalidationService {
   }
 
   async start() {
-    logger.info(`connecting network ${this.chainId}`);
+    logger.log({
+      level: "info",
+      message: `connecting network ${this.chainId}`,
+    });
 
     let socketRpcClient: any;
     try {
       socketRpcClient = await this.publicSocketClient.transport.getRpcClient();
     } catch (error) {
-      logger.info(`fetching rpc client in network ${this.chainId} failed`);
+      logger.log({
+        level: "error",
+        message: `fetching rpc client in network ${this.chainId} failed`,
+        error: error,
+      });
     }
 
     // watch Calims Hatters events
@@ -179,25 +186,41 @@ export class CacheInvalidationService {
     });
 
     const heartbeat = () => {
-      logger.info(`ping network ${this.chainId}`);
+      logger.log({ level: "info", message: `ping network ${this.chainId}` });
       this.publicSocketClient
         .getBlockNumber()
         .then((_) => {
-          logger.info(`pong network ${this.chainId}`);
+          logger.log({
+            level: "info",
+            message: `pong network ${this.chainId}`,
+          });
         })
-        .catch((err) => logger.info(`error in chain ${this.chainId}: ${err}`));
+        .catch((err) =>
+          logger.log({
+            level: "error",
+            message: `error in chain ${this.chainId}`,
+            error: err,
+          })
+        );
     };
 
     const intervalId = setInterval(heartbeat, 5 * 60 * 1000);
 
     const onError = (ev: any) => {
-      logger.info(`error in chain ${this.chainId}: ${ev}`);
+      logger.log({
+        level: "error",
+        message: `error in chain ${this.chainId}`,
+        error: ev,
+      });
     };
     const onClose = (ev: any) => {
       try {
-        logger.info(
-          `Websocket connection closed in network ${this.chainId}. Code: ${ev.code}, Reason: ${ev.reason}`
-        );
+        logger.log({
+          level: "info",
+          message: `Websocket connection closed in network ${this.chainId}`,
+          code: ev.code,
+          reason: ev.reason,
+        });
         clearInterval(intervalId);
         socketRpcClient.socket.removeEventListener("error", onError);
         socketRpcClient.socket.removeEventListener("close", onClose);
@@ -216,7 +239,11 @@ export class CacheInvalidationService {
         });
         this.start();
       } catch (error) {
-        logger.info(`error in onClose handler in network ${this.chainId}`);
+        logger.log({
+          level: "error",
+          message: `error in onClose handler in network ${this.chainId}`,
+          error: error,
+        });
       }
     };
 
@@ -241,9 +268,11 @@ export class CacheInvalidationService {
         return;
       }
     } catch (err) {
-      logger.info(
-        `error fetching transaction ${txHash} in chain ${this.chainId}: ${err}`
-      );
+      logger.log({
+        level: "error",
+        message: `error fetching transaction ${txHash} in chain ${this.chainId}`,
+        error: err,
+      });
       return;
     }
 
@@ -258,9 +287,11 @@ export class CacheInvalidationService {
         CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
       );
     } catch (err) {
-      logger.info(
-        `error processing hats events for transaction ${txHash} in chain ${this.chainId}: ${err}`
-      );
+      logger.log({
+        level: "error",
+        message: `error processing hats events for transaction ${txHash} in chain ${this.chainId}`,
+        error: err,
+      });
     }
   }
 
@@ -278,16 +309,14 @@ export class CacheInvalidationService {
 
     for (let i = 0; i < parsedLogs.length; i++) {
       const log = parsedLogs[i];
-      logger.info(
-        `${JSON.stringify({
-          type: "processing event",
-          eventName: log.eventName,
-          logIndex: log.logIndex,
-          index: i,
-          transactionHash: log.transactionHash,
-          networkName: networkName,
-        })}`
-      );
+      logger.log({
+        level: "info",
+        message: `processing event ${log.eventName} in network ${networkName}`,
+        transactionHash: log.transactionHash,
+        logIndex: log.logIndex,
+        index: i,
+      });
+
       if (
         log.eventName === "HatDetailsChanged" ||
         log.eventName === "HatStatusChanged" ||
@@ -396,7 +425,11 @@ export class CacheInvalidationService {
   ) {
     await Promise.all(
       claimsHatters.map((hatter) => {
-        logger.info(`processing claims hatter event of address ${hatter}`);
+        logger.log({
+          level: "info",
+          message: `processing claims hatter event of address ${hatter}`,
+          entity: `${entityPrefix}_ClaimsHatter.${hatter.toLowerCase()}`,
+        });
         return this.cache.invalidateEntity(
           `${entityPrefix}_ClaimsHatter`,
           hatter.toLowerCase()
