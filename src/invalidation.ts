@@ -520,6 +520,10 @@ export class CacheInvalidationService {
     const pollForBlockNumber = async () => {
       while (true) {
         const latestBlockNumber = await this.getLatestBlockMainSubgraph();
+        logger.log({
+          level: "info",
+          message: `waiting, latest block number: ${latestBlockNumber.toString()}`,
+        });
         if (latestBlockNumber >= blockNumber) {
           return;
         }
@@ -538,6 +542,7 @@ export class CacheInvalidationService {
         message: `Failed to reach desired block number within timeout`,
         blockNumber: blockNumber.toString(),
         network: this.chainId,
+        error: error,
       });
       return false;
     }
