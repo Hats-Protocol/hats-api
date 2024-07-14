@@ -146,13 +146,13 @@ export class CacheInvalidationService {
     this.chainId = chainId;
     this.key = 0;
     this.publicSocketClient = createPublicClient({
-      chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
+      chain: CHAIN_ID_TO_VIEM_CHAIN[chainId],
       transport: webSocket(CHAIN_ID_TO_SOCKET_URL[chainId], {
         key: this.key.toString(),
       }),
     });
     this.publicHttpClient = createPublicClient({
-      chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
+      chain: CHAIN_ID_TO_VIEM_CHAIN[chainId],
       transport: http(CHAIN_ID_TO_HTTP_URL[chainId]),
     });
     this.graphqlClient = new GraphQLClient(CHAIN_ID_TO_MAIN_SUBGRAPH[chainId]);
@@ -270,8 +270,14 @@ export class CacheInvalidationService {
   }
 
   async processTransaction(txHash: `0x${string}`) {
-    let transaction: TransactionReceipt;
+    logger.log({
+      level: "info",
+      message: `processing transaction ${txHash} in chain ${this.chainId}`,
+      chain: this.chainId,
+      txHash: txHash,
+    });
 
+    let transaction: TransactionReceipt;
     // fetch transaction receipt
     try {
       transaction = await this.publicHttpClient.waitForTransactionReceipt({
