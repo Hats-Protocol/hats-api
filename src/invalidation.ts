@@ -562,6 +562,6 @@ export class CacheInvalidationService {
     `;
 
     const data: any = await this.graphqlClient.request(query);
-    return BigInt(data.__meta.block.number);
+    return BigInt(data._meta.block.number);
   }
 }
