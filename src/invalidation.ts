@@ -514,9 +514,9 @@ export class CacheInvalidationService {
           timeout
         )
       );
-    const timeoutDuration = 10000; // Timeout after 10 seconds
+    const timeoutDuration = 10000; // timeout after 10 seconds
 
-    // Poll for block number with timeout
+    // poll for block number with timeout
     const pollForBlockNumber = async () => {
       while (true) {
         const latestBlockNumber = await this.getLatestBlockMainSubgraph();
@@ -527,7 +527,7 @@ export class CacheInvalidationService {
         if (latestBlockNumber >= blockNumber) {
           return;
         }
-        await delay(1000); // Wait for 1 second before checking again
+        await delay(1000); // wait for 1 second before checking again
       }
     };
 
