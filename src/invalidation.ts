@@ -295,6 +295,10 @@ export class CacheInvalidationService {
 
     const isProcessed = this.inMemCache.get(transaction.transactionHash);
     if (isProcessed) {
+      logger.log({
+        level: "info",
+        message: `transaction ${txHash} already processed in chain ${this.chainId}`,
+      });
       return;
     } else {
       this.inMemCache.set(transaction.transactionHash, true);
