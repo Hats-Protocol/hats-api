@@ -11,7 +11,7 @@ sources:
   - name: Ethereum_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-ethereum-ancillary/v0.0.12
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-ethereum-ancillary/v0.0.13
     transforms:
       - prefix:
           mode: wrap
@@ -29,7 +29,7 @@ sources:
   - name: Optimism_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-optimism-ancillary/v0.0.12
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-optimism-ancillary/v0.0.13
     transforms:
       - prefix:
           mode: wrap
@@ -47,7 +47,7 @@ sources:
   - name: Arbitrum_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-arbitrum-ancillary/v0.0.12
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-arbitrum-ancillary/v0.0.13
     transforms:
       - prefix:
           mode: wrap
@@ -65,7 +65,7 @@ sources:
   - name: Gnosis_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-gnosis-chain-ancillary/v0.0.12
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-gnosis-chain-ancillary/v0.0.13
     transforms:
       - prefix:
           mode: wrap
