@@ -276,7 +276,7 @@ export class CacheInvalidationService {
     try {
       transaction = await this.publicHttpClient.waitForTransactionReceipt({
         hash: txHash,
-        timeout: 3000,
+        timeout: 5000,
       });
 
       if (!transaction) {
@@ -299,16 +299,6 @@ export class CacheInvalidationService {
     } else {
       this.inMemCache.set(transaction.transactionHash, true);
     }
-
-    // skip if transaction already processed
-    // const isProcessed = await this.cache.isTransactionProcessed(txHash);
-    // if (isProcessed) {
-    //   logger.log({
-    //     level: "info",
-    //     message: `transaction ${txHash} already processed in chain ${this.chainId}`,
-    //   });
-    //   return;
-    // }
 
     // wait for the subgraph to sync before invalidating
     try {
