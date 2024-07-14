@@ -551,10 +551,9 @@ export class CacheInvalidationService {
   }
 
   async getLatestBlockMainSubgraph(): Promise<bigint> {
-    const entityPrefix = CHAIN_ID_TO_ENTITY_PREFIX[this.chainId];
     const query = gql`
       {
-        ${entityPrefix}__meta {
+        _meta {
           block {
             number
           }
@@ -563,6 +562,6 @@ export class CacheInvalidationService {
     `;
 
     const data: any = await this.graphqlClient.request(query);
-    return BigInt(data[`${entityPrefix}__meta`].block.number);
+    return BigInt(data.__meta.block.number);
   }
 }
