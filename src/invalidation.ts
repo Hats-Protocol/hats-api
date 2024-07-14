@@ -39,6 +39,7 @@ import {
   InvalidationError,
 } from "./errors";
 import { GraphQLClient, gql } from "graphql-request";
+import { LRUCache } from "lru-cache";
 
 export class CacheInvalidationManager {
   private cache: RedisCacheClient;
@@ -132,6 +133,7 @@ export class CacheInvalidationManager {
 
 export class CacheInvalidationService {
   private cache: RedisCacheClient;
+  private inMemCache: LRUCache<string, boolean>;
   private publicSocketClient: PublicClient;
   private publicHttpClient: PublicClient;
   private graphqlClient: GraphQLClient;
@@ -140,6 +142,7 @@ export class CacheInvalidationService {
 
   constructor(cacheClient: RedisCacheClient, chainId: string) {
     this.cache = cacheClient;
+    this.inMemCache = new LRUCache<string, boolean>({ max: 100 });
     this.chainId = chainId;
     this.key = 0;
     this.publicSocketClient = createPublicClient({
@@ -290,15 +293,22 @@ export class CacheInvalidationService {
       );
     }
 
-    // skip if transaction already processed
-    const isProcessed = await this.cache.isTransactionProcessed(txHash);
+    const isProcessed = this.inMemCache.get(transaction.transactionHash);
     if (isProcessed) {
-      logger.log({
-        level: "info",
-        message: `transaction ${txHash} already processed in chain ${this.chainId}`,
-      });
       return;
+    } else {
+      this.inMemCache.set(transaction.transactionHash, true);
     }
+
+    // skip if transaction already processed
+    // const isProcessed = await this.cache.isTransactionProcessed(txHash);
+    // if (isProcessed) {
+    //   logger.log({
+    //     level: "info",
+    //     message: `transaction ${txHash} already processed in chain ${this.chainId}`,
+    //   });
+    //   return;
+    // }
 
     // wait for the subgraph to sync before invalidating
     try {
