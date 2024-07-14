@@ -554,7 +554,7 @@ export class CacheInvalidationService {
     const entityPrefix = CHAIN_ID_TO_ENTITY_PREFIX[this.chainId];
     const query = gql`
       {
-        ${entityPrefix}_meta {
+        ${entityPrefix}__meta {
           block {
             number
           }
