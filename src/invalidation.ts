@@ -3,6 +3,7 @@ import {
   webSocket,
   http,
   parseEventLogs,
+  decodeEventLog,
   verifyMessage,
 } from "viem";
 import {
@@ -15,6 +16,7 @@ import {
   CHAIN_ID_TO_ENTITY_PREFIX,
   CHAIN_ID_TO_NETWORK_NAME,
   CHAIN_ID_TO_VIEM_CHAIN,
+  CHAIN_ID_TO_MAIN_SUBGRAPH,
 } from "./constants";
 import { RedisCacheClient } from "./redis";
 import logger from "./log";
@@ -31,6 +33,14 @@ import type {
   TransactionReceipt,
 } from "viem";
 import { parentHat } from "./utils";
+import {
+  ValidationError,
+  TransactionNotFoundError,
+  SubgraphSyncError,
+  InvalidationError,
+} from "./errors";
+import { GraphQLClient, gql } from "graphql-request";
+import { LRUCache } from "lru-cache";
 
 export class CacheInvalidationManager {
   private cache: RedisCacheClient;
@@ -124,45 +134,58 @@ export class CacheInvalidationManager {
 
 export class CacheInvalidationService {
   private cache: RedisCacheClient;
+  private inMemCache: LRUCache<string, boolean>;
   private publicSocketClient: PublicClient;
   private publicHttpClient: PublicClient;
+  private graphqlClient: GraphQLClient;
   private chainId: string;
   private key: number;
 
   constructor(cacheClient: RedisCacheClient, chainId: string) {
     this.cache = cacheClient;
+    this.inMemCache = new LRUCache<string, boolean>({ max: 100 });
     this.chainId = chainId;
     this.key = 0;
     this.publicSocketClient = createPublicClient({
-      chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
+      chain: CHAIN_ID_TO_VIEM_CHAIN[chainId],
       transport: webSocket(CHAIN_ID_TO_SOCKET_URL[chainId], {
         key: this.key.toString(),
       }),
     });
     this.publicHttpClient = createPublicClient({
-      chain: CHAIN_ID_TO_VIEM_CHAIN[this.chainId],
+      chain: CHAIN_ID_TO_VIEM_CHAIN[chainId],
       transport: http(CHAIN_ID_TO_HTTP_URL[chainId]),
     });
+    this.graphqlClient = new GraphQLClient(CHAIN_ID_TO_MAIN_SUBGRAPH[chainId]);
   }
 
   async start() {
-    logger.info(`connecting network ${this.chainId}`);
+    logger.log({
+      level: "info",
+      message: `connecting network ${this.chainId}`,
+    });
 
     let socketRpcClient: any;
     try {
       socketRpcClient = await this.publicSocketClient.transport.getRpcClient();
     } catch (error) {
-      logger.info(`fetching rpc client in network ${this.chainId} failed`);
+      logger.log({
+        level: "error",
+        message: `fetching rpc client in network ${this.chainId} failed`,
+        error: error,
+      });
     }
 
     // watch Calims Hatters events
     const unwatchClaimsHatter = this.publicSocketClient.watchEvent({
       events: CLAIMS_HATTER_EVENTS,
-      onLogs: (logs) =>
-        this.handleClaimsHatterEvents(
-          logs.map((log) => log.address),
-          CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
-        ),
+      onLogs: (logs) => {
+        for (let i = 0; i < logs.length; i++) {
+          const log = logs[i];
+          const logTx = log.transactionHash;
+          this.processTransaction(logTx);
+        }
+      },
     });
 
     // watch Hats events
@@ -170,34 +193,50 @@ export class CacheInvalidationService {
       address: HATS_ADDRESS,
       events: HATS_EVENTS,
       onLogs: (logs) => {
-        this.handleHatsEvents(
-          logs,
-          CHAIN_ID_TO_NETWORK_NAME[this.chainId],
-          CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
-        );
+        for (let i = 0; i < logs.length; i++) {
+          const log = logs[i];
+          const logTx = log.transactionHash;
+          this.processTransaction(logTx);
+        }
       },
     });
 
     const heartbeat = () => {
-      logger.info(`ping network ${this.chainId}`);
+      logger.log({ level: "info", message: `ping network ${this.chainId}` });
       this.publicSocketClient
         .getBlockNumber()
         .then((_) => {
-          logger.info(`pong network ${this.chainId}`);
+          logger.log({
+            level: "info",
+            message: `pong network ${this.chainId}`,
+          });
         })
-        .catch((err) => logger.info(`error in chain ${this.chainId}: ${err}`));
+        .catch((err) =>
+          logger.log({
+            level: "error",
+            message: `error in chain ${this.chainId}`,
+            error: err,
+          })
+        );
     };
 
     const intervalId = setInterval(heartbeat, 5 * 60 * 1000);
 
     const onError = (ev: any) => {
-      logger.info(`error in chain ${this.chainId}: ${ev}`);
+      logger.log({
+        level: "error",
+        message: `error in chain ${this.chainId}`,
+        error: ev,
+      });
     };
     const onClose = (ev: any) => {
       try {
-        logger.info(
-          `Websocket connection closed in network ${this.chainId}. Code: ${ev.code}, Reason: ${ev.reason}`
-        );
+        logger.log({
+          level: "info",
+          message: `Websocket connection closed in network ${this.chainId}`,
+          code: ev.code,
+          reason: ev.reason,
+        });
         clearInterval(intervalId);
         socketRpcClient.socket.removeEventListener("error", onError);
         socketRpcClient.socket.removeEventListener("close", onClose);
@@ -216,7 +255,11 @@ export class CacheInvalidationService {
         });
         this.start();
       } catch (error) {
-        logger.info(`error in onClose handler in network ${this.chainId}`);
+        logger.log({
+          level: "error",
+          message: `error in onClose handler in network ${this.chainId}`,
+          error: error,
+        });
       }
     };
 
@@ -230,26 +273,104 @@ export class CacheInvalidationService {
   }
 
   async processTransaction(txHash: `0x${string}`) {
-    let transaction: TransactionReceipt;
-    try {
-      transaction = await this.publicHttpClient.waitForTransactionReceipt({
-        hash: txHash,
-        timeout: 3000,
-      });
+    logger.log({
+      level: "info",
+      message: `processing transaction ${txHash} in chain ${this.chainId}`,
+      chain: this.chainId,
+      txHash: txHash,
+    });
 
-      if (!transaction) {
+    let transactionReceipt: TransactionReceipt;
+    // fetch transaction receipt
+    try {
+      transactionReceipt =
+        await this.publicHttpClient.waitForTransactionReceipt({
+          hash: txHash,
+          timeout: 8000,
+        });
+
+      if (!transactionReceipt) {
         return;
       }
     } catch (err) {
-      logger.info(
-        `error fetching transaction ${txHash} in chain ${this.chainId}: ${err}`
+      logger.log({
+        level: "error",
+        message: `error fetching transaction ${txHash} in chain ${this.chainId}`,
+        error: err,
+      });
+      throw new TransactionNotFoundError(
+        `Error: failed fetching transaction with ID ${txHash} from chain ${this.chainId}`
       );
-      return;
     }
 
-    const hatsLogs = transaction.logs.filter(
+    const isProcessed = this.inMemCache.get(transactionReceipt.transactionHash);
+    if (isProcessed) {
+      logger.log({
+        level: "info",
+        message: `transaction ${txHash} already processed in chain ${this.chainId}`,
+      });
+      return;
+    } else {
+      this.inMemCache.set(transactionReceipt.transactionHash, true);
+    }
+
+    // wait for the subgraph to sync before invalidating
+    try {
+      const subgraphSynced = await this.waitForBlockMainSubgraph(
+        transactionReceipt.blockNumber
+      );
+      if (!subgraphSynced) {
+        logger.log({
+          level: "error",
+          message: `Timeout while waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
+            this.chainId
+          }`,
+        });
+
+        throw new SubgraphSyncError(
+          `Error: failed waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
+            this.chainId
+          }`
+        );
+      }
+    } catch (error) {
+      logger.log({
+        level: "error",
+        message: `Unexpected error while waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
+          this.chainId
+        }`,
+        error: error,
+      });
+
+      throw new SubgraphSyncError(
+        `Error: failed waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
+          this.chainId
+        }`
+      );
+    }
+
+    const hatsLogs = transactionReceipt.logs.filter(
       (log) => log.address === HATS_ADDRESS.toLowerCase()
     );
+
+    let claimsHatterInstances: `0x${string}`[] = [];
+    for (
+      let eventIndex = 0;
+      eventIndex < transactionReceipt.logs.length;
+      eventIndex++
+    ) {
+      try {
+        const event = decodeEventLog({
+          abi: CLAIMS_HATTER_EVENTS,
+          data: transactionReceipt.logs[eventIndex].data,
+          topics: transactionReceipt.logs[eventIndex].topics,
+        });
+
+        claimsHatterInstances.push(transactionReceipt.logs[eventIndex].address);
+      } catch (err) {
+        // continue
+      }
+    }
 
     try {
       await this.handleHatsEvents(
@@ -257,9 +378,19 @@ export class CacheInvalidationService {
         CHAIN_ID_TO_NETWORK_NAME[this.chainId],
         CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
       );
+      await this.handleClaimsHatterEvents(
+        claimsHatterInstances,
+        CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
+      );
     } catch (err) {
-      logger.info(
-        `error processing hats events for transaction ${txHash} in chain ${this.chainId}: ${err}`
+      logger.log({
+        level: "error",
+        message: `error processing hats events for transaction ${txHash} in chain ${this.chainId}`,
+        error: err,
+      });
+
+      throw new InvalidationError(
+        `Error: failed processing events for transaction ${txHash} in chain ${this.chainId}`
       );
     }
   }
@@ -278,16 +409,14 @@ export class CacheInvalidationService {
 
     for (let i = 0; i < parsedLogs.length; i++) {
       const log = parsedLogs[i];
-      logger.info(
-        `${JSON.stringify({
-          type: "processing event",
-          eventName: log.eventName,
-          logIndex: log.logIndex,
-          index: i,
-          transactionHash: log.transactionHash,
-          networkName: networkName,
-        })}`
-      );
+      logger.log({
+        level: "info",
+        message: `processing event ${log.eventName} in network ${networkName}`,
+        transactionHash: log.transactionHash,
+        logIndex: log.logIndex,
+        index: i,
+      });
+
       if (
         log.eventName === "HatDetailsChanged" ||
         log.eventName === "HatStatusChanged" ||
@@ -396,12 +525,79 @@ export class CacheInvalidationService {
   ) {
     await Promise.all(
       claimsHatters.map((hatter) => {
-        logger.info(`processing claims hatter event of address ${hatter}`);
+        logger.log({
+          level: "info",
+          message: `processing claims hatter event of address ${hatter}`,
+          entity: `${entityPrefix}_ClaimsHatter.${hatter.toLowerCase()}`,
+        });
         return this.cache.invalidateEntity(
           `${entityPrefix}_ClaimsHatter`,
           hatter.toLowerCase()
         );
       })
     );
+  }
+
+  async waitForBlockMainSubgraph(blockNumber: bigint): Promise<boolean> {
+    const delay = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
+
+    const timeoutPromise = (timeout: number) =>
+      new Promise((_, reject) =>
+        setTimeout(
+          () =>
+            reject(new Error("Timeout waiting for block number to be reached")),
+          timeout
+        )
+      );
+    const timeoutDuration = 10000; // timeout after 10 seconds
+
+    // poll for block number with timeout
+    const pollForBlockNumber = async () => {
+      while (true) {
+        const latestBlockNumber = await this.getLatestBlockMainSubgraph();
+        logger.log({
+          level: "info",
+          message: `waiting, latest block number: ${latestBlockNumber.toString()}`,
+        });
+        if (latestBlockNumber >= blockNumber) {
+          return;
+        }
+        await delay(1000); // wait for 1 second before checking again
+      }
+    };
+
+    try {
+      await Promise.race([
+        pollForBlockNumber(),
+        timeoutPromise(timeoutDuration),
+      ]);
+    } catch (error) {
+      logger.log({
+        level: "error",
+        message: `Failed to reach desired block number within timeout`,
+        blockNumber: blockNumber.toString(),
+        network: this.chainId,
+        error: error,
+      });
+      return false;
+    }
+
+    return true;
+  }
+
+  async getLatestBlockMainSubgraph(): Promise<bigint> {
+    const query = gql`
+      {
+        _meta {
+          block {
+            number
+          }
+        }
+      }
+    `;
+
+    const data: any = await this.graphqlClient.request(query);
+    return BigInt(data._meta.block.number);
   }
 }
