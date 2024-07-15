@@ -3,6 +3,7 @@ import {
   webSocket,
   http,
   parseEventLogs,
+  decodeEventLog,
   verifyMessage,
 } from "viem";
 import {
@@ -178,11 +179,13 @@ export class CacheInvalidationService {
     // watch Calims Hatters events
     const unwatchClaimsHatter = this.publicSocketClient.watchEvent({
       events: CLAIMS_HATTER_EVENTS,
-      onLogs: (logs) =>
-        this.handleClaimsHatterEvents(
-          logs.map((log) => log.address),
-          CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
-        ),
+      onLogs: (logs) => {
+        for (let i = 0; i < logs.length; i++) {
+          const log = logs[i];
+          const logTx = log.transactionHash;
+          this.processTransaction(logTx);
+        }
+      },
     });
 
     // watch Hats events
@@ -277,15 +280,16 @@ export class CacheInvalidationService {
       txHash: txHash,
     });
 
-    let transaction: TransactionReceipt;
+    let transactionReceipt: TransactionReceipt;
     // fetch transaction receipt
     try {
-      transaction = await this.publicHttpClient.waitForTransactionReceipt({
-        hash: txHash,
-        timeout: 5000,
-      });
+      transactionReceipt =
+        await this.publicHttpClient.waitForTransactionReceipt({
+          hash: txHash,
+          timeout: 5000,
+        });
 
-      if (!transaction) {
+      if (!transactionReceipt) {
         return;
       }
     } catch (err) {
@@ -299,7 +303,7 @@ export class CacheInvalidationService {
       );
     }
 
-    const isProcessed = this.inMemCache.get(transaction.transactionHash);
+    const isProcessed = this.inMemCache.get(transactionReceipt.transactionHash);
     if (isProcessed) {
       logger.log({
         level: "info",
@@ -307,24 +311,24 @@ export class CacheInvalidationService {
       });
       return;
     } else {
-      this.inMemCache.set(transaction.transactionHash, true);
+      this.inMemCache.set(transactionReceipt.transactionHash, true);
     }
 
     // wait for the subgraph to sync before invalidating
     try {
       const subgraphSynced = await this.waitForBlockMainSubgraph(
-        transaction.blockNumber
+        transactionReceipt.blockNumber
       );
       if (!subgraphSynced) {
         logger.log({
           level: "error",
-          message: `Timeout while waiting for block number ${transaction.blockNumber.toString()} in chain ${
+          message: `Timeout while waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
             this.chainId
           }`,
         });
 
         throw new SubgraphSyncError(
-          `Error: failed waiting for block number ${transaction.blockNumber.toString()} in chain ${
+          `Error: failed waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
             this.chainId
           }`
         );
@@ -332,22 +336,41 @@ export class CacheInvalidationService {
     } catch (error) {
       logger.log({
         level: "error",
-        message: `Unexpected error while waiting for block number ${transaction.blockNumber.toString()} in chain ${
+        message: `Unexpected error while waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
           this.chainId
         }`,
         error: error,
       });
 
       throw new SubgraphSyncError(
-        `Error: failed waiting for block number ${transaction.blockNumber.toString()} in chain ${
+        `Error: failed waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
           this.chainId
         }`
       );
     }
 
-    const hatsLogs = transaction.logs.filter(
+    const hatsLogs = transactionReceipt.logs.filter(
       (log) => log.address === HATS_ADDRESS.toLowerCase()
     );
+
+    let claimsHatterInstances: `0x${string}`[] = [];
+    for (
+      let eventIndex = 0;
+      eventIndex < transactionReceipt.logs.length;
+      eventIndex++
+    ) {
+      try {
+        const event = decodeEventLog({
+          abi: CLAIMS_HATTER_EVENTS,
+          data: transactionReceipt.logs[eventIndex].data,
+          topics: transactionReceipt.logs[eventIndex].topics,
+        });
+
+        claimsHatterInstances.push(transactionReceipt.logs[eventIndex].address);
+      } catch (err) {
+        // continue
+      }
+    }
 
     try {
       await this.handleHatsEvents(
@@ -355,7 +378,10 @@ export class CacheInvalidationService {
         CHAIN_ID_TO_NETWORK_NAME[this.chainId],
         CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
       );
-      await this.cache.markTransactionProcessed(txHash);
+      await this.handleClaimsHatterEvents(
+        claimsHatterInstances,
+        CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
+      );
     } catch (err) {
       logger.log({
         level: "error",
