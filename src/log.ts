@@ -1,12 +1,10 @@
-import winston from "winston";
+import { createLogger, format, transports } from "winston";
 
-const log = winston.createLogger({
-  transports: new winston.transports.Console({
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.simple()
-    ),
-  }),
+const { combine, timestamp, prettyPrint, json } = format;
+
+const log = createLogger({
+  transports: [new transports.Console()],
+  format: json(),
 });
 
 export default log;
