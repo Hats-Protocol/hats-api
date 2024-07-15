@@ -286,7 +286,7 @@ export class CacheInvalidationService {
       transactionReceipt =
         await this.publicHttpClient.waitForTransactionReceipt({
           hash: txHash,
-          timeout: 5000,
+          timeout: 8000,
         });
 
       if (!transactionReceipt) {
