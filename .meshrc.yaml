@@ -144,45 +144,85 @@ sources:
           value: Sep_
           includeRootOperations: true
 additionalTypeDefs: |
+  extend type Eth_Wearer {
+    ensName: String
+  }
+  extend type Op_Wearer {
+    ensName: String
+  }
+  extend type Arb_Wearer {
+    ensName: String
+  }
+  extend type Gno_Wearer {
+    ensName: String
+  }
+  extend type Celo_Wearer {
+    ensName: String
+  }
+  extend type Base_Wearer {
+    ensName: String
+  }
+  extend type Pol_Wearer {
+    ensName: String
+  }
+  extend type Sep_Wearer {
+    ensName: String
+  }
   extend type Eth_Hat {
     detailsMetadata: String
     authorities: Eth_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
   extend type Op_Hat {
     detailsMetadata: String
     authorities: Op_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
   extend type Arb_Hat {
     detailsMetadata: String
     authorities: Arb_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
   extend type Gno_Hat {
     detailsMetadata: String
     authorities: Gno_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
   extend type Celo_Hat {
     detailsMetadata: String
     authorities: Celo_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
   extend type Base_Hat {
     detailsMetadata: String
     authorities: Base_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
   extend type Pol_Hat {
     detailsMetadata: String
     authorities: Pol_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
   extend type Sep_Hat {
     detailsMetadata: String
     authorities: Sep_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
 additionalResolvers:
   - "./src/resolvers"
