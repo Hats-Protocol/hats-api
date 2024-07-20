@@ -229,21 +229,69 @@ additionalResolvers:
 plugins:
   - responseCache:
       ttlPerCoordinate:
+        - coordinate: Sep_Wearer.ensName
+          ttl: 0
+        - coordinate: Base_Wearer.ensName
+          ttl: 0
+        - coordinate: Op_Wearer.ensName
+          ttl: 0
+        - coordinate: Pol_Wearer.ensName
+          ttl: 0
+        - coordinate: Eth_Wearer.ensName
+          ttl: 0
+        - coordinate: Arb_Wearer.ensName
+          ttl: 0
+        - coordinate: Gno_Wearer.ensName
+          ttl: 0
+        - coordinate: Celo_Wearer.ensName
+          ttl: 0
         - coordinate: Sep_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Sep_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Sep_Hat.toggleEnsName
           ttl: 0
         - coordinate: Pol_Hat.eligibleWearers
           ttl: 0
+        - coordinate: Pol_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Pol_Hat.toggleEnsName
+          ttl: 0
         - coordinate: Base_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Base_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Base_Hat.toggleEnsName
           ttl: 0
         - coordinate: Op_Hat.eligibleWearers
           ttl: 0
+        - coordinate: Op_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Op_Hat.toggleEnsName
+          ttl: 0
         - coordinate: Eth_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Eth_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Eth_Hat.toggleEnsName
           ttl: 0
         - coordinate: Arb_Hat.eligibleWearers
           ttl: 0
+        - coordinate: Arb_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Arb_Hat.toggleEnsName
+          ttl: 0
         - coordinate: Gno_Hat.eligibleWearers
           ttl: 0
+        - coordinate: Gno_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Gno_Hat.toggleEnsName
+          ttl: 0
         - coordinate: Celo_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Celo_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Celo_Hat.toggleEnsName
           ttl: 0
       ignoredTypes:
         - Sep_HatAuthority
