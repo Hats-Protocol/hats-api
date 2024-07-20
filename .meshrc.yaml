@@ -147,39 +147,64 @@ additionalTypeDefs: |
   extend type Eth_Hat {
     detailsMetadata: String
     authorities: Eth_HatAuthority!
+    eligibleWearers: [String!]!
   }
   extend type Op_Hat {
     detailsMetadata: String
     authorities: Op_HatAuthority!
+    eligibleWearers: [String!]!
   }
   extend type Arb_Hat {
     detailsMetadata: String
     authorities: Arb_HatAuthority!
+    eligibleWearers: [String!]!
   }
   extend type Gno_Hat {
     detailsMetadata: String
     authorities: Gno_HatAuthority!
+    eligibleWearers: [String!]!
   }
   extend type Celo_Hat {
     detailsMetadata: String
     authorities: Celo_HatAuthority!
+    eligibleWearers: [String!]!
   }
   extend type Base_Hat {
     detailsMetadata: String
     authorities: Base_HatAuthority!
+    eligibleWearers: [String!]!
   }
   extend type Pol_Hat {
     detailsMetadata: String
     authorities: Pol_HatAuthority!
+    eligibleWearers: [String!]!
   }
   extend type Sep_Hat {
     detailsMetadata: String
     authorities: Sep_HatAuthority!
+    eligibleWearers: [String!]!
   }
 additionalResolvers:
   - "./src/resolvers"
 plugins:
   - responseCache:
+      ttlPerCoordinate:
+        - coordinate: Sep_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Pol_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Base_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Op_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Eth_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Arb_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Gno_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Celo_Hat.eligibleWearers
+          ttl: 0
       ignoredTypes:
         - Sep_HatAuthority
         - Pol_HatAuthority
