@@ -144,66 +144,154 @@ sources:
           value: Sep_
           includeRootOperations: true
 additionalTypeDefs: |
+  extend type Eth_Wearer {
+    ensName: String
+  }
+  extend type Op_Wearer {
+    ensName: String
+  }
+  extend type Arb_Wearer {
+    ensName: String
+  }
+  extend type Gno_Wearer {
+    ensName: String
+  }
+  extend type Celo_Wearer {
+    ensName: String
+  }
+  extend type Base_Wearer {
+    ensName: String
+  }
+  extend type Pol_Wearer {
+    ensName: String
+  }
+  extend type Sep_Wearer {
+    ensName: String
+  }
   extend type Eth_Hat {
     detailsMetadata: String
     authorities: Eth_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
   extend type Op_Hat {
     detailsMetadata: String
     authorities: Op_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
   extend type Arb_Hat {
     detailsMetadata: String
     authorities: Arb_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
   extend type Gno_Hat {
     detailsMetadata: String
     authorities: Gno_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
   extend type Celo_Hat {
     detailsMetadata: String
     authorities: Celo_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
   extend type Base_Hat {
     detailsMetadata: String
     authorities: Base_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
   extend type Pol_Hat {
     detailsMetadata: String
     authorities: Pol_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
   extend type Sep_Hat {
     detailsMetadata: String
     authorities: Sep_HatAuthority!
     eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
   }
 additionalResolvers:
   - "./src/resolvers"
 plugins:
   - responseCache:
       ttlPerCoordinate:
+        - coordinate: Sep_Wearer.ensName
+          ttl: 0
+        - coordinate: Base_Wearer.ensName
+          ttl: 0
+        - coordinate: Op_Wearer.ensName
+          ttl: 0
+        - coordinate: Pol_Wearer.ensName
+          ttl: 0
+        - coordinate: Eth_Wearer.ensName
+          ttl: 0
+        - coordinate: Arb_Wearer.ensName
+          ttl: 0
+        - coordinate: Gno_Wearer.ensName
+          ttl: 0
+        - coordinate: Celo_Wearer.ensName
+          ttl: 0
         - coordinate: Sep_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Sep_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Sep_Hat.toggleEnsName
           ttl: 0
         - coordinate: Pol_Hat.eligibleWearers
           ttl: 0
+        - coordinate: Pol_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Pol_Hat.toggleEnsName
+          ttl: 0
         - coordinate: Base_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Base_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Base_Hat.toggleEnsName
           ttl: 0
         - coordinate: Op_Hat.eligibleWearers
           ttl: 0
+        - coordinate: Op_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Op_Hat.toggleEnsName
+          ttl: 0
         - coordinate: Eth_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Eth_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Eth_Hat.toggleEnsName
           ttl: 0
         - coordinate: Arb_Hat.eligibleWearers
           ttl: 0
+        - coordinate: Arb_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Arb_Hat.toggleEnsName
+          ttl: 0
         - coordinate: Gno_Hat.eligibleWearers
           ttl: 0
+        - coordinate: Gno_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Gno_Hat.toggleEnsName
+          ttl: 0
         - coordinate: Celo_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: Celo_Hat.eligibilityEnsName
+          ttl: 0
+        - coordinate: Celo_Hat.toggleEnsName
           ttl: 0
       ignoredTypes:
         - Sep_HatAuthority

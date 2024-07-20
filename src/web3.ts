@@ -58,3 +58,14 @@ export const getWearersEligibility = async (
 
   return res;
 };
+
+export const getEnsName = async (
+  chain: string,
+  address: `0x${string}`
+): Promise<string | null> => {
+  const publicClient = publicClients["1"];
+  const ensName = await publicClient.getEnsName({
+    address,
+  });
+  return ensName;
+};

@@ -1,8 +1,16 @@
 import { Resolvers } from "../.mesh";
-import { getWearersEligibility } from "./web3";
+import { getWearersEligibility, getEnsName } from "./web3";
 import axios from "axios";
 
 const resolvers: Resolvers = {
+  Eth_Wearer: {
+    ensName: {
+      resolve: async (root, _args, context, info) => {
+        const ensName = await getEnsName("1", root.id as `0x${string}`);
+        return ensName;
+      },
+    },
+  },
   Eth_Hat: {
     detailsMetadata: {
       resolve: async (root, _args, context, info) => {
@@ -55,6 +63,28 @@ const resolvers: Resolvers = {
         return wearers
           .filter((w) => wearersEligibility[w.id as `0x${string}`] === true)
           .map((w) => w.id);
+      },
+    },
+    eligibilityEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const ensName = await getEnsName("1", eligibility as `0x${string}`);
+        return ensName;
+      },
+    },
+    toggleEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const ensName = await getEnsName("1", toggle as `0x${string}`);
+        return ensName;
+      },
+    },
+  },
+  Op_Wearer: {
+    ensName: {
+      resolve: async (root, _args, context, info) => {
+        const ensName = await getEnsName("10", root.id as `0x${string}`);
+        return ensName;
       },
     },
   },
@@ -112,6 +142,28 @@ const resolvers: Resolvers = {
           .map((w) => w.id);
       },
     },
+    eligibilityEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const ensName = await getEnsName("10", eligibility as `0x${string}`);
+        return ensName;
+      },
+    },
+    toggleEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const ensName = await getEnsName("10", toggle as `0x${string}`);
+        return ensName;
+      },
+    },
+  },
+  Arb_Wearer: {
+    ensName: {
+      resolve: async (root, _args, context, info) => {
+        const ensName = await getEnsName("42161", root.id as `0x${string}`);
+        return ensName;
+      },
+    },
   },
   Arb_Hat: {
     detailsMetadata: {
@@ -165,6 +217,28 @@ const resolvers: Resolvers = {
         return wearers
           .filter((w) => wearersEligibility[w.id as `0x${string}`] === true)
           .map((w) => w.id);
+      },
+    },
+    eligibilityEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const ensName = await getEnsName("42161", eligibility as `0x${string}`);
+        return ensName;
+      },
+    },
+    toggleEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const ensName = await getEnsName("42161", toggle as `0x${string}`);
+        return ensName;
+      },
+    },
+  },
+  Pol_Wearer: {
+    ensName: {
+      resolve: async (root, _args, context, info) => {
+        const ensName = await getEnsName("137", root.id as `0x${string}`);
+        return ensName;
       },
     },
   },
@@ -222,6 +296,28 @@ const resolvers: Resolvers = {
           .map((w) => w.id);
       },
     },
+    eligibilityEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const ensName = await getEnsName("137", eligibility as `0x${string}`);
+        return ensName;
+      },
+    },
+    toggleEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const ensName = await getEnsName("137", toggle as `0x${string}`);
+        return ensName;
+      },
+    },
+  },
+  Gno_Wearer: {
+    ensName: {
+      resolve: async (root, _args, context, info) => {
+        const ensName = await getEnsName("100", root.id as `0x${string}`);
+        return ensName;
+      },
+    },
   },
   Gno_Hat: {
     detailsMetadata: {
@@ -275,6 +371,28 @@ const resolvers: Resolvers = {
         return wearers
           .filter((w) => wearersEligibility[w.id as `0x${string}`] === true)
           .map((w) => w.id);
+      },
+    },
+    eligibilityEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const ensName = await getEnsName("100", eligibility as `0x${string}`);
+        return ensName;
+      },
+    },
+    toggleEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const ensName = await getEnsName("100", toggle as `0x${string}`);
+        return ensName;
+      },
+    },
+  },
+  Base_Wearer: {
+    ensName: {
+      resolve: async (root, _args, context, info) => {
+        const ensName = await getEnsName("8453", root.id as `0x${string}`);
+        return ensName;
       },
     },
   },
@@ -332,6 +450,28 @@ const resolvers: Resolvers = {
           .map((w) => w.id);
       },
     },
+    eligibilityEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const ensName = await getEnsName("8453", eligibility as `0x${string}`);
+        return ensName;
+      },
+    },
+    toggleEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const ensName = await getEnsName("8453", toggle as `0x${string}`);
+        return ensName;
+      },
+    },
+  },
+  Celo_Wearer: {
+    ensName: {
+      resolve: async (root, _args, context, info) => {
+        const ensName = await getEnsName("42220", root.id as `0x${string}`);
+        return ensName;
+      },
+    },
   },
   Celo_Hat: {
     detailsMetadata: {
@@ -387,6 +527,28 @@ const resolvers: Resolvers = {
           .map((w) => w.id);
       },
     },
+    eligibilityEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const ensName = await getEnsName("42220", eligibility as `0x${string}`);
+        return ensName;
+      },
+    },
+    toggleEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const ensName = await getEnsName("42220", toggle as `0x${string}`);
+        return ensName;
+      },
+    },
+  },
+  Sep_Wearer: {
+    ensName: {
+      resolve: async (root, _args, context, info) => {
+        const ensName = await getEnsName("11155111", root.id as `0x${string}`);
+        return ensName;
+      },
+    },
   },
   Sep_Hat: {
     detailsMetadata: {
@@ -440,6 +602,23 @@ const resolvers: Resolvers = {
         return wearers
           .filter((w) => wearersEligibility[w.id as `0x${string}`] === true)
           .map((w) => w.id);
+      },
+    },
+    eligibilityEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const ensName = await getEnsName(
+          "11155111",
+          eligibility as `0x${string}`
+        );
+        return ensName;
+      },
+    },
+    toggleEnsName: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const ensName = await getEnsName("11155111", toggle as `0x${string}`);
+        return ensName;
       },
     },
   },
