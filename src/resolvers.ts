@@ -1,4 +1,5 @@
 import { Resolvers } from "../.mesh";
+import { getWearersEligibility } from "./web3";
 import axios from "axios";
 
 const resolvers: Resolvers = {
@@ -42,6 +43,20 @@ const resolvers: Resolvers = {
         });
       },
     },
+    eligibleWearers: {
+      resolve: async (root, _args, context, info) => {
+        const wearers = root.wearers;
+        const wearersEligibility = await getWearersEligibility(
+          "1",
+          BigInt(root.id),
+          wearers.map((w) => w.id as `0x${string}`)
+        );
+
+        return wearers
+          .filter((w) => wearersEligibility[w.id as `0x${string}`] === true)
+          .map((w) => w.id);
+      },
+    },
   },
   Op_Hat: {
     detailsMetadata: {
@@ -81,6 +96,20 @@ const resolvers: Resolvers = {
           context,
           info,
         });
+      },
+    },
+    eligibleWearers: {
+      resolve: async (root, _args, context, info) => {
+        const wearers = root.wearers;
+        const wearersEligibility = await getWearersEligibility(
+          "10",
+          BigInt(root.id),
+          wearers.map((w) => w.id as `0x${string}`)
+        );
+
+        return wearers
+          .filter((w) => wearersEligibility[w.id as `0x${string}`] === true)
+          .map((w) => w.id);
       },
     },
   },
@@ -124,6 +153,20 @@ const resolvers: Resolvers = {
         });
       },
     },
+    eligibleWearers: {
+      resolve: async (root, _args, context, info) => {
+        const wearers = root.wearers;
+        const wearersEligibility = await getWearersEligibility(
+          "42161",
+          BigInt(root.id),
+          wearers.map((w) => w.id as `0x${string}`)
+        );
+
+        return wearers
+          .filter((w) => wearersEligibility[w.id as `0x${string}`] === true)
+          .map((w) => w.id);
+      },
+    },
   },
   Pol_Hat: {
     detailsMetadata: {
@@ -163,6 +206,20 @@ const resolvers: Resolvers = {
           context,
           info,
         });
+      },
+    },
+    eligibleWearers: {
+      resolve: async (root, _args, context, info) => {
+        const wearers = root.wearers;
+        const wearersEligibility = await getWearersEligibility(
+          "137",
+          BigInt(root.id),
+          wearers.map((w) => w.id as `0x${string}`)
+        );
+
+        return wearers
+          .filter((w) => wearersEligibility[w.id as `0x${string}`] === true)
+          .map((w) => w.id);
       },
     },
   },
@@ -206,6 +263,20 @@ const resolvers: Resolvers = {
         });
       },
     },
+    eligibleWearers: {
+      resolve: async (root, _args, context, info) => {
+        const wearers = root.wearers;
+        const wearersEligibility = await getWearersEligibility(
+          "100",
+          BigInt(root.id),
+          wearers.map((w) => w.id as `0x${string}`)
+        );
+
+        return wearers
+          .filter((w) => wearersEligibility[w.id as `0x${string}`] === true)
+          .map((w) => w.id);
+      },
+    },
   },
   Base_Hat: {
     detailsMetadata: {
@@ -245,6 +316,20 @@ const resolvers: Resolvers = {
           context,
           info,
         });
+      },
+    },
+    eligibleWearers: {
+      resolve: async (root, _args, context, info) => {
+        const wearers = root.wearers;
+        const wearersEligibility = await getWearersEligibility(
+          "8453",
+          BigInt(root.id),
+          wearers.map((w) => w.id as `0x${string}`)
+        );
+
+        return wearers
+          .filter((w) => wearersEligibility[w.id as `0x${string}`] === true)
+          .map((w) => w.id);
       },
     },
   },
@@ -288,6 +373,20 @@ const resolvers: Resolvers = {
         });
       },
     },
+    eligibleWearers: {
+      resolve: async (root, _args, context, info) => {
+        const wearers = root.wearers;
+        const wearersEligibility = await getWearersEligibility(
+          "42220",
+          BigInt(root.id),
+          wearers.map((w) => w.id as `0x${string}`)
+        );
+
+        return wearers
+          .filter((w) => wearersEligibility[w.id as `0x${string}`] === true)
+          .map((w) => w.id);
+      },
+    },
   },
   Sep_Hat: {
     detailsMetadata: {
@@ -327,6 +426,20 @@ const resolvers: Resolvers = {
           context,
           info,
         });
+      },
+    },
+    eligibleWearers: {
+      resolve: async (root, _args, context, info) => {
+        const wearers = root.wearers;
+        const wearersEligibility = await getWearersEligibility(
+          "11155111",
+          BigInt(root.id),
+          wearers.map((w) => w.id as `0x${string}`)
+        );
+
+        return wearers
+          .filter((w) => wearersEligibility[w.id as `0x${string}`] === true)
+          .map((w) => w.id);
       },
     },
   },
