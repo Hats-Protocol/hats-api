@@ -79,6 +79,40 @@ const resolvers: Resolvers = {
         return ensName;
       },
     },
+    isImageValid: {
+      resolve: async (root, _args, context, info) => {
+        const imageUri = root.imageUri;
+        if (imageUri.startsWith("ipfs://")) {
+          const cid = imageUri.slice(7);
+          try {
+            const res = await axios.head(
+              `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
+              { timeout: 7000 }
+            );
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        } else {
+          try {
+            const res = await axios.head(imageUri, { timeout: 7000 });
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        }
+      },
+    },
   },
   Op_Wearer: {
     ensName: {
@@ -154,6 +188,40 @@ const resolvers: Resolvers = {
         const toggle = root.toggle;
         const ensName = await getEnsName("10", toggle as `0x${string}`);
         return ensName;
+      },
+    },
+    isImageValid: {
+      resolve: async (root, _args, context, info) => {
+        const imageUri = root.imageUri;
+        if (imageUri.startsWith("ipfs://")) {
+          const cid = imageUri.slice(7);
+          try {
+            const res = await axios.head(
+              `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
+              { timeout: 7000 }
+            );
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        } else {
+          try {
+            const res = await axios.head(imageUri, { timeout: 7000 });
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        }
       },
     },
   },
@@ -233,6 +301,40 @@ const resolvers: Resolvers = {
         return ensName;
       },
     },
+    isImageValid: {
+      resolve: async (root, _args, context, info) => {
+        const imageUri = root.imageUri;
+        if (imageUri.startsWith("ipfs://")) {
+          const cid = imageUri.slice(7);
+          try {
+            const res = await axios.head(
+              `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
+              { timeout: 7000 }
+            );
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        } else {
+          try {
+            const res = await axios.head(imageUri, { timeout: 7000 });
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        }
+      },
+    },
   },
   Pol_Wearer: {
     ensName: {
@@ -308,6 +410,40 @@ const resolvers: Resolvers = {
         const toggle = root.toggle;
         const ensName = await getEnsName("137", toggle as `0x${string}`);
         return ensName;
+      },
+    },
+    isImageValid: {
+      resolve: async (root, _args, context, info) => {
+        const imageUri = root.imageUri;
+        if (imageUri.startsWith("ipfs://")) {
+          const cid = imageUri.slice(7);
+          try {
+            const res = await axios.head(
+              `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
+              { timeout: 7000 }
+            );
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        } else {
+          try {
+            const res = await axios.head(imageUri, { timeout: 7000 });
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        }
       },
     },
   },
@@ -387,6 +523,40 @@ const resolvers: Resolvers = {
         return ensName;
       },
     },
+    isImageValid: {
+      resolve: async (root, _args, context, info) => {
+        const imageUri = root.imageUri;
+        if (imageUri.startsWith("ipfs://")) {
+          const cid = imageUri.slice(7);
+          try {
+            const res = await axios.head(
+              `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
+              { timeout: 7000 }
+            );
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        } else {
+          try {
+            const res = await axios.head(imageUri, { timeout: 7000 });
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        }
+      },
+    },
   },
   Base_Wearer: {
     ensName: {
@@ -464,6 +634,40 @@ const resolvers: Resolvers = {
         return ensName;
       },
     },
+    isImageValid: {
+      resolve: async (root, _args, context, info) => {
+        const imageUri = root.imageUri;
+        if (imageUri.startsWith("ipfs://")) {
+          const cid = imageUri.slice(7);
+          try {
+            const res = await axios.head(
+              `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
+              { timeout: 7000 }
+            );
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        } else {
+          try {
+            const res = await axios.head(imageUri, { timeout: 7000 });
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        }
+      },
+    },
   },
   Celo_Wearer: {
     ensName: {
@@ -539,6 +743,40 @@ const resolvers: Resolvers = {
         const toggle = root.toggle;
         const ensName = await getEnsName("42220", toggle as `0x${string}`);
         return ensName;
+      },
+    },
+    isImageValid: {
+      resolve: async (root, _args, context, info) => {
+        const imageUri = root.imageUri;
+        if (imageUri.startsWith("ipfs://")) {
+          const cid = imageUri.slice(7);
+          try {
+            const res = await axios.head(
+              `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
+              { timeout: 7000 }
+            );
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        } else {
+          try {
+            const res = await axios.head(imageUri, { timeout: 7000 });
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        }
       },
     },
   },
@@ -619,6 +857,40 @@ const resolvers: Resolvers = {
         const toggle = root.toggle;
         const ensName = await getEnsName("11155111", toggle as `0x${string}`);
         return ensName;
+      },
+    },
+    isImageValid: {
+      resolve: async (root, _args, context, info) => {
+        const imageUri = root.imageUri;
+        if (imageUri.startsWith("ipfs://")) {
+          const cid = imageUri.slice(7);
+          try {
+            const res = await axios.head(
+              `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
+              { timeout: 7000 }
+            );
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        } else {
+          try {
+            const res = await axios.head(imageUri, { timeout: 7000 });
+            const contentType = res.headers["content-type"];
+            if (contentType.startsWith("image/")) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (err) {
+            return false;
+          }
+        }
       },
     },
   },
