@@ -69,3 +69,18 @@ export const getEnsName = async (
   });
   return ensName;
 };
+
+export const getHatImage = async (
+  chain: string,
+  hatId: bigint
+): Promise<string> => {
+  const publicClient = publicClients[chain];
+  const image = await publicClient.readContract({
+    address: HATS_ADDRESS as `0x${string}`,
+    abi: HATS_ABI,
+    functionName: "getImageURIForHat",
+    args: [hatId],
+  });
+
+  return image;
+};

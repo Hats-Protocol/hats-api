@@ -1,5 +1,5 @@
 import { Resolvers } from "../.mesh";
-import { getWearersEligibility, getEnsName } from "./web3";
+import { getWearersEligibility, getEnsName, getHatImage } from "./web3";
 import axios from "axios";
 
 const resolvers: Resolvers = {
@@ -113,6 +113,12 @@ const resolvers: Resolvers = {
         }
       },
     },
+    nearestImage: {
+      resolve: async (root, _args, context, info) => {
+        const image = await getHatImage("1", BigInt(root.id));
+        return image;
+      },
+    },
   },
   Op_Wearer: {
     ensName: {
@@ -222,6 +228,12 @@ const resolvers: Resolvers = {
             return false;
           }
         }
+      },
+    },
+    nearestImage: {
+      resolve: async (root, _args, context, info) => {
+        const image = await getHatImage("10", BigInt(root.id));
+        return image;
       },
     },
   },
@@ -335,6 +347,12 @@ const resolvers: Resolvers = {
         }
       },
     },
+    nearestImage: {
+      resolve: async (root, _args, context, info) => {
+        const image = await getHatImage("42161", BigInt(root.id));
+        return image;
+      },
+    },
   },
   Pol_Wearer: {
     ensName: {
@@ -444,6 +462,12 @@ const resolvers: Resolvers = {
             return false;
           }
         }
+      },
+    },
+    nearestImage: {
+      resolve: async (root, _args, context, info) => {
+        const image = await getHatImage("137", BigInt(root.id));
+        return image;
       },
     },
   },
@@ -557,6 +581,12 @@ const resolvers: Resolvers = {
         }
       },
     },
+    nearestImage: {
+      resolve: async (root, _args, context, info) => {
+        const image = await getHatImage("100", BigInt(root.id));
+        return image;
+      },
+    },
   },
   Base_Wearer: {
     ensName: {
@@ -668,6 +698,12 @@ const resolvers: Resolvers = {
         }
       },
     },
+    nearestImage: {
+      resolve: async (root, _args, context, info) => {
+        const image = await getHatImage("8453", BigInt(root.id));
+        return image;
+      },
+    },
   },
   Celo_Wearer: {
     ensName: {
@@ -777,6 +813,12 @@ const resolvers: Resolvers = {
             return false;
           }
         }
+      },
+    },
+    nearestImage: {
+      resolve: async (root, _args, context, info) => {
+        const image = await getHatImage("42220", BigInt(root.id));
+        return image;
       },
     },
   },
@@ -891,6 +933,12 @@ const resolvers: Resolvers = {
             return false;
           }
         }
+      },
+    },
+    nearestImage: {
+      resolve: async (root, _args, context, info) => {
+        const image = await getHatImage("11155111", BigInt(root.id));
+        return image;
       },
     },
   },

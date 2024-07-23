@@ -175,6 +175,7 @@ additionalTypeDefs: |
     eligibilityEnsName: String
     toggleEnsName: String
     isImageValid: Boolean!
+    nearestImage: String!
   }
   extend type Op_Hat {
     detailsMetadata: String
@@ -183,6 +184,7 @@ additionalTypeDefs: |
     eligibilityEnsName: String
     toggleEnsName: String
     isImageValid: Boolean!
+    nearestImage: String!
   }
   extend type Arb_Hat {
     detailsMetadata: String
@@ -191,6 +193,7 @@ additionalTypeDefs: |
     eligibilityEnsName: String
     toggleEnsName: String
     isImageValid: Boolean!
+    nearestImage: String!
   }
   extend type Gno_Hat {
     detailsMetadata: String
@@ -199,6 +202,7 @@ additionalTypeDefs: |
     eligibilityEnsName: String
     toggleEnsName: String
     isImageValid: Boolean!
+    nearestImage: String!
   }
   extend type Celo_Hat {
     detailsMetadata: String
@@ -207,6 +211,7 @@ additionalTypeDefs: |
     eligibilityEnsName: String
     toggleEnsName: String
     isImageValid: Boolean!
+    nearestImage: String!
   }
   extend type Base_Hat {
     detailsMetadata: String
@@ -215,6 +220,7 @@ additionalTypeDefs: |
     eligibilityEnsName: String
     toggleEnsName: String
     isImageValid: Boolean!
+    nearestImage: String!
   }
   extend type Pol_Hat {
     detailsMetadata: String
@@ -223,6 +229,7 @@ additionalTypeDefs: |
     eligibilityEnsName: String
     toggleEnsName: String
     isImageValid: Boolean!
+    nearestImage: String!
   }
   extend type Sep_Hat {
     detailsMetadata: String
@@ -231,6 +238,7 @@ additionalTypeDefs: |
     eligibilityEnsName: String
     toggleEnsName: String
     isImageValid: Boolean!
+    nearestImage: String!
   }
 additionalResolvers:
   - "./src/resolvers"
