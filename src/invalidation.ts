@@ -327,11 +327,11 @@ export class CacheInvalidationService {
           }`,
         });
 
-        throw new SubgraphSyncError(
-          `Error: failed waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
-            this.chainId
-          }`
-        );
+        // throw new SubgraphSyncError(
+        //   `Error: failed waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
+        //     this.chainId
+        //   }`
+        // );
       }
     } catch (error) {
       logger.log({
@@ -550,7 +550,7 @@ export class CacheInvalidationService {
           timeout
         )
       );
-    const timeoutDuration = 10000; // timeout after 10 seconds
+    const timeoutDuration = 15000; // timeout after 10 seconds
 
     // poll for block number with timeout
     const pollForBlockNumber = async () => {
