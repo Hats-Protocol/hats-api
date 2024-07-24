@@ -1,5 +1,11 @@
 import { Resolvers } from "../.mesh";
-import { getWearersEligibility, getEnsName, getHatImage } from "./web3";
+import {
+  getWearersEligibility,
+  getEnsName,
+  getHatImage,
+  isContract,
+  getContractName,
+} from "./web3";
 import axios from "axios";
 
 const resolvers: Resolvers = {
@@ -8,6 +14,18 @@ const resolvers: Resolvers = {
       resolve: async (root, _args, context, info) => {
         const ensName = await getEnsName("1", root.id as `0x${string}`);
         return ensName;
+      },
+    },
+    isContract: {
+      resolve: async (root, _args, context, info) => {
+        const res = await isContract("1", root.id as `0x${string}`);
+        return res;
+      },
+    },
+    contractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName("1", root.id as `0x${string}`);
+        return name;
       },
     },
   },
@@ -119,12 +137,53 @@ const resolvers: Resolvers = {
         return image;
       },
     },
+    eligibilityIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const res = await isContract("1", eligibility as `0x${string}`);
+        return res;
+      },
+    },
+    eligibilityContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName(
+          "1",
+          root.eligibility as `0x${string}`
+        );
+        return name;
+      },
+    },
+    toggleIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const res = await isContract("1", toggle as `0x${string}`);
+        return res;
+      },
+    },
+    toggleContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName("1", root.toggle as `0x${string}`);
+        return name;
+      },
+    },
   },
   Op_Wearer: {
     ensName: {
       resolve: async (root, _args, context, info) => {
         const ensName = await getEnsName("10", root.id as `0x${string}`);
         return ensName;
+      },
+    },
+    isContract: {
+      resolve: async (root, _args, context, info) => {
+        const res = await isContract("10", root.id as `0x${string}`);
+        return res;
+      },
+    },
+    contractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName("10", root.id as `0x${string}`);
+        return name;
       },
     },
   },
@@ -236,12 +295,53 @@ const resolvers: Resolvers = {
         return image;
       },
     },
+    eligibilityIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const res = await isContract("10", eligibility as `0x${string}`);
+        return res;
+      },
+    },
+    eligibilityContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName(
+          "10",
+          root.eligibility as `0x${string}`
+        );
+        return name;
+      },
+    },
+    toggleIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const res = await isContract("10", toggle as `0x${string}`);
+        return res;
+      },
+    },
+    toggleContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName("10", root.toggle as `0x${string}`);
+        return name;
+      },
+    },
   },
   Arb_Wearer: {
     ensName: {
       resolve: async (root, _args, context, info) => {
         const ensName = await getEnsName("42161", root.id as `0x${string}`);
         return ensName;
+      },
+    },
+    isContract: {
+      resolve: async (root, _args, context, info) => {
+        const res = await isContract("42161", root.id as `0x${string}`);
+        return res;
+      },
+    },
+    contractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName("42161", root.id as `0x${string}`);
+        return name;
       },
     },
   },
@@ -353,12 +453,56 @@ const resolvers: Resolvers = {
         return image;
       },
     },
+    eligibilityIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const res = await isContract("42161", eligibility as `0x${string}`);
+        return res;
+      },
+    },
+    eligibilityContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName(
+          "42161",
+          root.eligibility as `0x${string}`
+        );
+        return name;
+      },
+    },
+    toggleIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const res = await isContract("42161", toggle as `0x${string}`);
+        return res;
+      },
+    },
+    toggleContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName(
+          "42161",
+          root.toggle as `0x${string}`
+        );
+        return name;
+      },
+    },
   },
   Pol_Wearer: {
     ensName: {
       resolve: async (root, _args, context, info) => {
         const ensName = await getEnsName("137", root.id as `0x${string}`);
         return ensName;
+      },
+    },
+    isContract: {
+      resolve: async (root, _args, context, info) => {
+        const res = await isContract("137", root.id as `0x${string}`);
+        return res;
+      },
+    },
+    contractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName("137", root.id as `0x${string}`);
+        return name;
       },
     },
   },
@@ -470,12 +614,53 @@ const resolvers: Resolvers = {
         return image;
       },
     },
+    eligibilityIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const res = await isContract("137", eligibility as `0x${string}`);
+        return res;
+      },
+    },
+    eligibilityContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName(
+          "137",
+          root.eligibility as `0x${string}`
+        );
+        return name;
+      },
+    },
+    toggleIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const res = await isContract("137", toggle as `0x${string}`);
+        return res;
+      },
+    },
+    toggleContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName("137", root.toggle as `0x${string}`);
+        return name;
+      },
+    },
   },
   Gno_Wearer: {
     ensName: {
       resolve: async (root, _args, context, info) => {
         const ensName = await getEnsName("100", root.id as `0x${string}`);
         return ensName;
+      },
+    },
+    isContract: {
+      resolve: async (root, _args, context, info) => {
+        const res = await isContract("100", root.id as `0x${string}`);
+        return res;
+      },
+    },
+    contractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName("100", root.id as `0x${string}`);
+        return name;
       },
     },
   },
@@ -587,12 +772,53 @@ const resolvers: Resolvers = {
         return image;
       },
     },
+    eligibilityIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const res = await isContract("100", eligibility as `0x${string}`);
+        return res;
+      },
+    },
+    eligibilityContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName(
+          "100",
+          root.eligibility as `0x${string}`
+        );
+        return name;
+      },
+    },
+    toggleIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const res = await isContract("100", toggle as `0x${string}`);
+        return res;
+      },
+    },
+    toggleContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName("100", root.toggle as `0x${string}`);
+        return name;
+      },
+    },
   },
   Base_Wearer: {
     ensName: {
       resolve: async (root, _args, context, info) => {
         const ensName = await getEnsName("8453", root.id as `0x${string}`);
         return ensName;
+      },
+    },
+    isContract: {
+      resolve: async (root, _args, context, info) => {
+        const res = await isContract("8453", root.id as `0x${string}`);
+        return res;
+      },
+    },
+    contractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName("8453", root.id as `0x${string}`);
+        return name;
       },
     },
   },
@@ -704,12 +930,56 @@ const resolvers: Resolvers = {
         return image;
       },
     },
+    eligibilityIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const res = await isContract("8453", eligibility as `0x${string}`);
+        return res;
+      },
+    },
+    eligibilityContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName(
+          "8453",
+          root.eligibility as `0x${string}`
+        );
+        return name;
+      },
+    },
+    toggleIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const res = await isContract("8453", toggle as `0x${string}`);
+        return res;
+      },
+    },
+    toggleContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName(
+          "8453",
+          root.toggle as `0x${string}`
+        );
+        return name;
+      },
+    },
   },
   Celo_Wearer: {
     ensName: {
       resolve: async (root, _args, context, info) => {
         const ensName = await getEnsName("42220", root.id as `0x${string}`);
         return ensName;
+      },
+    },
+    isContract: {
+      resolve: async (root, _args, context, info) => {
+        const res = await isContract("42220", root.id as `0x${string}`);
+        return res;
+      },
+    },
+    contractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName("42220", root.id as `0x${string}`);
+        return name;
       },
     },
   },
@@ -821,12 +1091,59 @@ const resolvers: Resolvers = {
         return image;
       },
     },
+    eligibilityIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const res = await isContract("42220", eligibility as `0x${string}`);
+        return res;
+      },
+    },
+    eligibilityContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName(
+          "42220",
+          root.eligibility as `0x${string}`
+        );
+        return name;
+      },
+    },
+    toggleIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const res = await isContract("42220", toggle as `0x${string}`);
+        return res;
+      },
+    },
+    toggleContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName(
+          "42220",
+          root.toggle as `0x${string}`
+        );
+        return name;
+      },
+    },
   },
   Sep_Wearer: {
     ensName: {
       resolve: async (root, _args, context, info) => {
         const ensName = await getEnsName("11155111", root.id as `0x${string}`);
         return ensName;
+      },
+    },
+    isContract: {
+      resolve: async (root, _args, context, info) => {
+        const res = await isContract("11155111", root.id as `0x${string}`);
+        return res;
+      },
+    },
+    contractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName(
+          "11155111",
+          root.id as `0x${string}`
+        );
+        return name;
       },
     },
   },
@@ -939,6 +1256,38 @@ const resolvers: Resolvers = {
       resolve: async (root, _args, context, info) => {
         const image = await getHatImage("11155111", BigInt(root.id));
         return image;
+      },
+    },
+    eligibilityIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const eligibility = root.eligibility;
+        const res = await isContract("11155111", eligibility as `0x${string}`);
+        return res;
+      },
+    },
+    eligibilityContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName(
+          "11155111",
+          root.eligibility as `0x${string}`
+        );
+        return name;
+      },
+    },
+    toggleIsContract: {
+      resolve: async (root, _args, context, info) => {
+        const toggle = root.toggle;
+        const res = await isContract("11155111", toggle as `0x${string}`);
+        return res;
+      },
+    },
+    toggleContractName: {
+      resolve: async (root, _args, context, info) => {
+        const name = await getContractName(
+          "11155111",
+          root.toggle as `0x${string}`
+        );
+        return name;
       },
     },
   },
