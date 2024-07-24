@@ -4,8 +4,11 @@ import {
   CHAIN_ID_TO_HTTP_URL,
   HATS_ABI,
   HATS_ADDRESS,
+  CHAIN_TO_ETHERSCAN_API,
+  CHAIN_TO_ETHERSCAN_API_KEY,
 } from "./constants";
 import type { PublicClient, Client } from "viem";
+import axios from "axios";
 
 export const publicClients: Record<string, PublicClient> = Object.keys(
   CHAIN_ID_TO_HTTP_URL
@@ -83,4 +86,40 @@ export const getHatImage = async (
   });
 
   return image;
+};
+
+export const isContract = async (chain: string, address: `0x${string}`) => {
+  try {
+    const publicClient = publicClients[chain];
+    const contractCode = await publicClient.getCode({ address });
+    if (contractCode === undefined) {
+      return false;
+    }
+    return true;
+  } catch (err) {
+    return false;
+  }
+};
+
+export const getContractName = async (
+  chain: string,
+  address: `0x${string}`
+): Promise<string | null> => {
+  try {
+    const apiUrl = CHAIN_TO_ETHERSCAN_API[chain];
+    const apiKey = CHAIN_TO_ETHERSCAN_API_KEY[chain];
+    const url = `${apiUrl}?module=contract&action=getsourcecode&address=${address}&apikey=${apiKey}`;
+    const res = await axios.get(url);
+    if (!res || !res.data) {
+      return null;
+    }
+    const data = res.data.result[0];
+    if (data.ContractName === "") {
+      return null;
+    } else {
+      return data.ContractName;
+    }
+  } catch (err) {
+    return null;
+  }
 };

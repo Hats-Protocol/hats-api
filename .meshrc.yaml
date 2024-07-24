@@ -146,27 +146,43 @@ sources:
 additionalTypeDefs: |
   extend type Eth_Wearer {
     ensName: String
+    isContract: Boolean!
+    contractName: String
   }
   extend type Op_Wearer {
     ensName: String
+    isContract: Boolean!
+    contractName: String
   }
   extend type Arb_Wearer {
     ensName: String
+    isContract: Boolean!
+    contractName: String
   }
   extend type Gno_Wearer {
     ensName: String
+    isContract: Boolean!
+    contractName: String
   }
   extend type Celo_Wearer {
     ensName: String
+    isContract: Boolean!
+    contractName: String
   }
   extend type Base_Wearer {
     ensName: String
+    isContract: Boolean!
+    contractName: String
   }
   extend type Pol_Wearer {
     ensName: String
+    isContract: Boolean!
+    contractName: String
   }
   extend type Sep_Wearer {
     ensName: String
+    isContract: Boolean!
+    contractName: String
   }
   extend type Eth_Hat {
     detailsMetadata: String
@@ -176,6 +192,10 @@ additionalTypeDefs: |
     toggleEnsName: String
     isImageValid: Boolean!
     nearestImage: String!
+    eligibilityIsContract: Boolean!
+    eligibilityContractName: String
+    toggleIsContract: Boolean!
+    toggleContractName: String
   }
   extend type Op_Hat {
     detailsMetadata: String
@@ -185,6 +205,10 @@ additionalTypeDefs: |
     toggleEnsName: String
     isImageValid: Boolean!
     nearestImage: String!
+    eligibilityIsContract: Boolean!
+    eligibilityContractName: String
+    toggleIsContract: Boolean!
+    toggleContractName: String
   }
   extend type Arb_Hat {
     detailsMetadata: String
@@ -194,6 +218,10 @@ additionalTypeDefs: |
     toggleEnsName: String
     isImageValid: Boolean!
     nearestImage: String!
+    eligibilityIsContract: Boolean!
+    eligibilityContractName: String
+    toggleIsContract: Boolean!
+    toggleContractName: String
   }
   extend type Gno_Hat {
     detailsMetadata: String
@@ -203,6 +231,10 @@ additionalTypeDefs: |
     toggleEnsName: String
     isImageValid: Boolean!
     nearestImage: String!
+    eligibilityIsContract: Boolean!
+    eligibilityContractName: String
+    toggleIsContract: Boolean!
+    toggleContractName: String
   }
   extend type Celo_Hat {
     detailsMetadata: String
@@ -212,6 +244,10 @@ additionalTypeDefs: |
     toggleEnsName: String
     isImageValid: Boolean!
     nearestImage: String!
+    eligibilityIsContract: Boolean!
+    eligibilityContractName: String
+    toggleIsContract: Boolean!
+    toggleContractName: String
   }
   extend type Base_Hat {
     detailsMetadata: String
@@ -221,6 +257,10 @@ additionalTypeDefs: |
     toggleEnsName: String
     isImageValid: Boolean!
     nearestImage: String!
+    eligibilityIsContract: Boolean!
+    eligibilityContractName: String
+    toggleIsContract: Boolean!
+    toggleContractName: String
   }
   extend type Pol_Hat {
     detailsMetadata: String
@@ -230,6 +270,10 @@ additionalTypeDefs: |
     toggleEnsName: String
     isImageValid: Boolean!
     nearestImage: String!
+    eligibilityIsContract: Boolean!
+    eligibilityContractName: String
+    toggleIsContract: Boolean!
+    toggleContractName: String
   }
   extend type Sep_Hat {
     detailsMetadata: String
@@ -239,6 +283,10 @@ additionalTypeDefs: |
     toggleEnsName: String
     isImageValid: Boolean!
     nearestImage: String!
+    eligibilityIsContract: Boolean!
+    eligibilityContractName: String
+    toggleIsContract: Boolean!
+    toggleContractName: String
   }
 additionalResolvers:
   - "./src/resolvers"

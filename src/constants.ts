@@ -77,6 +77,28 @@ export const CHAIN_ID_TO_MAIN_SUBGRAPH: { [key: string]: string } = {
   8453: `https://api.studio.thegraph.com/query/55784/hats-v1-base/v1.1.0`,
 };
 
+export const CHAIN_TO_ETHERSCAN_API: { [key: string]: string } = {
+  1: "https://api.etherscan.io/api",
+  10: "https://api-optimistic.etherscan.io/api",
+  100: "https://api.gnosisscan.io/api",
+  137: "https://api.polygonscan.com/api",
+  8453: "https://api.basescan.org/api",
+  42161: "https://api.arbiscan.io/api",
+  42220: "https://api.celoscan.io/api",
+  11155111: "https://api-sepolia.etherscan.io/api",
+};
+
+export const CHAIN_TO_ETHERSCAN_API_KEY: { [key: string]: string } = {
+  1: process.env.ETHERSCAN_API_KEY as string,
+  10: process.env.OPSCAN_API_KEY as string,
+  100: process.env.GNOSISSCAN_API_KEY as string,
+  137: process.env.POLYGONSCAN_API_KEY as string,
+  8453: process.env.BASESCAN_API_KEY as string,
+  42161: process.env.ARBISCAN_API_KEY as string,
+  42220: process.env.CELOSCAN_API_KEY as string,
+  11155111: process.env.ETHERSCAN_API_KEY as string,
+};
+
 export const HATS_ADDRESS = "0x3bc1A0Ad72417f2d411118085256fC53CBdDd137";
 
 export const CLAIMS_HATTER_EVENTS = parseAbi([
