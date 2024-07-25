@@ -101,6 +101,24 @@ export const isContract = async (chain: string, address: `0x${string}`) => {
   }
 };
 
+export const getHatStatus = async (
+  chain: string,
+  hatId: bigint
+): Promise<boolean> => {
+  try {
+    const publicClient = publicClients[chain];
+    const status = await publicClient.readContract({
+      address: HATS_ADDRESS as `0x${string}`,
+      abi: HATS_ABI,
+      functionName: "isActive",
+      args: [hatId],
+    });
+    return status;
+  } catch (err) {
+    return false;
+  }
+};
+
 export const getContractName = async (
   chain: string,
   address: `0x${string}`
