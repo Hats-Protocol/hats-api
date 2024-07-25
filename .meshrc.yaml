@@ -323,48 +323,64 @@ plugins:
           ttl: 86400000
         - coordinate: Sep_Hat.toggleEnsName
           ttl: 86400000
+        - coordinate: Sep_Hat.dynamicStatus
+          ttl: 0
         - coordinate: Pol_Hat.eligibleWearers
           ttl: 0
         - coordinate: Pol_Hat.eligibilityEnsName
           ttl: 86400000
         - coordinate: Pol_Hat.toggleEnsName
           ttl: 86400000
+        - coordinate: Pol_Hat.dynamicStatus
+          ttl: 0
         - coordinate: Base_Hat.eligibleWearers
           ttl: 0
         - coordinate: Base_Hat.eligibilityEnsName
           ttl: 86400000
         - coordinate: Base_Hat.toggleEnsName
           ttl: 86400000
+        - coordinate: Base_Hat.dynamicStatus
+          ttl: 0
         - coordinate: Op_Hat.eligibleWearers
           ttl: 0
         - coordinate: Op_Hat.eligibilityEnsName
           ttl: 86400000
         - coordinate: Op_Hat.toggleEnsName
           ttl: 86400000
+        - coordinate: Op_Hat.dynamicStatus
+          ttl: 0
         - coordinate: Eth_Hat.eligibleWearers
           ttl: 0
         - coordinate: Eth_Hat.eligibilityEnsName
           ttl: 86400000
         - coordinate: Eth_Hat.toggleEnsName
           ttl: 86400000
+        - coordinate: Eth_Hat.dynamicStatus
+          ttl: 0
         - coordinate: Arb_Hat.eligibleWearers
           ttl: 0
         - coordinate: Arb_Hat.eligibilityEnsName
           ttl: 86400000
         - coordinate: Arb_Hat.toggleEnsName
           ttl: 86400000
+        - coordinate: Arb_Hat.dynamicStatus
+          ttl: 0
         - coordinate: Gno_Hat.eligibleWearers
           ttl: 0
         - coordinate: Gno_Hat.eligibilityEnsName
           ttl: 86400000
         - coordinate: Gno_Hat.toggleEnsName
           ttl: 86400000
+        - coordinate: Gno_Hat.dynamicStatus
+          ttl: 0
         - coordinate: Celo_Hat.eligibleWearers
           ttl: 0
         - coordinate: Celo_Hat.eligibilityEnsName
           ttl: 86400000
         - coordinate: Celo_Hat.toggleEnsName
           ttl: 86400000
+        - coordinate: Celo_Hat.dynamicStatus
+          ttl: 0
       ignoredTypes:
         - Sep_HatAuthority
         - Pol_HatAuthority
