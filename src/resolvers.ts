@@ -5,6 +5,7 @@ import {
   getHatImage,
   isContract,
   getContractName,
+  getHatStatus,
 } from "./web3";
 import axios from "axios";
 
@@ -166,6 +167,12 @@ const resolvers: Resolvers = {
         return name;
       },
     },
+    dynamicStatus: {
+      resolve: async (root, _args, context, info) => {
+        const status = await getHatStatus("1", BigInt(root.id));
+        return status;
+      },
+    },
   },
   Op_Wearer: {
     ensName: {
@@ -322,6 +329,12 @@ const resolvers: Resolvers = {
       resolve: async (root, _args, context, info) => {
         const name = await getContractName("10", root.toggle as `0x${string}`);
         return name;
+      },
+    },
+    dynamicStatus: {
+      resolve: async (root, _args, context, info) => {
+        const status = await getHatStatus("10", BigInt(root.id));
+        return status;
       },
     },
   },
@@ -485,6 +498,12 @@ const resolvers: Resolvers = {
         return name;
       },
     },
+    dynamicStatus: {
+      resolve: async (root, _args, context, info) => {
+        const status = await getHatStatus("42161", BigInt(root.id));
+        return status;
+      },
+    },
   },
   Pol_Wearer: {
     ensName: {
@@ -643,6 +662,12 @@ const resolvers: Resolvers = {
         return name;
       },
     },
+    dynamicStatus: {
+      resolve: async (root, _args, context, info) => {
+        const status = await getHatStatus("137", BigInt(root.id));
+        return status;
+      },
+    },
   },
   Gno_Wearer: {
     ensName: {
@@ -799,6 +824,12 @@ const resolvers: Resolvers = {
       resolve: async (root, _args, context, info) => {
         const name = await getContractName("100", root.toggle as `0x${string}`);
         return name;
+      },
+    },
+    dynamicStatus: {
+      resolve: async (root, _args, context, info) => {
+        const status = await getHatStatus("100", BigInt(root.id));
+        return status;
       },
     },
   },
@@ -962,6 +993,12 @@ const resolvers: Resolvers = {
         return name;
       },
     },
+    dynamicStatus: {
+      resolve: async (root, _args, context, info) => {
+        const status = await getHatStatus("8453", BigInt(root.id));
+        return status;
+      },
+    },
   },
   Celo_Wearer: {
     ensName: {
@@ -1121,6 +1158,12 @@ const resolvers: Resolvers = {
           root.toggle as `0x${string}`
         );
         return name;
+      },
+    },
+    dynamicStatus: {
+      resolve: async (root, _args, context, info) => {
+        const status = await getHatStatus("42220", BigInt(root.id));
+        return status;
       },
     },
   },
@@ -1288,6 +1331,12 @@ const resolvers: Resolvers = {
           root.toggle as `0x${string}`
         );
         return name;
+      },
+    },
+    dynamicStatus: {
+      resolve: async (root, _args, context, info) => {
+        const status = await getHatStatus("11155111", BigInt(root.id));
+        return status;
       },
     },
   },
