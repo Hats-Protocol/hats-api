@@ -35,7 +35,7 @@
     "ioredis": "^5.4.1",
     "lru-cache": "^11.0.0",
     "redis": "^4.6.13",
-    "viem": "^2.17.4",
+    "viem": "^2.18.6",
     "winston": "^3.13.0"
   },
   "devDependencies": {
