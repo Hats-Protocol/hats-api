@@ -103,28 +103,44 @@ export class CacheInvalidationManager {
   async processTransaction(txHash: `0x${string}`, networkId: string) {
     switch (networkId) {
       case "1":
-        await this.mainnetInvalidationClient.processTransaction(txHash);
+        await this.mainnetInvalidationClient.processTransaction(
+          txHash.toLowerCase() as `0x${string}`
+        );
         break;
       case "137":
-        await this.polygonInvalidationClient.processTransaction(txHash);
+        await this.polygonInvalidationClient.processTransaction(
+          txHash.toLowerCase() as `0x${string}`
+        );
         break;
       case "100":
-        await this.gnosisInvalidationClient.processTransaction(txHash);
+        await this.gnosisInvalidationClient.processTransaction(
+          txHash.toLowerCase() as `0x${string}`
+        );
         break;
       case "42220":
-        await this.celoInvalidationClient.processTransaction(txHash);
+        await this.celoInvalidationClient.processTransaction(
+          txHash.toLowerCase() as `0x${string}`
+        );
         break;
       case "8453":
-        await this.baseInvalidationClient.processTransaction(txHash);
+        await this.baseInvalidationClient.processTransaction(
+          txHash.toLowerCase() as `0x${string}`
+        );
         break;
       case "10":
-        await this.optimismInvalidationClient.processTransaction(txHash);
+        await this.optimismInvalidationClient.processTransaction(
+          txHash.toLowerCase() as `0x${string}`
+        );
         break;
       case "42161":
-        await this.arbitrumInvalidationClient.processTransaction(txHash);
+        await this.arbitrumInvalidationClient.processTransaction(
+          txHash.toLowerCase() as `0x${string}`
+        );
         break;
       case "11155111":
-        await this.sepoliaInvalidationClient.processTransaction(txHash);
+        await this.sepoliaInvalidationClient.processTransaction(
+          txHash.toLowerCase() as `0x${string}`
+        );
         break;
       default:
         logger.info(`network ${networkId} not supported`);
@@ -179,11 +195,11 @@ export class CacheInvalidationService {
     // watch Calims Hatters events
     const unwatchClaimsHatter = this.publicSocketClient.watchEvent({
       events: CLAIMS_HATTER_EVENTS,
-      onLogs: (logs) => {
+      onLogs: (logs: any) => {
         for (let i = 0; i < logs.length; i++) {
           const log = logs[i];
-          const logTx = log.transactionHash;
-          this.processTransaction(logTx);
+          const logTx: `0x${string}` = log.transactionHash;
+          this.processTransaction(logTx.toLowerCase() as `0x${string}`);
         }
       },
     });
@@ -192,11 +208,11 @@ export class CacheInvalidationService {
     const unwatchHats = this.publicSocketClient.watchEvent({
       address: HATS_ADDRESS,
       events: HATS_EVENTS,
-      onLogs: (logs) => {
+      onLogs: (logs: any) => {
         for (let i = 0; i < logs.length; i++) {
           const log = logs[i];
-          const logTx = log.transactionHash;
-          this.processTransaction(logTx);
+          const logTx: `0x${string}` = log.transactionHash;
+          this.processTransaction(logTx.toLowerCase() as `0x${string}`);
         }
       },
     });
@@ -205,13 +221,13 @@ export class CacheInvalidationService {
       logger.log({ level: "info", message: `ping network ${this.chainId}` });
       this.publicSocketClient
         .getBlockNumber()
-        .then((_) => {
+        .then((_: any) => {
           logger.log({
             level: "info",
             message: `pong network ${this.chainId}`,
           });
         })
-        .catch((err) =>
+        .catch((err: any) =>
           logger.log({
             level: "error",
             message: `error in chain ${this.chainId}`,
@@ -280,14 +296,23 @@ export class CacheInvalidationService {
       txHash: txHash,
     });
 
+    const isProcessed = this.inMemCache.get(txHash);
+    if (isProcessed) {
+      logger.log({
+        level: "info",
+        message: `transaction ${txHash} already processed in chain ${this.chainId}`,
+      });
+      return;
+    } else {
+      this.inMemCache.set(txHash, true);
+    }
+
     let transactionReceipt: TransactionReceipt;
     // fetch transaction receipt
     try {
-      transactionReceipt =
-        await this.publicHttpClient.waitForTransactionReceipt({
-          hash: txHash,
-          timeout: 15000,
-        });
+      transactionReceipt = await this.publicHttpClient.getTransactionReceipt({
+        hash: txHash,
+      });
 
       if (!transactionReceipt) {
         return;
@@ -298,20 +323,10 @@ export class CacheInvalidationService {
         message: `error fetching transaction ${txHash} in chain ${this.chainId}`,
         error: err,
       });
+      this.inMemCache.set(txHash, false);
       throw new TransactionNotFoundError(
         `Error: failed fetching transaction with ID ${txHash} from chain ${this.chainId}`
       );
-    }
-
-    const isProcessed = this.inMemCache.get(transactionReceipt.transactionHash);
-    if (isProcessed) {
-      logger.log({
-        level: "info",
-        message: `transaction ${txHash} already processed in chain ${this.chainId}`,
-      });
-      return;
-    } else {
-      this.inMemCache.set(transactionReceipt.transactionHash, true);
     }
 
     // wait for the subgraph to sync before invalidating
@@ -341,6 +356,7 @@ export class CacheInvalidationService {
         }`,
         error: error,
       });
+      this.inMemCache.set(txHash, false);
 
       throw new SubgraphSyncError(
         `Error: failed waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
@@ -350,7 +366,7 @@ export class CacheInvalidationService {
     }
 
     const hatsLogs = transactionReceipt.logs.filter(
-      (log) => log.address === HATS_ADDRESS.toLowerCase()
+      (log: any) => log.address === HATS_ADDRESS.toLowerCase()
     );
 
     let claimsHatterInstances: `0x${string}`[] = [];
@@ -388,6 +404,7 @@ export class CacheInvalidationService {
         message: `error processing hats events for transaction ${txHash} in chain ${this.chainId}`,
         error: err,
       });
+      this.inMemCache.set(txHash, false);
 
       throw new InvalidationError(
         `Error: failed processing events for transaction ${txHash} in chain ${this.chainId}`
