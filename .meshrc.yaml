@@ -383,13 +383,93 @@ plugins:
           ttl: 0
       ignoredTypes:
         - Sep_HatAuthority
+        - Sep_JokeRaceEligibility
+        - Sep_AllowListEligibility
+        - Sep_HatsElectionEligibility
+        - Sep_PassthroughModule
+        - Sep_StakingEligibility
+        - Sep_SeasonToggle
+        - Sep_CharacterSheetsLevelEligibility
+        - Sep_AgreementEligibility
+        - Sep_HatsStakingShaman
+        - Sep_HatsFarcasterDelegator
         - Pol_HatAuthority
+        - Pol_JokeRaceEligibility
+        - Pol_AllowListEligibility
+        - Pol_HatsElectionEligibility
+        - Pol_PassthroughModule
+        - Pol_StakingEligibility
+        - Pol_SeasonToggle
+        - Pol_CharacterSheetsLevelEligibility
+        - Pol_AgreementEligibility
+        - Pol_HatsStakingShaman
+        - Pol_HatsFarcasterDelegator
         - Base_HatAuthority
+        - Base_JokeRaceEligibility
+        - Base_AllowListEligibility
+        - Base_HatsElectionEligibility
+        - Base_PassthroughModule
+        - Base_StakingEligibility
+        - Base_SeasonToggle
+        - Base_CharacterSheetsLevelEligibility
+        - Base_AgreementEligibility
+        - Base_HatsStakingShaman
+        - Base_HatsFarcasterDelegator
         - Op_HatAuthority
+        - Op_JokeRaceEligibility
+        - Op_AllowListEligibility
+        - Op_HatsElectionEligibility
+        - Op_PassthroughModule
+        - Op_StakingEligibility
+        - Op_SeasonToggle
+        - Op_CharacterSheetsLevelEligibility
+        - Op_AgreementEligibility
+        - Op_HatsStakingShaman
+        - Op_HatsFarcasterDelegator
         - Eth_HatAuthority
+        - Eth_JokeRaceEligibility
+        - Eth_AllowListEligibility
+        - Eth_HatsElectionEligibility
+        - Eth_PassthroughModule
+        - Eth_StakingEligibility
+        - Eth_SeasonToggle
+        - Eth_CharacterSheetsLevelEligibility
+        - Eth_AgreementEligibility
+        - Eth_HatsStakingShaman
+        - Eth_HatsFarcasterDelegator
         - Arb_HatAuthority
+        - Arb_JokeRaceEligibility
+        - Arb_AllowListEligibility
+        - Arb_HatsElectionEligibility
+        - Arb_PassthroughModule
+        - Arb_StakingEligibility
+        - Arb_SeasonToggle
+        - Arb_CharacterSheetsLevelEligibility
+        - Arb_AgreementEligibility
+        - Arb_HatsStakingShaman
+        - Arb_HatsFarcasterDelegator
         - Gno_HatAuthority
+        - Gno_JokeRaceEligibility
+        - Gno_AllowListEligibility
+        - Gno_HatsElectionEligibility
+        - Gno_PassthroughModule
+        - Gno_StakingEligibility
+        - Gno_SeasonToggle
+        - Gno_CharacterSheetsLevelEligibility
+        - Gno_AgreementEligibility
+        - Gno_HatsStakingShaman
+        - Gno_HatsFarcasterDelegator
         - Celo_HatAuthority
+        - Celo_JokeRaceEligibility
+        - Celo_AllowListEligibility
+        - Celo_HatsElectionEligibility
+        - Celo_PassthroughModule
+        - Celo_StakingEligibility
+        - Celo_SeasonToggle
+        - Celo_CharacterSheetsLevelEligibility
+        - Celo_AgreementEligibility
+        - Celo_HatsStakingShaman
+        - Celo_HatsFarcasterDelegator
 cache:
   redis:
     host: "{env.REDIS_HOST}"
