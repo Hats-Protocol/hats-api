@@ -458,11 +458,21 @@ export class CacheInvalidationService {
         const treeKey = `${entityPrefix}_Tree.${treeIdDecimalToHex(
           hatIdToTreeId(hatId)
         )}`;
+        const prevTreeKey = `${entityPrefix}_Tree.${treeIdDecimalToHex(
+          hatIdToTreeId(hatId) - 1
+        )}`;
         if (!processed.includes(treeKey)) {
           processed.push(treeKey);
           await this.cache.invalidateEntity(
             `${entityPrefix}_Tree`,
             treeIdDecimalToHex(hatIdToTreeId(hatId))
+          );
+        }
+        if (!processed.includes(prevTreeKey)) {
+          processed.push(prevTreeKey);
+          await this.cache.invalidateEntity(
+            `${entityPrefix}_Tree`,
+            treeIdDecimalToHex(hatIdToTreeId(hatId) - 1)
           );
         }
         if (adminHat !== null) {
