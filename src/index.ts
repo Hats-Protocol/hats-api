@@ -12,7 +12,7 @@ import {
 } from "./errors";
 
 const cachaeInvalidationManager = new CacheInvalidationManager();
-cachaeInvalidationManager.startServices();
+// cachaeInvalidationManager.startServices();
 
 const app = express();
 const PORT = process.env.PORT || 4000;

@@ -291,7 +291,7 @@ export class CacheInvalidationService {
   async processTransaction(txHash: `0x${string}`) {
     logger.log({
       level: "info",
-      message: `processing transaction ${txHash} in chain ${this.chainId}`,
+      message: `${this.chainId}-${txHash}: start processing`,
       chain: this.chainId,
       txHash: txHash,
     });
@@ -300,7 +300,9 @@ export class CacheInvalidationService {
     if (isProcessed) {
       logger.log({
         level: "info",
-        message: `transaction ${txHash} already processed in chain ${this.chainId}`,
+        message: `${this.chainId}-${txHash}: already processed`,
+        chain: this.chainId,
+        txHash: txHash,
       });
       return;
     } else {
@@ -320,7 +322,9 @@ export class CacheInvalidationService {
     } catch (err) {
       logger.log({
         level: "error",
-        message: `error fetching transaction ${txHash} in chain ${this.chainId}`,
+        message: `${this.chainId}-${txHash}: error fetching transaction`,
+        chain: this.chainId,
+        txHash: txHash,
         error: err,
       });
       this.inMemCache.set(txHash, false);
@@ -337,9 +341,11 @@ export class CacheInvalidationService {
       if (!subgraphSynced) {
         logger.log({
           level: "error",
-          message: `Timeout while waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
+          message: `${
             this.chainId
-          }`,
+          }-${txHash}: timeout while waiting for block number ${transactionReceipt.blockNumber.toString()}`,
+          chain: this.chainId,
+          txHash: txHash,
         });
 
         // throw new SubgraphSyncError(
@@ -351,9 +357,11 @@ export class CacheInvalidationService {
     } catch (error) {
       logger.log({
         level: "error",
-        message: `Unexpected error while waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
+        message: `${
           this.chainId
-        }`,
+        }-${txHash}: unexpected error while waiting for block number ${transactionReceipt.blockNumber.toString()}`,
+        chain: this.chainId,
+        txHash: txHash,
         error: error,
       });
       this.inMemCache.set(txHash, false);
@@ -401,7 +409,9 @@ export class CacheInvalidationService {
     } catch (err) {
       logger.log({
         level: "error",
-        message: `error processing hats events for transaction ${txHash} in chain ${this.chainId}`,
+        message: `${this.chainId}-${txHash}: error processing hats events`,
+        chain: this.chainId,
+        txHash: txHash,
         error: err,
       });
       this.inMemCache.set(txHash, false);
@@ -422,7 +432,8 @@ export class CacheInvalidationService {
       logs,
     });
 
-    const processed: string[] = [];
+    const processedHatsOfTrees: string[] = [];
+    const processedEntities: string[] = [];
 
     for (let i = 0; i < parsedLogs.length; i++) {
       const log = parsedLogs[i];
@@ -444,16 +455,14 @@ export class CacheInvalidationService {
         log.eventName === "HatImageURIChanged"
       ) {
         const hatId = log.args.hatId;
-        const key = `${entityPrefix}_Hat.${hatIdDecimalToHex(hatId)}`;
-        if (!processed.includes(key)) {
-          processed.push(key);
-          await this.cache.invalidateEntity(
-            `${entityPrefix}_Hat`,
-            hatIdDecimalToHex(hatId)
-          );
+        const treeId = treeIdDecimalToHex(hatIdToTreeId(hatId));
+        if (!processedHatsOfTrees.includes(treeId)) {
+          processedHatsOfTrees.push(treeId);
+          await this.cache.invalidateHatsInTree(entityPrefix, treeId);
         }
       } else if (log.eventName === "HatCreated") {
         const hatId = log.args.id;
+        const treeId = treeIdDecimalToHex(hatIdToTreeId(hatId));
         const adminHat = parentHat(hatIdDecimalToHex(hatId));
         const treeKey = `${entityPrefix}_Tree.${treeIdDecimalToHex(
           hatIdToTreeId(hatId)
@@ -461,26 +470,26 @@ export class CacheInvalidationService {
         const prevTreeKey = `${entityPrefix}_Tree.${treeIdDecimalToHex(
           hatIdToTreeId(hatId) - 1
         )}`;
-        if (!processed.includes(treeKey)) {
-          processed.push(treeKey);
+
+        if (!processedEntities.includes(treeKey)) {
+          processedEntities.push(treeKey);
           await this.cache.invalidateEntity(
             `${entityPrefix}_Tree`,
             treeIdDecimalToHex(hatIdToTreeId(hatId))
           );
         }
-        if (!processed.includes(prevTreeKey)) {
-          processed.push(prevTreeKey);
+        // if the hat is a top-hat, invalidate also the previous tree for tree pagination queries
+        if (adminHat === null && !processedEntities.includes(prevTreeKey)) {
+          processedEntities.push(prevTreeKey);
           await this.cache.invalidateEntity(
             `${entityPrefix}_Tree`,
             treeIdDecimalToHex(hatIdToTreeId(hatId) - 1)
           );
         }
-        if (adminHat !== null) {
-          const hatKey = `${entityPrefix}_Hat.${adminHat}`;
-          if (!processed.includes(hatKey)) {
-            processed.push(hatKey);
-            await this.cache.invalidateEntity(`${entityPrefix}_Hat`, adminHat);
-          }
+        // invalidate athe admin hat if it exists
+        if (adminHat !== null && !processedHatsOfTrees.includes(treeId)) {
+          processedHatsOfTrees.push(treeId);
+          await this.cache.invalidateHatsInTree(entityPrefix, treeId);
         }
       } else if (
         log.eventName === "TopHatLinkRequested" ||
@@ -490,15 +499,15 @@ export class CacheInvalidationService {
         const adminHatId = log.args.newAdmin;
         const treeKey = `${entityPrefix}_Tree.${treeIdDecimalToHex(treeId)}`;
         const hatKey = `${entityPrefix}_Hat.${hatIdDecimalToHex(adminHatId)}`;
-        if (!processed.includes(treeKey)) {
-          processed.push(treeKey);
+        if (!processedEntities.includes(treeKey)) {
+          processedEntities.push(treeKey);
           await this.cache.invalidateEntity(
             `${entityPrefix}_Tree`,
             treeIdDecimalToHex(treeId)
           );
         }
-        if (!processed.includes(hatKey)) {
-          processed.push(hatKey);
+        if (!processedEntities.includes(hatKey)) {
+          processedEntities.push(hatKey);
           await this.cache.invalidateEntity(
             `${entityPrefix}_Hat`,
             hatIdDecimalToHex(adminHatId)
@@ -508,25 +517,22 @@ export class CacheInvalidationService {
         const from = log.args.from;
         const to = log.args.to;
         const hatId = log.args.id;
+        const treeId = treeIdDecimalToHex(hatIdToTreeId(hatId));
 
         const fromKey = `${entityPrefix}_Wearer.${(
           from as string
         ).toLowerCase()}`;
         const toKey = `${entityPrefix}_Wearer.${(to as string).toLowerCase()}`;
-        const hatKey = `${entityPrefix}_Hat.${hatIdDecimalToHex(hatId)}`;
 
-        if (!processed.includes(hatKey)) {
-          processed.push(hatKey);
-          await this.cache.invalidateEntity(
-            `${entityPrefix}_Hat`,
-            hatIdDecimalToHex(hatId)
-          );
+        if (!processedHatsOfTrees.includes(treeId)) {
+          processedHatsOfTrees.push(treeId);
+          await this.cache.invalidateHatsInTree(entityPrefix, treeId);
         }
         if (
           to !== "0x0000000000000000000000000000000000000000" &&
-          !processed.includes(toKey)
+          !processedEntities.includes(toKey)
         ) {
-          processed.push(toKey);
+          processedEntities.push(toKey);
           await this.cache.invalidateEntity(
             `${entityPrefix}_Wearer`,
             (to as string).toLowerCase()
@@ -534,9 +540,9 @@ export class CacheInvalidationService {
         }
         if (
           from !== "0x0000000000000000000000000000000000000000" &&
-          !processed.includes(fromKey)
+          !processedEntities.includes(fromKey)
         ) {
-          processed.push(fromKey);
+          processedEntities.push(fromKey);
           await this.cache.invalidateEntity(
             `${entityPrefix}_Wearer`,
             (from as string).toLowerCase()
@@ -583,10 +589,10 @@ export class CacheInvalidationService {
     const pollForBlockNumber = async () => {
       while (true) {
         const latestBlockNumber = await this.getLatestBlockMainSubgraph();
-        logger.log({
-          level: "info",
-          message: `waiting, latest block number: ${latestBlockNumber.toString()}`,
-        });
+        // logger.log({
+        //   level: "info",
+        //   message: `waiting, latest block number: ${latestBlockNumber.toString()}`,
+        // });
         if (latestBlockNumber >= blockNumber) {
           return;
         }
@@ -600,13 +606,13 @@ export class CacheInvalidationService {
         timeoutPromise(timeoutDuration),
       ]);
     } catch (error) {
-      logger.log({
-        level: "error",
-        message: `Failed to reach desired block number within timeout`,
-        blockNumber: blockNumber.toString(),
-        network: this.chainId,
-        error: error,
-      });
+      // logger.log({
+      //   level: "error",
+      //   message: `Failed to reach desired block number within timeout`,
+      //   blockNumber: blockNumber.toString(),
+      //   network: this.chainId,
+      //   error: error,
+      // });
       return false;
     }
 

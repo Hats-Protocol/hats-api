@@ -13,17 +13,6 @@ export class RedisCacheClient {
     });
   }
 
-  async isTransactionProcessed(transactionId: string): Promise<boolean> {
-    const key = `transaction:${transactionId}`;
-    const result = await this._client.get(key);
-    return result !== null;
-  }
-
-  async markTransactionProcessed(transactionId: string): Promise<void> {
-    const key = `transaction:${transactionId}`;
-    await this._client.set(key, "true", "EX", 60);
-  }
-
   async invalidateEntity(entityName: string, entityId: string): Promise<void> {
     const entity = `${entityName}.${entityId}`;
     logger.log({
@@ -35,16 +24,17 @@ export class RedisCacheClient {
     const matchParam = `*${entity}*`;
     const stream = this._client.scanStream({
       match: matchParam,
+      count: 100,
     });
 
     const keysToDelete: string[] = [];
-    const operations: Promise<any>[] = [];
+    let pipeline = this._client.pipeline();
 
     try {
       await new Promise((resolve, reject) => {
         stream.on("data", (resultKeys: string[]) => {
-          for (let key of resultKeys) {
-            key = key.slice(15);
+          for (let fullKey of resultKeys) {
+            const key = fullKey.slice(15);
             let hash: string | undefined = undefined;
             if (key.startsWith(entity)) {
               hash = key.slice(entity.length + 1);
@@ -54,13 +44,23 @@ export class RedisCacheClient {
 
             if (hash !== undefined && !keysToDelete.includes(hash)) {
               keysToDelete.push(hash);
-              const delPromise = this._client.del(`response-cache:${hash}`);
-              operations.push(delPromise);
+              pipeline.del(`response-cache:${hash}`);
+            }
+            if (!keysToDelete.includes(fullKey)) {
+              keysToDelete.push(fullKey);
+              pipeline.del(fullKey);
+            }
+
+            if (pipeline.length > 100) {
+              pipeline.exec();
+              pipeline = this._client.pipeline();
             }
           }
         });
 
-        stream.on("end", resolve);
+        stream.on("end", () => {
+          pipeline.exec(() => resolve("success"));
+        });
         stream.on("error", reject);
       });
     } catch (error) {
@@ -76,26 +76,76 @@ export class RedisCacheClient {
         `Error invalidating entity ${entityName} with ID ${entityId}: ${error}`
       );
     }
+  }
+
+  async invalidateHatsInTree(
+    networkPrefix: string,
+    treeId: string
+  ): Promise<void> {
+    const entityPrefix = `${networkPrefix}_Hat.${treeId}`;
+    const exampleEntity = `${networkPrefix}_Hat.0x0000000100000000000000000000000000000000000000000000000000000000`;
+    logger.log({
+      level: "info",
+      message: `Invalidating hats of tree ${treeId}, in network ${networkPrefix}`,
+    });
+
+    const matchParam = `*${entityPrefix}*`;
+    const stream = this._client.scanStream({
+      match: matchParam,
+      count: 100,
+    });
+
+    const keysToDelete: string[] = [];
+    let pipeline = this._client.pipeline();
 
     try {
-      await Promise.all(operations);
-      logger.log({
-        level: "info",
-        message: "Invalidation success",
-        entity: `${entityName}.${entityId}`,
-        keysToDelete: keysToDelete,
+      await new Promise((resolve, reject) => {
+        stream.on("data", (resultKeys: string[]) => {
+          for (let fullKey of resultKeys) {
+            const key = fullKey.slice(15);
+            let hash: string | undefined = undefined;
+            if (key.startsWith(entityPrefix)) {
+              hash = key.slice(exampleEntity.length + 1);
+            } else if (
+              key.length > 56 &&
+              key.slice(0, -56).endsWith(entityPrefix)
+            ) {
+              hash = key.slice(0, key.length - exampleEntity.length - 1);
+            }
+
+            if (hash !== undefined && !keysToDelete.includes(hash)) {
+              keysToDelete.push(hash);
+              pipeline.del(`response-cache:${hash}`);
+            }
+            if (!keysToDelete.includes(fullKey)) {
+              keysToDelete.push(fullKey);
+              pipeline.del(fullKey);
+            }
+
+            if (pipeline.length > 100) {
+              pipeline.exec();
+              pipeline = this._client.pipeline();
+            }
+          }
+        });
+
+        stream.on("end", () => {
+          pipeline.exec(() => resolve("success"));
+        });
+        stream.on("error", reject);
       });
     } catch (error) {
       logger.log({
         level: "error",
         message: `Invalidation error`,
-        entity: `${entityName}.${entityId}`,
+        treeId: treeId,
+        networkPrefix: networkPrefix,
         keysToDelete: keysToDelete,
         error: error,
       });
 
       throw new Error(
-        `Error invalidating entity ${entityName} with ID ${entityId}: ${error}`
+        `Error invalidating hats of tree ${treeId} in network ${networkPrefix}: ${error}`
       );
     }
   }
