@@ -305,7 +305,7 @@ export class CacheInvalidationService {
     });
 
     const processingStatus = this.inMemCache.get(txHash);
-    if (processingStatus === 0) {
+    if (processingStatus === 0 || processingStatus === undefined) {
       this.inMemCache.set(txHash, 1);
     } else if (processingStatus === 1) {
       logger.log({
