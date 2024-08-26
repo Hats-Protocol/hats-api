@@ -117,12 +117,8 @@ export class RedisCacheClient {
               keysToDelete.push(hash);
               pipeline.del(`response-cache:${hash}`);
             }
-            if (!keysToDelete.includes(fullKey)) {
-              keysToDelete.push(fullKey);
-              pipeline.del(fullKey);
-            }
 
-            if (pipeline.length > 100) {
+            if (pipeline.length > 10) {
               pipeline.exec();
               pipeline = this._client.pipeline();
             }
