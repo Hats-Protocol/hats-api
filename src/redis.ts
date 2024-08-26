@@ -13,11 +13,18 @@ export class RedisCacheClient {
     });
   }
 
-  async invalidateEntity(entityName: string, entityId: string): Promise<void> {
+  async invalidateEntity(
+    networkId: string,
+    txHash: string,
+    entityName: string,
+    entityId: string
+  ): Promise<void> {
     const entity = `${entityName}.${entityId}`;
     logger.log({
       level: "info",
-      message: `Invalidating entity ${entityName} with ID ${entityId}`,
+      message: `${networkId}-${txHash}: invalidating entity ${entityName} with ID ${entityId}`,
+      txHash: txHash,
+      networkId: networkId,
       entity: `${entityName}.${entityId}`,
     });
 
@@ -67,6 +74,8 @@ export class RedisCacheClient {
       logger.log({
         level: "error",
         message: `Invalidation error`,
+        txHash: txHash,
+        networkId: networkId,
         entity: `${entityName}.${entityId}`,
         keysToDelete: keysToDelete,
         error: error,
@@ -79,6 +88,8 @@ export class RedisCacheClient {
   }
 
   async invalidateHatsInTree(
+    networkId: string,
+    txHash: string,
     networkPrefix: string,
     treeId: string
   ): Promise<void> {
@@ -86,7 +97,9 @@ export class RedisCacheClient {
     const exampleEntity = `${networkPrefix}_Hat.0x0000000100000000000000000000000000000000000000000000000000000000`;
     logger.log({
       level: "info",
-      message: `Invalidating hats of tree ${treeId}, in network ${networkPrefix}`,
+      message: `${networkId}-${txHash}: invalidating hats of tree ${treeId}`,
+      txHash: txHash,
+      networkId: networkId,
     });
 
     const matchParam = `*${entityPrefix}*`;
@@ -134,6 +147,8 @@ export class RedisCacheClient {
       logger.log({
         level: "error",
         message: `Invalidation error`,
+        txHash: txHash,
+        networkId: networkId,
         treeId: treeId,
         networkPrefix: networkPrefix,
         keysToDelete: keysToDelete,
