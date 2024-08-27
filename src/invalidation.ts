@@ -150,7 +150,7 @@ export class CacheInvalidationManager {
 
 export class CacheInvalidationService {
   private cache: RedisCacheClient;
-  private inMemCache: LRUCache<string, boolean>;
+  private inMemCache: LRUCache<string, number>;
   private publicSocketClient: PublicClient;
   private publicHttpClient: PublicClient;
   private graphqlClient: GraphQLClient;
@@ -159,7 +159,7 @@ export class CacheInvalidationService {
 
   constructor(cacheClient: RedisCacheClient, chainId: string) {
     this.cache = cacheClient;
-    this.inMemCache = new LRUCache<string, boolean>({ max: 100 });
+    this.inMemCache = new LRUCache<string, number>({ max: 100 });
     this.chainId = chainId;
     this.key = 0;
     this.publicSocketClient = createPublicClient({
@@ -199,7 +199,11 @@ export class CacheInvalidationService {
         for (let i = 0; i < logs.length; i++) {
           const log = logs[i];
           const logTx: `0x${string}` = log.transactionHash;
-          this.processTransaction(logTx.toLowerCase() as `0x${string}`);
+          try {
+            this.processTransaction(logTx.toLowerCase() as `0x${string}`);
+          } catch (error) {
+            continue;
+          }
         }
       },
     });
@@ -212,7 +216,11 @@ export class CacheInvalidationService {
         for (let i = 0; i < logs.length; i++) {
           const log = logs[i];
           const logTx: `0x${string}` = log.transactionHash;
-          this.processTransaction(logTx.toLowerCase() as `0x${string}`);
+          try {
+            this.processTransaction(logTx.toLowerCase() as `0x${string}`);
+          } catch (error) {
+            continue;
+          }
         }
       },
     });
@@ -291,20 +299,64 @@ export class CacheInvalidationService {
   async processTransaction(txHash: `0x${string}`) {
     logger.log({
       level: "info",
-      message: `processing transaction ${txHash} in chain ${this.chainId}`,
-      chain: this.chainId,
+      message: `${this.chainId}-${txHash}: start processing`,
+      networkId: this.chainId,
       txHash: txHash,
     });
 
-    const isProcessed = this.inMemCache.get(txHash);
-    if (isProcessed) {
+    const processingStatus = this.inMemCache.get(txHash);
+    if (processingStatus === 0 || processingStatus === undefined) {
+      this.inMemCache.set(txHash, 1);
+    } else if (processingStatus === 1) {
       logger.log({
         level: "info",
-        message: `transaction ${txHash} already processed in chain ${this.chainId}`,
+        message: `${this.chainId}-${txHash}: waiting for tx to finish processing`,
+        networkId: this.chainId,
+        txHash: txHash,
+      });
+      try {
+        await new Promise<void>((resolve, reject) => {
+          const startTime = Date.now();
+
+          const checkCache = () => {
+            const cacheValue = this.inMemCache.get(txHash);
+            if (cacheValue === 2) {
+              resolve();
+            } else if (Date.now() - startTime >= 30000) {
+              reject(new Error());
+            } else {
+              setTimeout(checkCache, 2000);
+            }
+          };
+
+          checkCache();
+        });
+        return;
+      } catch (err) {
+        logger.log({
+          level: "error",
+          message: `${this.chainId}-${txHash}: timeout while waiting for tx to be processed`,
+          networkId: this.chainId,
+          txHash: txHash,
+        });
+        throw new Error("Timeout while waiting for tx to be processed");
+      }
+    } else if (processingStatus === 2) {
+      logger.log({
+        level: "info",
+        message: `${this.chainId}-${txHash}: already processed`,
+        networkId: this.chainId,
+        txHash: txHash,
       });
       return;
     } else {
-      this.inMemCache.set(txHash, true);
+      logger.log({
+        level: "error",
+        message: `${this.chainId}-${txHash}: invalid cache status`,
+        networkId: this.chainId,
+        txHash: txHash,
+      });
+      throw new Error("Invalid cache status");
     }
 
     let transactionReceipt: TransactionReceipt;
@@ -320,10 +372,12 @@ export class CacheInvalidationService {
     } catch (err) {
       logger.log({
         level: "error",
-        message: `error fetching transaction ${txHash} in chain ${this.chainId}`,
+        message: `${this.chainId}-${txHash}: error fetching transaction`,
+        networkId: this.chainId,
+        txHash: txHash,
         error: err,
       });
-      this.inMemCache.set(txHash, false);
+      this.inMemCache.set(txHash, 0);
       throw new TransactionNotFoundError(
         `Error: failed fetching transaction with ID ${txHash} from chain ${this.chainId}`
       );
@@ -337,9 +391,11 @@ export class CacheInvalidationService {
       if (!subgraphSynced) {
         logger.log({
           level: "error",
-          message: `Timeout while waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
+          message: `${
             this.chainId
-          }`,
+          }-${txHash}: timeout while waiting for block number ${transactionReceipt.blockNumber.toString()}`,
+          networkId: this.chainId,
+          txHash: txHash,
         });
 
         // throw new SubgraphSyncError(
@@ -351,12 +407,14 @@ export class CacheInvalidationService {
     } catch (error) {
       logger.log({
         level: "error",
-        message: `Unexpected error while waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
+        message: `${
           this.chainId
-        }`,
+        }-${txHash}: unexpected error while waiting for block number ${transactionReceipt.blockNumber.toString()}`,
+        networkId: this.chainId,
+        txHash: txHash,
         error: error,
       });
-      this.inMemCache.set(txHash, false);
+      this.inMemCache.set(txHash, 0);
 
       throw new SubgraphSyncError(
         `Error: failed waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
@@ -390,29 +448,36 @@ export class CacheInvalidationService {
 
     try {
       await this.handleHatsEvents(
+        txHash,
         hatsLogs,
         CHAIN_ID_TO_NETWORK_NAME[this.chainId],
         CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
       );
       await this.handleClaimsHatterEvents(
+        txHash,
         claimsHatterInstances,
         CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
       );
     } catch (err) {
       logger.log({
         level: "error",
-        message: `error processing hats events for transaction ${txHash} in chain ${this.chainId}`,
+        message: `${this.chainId}-${txHash}: error processing hats events`,
+        networkId: this.chainId,
+        txHash: txHash,
         error: err,
       });
-      this.inMemCache.set(txHash, false);
+      this.inMemCache.set(txHash, 0);
 
       throw new InvalidationError(
         `Error: failed processing events for transaction ${txHash} in chain ${this.chainId}`
       );
     }
+
+    this.inMemCache.set(txHash, 2);
   }
 
   async handleHatsEvents(
+    txHash: string,
     logs: (Log | RpcLog)[],
     networkName: string,
     entityPrefix: string
@@ -422,14 +487,16 @@ export class CacheInvalidationService {
       logs,
     });
 
-    const processed: string[] = [];
+    const processedHatsOfTrees: string[] = [];
+    const processedEntities: string[] = [];
 
     for (let i = 0; i < parsedLogs.length; i++) {
       const log = parsedLogs[i];
       logger.log({
         level: "info",
-        message: `processing event ${log.eventName} in network ${networkName}`,
-        transactionHash: log.transactionHash,
+        message: `${this.chainId}-${txHash}: processing event ${log.eventName}`,
+        txHash: log.transactionHash,
+        networkId: this.chainId,
         logIndex: log.logIndex,
         index: i,
       });
@@ -444,16 +511,19 @@ export class CacheInvalidationService {
         log.eventName === "HatImageURIChanged"
       ) {
         const hatId = log.args.hatId;
-        const key = `${entityPrefix}_Hat.${hatIdDecimalToHex(hatId)}`;
-        if (!processed.includes(key)) {
-          processed.push(key);
-          await this.cache.invalidateEntity(
-            `${entityPrefix}_Hat`,
-            hatIdDecimalToHex(hatId)
+        const treeId = treeIdDecimalToHex(hatIdToTreeId(hatId));
+        if (!processedHatsOfTrees.includes(treeId)) {
+          processedHatsOfTrees.push(treeId);
+          await this.cache.invalidateHatsInTree(
+            this.chainId,
+            txHash,
+            entityPrefix,
+            treeId
           );
         }
       } else if (log.eventName === "HatCreated") {
         const hatId = log.args.id;
+        const treeId = treeIdDecimalToHex(hatIdToTreeId(hatId));
         const adminHat = parentHat(hatIdDecimalToHex(hatId));
         const treeKey = `${entityPrefix}_Tree.${treeIdDecimalToHex(
           hatIdToTreeId(hatId)
@@ -461,26 +531,35 @@ export class CacheInvalidationService {
         const prevTreeKey = `${entityPrefix}_Tree.${treeIdDecimalToHex(
           hatIdToTreeId(hatId) - 1
         )}`;
-        if (!processed.includes(treeKey)) {
-          processed.push(treeKey);
+
+        if (!processedEntities.includes(treeKey)) {
+          processedEntities.push(treeKey);
           await this.cache.invalidateEntity(
+            this.chainId,
+            txHash,
             `${entityPrefix}_Tree`,
             treeIdDecimalToHex(hatIdToTreeId(hatId))
           );
         }
-        if (!processed.includes(prevTreeKey)) {
-          processed.push(prevTreeKey);
+        // if the hat is a top-hat, invalidate also the previous tree for tree pagination queries
+        if (adminHat === null && !processedEntities.includes(prevTreeKey)) {
+          processedEntities.push(prevTreeKey);
           await this.cache.invalidateEntity(
+            this.chainId,
+            txHash,
             `${entityPrefix}_Tree`,
             treeIdDecimalToHex(hatIdToTreeId(hatId) - 1)
           );
         }
-        if (adminHat !== null) {
-          const hatKey = `${entityPrefix}_Hat.${adminHat}`;
-          if (!processed.includes(hatKey)) {
-            processed.push(hatKey);
-            await this.cache.invalidateEntity(`${entityPrefix}_Hat`, adminHat);
-          }
+        // invalidate athe admin hat if it exists
+        if (adminHat !== null && !processedHatsOfTrees.includes(treeId)) {
+          processedHatsOfTrees.push(treeId);
+          await this.cache.invalidateHatsInTree(
+            this.chainId,
+            txHash,
+            entityPrefix,
+            treeId
+          );
         }
       } else if (
         log.eventName === "TopHatLinkRequested" ||
@@ -490,16 +569,20 @@ export class CacheInvalidationService {
         const adminHatId = log.args.newAdmin;
         const treeKey = `${entityPrefix}_Tree.${treeIdDecimalToHex(treeId)}`;
         const hatKey = `${entityPrefix}_Hat.${hatIdDecimalToHex(adminHatId)}`;
-        if (!processed.includes(treeKey)) {
-          processed.push(treeKey);
+        if (!processedEntities.includes(treeKey)) {
+          processedEntities.push(treeKey);
           await this.cache.invalidateEntity(
+            this.chainId,
+            txHash,
             `${entityPrefix}_Tree`,
             treeIdDecimalToHex(treeId)
           );
         }
-        if (!processed.includes(hatKey)) {
-          processed.push(hatKey);
+        if (!processedEntities.includes(hatKey)) {
+          processedEntities.push(hatKey);
           await this.cache.invalidateEntity(
+            this.chainId,
+            txHash,
             `${entityPrefix}_Hat`,
             hatIdDecimalToHex(adminHatId)
           );
@@ -508,36 +591,42 @@ export class CacheInvalidationService {
         const from = log.args.from;
         const to = log.args.to;
         const hatId = log.args.id;
+        const treeId = treeIdDecimalToHex(hatIdToTreeId(hatId));
 
         const fromKey = `${entityPrefix}_Wearer.${(
           from as string
         ).toLowerCase()}`;
         const toKey = `${entityPrefix}_Wearer.${(to as string).toLowerCase()}`;
-        const hatKey = `${entityPrefix}_Hat.${hatIdDecimalToHex(hatId)}`;
 
-        if (!processed.includes(hatKey)) {
-          processed.push(hatKey);
-          await this.cache.invalidateEntity(
-            `${entityPrefix}_Hat`,
-            hatIdDecimalToHex(hatId)
+        if (!processedHatsOfTrees.includes(treeId)) {
+          processedHatsOfTrees.push(treeId);
+          await this.cache.invalidateHatsInTree(
+            this.chainId,
+            txHash,
+            entityPrefix,
+            treeId
           );
         }
         if (
           to !== "0x0000000000000000000000000000000000000000" &&
-          !processed.includes(toKey)
+          !processedEntities.includes(toKey)
         ) {
-          processed.push(toKey);
+          processedEntities.push(toKey);
           await this.cache.invalidateEntity(
+            this.chainId,
+            txHash,
             `${entityPrefix}_Wearer`,
             (to as string).toLowerCase()
           );
         }
         if (
           from !== "0x0000000000000000000000000000000000000000" &&
-          !processed.includes(fromKey)
+          !processedEntities.includes(fromKey)
         ) {
-          processed.push(fromKey);
+          processedEntities.push(fromKey);
           await this.cache.invalidateEntity(
+            this.chainId,
+            txHash,
             `${entityPrefix}_Wearer`,
             (from as string).toLowerCase()
           );
@@ -547,6 +636,7 @@ export class CacheInvalidationService {
   }
 
   async handleClaimsHatterEvents(
+    txHash: string,
     claimsHatters: `0x${string}`[],
     entityPrefix: string
   ) {
@@ -554,10 +644,14 @@ export class CacheInvalidationService {
       claimsHatters.map((hatter) => {
         logger.log({
           level: "info",
-          message: `processing claims hatter event of address ${hatter}`,
+          message: `${this.chainId}-${txHash}: processing claims hatter event of address ${hatter}`,
+          txHash: txHash,
+          networkId: this.chainId,
           entity: `${entityPrefix}_ClaimsHatter.${hatter.toLowerCase()}`,
         });
         return this.cache.invalidateEntity(
+          this.chainId,
+          txHash,
           `${entityPrefix}_ClaimsHatter`,
           hatter.toLowerCase()
         );
@@ -583,10 +677,10 @@ export class CacheInvalidationService {
     const pollForBlockNumber = async () => {
       while (true) {
         const latestBlockNumber = await this.getLatestBlockMainSubgraph();
-        logger.log({
-          level: "info",
-          message: `waiting, latest block number: ${latestBlockNumber.toString()}`,
-        });
+        // logger.log({
+        //   level: "info",
+        //   message: `waiting, latest block number: ${latestBlockNumber.toString()}`,
+        // });
         if (latestBlockNumber >= blockNumber) {
           return;
         }
@@ -600,13 +694,13 @@ export class CacheInvalidationService {
         timeoutPromise(timeoutDuration),
       ]);
     } catch (error) {
-      logger.log({
-        level: "error",
-        message: `Failed to reach desired block number within timeout`,
-        blockNumber: blockNumber.toString(),
-        network: this.chainId,
-        error: error,
-      });
+      // logger.log({
+      //   level: "error",
+      //   message: `Failed to reach desired block number within timeout`,
+      //   blockNumber: blockNumber.toString(),
+      //   network: this.chainId,
+      //   error: error,
+      // });
       return false;
     }
 
