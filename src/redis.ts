@@ -53,10 +53,6 @@ export class RedisCacheClient {
               keysToDelete.push(hash);
               pipeline.del(`response-cache:${hash}`);
             }
-            if (!keysToDelete.includes(fullKey)) {
-              keysToDelete.push(fullKey);
-              pipeline.del(fullKey);
-            }
 
             if (pipeline.length > 100) {
               pipeline.exec();
@@ -68,7 +64,9 @@ export class RedisCacheClient {
         stream.on("end", () => {
           pipeline.exec(() => resolve("success"));
         });
-        stream.on("error", reject);
+        stream.on("error", () => {
+          pipeline.exec(() => reject("failure"));
+        });
       });
     } catch (error) {
       logger.log({
@@ -131,7 +129,7 @@ export class RedisCacheClient {
               pipeline.del(`response-cache:${hash}`);
             }
 
-            if (pipeline.length > 10) {
+            if (pipeline.length > 100) {
               pipeline.exec();
               pipeline = this._client.pipeline();
             }
@@ -141,7 +139,9 @@ export class RedisCacheClient {
         stream.on("end", () => {
           pipeline.exec(() => resolve("success"));
         });
-        stream.on("error", reject);
+        stream.on("error", () => {
+          pipeline.exec(() => reject("failure"));
+        });
       });
     } catch (error) {
       logger.log({

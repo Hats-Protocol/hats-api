@@ -100,46 +100,58 @@ export class CacheInvalidationManager {
     this.polygonInvalidationClient.start();
   }
 
-  async processTransaction(txHash: `0x${string}`, networkId: string) {
+  async processTransaction(
+    txHash: `0x${string}`,
+    networkId: string,
+    force: boolean | undefined
+  ) {
     switch (networkId) {
       case "1":
         await this.mainnetInvalidationClient.processTransaction(
-          txHash.toLowerCase() as `0x${string}`
+          txHash.toLowerCase() as `0x${string}`,
+          force
         );
         break;
       case "137":
         await this.polygonInvalidationClient.processTransaction(
-          txHash.toLowerCase() as `0x${string}`
+          txHash.toLowerCase() as `0x${string}`,
+          force
         );
         break;
       case "100":
         await this.gnosisInvalidationClient.processTransaction(
-          txHash.toLowerCase() as `0x${string}`
+          txHash.toLowerCase() as `0x${string}`,
+          force
         );
         break;
       case "42220":
         await this.celoInvalidationClient.processTransaction(
-          txHash.toLowerCase() as `0x${string}`
+          txHash.toLowerCase() as `0x${string}`,
+          force
         );
         break;
       case "8453":
         await this.baseInvalidationClient.processTransaction(
-          txHash.toLowerCase() as `0x${string}`
+          txHash.toLowerCase() as `0x${string}`,
+          force
         );
         break;
       case "10":
         await this.optimismInvalidationClient.processTransaction(
-          txHash.toLowerCase() as `0x${string}`
+          txHash.toLowerCase() as `0x${string}`,
+          force
         );
         break;
       case "42161":
         await this.arbitrumInvalidationClient.processTransaction(
-          txHash.toLowerCase() as `0x${string}`
+          txHash.toLowerCase() as `0x${string}`,
+          force
         );
         break;
       case "11155111":
         await this.sepoliaInvalidationClient.processTransaction(
-          txHash.toLowerCase() as `0x${string}`
+          txHash.toLowerCase() as `0x${string}`,
+          force
         );
         break;
       default:
@@ -296,15 +308,30 @@ export class CacheInvalidationService {
     heartbeat();
   }
 
-  async processTransaction(txHash: `0x${string}`) {
+  async processTransaction(txHash: `0x${string}`, force?: boolean) {
     logger.log({
       level: "info",
       message: `${this.chainId}-${txHash}: start processing`,
       networkId: this.chainId,
       txHash: txHash,
+      isForce: force ?? false,
     });
 
     const processingStatus = this.inMemCache.get(txHash);
+    if (
+      processingStatus !== undefined &&
+      processingStatus !== 0 &&
+      processingStatus !== 1 &&
+      processingStatus !== 2
+    ) {
+      logger.log({
+        level: "error",
+        message: `${this.chainId}-${txHash}: invalid cache status`,
+        networkId: this.chainId,
+        txHash: txHash,
+      });
+      throw new Error("Invalid cache status");
+    }
     if (processingStatus === 0 || processingStatus === undefined) {
       this.inMemCache.set(txHash, 1);
     } else if (processingStatus === 1) {
@@ -341,7 +368,7 @@ export class CacheInvalidationService {
         });
         throw new Error("Timeout while waiting for tx to be processed");
       }
-    } else if (processingStatus === 2) {
+    } else if (processingStatus === 2 && force !== true) {
       logger.log({
         level: "info",
         message: `${this.chainId}-${txHash}: already processed`,
@@ -349,24 +376,24 @@ export class CacheInvalidationService {
         txHash: txHash,
       });
       return;
-    } else {
-      logger.log({
-        level: "error",
-        message: `${this.chainId}-${txHash}: invalid cache status`,
-        networkId: this.chainId,
-        txHash: txHash,
-      });
-      throw new Error("Invalid cache status");
     }
 
     let transactionReceipt: TransactionReceipt;
     // fetch transaction receipt
     try {
-      transactionReceipt = await this.publicHttpClient.getTransactionReceipt({
-        hash: txHash,
-      });
+      transactionReceipt =
+        await this.publicHttpClient.waitForTransactionReceipt({
+          hash: txHash,
+        });
 
       if (!transactionReceipt) {
+        logger.log({
+          level: "error",
+          message: `${this.chainId}-${txHash}: couldn't fetch transaction`,
+          networkId: this.chainId,
+          txHash: txHash,
+        });
+
         return;
       }
     } catch (err) {
