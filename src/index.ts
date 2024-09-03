@@ -26,13 +26,19 @@ app.post("/invalidate", async (req, res) => {
   const {
     transactionId,
     networkId,
-  }: { transactionId: `0x${string}`; networkId: string } = req.body;
+    force,
+  }: {
+    transactionId: `0x${string}`;
+    networkId: string;
+    force: boolean | undefined;
+  } = req.body;
 
   logger.log({
     level: "info",
     message: "POST /invalidate",
     transactionId: transactionId,
     networkId: networkId,
+    force: force,
   });
 
   if (!transactionId || !networkId) {
@@ -42,7 +48,8 @@ app.post("/invalidate", async (req, res) => {
   try {
     await cachaeInvalidationManager.processTransaction(
       transactionId,
-      networkId
+      networkId,
+      force
     );
     res.send("success");
   } catch (error) {
