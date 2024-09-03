@@ -624,6 +624,7 @@ export class CacheInvalidationService {
           from as string
         ).toLowerCase()}`;
         const toKey = `${entityPrefix}_Wearer.${(to as string).toLowerCase()}`;
+        const nonExistentWearerKey = `${entityPrefix}_Wearer.undefined`;
 
         if (!processedHatsOfTrees.includes(treeId)) {
           processedHatsOfTrees.push(treeId);
@@ -656,6 +657,15 @@ export class CacheInvalidationService {
             txHash,
             `${entityPrefix}_Wearer`,
             (from as string).toLowerCase()
+          );
+        }
+        if (!processedEntities.includes(nonExistentWearerKey)) {
+          processedEntities.push(nonExistentWearerKey);
+          await this.cache.invalidateEntity(
+            this.chainId,
+            txHash,
+            `${entityPrefix}_Wearer`,
+            "undefined"
           );
         }
       }
