@@ -318,6 +318,20 @@ export class CacheInvalidationService {
     });
 
     const processingStatus = this.inMemCache.get(txHash);
+    if (
+      processingStatus !== undefined &&
+      processingStatus !== 0 &&
+      processingStatus !== 1 &&
+      processingStatus !== 2
+    ) {
+      logger.log({
+        level: "error",
+        message: `${this.chainId}-${txHash}: invalid cache status`,
+        networkId: this.chainId,
+        txHash: txHash,
+      });
+      throw new Error("Invalid cache status");
+    }
     if (processingStatus === 0 || processingStatus === undefined) {
       this.inMemCache.set(txHash, 1);
     } else if (processingStatus === 1) {
@@ -362,14 +376,6 @@ export class CacheInvalidationService {
         txHash: txHash,
       });
       return;
-    } else {
-      logger.log({
-        level: "error",
-        message: `${this.chainId}-${txHash}: invalid cache status`,
-        networkId: this.chainId,
-        txHash: txHash,
-      });
-      throw new Error("Invalid cache status");
     }
 
     let transactionReceipt: TransactionReceipt;
