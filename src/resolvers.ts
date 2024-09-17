@@ -38,7 +38,7 @@ const resolvers: Resolvers = {
           try {
             const res = await axios.get(
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
-              { timeout: 7000 }
+              { timeout: 12000 }
             );
             if (res.status === 200) {
               return JSON.stringify(res.data);
@@ -202,7 +202,7 @@ const resolvers: Resolvers = {
           try {
             const res = await axios.get(
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
-              { timeout: 7000 }
+              { timeout: 12000 }
             );
             if (res.status === 200) {
               return JSON.stringify(res.data);
@@ -366,7 +366,7 @@ const resolvers: Resolvers = {
           try {
             const res = await axios.get(
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
-              { timeout: 7000 }
+              { timeout: 12000 }
             );
             if (res.status === 200) {
               return JSON.stringify(res.data);
@@ -533,7 +533,7 @@ const resolvers: Resolvers = {
           try {
             const res = await axios.get(
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
-              { timeout: 7000 }
+              { timeout: 12000 }
             );
             if (res.status === 200) {
               return JSON.stringify(res.data);
@@ -697,7 +697,7 @@ const resolvers: Resolvers = {
           try {
             const res = await axios.get(
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
-              { timeout: 7000 }
+              { timeout: 12000 }
             );
             if (res.status === 200) {
               return JSON.stringify(res.data);
@@ -861,7 +861,7 @@ const resolvers: Resolvers = {
           try {
             const res = await axios.get(
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
-              { timeout: 7000 }
+              { timeout: 12000 }
             );
             if (res.status === 200) {
               return JSON.stringify(res.data);
@@ -1028,7 +1028,7 @@ const resolvers: Resolvers = {
           try {
             const res = await axios.get(
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
-              { timeout: 7000 }
+              { timeout: 12000 }
             );
             if (res.status === 200) {
               return JSON.stringify(res.data);
@@ -1198,7 +1198,7 @@ const resolvers: Resolvers = {
           try {
             const res = await axios.get(
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
-              { timeout: 7000 }
+              { timeout: 12000 }
             );
             if (res.status === 200) {
               return JSON.stringify(res.data);

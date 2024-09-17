@@ -47,6 +47,7 @@ export type Gno_AgreementEligibility = Gno_HatsModule & {
   currentAgreement: Gno_Agreement;
   currentAgreementNumber: Scalars['BigInt']['output'];
   agreements: Array<Gno_Agreement>;
+  badStandings: Array<Scalars['String']['output']>;
   events: Array<Gno_AgreementEvent>;
 };
 
@@ -191,6 +192,12 @@ export type Gno_AgreementEligibility_filter = {
   currentAgreementNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   currentAgreementNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   agreements_?: InputMaybe<Gno_Agreement_filter>;
+  badStandings?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
   events_?: InputMaybe<Gno_AgreementEvent_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<Gno_BlockChangedFilter>;
@@ -214,6 +221,7 @@ export type Gno_AgreementEligibility_orderBy =
   | 'currentAgreement__graceEndTime'
   | 'currentAgreementNumber'
   | 'agreements'
+  | 'badStandings'
   | 'events';
 
 export type Gno_AgreementEvent = {
@@ -3299,6 +3307,73 @@ export type Gno_Election_RecalledEvent_orderBy =
   | 'termEnd'
   | 'accounts';
 
+export type Gno_EligibilitiesRuleset = {
+  id: Scalars['ID']['output'];
+  eligibilitiesChain: Gno_HatsEligibilitiesChain;
+  modules: Array<Gno_HatsModule>;
+};
+
+
+export type Gno_EligibilitiesRulesetmodulesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Gno_HatsModule_orderBy>;
+  orderDirection?: InputMaybe<Gno_OrderDirection>;
+  where?: InputMaybe<Gno_HatsModule_filter>;
+};
+
+export type Gno_EligibilitiesRuleset_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  eligibilitiesChain?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_gt?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_lt?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_gte?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_lte?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  eligibilitiesChain_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  eligibilitiesChain_contains?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_contains?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_starts_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_ends_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_?: InputMaybe<Gno_HatsEligibilitiesChain_filter>;
+  modules?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_?: InputMaybe<Gno_HatsModule_filter>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Gno_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Gno_EligibilitiesRuleset_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Gno_EligibilitiesRuleset_filter>>>;
+};
+
+export type Gno_EligibilitiesRuleset_orderBy =
+  | 'id'
+  | 'eligibilitiesChain'
+  | 'eligibilitiesChain__id'
+  | 'eligibilitiesChain__version'
+  | 'eligibilitiesChain__hatId'
+  | 'eligibilitiesChain__numRulesets'
+  | 'modules';
+
 /**  Erc1155 Eligibility  */
 export type Gno_Erc1155Eligibility = Gno_HatsModule & {
   id: Scalars['ID']['output'];
@@ -4407,6 +4482,104 @@ export type Gno_HatsElectionEligibility_orderBy =
   | 'currentTerm__termEnd'
   | 'currentTerm__electionCompletedAt'
   | 'events';
+
+/**  Chains  */
+export type Gno_HatsEligibilitiesChain = Gno_HatsModule & {
+  id: Scalars['ID']['output'];
+  version?: Maybe<Scalars['String']['output']>;
+  hatId: Scalars['String']['output'];
+  rulesets: Array<Gno_EligibilitiesRuleset>;
+  moduleAddresses: Array<Scalars['String']['output']>;
+  numRulesets: Scalars['BigInt']['output'];
+};
+
+
+/**  Chains  */
+export type Gno_HatsEligibilitiesChainrulesetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Gno_EligibilitiesRuleset_orderBy>;
+  orderDirection?: InputMaybe<Gno_OrderDirection>;
+  where?: InputMaybe<Gno_EligibilitiesRuleset_filter>;
+};
+
+export type Gno_HatsEligibilitiesChain_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  version?: InputMaybe<Scalars['String']['input']>;
+  version_not?: InputMaybe<Scalars['String']['input']>;
+  version_gt?: InputMaybe<Scalars['String']['input']>;
+  version_lt?: InputMaybe<Scalars['String']['input']>;
+  version_gte?: InputMaybe<Scalars['String']['input']>;
+  version_lte?: InputMaybe<Scalars['String']['input']>;
+  version_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_contains?: InputMaybe<Scalars['String']['input']>;
+  version_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  rulesets_?: InputMaybe<Gno_EligibilitiesRuleset_filter>;
+  moduleAddresses?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  numRulesets?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_not?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  numRulesets_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Gno_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Gno_HatsEligibilitiesChain_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Gno_HatsEligibilitiesChain_filter>>>;
+};
+
+export type Gno_HatsEligibilitiesChain_orderBy =
+  | 'id'
+  | 'version'
+  | 'hatId'
+  | 'rulesets'
+  | 'moduleAddresses'
+  | 'numRulesets';
 
 export type Gno_HatsFarcasterDelegator = {
   id: Scalars['ID']['output'];
@@ -5837,6 +6010,10 @@ export type Query = {
   Gno_gitcoinPassportEligibilities: Array<Gno_GitcoinPassportEligibility>;
   Gno_coLinksEligibility?: Maybe<Gno_CoLinksEligibility>;
   Gno_coLinksEligibilities: Array<Gno_CoLinksEligibility>;
+  Gno_hatsEligibilitiesChain?: Maybe<Gno_HatsEligibilitiesChain>;
+  Gno_hatsEligibilitiesChains: Array<Gno_HatsEligibilitiesChain>;
+  Gno_eligibilitiesRuleset?: Maybe<Gno_EligibilitiesRuleset>;
+  Gno_eligibilitiesRulesets: Array<Gno_EligibilitiesRuleset>;
   Gno_hatsModule?: Maybe<Gno_HatsModule>;
   Gno_hatsModules: Array<Gno_HatsModule>;
   Gno_hatsModuleEvent?: Maybe<Gno_HatsModuleEvent>;
@@ -6805,6 +6982,42 @@ export type QueryGno_coLinksEligibilitiesArgs = {
   orderBy?: InputMaybe<Gno_CoLinksEligibility_orderBy>;
   orderDirection?: InputMaybe<Gno_OrderDirection>;
   where?: InputMaybe<Gno_CoLinksEligibility_filter>;
+  block?: InputMaybe<Gno_Block_height>;
+  subgraphError?: Gno__SubgraphErrorPolicy_;
+};
+
+
+export type QueryGno_hatsEligibilitiesChainArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Gno_Block_height>;
+  subgraphError?: Gno__SubgraphErrorPolicy_;
+};
+
+
+export type QueryGno_hatsEligibilitiesChainsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Gno_HatsEligibilitiesChain_orderBy>;
+  orderDirection?: InputMaybe<Gno_OrderDirection>;
+  where?: InputMaybe<Gno_HatsEligibilitiesChain_filter>;
+  block?: InputMaybe<Gno_Block_height>;
+  subgraphError?: Gno__SubgraphErrorPolicy_;
+};
+
+
+export type QueryGno_eligibilitiesRulesetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Gno_Block_height>;
+  subgraphError?: Gno__SubgraphErrorPolicy_;
+};
+
+
+export type QueryGno_eligibilitiesRulesetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Gno_EligibilitiesRuleset_orderBy>;
+  orderDirection?: InputMaybe<Gno_OrderDirection>;
+  where?: InputMaybe<Gno_EligibilitiesRuleset_filter>;
   block?: InputMaybe<Gno_Block_height>;
   subgraphError?: Gno__SubgraphErrorPolicy_;
 };
@@ -8743,6 +8956,10 @@ export type Subscription = {
   Gno_gitcoinPassportEligibilities: Array<Gno_GitcoinPassportEligibility>;
   Gno_coLinksEligibility?: Maybe<Gno_CoLinksEligibility>;
   Gno_coLinksEligibilities: Array<Gno_CoLinksEligibility>;
+  Gno_hatsEligibilitiesChain?: Maybe<Gno_HatsEligibilitiesChain>;
+  Gno_hatsEligibilitiesChains: Array<Gno_HatsEligibilitiesChain>;
+  Gno_eligibilitiesRuleset?: Maybe<Gno_EligibilitiesRuleset>;
+  Gno_eligibilitiesRulesets: Array<Gno_EligibilitiesRuleset>;
   Gno_hatsModule?: Maybe<Gno_HatsModule>;
   Gno_hatsModules: Array<Gno_HatsModule>;
   Gno_hatsModuleEvent?: Maybe<Gno_HatsModuleEvent>;
@@ -9716,6 +9933,42 @@ export type SubscriptionGno_coLinksEligibilitiesArgs = {
 };
 
 
+export type SubscriptionGno_hatsEligibilitiesChainArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Gno_Block_height>;
+  subgraphError?: Gno__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionGno_hatsEligibilitiesChainsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Gno_HatsEligibilitiesChain_orderBy>;
+  orderDirection?: InputMaybe<Gno_OrderDirection>;
+  where?: InputMaybe<Gno_HatsEligibilitiesChain_filter>;
+  block?: InputMaybe<Gno_Block_height>;
+  subgraphError?: Gno__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionGno_eligibilitiesRulesetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Gno_Block_height>;
+  subgraphError?: Gno__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionGno_eligibilitiesRulesetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Gno_EligibilitiesRuleset_orderBy>;
+  orderDirection?: InputMaybe<Gno_OrderDirection>;
+  where?: InputMaybe<Gno_EligibilitiesRuleset_filter>;
+  block?: InputMaybe<Gno_Block_height>;
+  subgraphError?: Gno__SubgraphErrorPolicy_;
+};
+
+
 export type SubscriptionGno_hatsModuleArgs = {
   id: Scalars['ID']['input'];
   block?: InputMaybe<Gno_Block_height>;
@@ -10093,6 +10346,14 @@ export type Gno__SubgraphErrorPolicy_ =
   /** null **/
   Gno_coLinksEligibilities: InContextSdkMethod<Query['Gno_coLinksEligibilities'], QueryGno_coLinksEligibilitiesArgs, MeshContext>,
   /** null **/
+  Gno_hatsEligibilitiesChain: InContextSdkMethod<Query['Gno_hatsEligibilitiesChain'], QueryGno_hatsEligibilitiesChainArgs, MeshContext>,
+  /** null **/
+  Gno_hatsEligibilitiesChains: InContextSdkMethod<Query['Gno_hatsEligibilitiesChains'], QueryGno_hatsEligibilitiesChainsArgs, MeshContext>,
+  /** null **/
+  Gno_eligibilitiesRuleset: InContextSdkMethod<Query['Gno_eligibilitiesRuleset'], QueryGno_eligibilitiesRulesetArgs, MeshContext>,
+  /** null **/
+  Gno_eligibilitiesRulesets: InContextSdkMethod<Query['Gno_eligibilitiesRulesets'], QueryGno_eligibilitiesRulesetsArgs, MeshContext>,
+  /** null **/
   Gno_hatsModule: InContextSdkMethod<Query['Gno_hatsModule'], QueryGno_hatsModuleArgs, MeshContext>,
   /** null **/
   Gno_hatsModules: InContextSdkMethod<Query['Gno_hatsModules'], QueryGno_hatsModulesArgs, MeshContext>,
@@ -10341,6 +10602,14 @@ export type Gno__SubgraphErrorPolicy_ =
   Gno_coLinksEligibility: InContextSdkMethod<Subscription['Gno_coLinksEligibility'], SubscriptionGno_coLinksEligibilityArgs, MeshContext>,
   /** null **/
   Gno_coLinksEligibilities: InContextSdkMethod<Subscription['Gno_coLinksEligibilities'], SubscriptionGno_coLinksEligibilitiesArgs, MeshContext>,
+  /** null **/
+  Gno_hatsEligibilitiesChain: InContextSdkMethod<Subscription['Gno_hatsEligibilitiesChain'], SubscriptionGno_hatsEligibilitiesChainArgs, MeshContext>,
+  /** null **/
+  Gno_hatsEligibilitiesChains: InContextSdkMethod<Subscription['Gno_hatsEligibilitiesChains'], SubscriptionGno_hatsEligibilitiesChainsArgs, MeshContext>,
+  /** null **/
+  Gno_eligibilitiesRuleset: InContextSdkMethod<Subscription['Gno_eligibilitiesRuleset'], SubscriptionGno_eligibilitiesRulesetArgs, MeshContext>,
+  /** null **/
+  Gno_eligibilitiesRulesets: InContextSdkMethod<Subscription['Gno_eligibilitiesRulesets'], SubscriptionGno_eligibilitiesRulesetsArgs, MeshContext>,
   /** null **/
   Gno_hatsModule: InContextSdkMethod<Subscription['Gno_hatsModule'], SubscriptionGno_hatsModuleArgs, MeshContext>,
   /** null **/
