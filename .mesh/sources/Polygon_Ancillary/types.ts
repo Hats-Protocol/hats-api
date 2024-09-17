@@ -47,6 +47,7 @@ export type Pol_AgreementEligibility = Pol_HatsModule & {
   currentAgreement: Pol_Agreement;
   currentAgreementNumber: Scalars['BigInt']['output'];
   agreements: Array<Pol_Agreement>;
+  badStandings: Array<Scalars['String']['output']>;
   events: Array<Pol_AgreementEvent>;
 };
 
@@ -191,6 +192,12 @@ export type Pol_AgreementEligibility_filter = {
   currentAgreementNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   currentAgreementNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   agreements_?: InputMaybe<Pol_Agreement_filter>;
+  badStandings?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
   events_?: InputMaybe<Pol_AgreementEvent_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<Pol_BlockChangedFilter>;
@@ -214,6 +221,7 @@ export type Pol_AgreementEligibility_orderBy =
   | 'currentAgreement__graceEndTime'
   | 'currentAgreementNumber'
   | 'agreements'
+  | 'badStandings'
   | 'events';
 
 export type Pol_AgreementEvent = {
@@ -3299,6 +3307,73 @@ export type Pol_Election_RecalledEvent_orderBy =
   | 'termEnd'
   | 'accounts';
 
+export type Pol_EligibilitiesRuleset = {
+  id: Scalars['ID']['output'];
+  eligibilitiesChain: Pol_HatsEligibilitiesChain;
+  modules: Array<Pol_HatsModule>;
+};
+
+
+export type Pol_EligibilitiesRulesetmodulesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Pol_HatsModule_orderBy>;
+  orderDirection?: InputMaybe<Pol_OrderDirection>;
+  where?: InputMaybe<Pol_HatsModule_filter>;
+};
+
+export type Pol_EligibilitiesRuleset_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  eligibilitiesChain?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_gt?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_lt?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_gte?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_lte?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  eligibilitiesChain_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  eligibilitiesChain_contains?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_contains?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_starts_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_ends_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_?: InputMaybe<Pol_HatsEligibilitiesChain_filter>;
+  modules?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_?: InputMaybe<Pol_HatsModule_filter>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Pol_EligibilitiesRuleset_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Pol_EligibilitiesRuleset_filter>>>;
+};
+
+export type Pol_EligibilitiesRuleset_orderBy =
+  | 'id'
+  | 'eligibilitiesChain'
+  | 'eligibilitiesChain__id'
+  | 'eligibilitiesChain__version'
+  | 'eligibilitiesChain__hatId'
+  | 'eligibilitiesChain__numRulesets'
+  | 'modules';
+
 /**  Erc1155 Eligibility  */
 export type Pol_Erc1155Eligibility = Pol_HatsModule & {
   id: Scalars['ID']['output'];
@@ -4407,6 +4482,104 @@ export type Pol_HatsElectionEligibility_orderBy =
   | 'currentTerm__termEnd'
   | 'currentTerm__electionCompletedAt'
   | 'events';
+
+/**  Chains  */
+export type Pol_HatsEligibilitiesChain = Pol_HatsModule & {
+  id: Scalars['ID']['output'];
+  version?: Maybe<Scalars['String']['output']>;
+  hatId: Scalars['String']['output'];
+  rulesets: Array<Pol_EligibilitiesRuleset>;
+  moduleAddresses: Array<Scalars['String']['output']>;
+  numRulesets: Scalars['BigInt']['output'];
+};
+
+
+/**  Chains  */
+export type Pol_HatsEligibilitiesChainrulesetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Pol_EligibilitiesRuleset_orderBy>;
+  orderDirection?: InputMaybe<Pol_OrderDirection>;
+  where?: InputMaybe<Pol_EligibilitiesRuleset_filter>;
+};
+
+export type Pol_HatsEligibilitiesChain_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  version?: InputMaybe<Scalars['String']['input']>;
+  version_not?: InputMaybe<Scalars['String']['input']>;
+  version_gt?: InputMaybe<Scalars['String']['input']>;
+  version_lt?: InputMaybe<Scalars['String']['input']>;
+  version_gte?: InputMaybe<Scalars['String']['input']>;
+  version_lte?: InputMaybe<Scalars['String']['input']>;
+  version_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_contains?: InputMaybe<Scalars['String']['input']>;
+  version_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  rulesets_?: InputMaybe<Pol_EligibilitiesRuleset_filter>;
+  moduleAddresses?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  numRulesets?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_not?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  numRulesets_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Pol_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Pol_HatsEligibilitiesChain_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Pol_HatsEligibilitiesChain_filter>>>;
+};
+
+export type Pol_HatsEligibilitiesChain_orderBy =
+  | 'id'
+  | 'version'
+  | 'hatId'
+  | 'rulesets'
+  | 'moduleAddresses'
+  | 'numRulesets';
 
 export type Pol_HatsFarcasterDelegator = {
   id: Scalars['ID']['output'];
@@ -5837,6 +6010,10 @@ export type Query = {
   Pol_gitcoinPassportEligibilities: Array<Pol_GitcoinPassportEligibility>;
   Pol_coLinksEligibility?: Maybe<Pol_CoLinksEligibility>;
   Pol_coLinksEligibilities: Array<Pol_CoLinksEligibility>;
+  Pol_hatsEligibilitiesChain?: Maybe<Pol_HatsEligibilitiesChain>;
+  Pol_hatsEligibilitiesChains: Array<Pol_HatsEligibilitiesChain>;
+  Pol_eligibilitiesRuleset?: Maybe<Pol_EligibilitiesRuleset>;
+  Pol_eligibilitiesRulesets: Array<Pol_EligibilitiesRuleset>;
   Pol_hatsModule?: Maybe<Pol_HatsModule>;
   Pol_hatsModules: Array<Pol_HatsModule>;
   Pol_hatsModuleEvent?: Maybe<Pol_HatsModuleEvent>;
@@ -6805,6 +6982,42 @@ export type QueryPol_coLinksEligibilitiesArgs = {
   orderBy?: InputMaybe<Pol_CoLinksEligibility_orderBy>;
   orderDirection?: InputMaybe<Pol_OrderDirection>;
   where?: InputMaybe<Pol_CoLinksEligibility_filter>;
+  block?: InputMaybe<Pol_Block_height>;
+  subgraphError?: Pol__SubgraphErrorPolicy_;
+};
+
+
+export type QueryPol_hatsEligibilitiesChainArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Pol_Block_height>;
+  subgraphError?: Pol__SubgraphErrorPolicy_;
+};
+
+
+export type QueryPol_hatsEligibilitiesChainsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Pol_HatsEligibilitiesChain_orderBy>;
+  orderDirection?: InputMaybe<Pol_OrderDirection>;
+  where?: InputMaybe<Pol_HatsEligibilitiesChain_filter>;
+  block?: InputMaybe<Pol_Block_height>;
+  subgraphError?: Pol__SubgraphErrorPolicy_;
+};
+
+
+export type QueryPol_eligibilitiesRulesetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Pol_Block_height>;
+  subgraphError?: Pol__SubgraphErrorPolicy_;
+};
+
+
+export type QueryPol_eligibilitiesRulesetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Pol_EligibilitiesRuleset_orderBy>;
+  orderDirection?: InputMaybe<Pol_OrderDirection>;
+  where?: InputMaybe<Pol_EligibilitiesRuleset_filter>;
   block?: InputMaybe<Pol_Block_height>;
   subgraphError?: Pol__SubgraphErrorPolicy_;
 };
@@ -8743,6 +8956,10 @@ export type Subscription = {
   Pol_gitcoinPassportEligibilities: Array<Pol_GitcoinPassportEligibility>;
   Pol_coLinksEligibility?: Maybe<Pol_CoLinksEligibility>;
   Pol_coLinksEligibilities: Array<Pol_CoLinksEligibility>;
+  Pol_hatsEligibilitiesChain?: Maybe<Pol_HatsEligibilitiesChain>;
+  Pol_hatsEligibilitiesChains: Array<Pol_HatsEligibilitiesChain>;
+  Pol_eligibilitiesRuleset?: Maybe<Pol_EligibilitiesRuleset>;
+  Pol_eligibilitiesRulesets: Array<Pol_EligibilitiesRuleset>;
   Pol_hatsModule?: Maybe<Pol_HatsModule>;
   Pol_hatsModules: Array<Pol_HatsModule>;
   Pol_hatsModuleEvent?: Maybe<Pol_HatsModuleEvent>;
@@ -9716,6 +9933,42 @@ export type SubscriptionPol_coLinksEligibilitiesArgs = {
 };
 
 
+export type SubscriptionPol_hatsEligibilitiesChainArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Pol_Block_height>;
+  subgraphError?: Pol__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionPol_hatsEligibilitiesChainsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Pol_HatsEligibilitiesChain_orderBy>;
+  orderDirection?: InputMaybe<Pol_OrderDirection>;
+  where?: InputMaybe<Pol_HatsEligibilitiesChain_filter>;
+  block?: InputMaybe<Pol_Block_height>;
+  subgraphError?: Pol__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionPol_eligibilitiesRulesetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Pol_Block_height>;
+  subgraphError?: Pol__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionPol_eligibilitiesRulesetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Pol_EligibilitiesRuleset_orderBy>;
+  orderDirection?: InputMaybe<Pol_OrderDirection>;
+  where?: InputMaybe<Pol_EligibilitiesRuleset_filter>;
+  block?: InputMaybe<Pol_Block_height>;
+  subgraphError?: Pol__SubgraphErrorPolicy_;
+};
+
+
 export type SubscriptionPol_hatsModuleArgs = {
   id: Scalars['ID']['input'];
   block?: InputMaybe<Pol_Block_height>;
@@ -10093,6 +10346,14 @@ export type Pol__SubgraphErrorPolicy_ =
   /** null **/
   Pol_coLinksEligibilities: InContextSdkMethod<Query['Pol_coLinksEligibilities'], QueryPol_coLinksEligibilitiesArgs, MeshContext>,
   /** null **/
+  Pol_hatsEligibilitiesChain: InContextSdkMethod<Query['Pol_hatsEligibilitiesChain'], QueryPol_hatsEligibilitiesChainArgs, MeshContext>,
+  /** null **/
+  Pol_hatsEligibilitiesChains: InContextSdkMethod<Query['Pol_hatsEligibilitiesChains'], QueryPol_hatsEligibilitiesChainsArgs, MeshContext>,
+  /** null **/
+  Pol_eligibilitiesRuleset: InContextSdkMethod<Query['Pol_eligibilitiesRuleset'], QueryPol_eligibilitiesRulesetArgs, MeshContext>,
+  /** null **/
+  Pol_eligibilitiesRulesets: InContextSdkMethod<Query['Pol_eligibilitiesRulesets'], QueryPol_eligibilitiesRulesetsArgs, MeshContext>,
+  /** null **/
   Pol_hatsModule: InContextSdkMethod<Query['Pol_hatsModule'], QueryPol_hatsModuleArgs, MeshContext>,
   /** null **/
   Pol_hatsModules: InContextSdkMethod<Query['Pol_hatsModules'], QueryPol_hatsModulesArgs, MeshContext>,
@@ -10341,6 +10602,14 @@ export type Pol__SubgraphErrorPolicy_ =
   Pol_coLinksEligibility: InContextSdkMethod<Subscription['Pol_coLinksEligibility'], SubscriptionPol_coLinksEligibilityArgs, MeshContext>,
   /** null **/
   Pol_coLinksEligibilities: InContextSdkMethod<Subscription['Pol_coLinksEligibilities'], SubscriptionPol_coLinksEligibilitiesArgs, MeshContext>,
+  /** null **/
+  Pol_hatsEligibilitiesChain: InContextSdkMethod<Subscription['Pol_hatsEligibilitiesChain'], SubscriptionPol_hatsEligibilitiesChainArgs, MeshContext>,
+  /** null **/
+  Pol_hatsEligibilitiesChains: InContextSdkMethod<Subscription['Pol_hatsEligibilitiesChains'], SubscriptionPol_hatsEligibilitiesChainsArgs, MeshContext>,
+  /** null **/
+  Pol_eligibilitiesRuleset: InContextSdkMethod<Subscription['Pol_eligibilitiesRuleset'], SubscriptionPol_eligibilitiesRulesetArgs, MeshContext>,
+  /** null **/
+  Pol_eligibilitiesRulesets: InContextSdkMethod<Subscription['Pol_eligibilitiesRulesets'], SubscriptionPol_eligibilitiesRulesetsArgs, MeshContext>,
   /** null **/
   Pol_hatsModule: InContextSdkMethod<Subscription['Pol_hatsModule'], SubscriptionPol_hatsModuleArgs, MeshContext>,
   /** null **/
