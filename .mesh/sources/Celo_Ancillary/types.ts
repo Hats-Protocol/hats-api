@@ -47,6 +47,7 @@ export type Celo_AgreementEligibility = Celo_HatsModule & {
   currentAgreement: Celo_Agreement;
   currentAgreementNumber: Scalars['BigInt']['output'];
   agreements: Array<Celo_Agreement>;
+  badStandings: Array<Scalars['String']['output']>;
   events: Array<Celo_AgreementEvent>;
 };
 
@@ -191,6 +192,12 @@ export type Celo_AgreementEligibility_filter = {
   currentAgreementNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   currentAgreementNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   agreements_?: InputMaybe<Celo_Agreement_filter>;
+  badStandings?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
   events_?: InputMaybe<Celo_AgreementEvent_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<Celo_BlockChangedFilter>;
@@ -214,6 +221,7 @@ export type Celo_AgreementEligibility_orderBy =
   | 'currentAgreement__graceEndTime'
   | 'currentAgreementNumber'
   | 'agreements'
+  | 'badStandings'
   | 'events';
 
 export type Celo_AgreementEvent = {
@@ -3299,6 +3307,73 @@ export type Celo_Election_RecalledEvent_orderBy =
   | 'termEnd'
   | 'accounts';
 
+export type Celo_EligibilitiesRuleset = {
+  id: Scalars['ID']['output'];
+  eligibilitiesChain: Celo_HatsEligibilitiesChain;
+  modules: Array<Celo_HatsModule>;
+};
+
+
+export type Celo_EligibilitiesRulesetmodulesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatsModule_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatsModule_filter>;
+};
+
+export type Celo_EligibilitiesRuleset_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  eligibilitiesChain?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_gt?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_lt?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_gte?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_lte?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  eligibilitiesChain_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  eligibilitiesChain_contains?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_contains?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_starts_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_ends_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_?: InputMaybe<Celo_HatsEligibilitiesChain_filter>;
+  modules?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_?: InputMaybe<Celo_HatsModule_filter>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Celo_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Celo_EligibilitiesRuleset_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Celo_EligibilitiesRuleset_filter>>>;
+};
+
+export type Celo_EligibilitiesRuleset_orderBy =
+  | 'id'
+  | 'eligibilitiesChain'
+  | 'eligibilitiesChain__id'
+  | 'eligibilitiesChain__version'
+  | 'eligibilitiesChain__hatId'
+  | 'eligibilitiesChain__numRulesets'
+  | 'modules';
+
 /**  Erc1155 Eligibility  */
 export type Celo_Erc1155Eligibility = Celo_HatsModule & {
   id: Scalars['ID']['output'];
@@ -4407,6 +4482,104 @@ export type Celo_HatsElectionEligibility_orderBy =
   | 'currentTerm__termEnd'
   | 'currentTerm__electionCompletedAt'
   | 'events';
+
+/**  Chains  */
+export type Celo_HatsEligibilitiesChain = Celo_HatsModule & {
+  id: Scalars['ID']['output'];
+  version?: Maybe<Scalars['String']['output']>;
+  hatId: Scalars['String']['output'];
+  rulesets: Array<Celo_EligibilitiesRuleset>;
+  moduleAddresses: Array<Scalars['String']['output']>;
+  numRulesets: Scalars['BigInt']['output'];
+};
+
+
+/**  Chains  */
+export type Celo_HatsEligibilitiesChainrulesetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_EligibilitiesRuleset_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_EligibilitiesRuleset_filter>;
+};
+
+export type Celo_HatsEligibilitiesChain_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  version?: InputMaybe<Scalars['String']['input']>;
+  version_not?: InputMaybe<Scalars['String']['input']>;
+  version_gt?: InputMaybe<Scalars['String']['input']>;
+  version_lt?: InputMaybe<Scalars['String']['input']>;
+  version_gte?: InputMaybe<Scalars['String']['input']>;
+  version_lte?: InputMaybe<Scalars['String']['input']>;
+  version_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_contains?: InputMaybe<Scalars['String']['input']>;
+  version_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  rulesets_?: InputMaybe<Celo_EligibilitiesRuleset_filter>;
+  moduleAddresses?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  numRulesets?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_not?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  numRulesets_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Celo_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Celo_HatsEligibilitiesChain_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Celo_HatsEligibilitiesChain_filter>>>;
+};
+
+export type Celo_HatsEligibilitiesChain_orderBy =
+  | 'id'
+  | 'version'
+  | 'hatId'
+  | 'rulesets'
+  | 'moduleAddresses'
+  | 'numRulesets';
 
 export type Celo_HatsFarcasterDelegator = {
   id: Scalars['ID']['output'];
@@ -5837,6 +6010,10 @@ export type Query = {
   Celo_gitcoinPassportEligibilities: Array<Celo_GitcoinPassportEligibility>;
   Celo_coLinksEligibility?: Maybe<Celo_CoLinksEligibility>;
   Celo_coLinksEligibilities: Array<Celo_CoLinksEligibility>;
+  Celo_hatsEligibilitiesChain?: Maybe<Celo_HatsEligibilitiesChain>;
+  Celo_hatsEligibilitiesChains: Array<Celo_HatsEligibilitiesChain>;
+  Celo_eligibilitiesRuleset?: Maybe<Celo_EligibilitiesRuleset>;
+  Celo_eligibilitiesRulesets: Array<Celo_EligibilitiesRuleset>;
   Celo_hatsModule?: Maybe<Celo_HatsModule>;
   Celo_hatsModules: Array<Celo_HatsModule>;
   Celo_hatsModuleEvent?: Maybe<Celo_HatsModuleEvent>;
@@ -6805,6 +6982,42 @@ export type QueryCelo_coLinksEligibilitiesArgs = {
   orderBy?: InputMaybe<Celo_CoLinksEligibility_orderBy>;
   orderDirection?: InputMaybe<Celo_OrderDirection>;
   where?: InputMaybe<Celo_CoLinksEligibility_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_hatsEligibilitiesChainArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_hatsEligibilitiesChainsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatsEligibilitiesChain_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatsEligibilitiesChain_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_eligibilitiesRulesetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_eligibilitiesRulesetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_EligibilitiesRuleset_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_EligibilitiesRuleset_filter>;
   block?: InputMaybe<Celo_Block_height>;
   subgraphError?: Celo__SubgraphErrorPolicy_;
 };
@@ -8743,6 +8956,10 @@ export type Subscription = {
   Celo_gitcoinPassportEligibilities: Array<Celo_GitcoinPassportEligibility>;
   Celo_coLinksEligibility?: Maybe<Celo_CoLinksEligibility>;
   Celo_coLinksEligibilities: Array<Celo_CoLinksEligibility>;
+  Celo_hatsEligibilitiesChain?: Maybe<Celo_HatsEligibilitiesChain>;
+  Celo_hatsEligibilitiesChains: Array<Celo_HatsEligibilitiesChain>;
+  Celo_eligibilitiesRuleset?: Maybe<Celo_EligibilitiesRuleset>;
+  Celo_eligibilitiesRulesets: Array<Celo_EligibilitiesRuleset>;
   Celo_hatsModule?: Maybe<Celo_HatsModule>;
   Celo_hatsModules: Array<Celo_HatsModule>;
   Celo_hatsModuleEvent?: Maybe<Celo_HatsModuleEvent>;
@@ -9716,6 +9933,42 @@ export type SubscriptionCelo_coLinksEligibilitiesArgs = {
 };
 
 
+export type SubscriptionCelo_hatsEligibilitiesChainArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_hatsEligibilitiesChainsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatsEligibilitiesChain_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatsEligibilitiesChain_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_eligibilitiesRulesetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_eligibilitiesRulesetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_EligibilitiesRuleset_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_EligibilitiesRuleset_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
 export type SubscriptionCelo_hatsModuleArgs = {
   id: Scalars['ID']['input'];
   block?: InputMaybe<Celo_Block_height>;
@@ -10093,6 +10346,14 @@ export type Celo__SubgraphErrorPolicy_ =
   /** null **/
   Celo_coLinksEligibilities: InContextSdkMethod<Query['Celo_coLinksEligibilities'], QueryCelo_coLinksEligibilitiesArgs, MeshContext>,
   /** null **/
+  Celo_hatsEligibilitiesChain: InContextSdkMethod<Query['Celo_hatsEligibilitiesChain'], QueryCelo_hatsEligibilitiesChainArgs, MeshContext>,
+  /** null **/
+  Celo_hatsEligibilitiesChains: InContextSdkMethod<Query['Celo_hatsEligibilitiesChains'], QueryCelo_hatsEligibilitiesChainsArgs, MeshContext>,
+  /** null **/
+  Celo_eligibilitiesRuleset: InContextSdkMethod<Query['Celo_eligibilitiesRuleset'], QueryCelo_eligibilitiesRulesetArgs, MeshContext>,
+  /** null **/
+  Celo_eligibilitiesRulesets: InContextSdkMethod<Query['Celo_eligibilitiesRulesets'], QueryCelo_eligibilitiesRulesetsArgs, MeshContext>,
+  /** null **/
   Celo_hatsModule: InContextSdkMethod<Query['Celo_hatsModule'], QueryCelo_hatsModuleArgs, MeshContext>,
   /** null **/
   Celo_hatsModules: InContextSdkMethod<Query['Celo_hatsModules'], QueryCelo_hatsModulesArgs, MeshContext>,
@@ -10341,6 +10602,14 @@ export type Celo__SubgraphErrorPolicy_ =
   Celo_coLinksEligibility: InContextSdkMethod<Subscription['Celo_coLinksEligibility'], SubscriptionCelo_coLinksEligibilityArgs, MeshContext>,
   /** null **/
   Celo_coLinksEligibilities: InContextSdkMethod<Subscription['Celo_coLinksEligibilities'], SubscriptionCelo_coLinksEligibilitiesArgs, MeshContext>,
+  /** null **/
+  Celo_hatsEligibilitiesChain: InContextSdkMethod<Subscription['Celo_hatsEligibilitiesChain'], SubscriptionCelo_hatsEligibilitiesChainArgs, MeshContext>,
+  /** null **/
+  Celo_hatsEligibilitiesChains: InContextSdkMethod<Subscription['Celo_hatsEligibilitiesChains'], SubscriptionCelo_hatsEligibilitiesChainsArgs, MeshContext>,
+  /** null **/
+  Celo_eligibilitiesRuleset: InContextSdkMethod<Subscription['Celo_eligibilitiesRuleset'], SubscriptionCelo_eligibilitiesRulesetArgs, MeshContext>,
+  /** null **/
+  Celo_eligibilitiesRulesets: InContextSdkMethod<Subscription['Celo_eligibilitiesRulesets'], SubscriptionCelo_eligibilitiesRulesetsArgs, MeshContext>,
   /** null **/
   Celo_hatsModule: InContextSdkMethod<Subscription['Celo_hatsModule'], SubscriptionCelo_hatsModuleArgs, MeshContext>,
   /** null **/

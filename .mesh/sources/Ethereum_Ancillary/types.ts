@@ -47,6 +47,7 @@ export type Eth_AgreementEligibility = Eth_HatsModule & {
   currentAgreement: Eth_Agreement;
   currentAgreementNumber: Scalars['BigInt']['output'];
   agreements: Array<Eth_Agreement>;
+  badStandings: Array<Scalars['String']['output']>;
   events: Array<Eth_AgreementEvent>;
 };
 
@@ -191,6 +192,12 @@ export type Eth_AgreementEligibility_filter = {
   currentAgreementNumber_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   currentAgreementNumber_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   agreements_?: InputMaybe<Eth_Agreement_filter>;
+  badStandings?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  badStandings_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
   events_?: InputMaybe<Eth_AgreementEvent_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<Eth_BlockChangedFilter>;
@@ -214,6 +221,7 @@ export type Eth_AgreementEligibility_orderBy =
   | 'currentAgreement__graceEndTime'
   | 'currentAgreementNumber'
   | 'agreements'
+  | 'badStandings'
   | 'events';
 
 export type Eth_AgreementEvent = {
@@ -3299,6 +3307,73 @@ export type Eth_Election_RecalledEvent_orderBy =
   | 'termEnd'
   | 'accounts';
 
+export type Eth_EligibilitiesRuleset = {
+  id: Scalars['ID']['output'];
+  eligibilitiesChain: Eth_HatsEligibilitiesChain;
+  modules: Array<Eth_HatsModule>;
+};
+
+
+export type Eth_EligibilitiesRulesetmodulesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatsModule_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatsModule_filter>;
+};
+
+export type Eth_EligibilitiesRuleset_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  eligibilitiesChain?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_gt?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_lt?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_gte?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_lte?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  eligibilitiesChain_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  eligibilitiesChain_contains?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_contains?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_starts_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_ends_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligibilitiesChain_?: InputMaybe<Eth_HatsEligibilitiesChain_filter>;
+  modules?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_?: InputMaybe<Eth_HatsModule_filter>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Eth_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Eth_EligibilitiesRuleset_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Eth_EligibilitiesRuleset_filter>>>;
+};
+
+export type Eth_EligibilitiesRuleset_orderBy =
+  | 'id'
+  | 'eligibilitiesChain'
+  | 'eligibilitiesChain__id'
+  | 'eligibilitiesChain__version'
+  | 'eligibilitiesChain__hatId'
+  | 'eligibilitiesChain__numRulesets'
+  | 'modules';
+
 /**  Erc1155 Eligibility  */
 export type Eth_Erc1155Eligibility = Eth_HatsModule & {
   id: Scalars['ID']['output'];
@@ -4407,6 +4482,104 @@ export type Eth_HatsElectionEligibility_orderBy =
   | 'currentTerm__termEnd'
   | 'currentTerm__electionCompletedAt'
   | 'events';
+
+/**  Chains  */
+export type Eth_HatsEligibilitiesChain = Eth_HatsModule & {
+  id: Scalars['ID']['output'];
+  version?: Maybe<Scalars['String']['output']>;
+  hatId: Scalars['String']['output'];
+  rulesets: Array<Eth_EligibilitiesRuleset>;
+  moduleAddresses: Array<Scalars['String']['output']>;
+  numRulesets: Scalars['BigInt']['output'];
+};
+
+
+/**  Chains  */
+export type Eth_HatsEligibilitiesChainrulesetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_EligibilitiesRuleset_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_EligibilitiesRuleset_filter>;
+};
+
+export type Eth_HatsEligibilitiesChain_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  version?: InputMaybe<Scalars['String']['input']>;
+  version_not?: InputMaybe<Scalars['String']['input']>;
+  version_gt?: InputMaybe<Scalars['String']['input']>;
+  version_lt?: InputMaybe<Scalars['String']['input']>;
+  version_gte?: InputMaybe<Scalars['String']['input']>;
+  version_lte?: InputMaybe<Scalars['String']['input']>;
+  version_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_contains?: InputMaybe<Scalars['String']['input']>;
+  version_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  rulesets_?: InputMaybe<Eth_EligibilitiesRuleset_filter>;
+  moduleAddresses?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  moduleAddresses_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  numRulesets?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_not?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  numRulesets_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  numRulesets_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Eth_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Eth_HatsEligibilitiesChain_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Eth_HatsEligibilitiesChain_filter>>>;
+};
+
+export type Eth_HatsEligibilitiesChain_orderBy =
+  | 'id'
+  | 'version'
+  | 'hatId'
+  | 'rulesets'
+  | 'moduleAddresses'
+  | 'numRulesets';
 
 export type Eth_HatsFarcasterDelegator = {
   id: Scalars['ID']['output'];
@@ -5837,6 +6010,10 @@ export type Query = {
   Eth_gitcoinPassportEligibilities: Array<Eth_GitcoinPassportEligibility>;
   Eth_coLinksEligibility?: Maybe<Eth_CoLinksEligibility>;
   Eth_coLinksEligibilities: Array<Eth_CoLinksEligibility>;
+  Eth_hatsEligibilitiesChain?: Maybe<Eth_HatsEligibilitiesChain>;
+  Eth_hatsEligibilitiesChains: Array<Eth_HatsEligibilitiesChain>;
+  Eth_eligibilitiesRuleset?: Maybe<Eth_EligibilitiesRuleset>;
+  Eth_eligibilitiesRulesets: Array<Eth_EligibilitiesRuleset>;
   Eth_hatsModule?: Maybe<Eth_HatsModule>;
   Eth_hatsModules: Array<Eth_HatsModule>;
   Eth_hatsModuleEvent?: Maybe<Eth_HatsModuleEvent>;
@@ -6805,6 +6982,42 @@ export type QueryEth_coLinksEligibilitiesArgs = {
   orderBy?: InputMaybe<Eth_CoLinksEligibility_orderBy>;
   orderDirection?: InputMaybe<Eth_OrderDirection>;
   where?: InputMaybe<Eth_CoLinksEligibility_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_hatsEligibilitiesChainArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_hatsEligibilitiesChainsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatsEligibilitiesChain_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatsEligibilitiesChain_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_eligibilitiesRulesetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_eligibilitiesRulesetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_EligibilitiesRuleset_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_EligibilitiesRuleset_filter>;
   block?: InputMaybe<Eth_Block_height>;
   subgraphError?: Eth__SubgraphErrorPolicy_;
 };
@@ -8743,6 +8956,10 @@ export type Subscription = {
   Eth_gitcoinPassportEligibilities: Array<Eth_GitcoinPassportEligibility>;
   Eth_coLinksEligibility?: Maybe<Eth_CoLinksEligibility>;
   Eth_coLinksEligibilities: Array<Eth_CoLinksEligibility>;
+  Eth_hatsEligibilitiesChain?: Maybe<Eth_HatsEligibilitiesChain>;
+  Eth_hatsEligibilitiesChains: Array<Eth_HatsEligibilitiesChain>;
+  Eth_eligibilitiesRuleset?: Maybe<Eth_EligibilitiesRuleset>;
+  Eth_eligibilitiesRulesets: Array<Eth_EligibilitiesRuleset>;
   Eth_hatsModule?: Maybe<Eth_HatsModule>;
   Eth_hatsModules: Array<Eth_HatsModule>;
   Eth_hatsModuleEvent?: Maybe<Eth_HatsModuleEvent>;
@@ -9716,6 +9933,42 @@ export type SubscriptionEth_coLinksEligibilitiesArgs = {
 };
 
 
+export type SubscriptionEth_hatsEligibilitiesChainArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_hatsEligibilitiesChainsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatsEligibilitiesChain_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatsEligibilitiesChain_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_eligibilitiesRulesetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_eligibilitiesRulesetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_EligibilitiesRuleset_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_EligibilitiesRuleset_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
 export type SubscriptionEth_hatsModuleArgs = {
   id: Scalars['ID']['input'];
   block?: InputMaybe<Eth_Block_height>;
@@ -10093,6 +10346,14 @@ export type Eth__SubgraphErrorPolicy_ =
   /** null **/
   Eth_coLinksEligibilities: InContextSdkMethod<Query['Eth_coLinksEligibilities'], QueryEth_coLinksEligibilitiesArgs, MeshContext>,
   /** null **/
+  Eth_hatsEligibilitiesChain: InContextSdkMethod<Query['Eth_hatsEligibilitiesChain'], QueryEth_hatsEligibilitiesChainArgs, MeshContext>,
+  /** null **/
+  Eth_hatsEligibilitiesChains: InContextSdkMethod<Query['Eth_hatsEligibilitiesChains'], QueryEth_hatsEligibilitiesChainsArgs, MeshContext>,
+  /** null **/
+  Eth_eligibilitiesRuleset: InContextSdkMethod<Query['Eth_eligibilitiesRuleset'], QueryEth_eligibilitiesRulesetArgs, MeshContext>,
+  /** null **/
+  Eth_eligibilitiesRulesets: InContextSdkMethod<Query['Eth_eligibilitiesRulesets'], QueryEth_eligibilitiesRulesetsArgs, MeshContext>,
+  /** null **/
   Eth_hatsModule: InContextSdkMethod<Query['Eth_hatsModule'], QueryEth_hatsModuleArgs, MeshContext>,
   /** null **/
   Eth_hatsModules: InContextSdkMethod<Query['Eth_hatsModules'], QueryEth_hatsModulesArgs, MeshContext>,
@@ -10341,6 +10602,14 @@ export type Eth__SubgraphErrorPolicy_ =
   Eth_coLinksEligibility: InContextSdkMethod<Subscription['Eth_coLinksEligibility'], SubscriptionEth_coLinksEligibilityArgs, MeshContext>,
   /** null **/
   Eth_coLinksEligibilities: InContextSdkMethod<Subscription['Eth_coLinksEligibilities'], SubscriptionEth_coLinksEligibilitiesArgs, MeshContext>,
+  /** null **/
+  Eth_hatsEligibilitiesChain: InContextSdkMethod<Subscription['Eth_hatsEligibilitiesChain'], SubscriptionEth_hatsEligibilitiesChainArgs, MeshContext>,
+  /** null **/
+  Eth_hatsEligibilitiesChains: InContextSdkMethod<Subscription['Eth_hatsEligibilitiesChains'], SubscriptionEth_hatsEligibilitiesChainsArgs, MeshContext>,
+  /** null **/
+  Eth_eligibilitiesRuleset: InContextSdkMethod<Subscription['Eth_eligibilitiesRuleset'], SubscriptionEth_eligibilitiesRulesetArgs, MeshContext>,
+  /** null **/
+  Eth_eligibilitiesRulesets: InContextSdkMethod<Subscription['Eth_eligibilitiesRulesets'], SubscriptionEth_eligibilitiesRulesetsArgs, MeshContext>,
   /** null **/
   Eth_hatsModule: InContextSdkMethod<Subscription['Eth_hatsModule'], SubscriptionEth_hatsModuleArgs, MeshContext>,
   /** null **/
