@@ -22,12 +22,7 @@ export type Scalars = {
   BigInt: { input: any; output: any; }
   Celo_Bytes: { input: any; output: any; }
   Celo_Int8: { input: any; output: any; }
-  Timestamp: { input: any; output: any; }
 };
-
-export type Celo_Aggregation_interval =
-  | 'hour'
-  | 'day';
 
 export type Celo_BlockChangedFilter = {
   number_gte: Scalars['Int']['input'];
@@ -3431,8 +3426,6 @@ export type Celo__Block_ = {
   number: Scalars['Int']['output'];
   /** Integer representation of the timestamp stored in blocks for the chain */
   timestamp?: Maybe<Scalars['Int']['output']>;
-  /** The hash of the parent block */
-  parentHash?: Maybe<Scalars['Celo_Bytes']['output']>;
 };
 
 /** The type for the top-level _meta field */

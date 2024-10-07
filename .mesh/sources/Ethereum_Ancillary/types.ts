@@ -4049,6 +4049,721 @@ export type Eth_HatAuthority_orderBy =
   | 'hatsFarcasterDelegatorOwner'
   | 'hatsFarcasterDelegatorCaster';
 
+/**  Hat Controlled Module  */
+export type Eth_HatControlledModule = Eth_HatsModule & {
+  id: Scalars['ID']['output'];
+  version?: Maybe<Scalars['String']['output']>;
+  hatId: Scalars['String']['output'];
+  controllerHatId: Scalars['String']['output'];
+  wearersStatusData: Array<Eth_HatControlledModuleWearerStatus>;
+  hatsStatusData: Array<Eth_HatControlledModuleHatStatus>;
+  events: Array<Eth_HatControlledModuleEvent>;
+};
+
+
+/**  Hat Controlled Module  */
+export type Eth_HatControlledModulewearersStatusDataArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlledModuleWearerStatus_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlledModuleWearerStatus_filter>;
+};
+
+
+/**  Hat Controlled Module  */
+export type Eth_HatControlledModulehatsStatusDataArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlledModuleHatStatus_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlledModuleHatStatus_filter>;
+};
+
+
+/**  Hat Controlled Module  */
+export type Eth_HatControlledModuleeventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlledModuleEvent_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlledModuleEvent_filter>;
+};
+
+export type Eth_HatControlledModuleEvent = {
+  id: Scalars['ID']['output'];
+  module: Eth_HatsModule;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Eth_Bytes']['output'];
+  hatControlledModuleInstance: Eth_HatControlledModule;
+};
+
+export type Eth_HatControlledModuleEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_?: InputMaybe<Eth_HatsModule_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Eth_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Eth_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  hatControlledModuleInstance?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_gt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_lt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_gte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_lte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModuleInstance_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModuleInstance_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_?: InputMaybe<Eth_HatControlledModule_filter>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Eth_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Eth_HatControlledModuleEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Eth_HatControlledModuleEvent_filter>>>;
+};
+
+export type Eth_HatControlledModuleEvent_orderBy =
+  | 'id'
+  | 'module'
+  | 'module__id'
+  | 'module__version'
+  | 'module__hatId'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'hatControlledModuleInstance'
+  | 'hatControlledModuleInstance__id'
+  | 'hatControlledModuleInstance__version'
+  | 'hatControlledModuleInstance__hatId'
+  | 'hatControlledModuleInstance__controllerHatId';
+
+export type Eth_HatControlledModuleHatStatus = {
+  id: Scalars['ID']['output'];
+  hatControlledModule: Eth_HatControlledModule;
+  hatId: Scalars['String']['output'];
+  active: Scalars['Boolean']['output'];
+};
+
+export type Eth_HatControlledModuleHatStatus_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hatControlledModule?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_gt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_lt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_gte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_lte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModule_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModule_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_?: InputMaybe<Eth_HatControlledModule_filter>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  active?: InputMaybe<Scalars['Boolean']['input']>;
+  active_not?: InputMaybe<Scalars['Boolean']['input']>;
+  active_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  active_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Eth_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Eth_HatControlledModuleHatStatus_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Eth_HatControlledModuleHatStatus_filter>>>;
+};
+
+export type Eth_HatControlledModuleHatStatus_orderBy =
+  | 'id'
+  | 'hatControlledModule'
+  | 'hatControlledModule__id'
+  | 'hatControlledModule__version'
+  | 'hatControlledModule__hatId'
+  | 'hatControlledModule__controllerHatId'
+  | 'hatId'
+  | 'active';
+
+export type Eth_HatControlledModuleWearerStatus = {
+  id: Scalars['ID']['output'];
+  hatControlledModule: Eth_HatControlledModule;
+  hatId: Scalars['String']['output'];
+  wearer: Scalars['String']['output'];
+  eligible: Scalars['Boolean']['output'];
+  standing: Scalars['Boolean']['output'];
+};
+
+export type Eth_HatControlledModuleWearerStatus_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hatControlledModule?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_gt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_lt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_gte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_lte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModule_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModule_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_?: InputMaybe<Eth_HatControlledModule_filter>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer?: InputMaybe<Scalars['String']['input']>;
+  wearer_not?: InputMaybe<Scalars['String']['input']>;
+  wearer_gt?: InputMaybe<Scalars['String']['input']>;
+  wearer_lt?: InputMaybe<Scalars['String']['input']>;
+  wearer_gte?: InputMaybe<Scalars['String']['input']>;
+  wearer_lte?: InputMaybe<Scalars['String']['input']>;
+  wearer_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligible?: InputMaybe<Scalars['Boolean']['input']>;
+  eligible_not?: InputMaybe<Scalars['Boolean']['input']>;
+  eligible_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  eligible_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  standing?: InputMaybe<Scalars['Boolean']['input']>;
+  standing_not?: InputMaybe<Scalars['Boolean']['input']>;
+  standing_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  standing_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Eth_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Eth_HatControlledModuleWearerStatus_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Eth_HatControlledModuleWearerStatus_filter>>>;
+};
+
+export type Eth_HatControlledModuleWearerStatus_orderBy =
+  | 'id'
+  | 'hatControlledModule'
+  | 'hatControlledModule__id'
+  | 'hatControlledModule__version'
+  | 'hatControlledModule__hatId'
+  | 'hatControlledModule__controllerHatId'
+  | 'hatId'
+  | 'wearer'
+  | 'eligible'
+  | 'standing';
+
+export type Eth_HatControlledModule_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  version?: InputMaybe<Scalars['String']['input']>;
+  version_not?: InputMaybe<Scalars['String']['input']>;
+  version_gt?: InputMaybe<Scalars['String']['input']>;
+  version_lt?: InputMaybe<Scalars['String']['input']>;
+  version_gte?: InputMaybe<Scalars['String']['input']>;
+  version_lte?: InputMaybe<Scalars['String']['input']>;
+  version_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_contains?: InputMaybe<Scalars['String']['input']>;
+  version_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_not?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_gt?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_lt?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_gte?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_lte?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  controllerHatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  controllerHatId_contains?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearersStatusData_?: InputMaybe<Eth_HatControlledModuleWearerStatus_filter>;
+  hatsStatusData_?: InputMaybe<Eth_HatControlledModuleHatStatus_filter>;
+  events_?: InputMaybe<Eth_HatControlledModuleEvent_filter>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Eth_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Eth_HatControlledModule_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Eth_HatControlledModule_filter>>>;
+};
+
+export type Eth_HatControlledModule_orderBy =
+  | 'id'
+  | 'version'
+  | 'hatId'
+  | 'controllerHatId'
+  | 'wearersStatusData'
+  | 'hatsStatusData'
+  | 'events';
+
+export type Eth_HatControlled_HatStatusSet = Eth_HatControlledModuleEvent & {
+  id: Scalars['ID']['output'];
+  module: Eth_HatsModule;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Eth_Bytes']['output'];
+  hatControlledModuleInstance: Eth_HatControlledModule;
+  hatId: Scalars['String']['output'];
+  active: Scalars['Boolean']['output'];
+};
+
+export type Eth_HatControlled_HatStatusSet_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_?: InputMaybe<Eth_HatsModule_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Eth_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Eth_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  hatControlledModuleInstance?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_gt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_lt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_gte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_lte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModuleInstance_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModuleInstance_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_?: InputMaybe<Eth_HatControlledModule_filter>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  active?: InputMaybe<Scalars['Boolean']['input']>;
+  active_not?: InputMaybe<Scalars['Boolean']['input']>;
+  active_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  active_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Eth_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Eth_HatControlled_HatStatusSet_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Eth_HatControlled_HatStatusSet_filter>>>;
+};
+
+export type Eth_HatControlled_HatStatusSet_orderBy =
+  | 'id'
+  | 'module'
+  | 'module__id'
+  | 'module__version'
+  | 'module__hatId'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'hatControlledModuleInstance'
+  | 'hatControlledModuleInstance__id'
+  | 'hatControlledModuleInstance__version'
+  | 'hatControlledModuleInstance__hatId'
+  | 'hatControlledModuleInstance__controllerHatId'
+  | 'hatId'
+  | 'active';
+
+export type Eth_HatControlled_WearerStatusSet = Eth_HatControlledModuleEvent & {
+  id: Scalars['ID']['output'];
+  module: Eth_HatsModule;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Eth_Bytes']['output'];
+  hatControlledModuleInstance: Eth_HatControlledModule;
+  wearer: Scalars['String']['output'];
+  hatId: Scalars['String']['output'];
+  eligible: Scalars['Boolean']['output'];
+  standing: Scalars['Boolean']['output'];
+};
+
+export type Eth_HatControlled_WearerStatusSet_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_?: InputMaybe<Eth_HatsModule_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Eth_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Eth_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Eth_Bytes']['input']>;
+  hatControlledModuleInstance?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_gt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_lt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_gte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_lte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModuleInstance_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModuleInstance_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_?: InputMaybe<Eth_HatControlledModule_filter>;
+  wearer?: InputMaybe<Scalars['String']['input']>;
+  wearer_not?: InputMaybe<Scalars['String']['input']>;
+  wearer_gt?: InputMaybe<Scalars['String']['input']>;
+  wearer_lt?: InputMaybe<Scalars['String']['input']>;
+  wearer_gte?: InputMaybe<Scalars['String']['input']>;
+  wearer_lte?: InputMaybe<Scalars['String']['input']>;
+  wearer_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligible?: InputMaybe<Scalars['Boolean']['input']>;
+  eligible_not?: InputMaybe<Scalars['Boolean']['input']>;
+  eligible_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  eligible_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  standing?: InputMaybe<Scalars['Boolean']['input']>;
+  standing_not?: InputMaybe<Scalars['Boolean']['input']>;
+  standing_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  standing_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Eth_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Eth_HatControlled_WearerStatusSet_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Eth_HatControlled_WearerStatusSet_filter>>>;
+};
+
+export type Eth_HatControlled_WearerStatusSet_orderBy =
+  | 'id'
+  | 'module'
+  | 'module__id'
+  | 'module__version'
+  | 'module__hatId'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'hatControlledModuleInstance'
+  | 'hatControlledModuleInstance__id'
+  | 'hatControlledModuleInstance__version'
+  | 'hatControlledModuleInstance__hatId'
+  | 'hatControlledModuleInstance__controllerHatId'
+  | 'wearer'
+  | 'hatId'
+  | 'eligible'
+  | 'standing';
+
 /**  Hat Wearing Eligibility  */
 export type Eth_HatWearingEligibility = Eth_HatsModule & {
   id: Scalars['ID']['output'];
@@ -5903,6 +6618,127 @@ export type Eth_PassthroughModule_orderBy =
   | 'passthroughHat__id'
   | 'passthroughHat__primaryHatsAccount1ofNAddress';
 
+/**  Public Lock V14 Eligibility  */
+export type Eth_PublicLockV14Eligibility = Eth_HatsModule & {
+  id: Scalars['ID']['output'];
+  version?: Maybe<Scalars['String']['output']>;
+  hatId: Scalars['String']['output'];
+  lock: Scalars['String']['output'];
+  referrer: Scalars['String']['output'];
+  referrerFeePercentage: Scalars['BigInt']['output'];
+};
+
+export type Eth_PublicLockV14Eligibility_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  version?: InputMaybe<Scalars['String']['input']>;
+  version_not?: InputMaybe<Scalars['String']['input']>;
+  version_gt?: InputMaybe<Scalars['String']['input']>;
+  version_lt?: InputMaybe<Scalars['String']['input']>;
+  version_gte?: InputMaybe<Scalars['String']['input']>;
+  version_lte?: InputMaybe<Scalars['String']['input']>;
+  version_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_contains?: InputMaybe<Scalars['String']['input']>;
+  version_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  lock?: InputMaybe<Scalars['String']['input']>;
+  lock_not?: InputMaybe<Scalars['String']['input']>;
+  lock_gt?: InputMaybe<Scalars['String']['input']>;
+  lock_lt?: InputMaybe<Scalars['String']['input']>;
+  lock_gte?: InputMaybe<Scalars['String']['input']>;
+  lock_lte?: InputMaybe<Scalars['String']['input']>;
+  lock_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  lock_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  lock_contains?: InputMaybe<Scalars['String']['input']>;
+  lock_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  lock_not_contains?: InputMaybe<Scalars['String']['input']>;
+  lock_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  lock_starts_with?: InputMaybe<Scalars['String']['input']>;
+  lock_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  lock_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  lock_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  lock_ends_with?: InputMaybe<Scalars['String']['input']>;
+  lock_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  lock_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  lock_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  referrer?: InputMaybe<Scalars['String']['input']>;
+  referrer_not?: InputMaybe<Scalars['String']['input']>;
+  referrer_gt?: InputMaybe<Scalars['String']['input']>;
+  referrer_lt?: InputMaybe<Scalars['String']['input']>;
+  referrer_gte?: InputMaybe<Scalars['String']['input']>;
+  referrer_lte?: InputMaybe<Scalars['String']['input']>;
+  referrer_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  referrer_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  referrer_contains?: InputMaybe<Scalars['String']['input']>;
+  referrer_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  referrer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  referrer_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  referrer_starts_with?: InputMaybe<Scalars['String']['input']>;
+  referrer_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  referrer_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  referrer_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  referrer_ends_with?: InputMaybe<Scalars['String']['input']>;
+  referrer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  referrer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  referrer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  referrerFeePercentage?: InputMaybe<Scalars['BigInt']['input']>;
+  referrerFeePercentage_not?: InputMaybe<Scalars['BigInt']['input']>;
+  referrerFeePercentage_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  referrerFeePercentage_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  referrerFeePercentage_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  referrerFeePercentage_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  referrerFeePercentage_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  referrerFeePercentage_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Eth_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Eth_PublicLockV14Eligibility_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Eth_PublicLockV14Eligibility_filter>>>;
+};
+
+export type Eth_PublicLockV14Eligibility_orderBy =
+  | 'id'
+  | 'version'
+  | 'hatId'
+  | 'lock'
+  | 'referrer'
+  | 'referrerFeePercentage';
+
 export type Query = {
   Eth_hatAuthority?: Maybe<Eth_HatAuthority>;
   Eth_hatAuthorities: Array<Eth_HatAuthority>;
@@ -6010,6 +6846,18 @@ export type Query = {
   Eth_gitcoinPassportEligibilities: Array<Eth_GitcoinPassportEligibility>;
   Eth_coLinksEligibility?: Maybe<Eth_CoLinksEligibility>;
   Eth_coLinksEligibilities: Array<Eth_CoLinksEligibility>;
+  Eth_hatControlledModule?: Maybe<Eth_HatControlledModule>;
+  Eth_hatControlledModules: Array<Eth_HatControlledModule>;
+  Eth_hatControlledModuleWearerStatus?: Maybe<Eth_HatControlledModuleWearerStatus>;
+  Eth_hatControlledModuleWearerStatuses: Array<Eth_HatControlledModuleWearerStatus>;
+  Eth_hatControlledModuleHatStatus?: Maybe<Eth_HatControlledModuleHatStatus>;
+  Eth_hatControlledModuleHatStatuses: Array<Eth_HatControlledModuleHatStatus>;
+  Eth_hatControlledWearerStatusSet?: Maybe<Eth_HatControlled_WearerStatusSet>;
+  Eth_hatControlledWearerStatusSets: Array<Eth_HatControlled_WearerStatusSet>;
+  Eth_hatControlledHatStatusSet?: Maybe<Eth_HatControlled_HatStatusSet>;
+  Eth_hatControlledHatStatusSets: Array<Eth_HatControlled_HatStatusSet>;
+  Eth_publicLockV14Eligibility?: Maybe<Eth_PublicLockV14Eligibility>;
+  Eth_publicLockV14Eligibilities: Array<Eth_PublicLockV14Eligibility>;
   Eth_hatsEligibilitiesChain?: Maybe<Eth_HatsEligibilitiesChain>;
   Eth_hatsEligibilitiesChains: Array<Eth_HatsEligibilitiesChain>;
   Eth_eligibilitiesRuleset?: Maybe<Eth_EligibilitiesRuleset>;
@@ -6028,6 +6876,8 @@ export type Query = {
   Eth_stakingEvents: Array<Eth_StakingEvent>;
   Eth_agreementEvent?: Maybe<Eth_AgreementEvent>;
   Eth_agreementEvents: Array<Eth_AgreementEvent>;
+  Eth_hatControlledModuleEvent?: Maybe<Eth_HatControlledModuleEvent>;
+  Eth_hatControlledModuleEvents: Array<Eth_HatControlledModuleEvent>;
   /** Access to subgraph metadata */
   Eth__meta?: Maybe<Eth__Meta_>;
 };
@@ -6987,6 +7837,114 @@ export type QueryEth_coLinksEligibilitiesArgs = {
 };
 
 
+export type QueryEth_hatControlledModuleArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_hatControlledModulesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlledModule_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlledModule_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_hatControlledModuleWearerStatusArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_hatControlledModuleWearerStatusesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlledModuleWearerStatus_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlledModuleWearerStatus_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_hatControlledModuleHatStatusArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_hatControlledModuleHatStatusesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlledModuleHatStatus_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlledModuleHatStatus_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_hatControlledWearerStatusSetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_hatControlledWearerStatusSetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlled_WearerStatusSet_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlled_WearerStatusSet_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_hatControlledHatStatusSetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_hatControlledHatStatusSetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlled_HatStatusSet_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlled_HatStatusSet_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_publicLockV14EligibilityArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_publicLockV14EligibilitiesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_PublicLockV14Eligibility_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_PublicLockV14Eligibility_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
 export type QueryEth_hatsEligibilitiesChainArgs = {
   id: Scalars['ID']['input'];
   block?: InputMaybe<Eth_Block_height>;
@@ -7144,6 +8102,24 @@ export type QueryEth_agreementEventsArgs = {
   orderBy?: InputMaybe<Eth_AgreementEvent_orderBy>;
   orderDirection?: InputMaybe<Eth_OrderDirection>;
   where?: InputMaybe<Eth_AgreementEvent_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_hatControlledModuleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type QueryEth_hatControlledModuleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlledModuleEvent_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlledModuleEvent_filter>;
   block?: InputMaybe<Eth_Block_height>;
   subgraphError?: Eth__SubgraphErrorPolicy_;
 };
@@ -8956,6 +9932,18 @@ export type Subscription = {
   Eth_gitcoinPassportEligibilities: Array<Eth_GitcoinPassportEligibility>;
   Eth_coLinksEligibility?: Maybe<Eth_CoLinksEligibility>;
   Eth_coLinksEligibilities: Array<Eth_CoLinksEligibility>;
+  Eth_hatControlledModule?: Maybe<Eth_HatControlledModule>;
+  Eth_hatControlledModules: Array<Eth_HatControlledModule>;
+  Eth_hatControlledModuleWearerStatus?: Maybe<Eth_HatControlledModuleWearerStatus>;
+  Eth_hatControlledModuleWearerStatuses: Array<Eth_HatControlledModuleWearerStatus>;
+  Eth_hatControlledModuleHatStatus?: Maybe<Eth_HatControlledModuleHatStatus>;
+  Eth_hatControlledModuleHatStatuses: Array<Eth_HatControlledModuleHatStatus>;
+  Eth_hatControlledWearerStatusSet?: Maybe<Eth_HatControlled_WearerStatusSet>;
+  Eth_hatControlledWearerStatusSets: Array<Eth_HatControlled_WearerStatusSet>;
+  Eth_hatControlledHatStatusSet?: Maybe<Eth_HatControlled_HatStatusSet>;
+  Eth_hatControlledHatStatusSets: Array<Eth_HatControlled_HatStatusSet>;
+  Eth_publicLockV14Eligibility?: Maybe<Eth_PublicLockV14Eligibility>;
+  Eth_publicLockV14Eligibilities: Array<Eth_PublicLockV14Eligibility>;
   Eth_hatsEligibilitiesChain?: Maybe<Eth_HatsEligibilitiesChain>;
   Eth_hatsEligibilitiesChains: Array<Eth_HatsEligibilitiesChain>;
   Eth_eligibilitiesRuleset?: Maybe<Eth_EligibilitiesRuleset>;
@@ -8974,6 +9962,8 @@ export type Subscription = {
   Eth_stakingEvents: Array<Eth_StakingEvent>;
   Eth_agreementEvent?: Maybe<Eth_AgreementEvent>;
   Eth_agreementEvents: Array<Eth_AgreementEvent>;
+  Eth_hatControlledModuleEvent?: Maybe<Eth_HatControlledModuleEvent>;
+  Eth_hatControlledModuleEvents: Array<Eth_HatControlledModuleEvent>;
   /** Access to subgraph metadata */
   Eth__meta?: Maybe<Eth__Meta_>;
 };
@@ -9933,6 +10923,114 @@ export type SubscriptionEth_coLinksEligibilitiesArgs = {
 };
 
 
+export type SubscriptionEth_hatControlledModuleArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_hatControlledModulesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlledModule_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlledModule_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_hatControlledModuleWearerStatusArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_hatControlledModuleWearerStatusesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlledModuleWearerStatus_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlledModuleWearerStatus_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_hatControlledModuleHatStatusArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_hatControlledModuleHatStatusesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlledModuleHatStatus_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlledModuleHatStatus_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_hatControlledWearerStatusSetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_hatControlledWearerStatusSetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlled_WearerStatusSet_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlled_WearerStatusSet_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_hatControlledHatStatusSetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_hatControlledHatStatusSetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlled_HatStatusSet_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlled_HatStatusSet_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_publicLockV14EligibilityArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_publicLockV14EligibilitiesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_PublicLockV14Eligibility_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_PublicLockV14Eligibility_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
 export type SubscriptionEth_hatsEligibilitiesChainArgs = {
   id: Scalars['ID']['input'];
   block?: InputMaybe<Eth_Block_height>;
@@ -10090,6 +11188,24 @@ export type SubscriptionEth_agreementEventsArgs = {
   orderBy?: InputMaybe<Eth_AgreementEvent_orderBy>;
   orderDirection?: InputMaybe<Eth_OrderDirection>;
   where?: InputMaybe<Eth_AgreementEvent_filter>;
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_hatControlledModuleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Eth_Block_height>;
+  subgraphError?: Eth__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionEth_hatControlledModuleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Eth_HatControlledModuleEvent_orderBy>;
+  orderDirection?: InputMaybe<Eth_OrderDirection>;
+  where?: InputMaybe<Eth_HatControlledModuleEvent_filter>;
   block?: InputMaybe<Eth_Block_height>;
   subgraphError?: Eth__SubgraphErrorPolicy_;
 };
@@ -10346,6 +11462,30 @@ export type Eth__SubgraphErrorPolicy_ =
   /** null **/
   Eth_coLinksEligibilities: InContextSdkMethod<Query['Eth_coLinksEligibilities'], QueryEth_coLinksEligibilitiesArgs, MeshContext>,
   /** null **/
+  Eth_hatControlledModule: InContextSdkMethod<Query['Eth_hatControlledModule'], QueryEth_hatControlledModuleArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledModules: InContextSdkMethod<Query['Eth_hatControlledModules'], QueryEth_hatControlledModulesArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledModuleWearerStatus: InContextSdkMethod<Query['Eth_hatControlledModuleWearerStatus'], QueryEth_hatControlledModuleWearerStatusArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledModuleWearerStatuses: InContextSdkMethod<Query['Eth_hatControlledModuleWearerStatuses'], QueryEth_hatControlledModuleWearerStatusesArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledModuleHatStatus: InContextSdkMethod<Query['Eth_hatControlledModuleHatStatus'], QueryEth_hatControlledModuleHatStatusArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledModuleHatStatuses: InContextSdkMethod<Query['Eth_hatControlledModuleHatStatuses'], QueryEth_hatControlledModuleHatStatusesArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledWearerStatusSet: InContextSdkMethod<Query['Eth_hatControlledWearerStatusSet'], QueryEth_hatControlledWearerStatusSetArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledWearerStatusSets: InContextSdkMethod<Query['Eth_hatControlledWearerStatusSets'], QueryEth_hatControlledWearerStatusSetsArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledHatStatusSet: InContextSdkMethod<Query['Eth_hatControlledHatStatusSet'], QueryEth_hatControlledHatStatusSetArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledHatStatusSets: InContextSdkMethod<Query['Eth_hatControlledHatStatusSets'], QueryEth_hatControlledHatStatusSetsArgs, MeshContext>,
+  /** null **/
+  Eth_publicLockV14Eligibility: InContextSdkMethod<Query['Eth_publicLockV14Eligibility'], QueryEth_publicLockV14EligibilityArgs, MeshContext>,
+  /** null **/
+  Eth_publicLockV14Eligibilities: InContextSdkMethod<Query['Eth_publicLockV14Eligibilities'], QueryEth_publicLockV14EligibilitiesArgs, MeshContext>,
+  /** null **/
   Eth_hatsEligibilitiesChain: InContextSdkMethod<Query['Eth_hatsEligibilitiesChain'], QueryEth_hatsEligibilitiesChainArgs, MeshContext>,
   /** null **/
   Eth_hatsEligibilitiesChains: InContextSdkMethod<Query['Eth_hatsEligibilitiesChains'], QueryEth_hatsEligibilitiesChainsArgs, MeshContext>,
@@ -10381,6 +11521,10 @@ export type Eth__SubgraphErrorPolicy_ =
   Eth_agreementEvent: InContextSdkMethod<Query['Eth_agreementEvent'], QueryEth_agreementEventArgs, MeshContext>,
   /** null **/
   Eth_agreementEvents: InContextSdkMethod<Query['Eth_agreementEvents'], QueryEth_agreementEventsArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledModuleEvent: InContextSdkMethod<Query['Eth_hatControlledModuleEvent'], QueryEth_hatControlledModuleEventArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledModuleEvents: InContextSdkMethod<Query['Eth_hatControlledModuleEvents'], QueryEth_hatControlledModuleEventsArgs, MeshContext>,
   /** Access to subgraph metadata **/
   Eth__meta: InContextSdkMethod<Query['Eth__meta'], QueryEth__metaArgs, MeshContext>
   };
@@ -10603,6 +11747,30 @@ export type Eth__SubgraphErrorPolicy_ =
   /** null **/
   Eth_coLinksEligibilities: InContextSdkMethod<Subscription['Eth_coLinksEligibilities'], SubscriptionEth_coLinksEligibilitiesArgs, MeshContext>,
   /** null **/
+  Eth_hatControlledModule: InContextSdkMethod<Subscription['Eth_hatControlledModule'], SubscriptionEth_hatControlledModuleArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledModules: InContextSdkMethod<Subscription['Eth_hatControlledModules'], SubscriptionEth_hatControlledModulesArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledModuleWearerStatus: InContextSdkMethod<Subscription['Eth_hatControlledModuleWearerStatus'], SubscriptionEth_hatControlledModuleWearerStatusArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledModuleWearerStatuses: InContextSdkMethod<Subscription['Eth_hatControlledModuleWearerStatuses'], SubscriptionEth_hatControlledModuleWearerStatusesArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledModuleHatStatus: InContextSdkMethod<Subscription['Eth_hatControlledModuleHatStatus'], SubscriptionEth_hatControlledModuleHatStatusArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledModuleHatStatuses: InContextSdkMethod<Subscription['Eth_hatControlledModuleHatStatuses'], SubscriptionEth_hatControlledModuleHatStatusesArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledWearerStatusSet: InContextSdkMethod<Subscription['Eth_hatControlledWearerStatusSet'], SubscriptionEth_hatControlledWearerStatusSetArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledWearerStatusSets: InContextSdkMethod<Subscription['Eth_hatControlledWearerStatusSets'], SubscriptionEth_hatControlledWearerStatusSetsArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledHatStatusSet: InContextSdkMethod<Subscription['Eth_hatControlledHatStatusSet'], SubscriptionEth_hatControlledHatStatusSetArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledHatStatusSets: InContextSdkMethod<Subscription['Eth_hatControlledHatStatusSets'], SubscriptionEth_hatControlledHatStatusSetsArgs, MeshContext>,
+  /** null **/
+  Eth_publicLockV14Eligibility: InContextSdkMethod<Subscription['Eth_publicLockV14Eligibility'], SubscriptionEth_publicLockV14EligibilityArgs, MeshContext>,
+  /** null **/
+  Eth_publicLockV14Eligibilities: InContextSdkMethod<Subscription['Eth_publicLockV14Eligibilities'], SubscriptionEth_publicLockV14EligibilitiesArgs, MeshContext>,
+  /** null **/
   Eth_hatsEligibilitiesChain: InContextSdkMethod<Subscription['Eth_hatsEligibilitiesChain'], SubscriptionEth_hatsEligibilitiesChainArgs, MeshContext>,
   /** null **/
   Eth_hatsEligibilitiesChains: InContextSdkMethod<Subscription['Eth_hatsEligibilitiesChains'], SubscriptionEth_hatsEligibilitiesChainsArgs, MeshContext>,
@@ -10638,6 +11806,10 @@ export type Eth__SubgraphErrorPolicy_ =
   Eth_agreementEvent: InContextSdkMethod<Subscription['Eth_agreementEvent'], SubscriptionEth_agreementEventArgs, MeshContext>,
   /** null **/
   Eth_agreementEvents: InContextSdkMethod<Subscription['Eth_agreementEvents'], SubscriptionEth_agreementEventsArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledModuleEvent: InContextSdkMethod<Subscription['Eth_hatControlledModuleEvent'], SubscriptionEth_hatControlledModuleEventArgs, MeshContext>,
+  /** null **/
+  Eth_hatControlledModuleEvents: InContextSdkMethod<Subscription['Eth_hatControlledModuleEvents'], SubscriptionEth_hatControlledModuleEventsArgs, MeshContext>,
   /** Access to subgraph metadata **/
   Eth__meta: InContextSdkMethod<Subscription['Eth__meta'], SubscriptionEth__metaArgs, MeshContext>
   };
