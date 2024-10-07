@@ -4049,6 +4049,721 @@ export type Celo_HatAuthority_orderBy =
   | 'hatsFarcasterDelegatorOwner'
   | 'hatsFarcasterDelegatorCaster';
 
+/**  Hat Controlled Module  */
+export type Celo_HatControlledModule = Celo_HatsModule & {
+  id: Scalars['ID']['output'];
+  version?: Maybe<Scalars['String']['output']>;
+  hatId: Scalars['String']['output'];
+  controllerHatId: Scalars['String']['output'];
+  wearersStatusData: Array<Celo_HatControlledModuleWearerStatus>;
+  hatsStatusData: Array<Celo_HatControlledModuleHatStatus>;
+  events: Array<Celo_HatControlledModuleEvent>;
+};
+
+
+/**  Hat Controlled Module  */
+export type Celo_HatControlledModulewearersStatusDataArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlledModuleWearerStatus_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlledModuleWearerStatus_filter>;
+};
+
+
+/**  Hat Controlled Module  */
+export type Celo_HatControlledModulehatsStatusDataArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlledModuleHatStatus_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlledModuleHatStatus_filter>;
+};
+
+
+/**  Hat Controlled Module  */
+export type Celo_HatControlledModuleeventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlledModuleEvent_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlledModuleEvent_filter>;
+};
+
+export type Celo_HatControlledModuleEvent = {
+  id: Scalars['ID']['output'];
+  module: Celo_HatsModule;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Celo_Bytes']['output'];
+  hatControlledModuleInstance: Celo_HatControlledModule;
+};
+
+export type Celo_HatControlledModuleEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_?: InputMaybe<Celo_HatsModule_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Celo_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Celo_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  hatControlledModuleInstance?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_gt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_lt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_gte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_lte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModuleInstance_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModuleInstance_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_?: InputMaybe<Celo_HatControlledModule_filter>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Celo_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Celo_HatControlledModuleEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Celo_HatControlledModuleEvent_filter>>>;
+};
+
+export type Celo_HatControlledModuleEvent_orderBy =
+  | 'id'
+  | 'module'
+  | 'module__id'
+  | 'module__version'
+  | 'module__hatId'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'hatControlledModuleInstance'
+  | 'hatControlledModuleInstance__id'
+  | 'hatControlledModuleInstance__version'
+  | 'hatControlledModuleInstance__hatId'
+  | 'hatControlledModuleInstance__controllerHatId';
+
+export type Celo_HatControlledModuleHatStatus = {
+  id: Scalars['ID']['output'];
+  hatControlledModule: Celo_HatControlledModule;
+  hatId: Scalars['String']['output'];
+  active: Scalars['Boolean']['output'];
+};
+
+export type Celo_HatControlledModuleHatStatus_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hatControlledModule?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_gt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_lt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_gte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_lte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModule_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModule_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_?: InputMaybe<Celo_HatControlledModule_filter>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  active?: InputMaybe<Scalars['Boolean']['input']>;
+  active_not?: InputMaybe<Scalars['Boolean']['input']>;
+  active_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  active_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Celo_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Celo_HatControlledModuleHatStatus_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Celo_HatControlledModuleHatStatus_filter>>>;
+};
+
+export type Celo_HatControlledModuleHatStatus_orderBy =
+  | 'id'
+  | 'hatControlledModule'
+  | 'hatControlledModule__id'
+  | 'hatControlledModule__version'
+  | 'hatControlledModule__hatId'
+  | 'hatControlledModule__controllerHatId'
+  | 'hatId'
+  | 'active';
+
+export type Celo_HatControlledModuleWearerStatus = {
+  id: Scalars['ID']['output'];
+  hatControlledModule: Celo_HatControlledModule;
+  hatId: Scalars['String']['output'];
+  wearer: Scalars['String']['output'];
+  eligible: Scalars['Boolean']['output'];
+  standing: Scalars['Boolean']['output'];
+};
+
+export type Celo_HatControlledModuleWearerStatus_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hatControlledModule?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_gt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_lt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_gte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_lte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModule_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModule_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModule_?: InputMaybe<Celo_HatControlledModule_filter>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer?: InputMaybe<Scalars['String']['input']>;
+  wearer_not?: InputMaybe<Scalars['String']['input']>;
+  wearer_gt?: InputMaybe<Scalars['String']['input']>;
+  wearer_lt?: InputMaybe<Scalars['String']['input']>;
+  wearer_gte?: InputMaybe<Scalars['String']['input']>;
+  wearer_lte?: InputMaybe<Scalars['String']['input']>;
+  wearer_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligible?: InputMaybe<Scalars['Boolean']['input']>;
+  eligible_not?: InputMaybe<Scalars['Boolean']['input']>;
+  eligible_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  eligible_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  standing?: InputMaybe<Scalars['Boolean']['input']>;
+  standing_not?: InputMaybe<Scalars['Boolean']['input']>;
+  standing_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  standing_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Celo_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Celo_HatControlledModuleWearerStatus_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Celo_HatControlledModuleWearerStatus_filter>>>;
+};
+
+export type Celo_HatControlledModuleWearerStatus_orderBy =
+  | 'id'
+  | 'hatControlledModule'
+  | 'hatControlledModule__id'
+  | 'hatControlledModule__version'
+  | 'hatControlledModule__hatId'
+  | 'hatControlledModule__controllerHatId'
+  | 'hatId'
+  | 'wearer'
+  | 'eligible'
+  | 'standing';
+
+export type Celo_HatControlledModule_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  version?: InputMaybe<Scalars['String']['input']>;
+  version_not?: InputMaybe<Scalars['String']['input']>;
+  version_gt?: InputMaybe<Scalars['String']['input']>;
+  version_lt?: InputMaybe<Scalars['String']['input']>;
+  version_gte?: InputMaybe<Scalars['String']['input']>;
+  version_lte?: InputMaybe<Scalars['String']['input']>;
+  version_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_contains?: InputMaybe<Scalars['String']['input']>;
+  version_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_not?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_gt?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_lt?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_gte?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_lte?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  controllerHatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  controllerHatId_contains?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  controllerHatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearersStatusData_?: InputMaybe<Celo_HatControlledModuleWearerStatus_filter>;
+  hatsStatusData_?: InputMaybe<Celo_HatControlledModuleHatStatus_filter>;
+  events_?: InputMaybe<Celo_HatControlledModuleEvent_filter>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Celo_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Celo_HatControlledModule_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Celo_HatControlledModule_filter>>>;
+};
+
+export type Celo_HatControlledModule_orderBy =
+  | 'id'
+  | 'version'
+  | 'hatId'
+  | 'controllerHatId'
+  | 'wearersStatusData'
+  | 'hatsStatusData'
+  | 'events';
+
+export type Celo_HatControlled_HatStatusSet = Celo_HatControlledModuleEvent & {
+  id: Scalars['ID']['output'];
+  module: Celo_HatsModule;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Celo_Bytes']['output'];
+  hatControlledModuleInstance: Celo_HatControlledModule;
+  hatId: Scalars['String']['output'];
+  active: Scalars['Boolean']['output'];
+};
+
+export type Celo_HatControlled_HatStatusSet_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_?: InputMaybe<Celo_HatsModule_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Celo_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Celo_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  hatControlledModuleInstance?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_gt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_lt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_gte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_lte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModuleInstance_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModuleInstance_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_?: InputMaybe<Celo_HatControlledModule_filter>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  active?: InputMaybe<Scalars['Boolean']['input']>;
+  active_not?: InputMaybe<Scalars['Boolean']['input']>;
+  active_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  active_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Celo_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Celo_HatControlled_HatStatusSet_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Celo_HatControlled_HatStatusSet_filter>>>;
+};
+
+export type Celo_HatControlled_HatStatusSet_orderBy =
+  | 'id'
+  | 'module'
+  | 'module__id'
+  | 'module__version'
+  | 'module__hatId'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'hatControlledModuleInstance'
+  | 'hatControlledModuleInstance__id'
+  | 'hatControlledModuleInstance__version'
+  | 'hatControlledModuleInstance__hatId'
+  | 'hatControlledModuleInstance__controllerHatId'
+  | 'hatId'
+  | 'active';
+
+export type Celo_HatControlled_WearerStatusSet = Celo_HatControlledModuleEvent & {
+  id: Scalars['ID']['output'];
+  module: Celo_HatsModule;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Celo_Bytes']['output'];
+  hatControlledModuleInstance: Celo_HatControlledModule;
+  wearer: Scalars['String']['output'];
+  hatId: Scalars['String']['output'];
+  eligible: Scalars['Boolean']['output'];
+  standing: Scalars['Boolean']['output'];
+};
+
+export type Celo_HatControlled_WearerStatusSet_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_?: InputMaybe<Celo_HatsModule_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Celo_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Celo_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  hatControlledModuleInstance?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_gt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_lt?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_gte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_lte?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModuleInstance_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatControlledModuleInstance_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatControlledModuleInstance_?: InputMaybe<Celo_HatControlledModule_filter>;
+  wearer?: InputMaybe<Scalars['String']['input']>;
+  wearer_not?: InputMaybe<Scalars['String']['input']>;
+  wearer_gt?: InputMaybe<Scalars['String']['input']>;
+  wearer_lt?: InputMaybe<Scalars['String']['input']>;
+  wearer_gte?: InputMaybe<Scalars['String']['input']>;
+  wearer_lte?: InputMaybe<Scalars['String']['input']>;
+  wearer_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  eligible?: InputMaybe<Scalars['Boolean']['input']>;
+  eligible_not?: InputMaybe<Scalars['Boolean']['input']>;
+  eligible_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  eligible_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  standing?: InputMaybe<Scalars['Boolean']['input']>;
+  standing_not?: InputMaybe<Scalars['Boolean']['input']>;
+  standing_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  standing_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Celo_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Celo_HatControlled_WearerStatusSet_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Celo_HatControlled_WearerStatusSet_filter>>>;
+};
+
+export type Celo_HatControlled_WearerStatusSet_orderBy =
+  | 'id'
+  | 'module'
+  | 'module__id'
+  | 'module__version'
+  | 'module__hatId'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'hatControlledModuleInstance'
+  | 'hatControlledModuleInstance__id'
+  | 'hatControlledModuleInstance__version'
+  | 'hatControlledModuleInstance__hatId'
+  | 'hatControlledModuleInstance__controllerHatId'
+  | 'wearer'
+  | 'hatId'
+  | 'eligible'
+  | 'standing';
+
 /**  Hat Wearing Eligibility  */
 export type Celo_HatWearingEligibility = Celo_HatsModule & {
   id: Scalars['ID']['output'];
@@ -5903,6 +6618,127 @@ export type Celo_PassthroughModule_orderBy =
   | 'passthroughHat__id'
   | 'passthroughHat__primaryHatsAccount1ofNAddress';
 
+/**  Public Lock V14 Eligibility  */
+export type Celo_PublicLockV14Eligibility = Celo_HatsModule & {
+  id: Scalars['ID']['output'];
+  version?: Maybe<Scalars['String']['output']>;
+  hatId: Scalars['String']['output'];
+  lock: Scalars['String']['output'];
+  referrer: Scalars['String']['output'];
+  referrerFeePercentage: Scalars['BigInt']['output'];
+};
+
+export type Celo_PublicLockV14Eligibility_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  version?: InputMaybe<Scalars['String']['input']>;
+  version_not?: InputMaybe<Scalars['String']['input']>;
+  version_gt?: InputMaybe<Scalars['String']['input']>;
+  version_lt?: InputMaybe<Scalars['String']['input']>;
+  version_gte?: InputMaybe<Scalars['String']['input']>;
+  version_lte?: InputMaybe<Scalars['String']['input']>;
+  version_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  version_contains?: InputMaybe<Scalars['String']['input']>;
+  version_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains?: InputMaybe<Scalars['String']['input']>;
+  version_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  version_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  lock?: InputMaybe<Scalars['String']['input']>;
+  lock_not?: InputMaybe<Scalars['String']['input']>;
+  lock_gt?: InputMaybe<Scalars['String']['input']>;
+  lock_lt?: InputMaybe<Scalars['String']['input']>;
+  lock_gte?: InputMaybe<Scalars['String']['input']>;
+  lock_lte?: InputMaybe<Scalars['String']['input']>;
+  lock_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  lock_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  lock_contains?: InputMaybe<Scalars['String']['input']>;
+  lock_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  lock_not_contains?: InputMaybe<Scalars['String']['input']>;
+  lock_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  lock_starts_with?: InputMaybe<Scalars['String']['input']>;
+  lock_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  lock_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  lock_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  lock_ends_with?: InputMaybe<Scalars['String']['input']>;
+  lock_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  lock_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  lock_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  referrer?: InputMaybe<Scalars['String']['input']>;
+  referrer_not?: InputMaybe<Scalars['String']['input']>;
+  referrer_gt?: InputMaybe<Scalars['String']['input']>;
+  referrer_lt?: InputMaybe<Scalars['String']['input']>;
+  referrer_gte?: InputMaybe<Scalars['String']['input']>;
+  referrer_lte?: InputMaybe<Scalars['String']['input']>;
+  referrer_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  referrer_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  referrer_contains?: InputMaybe<Scalars['String']['input']>;
+  referrer_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  referrer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  referrer_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  referrer_starts_with?: InputMaybe<Scalars['String']['input']>;
+  referrer_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  referrer_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  referrer_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  referrer_ends_with?: InputMaybe<Scalars['String']['input']>;
+  referrer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  referrer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  referrer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  referrerFeePercentage?: InputMaybe<Scalars['BigInt']['input']>;
+  referrerFeePercentage_not?: InputMaybe<Scalars['BigInt']['input']>;
+  referrerFeePercentage_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  referrerFeePercentage_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  referrerFeePercentage_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  referrerFeePercentage_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  referrerFeePercentage_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  referrerFeePercentage_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Celo_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Celo_PublicLockV14Eligibility_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Celo_PublicLockV14Eligibility_filter>>>;
+};
+
+export type Celo_PublicLockV14Eligibility_orderBy =
+  | 'id'
+  | 'version'
+  | 'hatId'
+  | 'lock'
+  | 'referrer'
+  | 'referrerFeePercentage';
+
 export type Query = {
   Celo_hatAuthority?: Maybe<Celo_HatAuthority>;
   Celo_hatAuthorities: Array<Celo_HatAuthority>;
@@ -6010,6 +6846,18 @@ export type Query = {
   Celo_gitcoinPassportEligibilities: Array<Celo_GitcoinPassportEligibility>;
   Celo_coLinksEligibility?: Maybe<Celo_CoLinksEligibility>;
   Celo_coLinksEligibilities: Array<Celo_CoLinksEligibility>;
+  Celo_hatControlledModule?: Maybe<Celo_HatControlledModule>;
+  Celo_hatControlledModules: Array<Celo_HatControlledModule>;
+  Celo_hatControlledModuleWearerStatus?: Maybe<Celo_HatControlledModuleWearerStatus>;
+  Celo_hatControlledModuleWearerStatuses: Array<Celo_HatControlledModuleWearerStatus>;
+  Celo_hatControlledModuleHatStatus?: Maybe<Celo_HatControlledModuleHatStatus>;
+  Celo_hatControlledModuleHatStatuses: Array<Celo_HatControlledModuleHatStatus>;
+  Celo_hatControlledWearerStatusSet?: Maybe<Celo_HatControlled_WearerStatusSet>;
+  Celo_hatControlledWearerStatusSets: Array<Celo_HatControlled_WearerStatusSet>;
+  Celo_hatControlledHatStatusSet?: Maybe<Celo_HatControlled_HatStatusSet>;
+  Celo_hatControlledHatStatusSets: Array<Celo_HatControlled_HatStatusSet>;
+  Celo_publicLockV14Eligibility?: Maybe<Celo_PublicLockV14Eligibility>;
+  Celo_publicLockV14Eligibilities: Array<Celo_PublicLockV14Eligibility>;
   Celo_hatsEligibilitiesChain?: Maybe<Celo_HatsEligibilitiesChain>;
   Celo_hatsEligibilitiesChains: Array<Celo_HatsEligibilitiesChain>;
   Celo_eligibilitiesRuleset?: Maybe<Celo_EligibilitiesRuleset>;
@@ -6028,6 +6876,8 @@ export type Query = {
   Celo_stakingEvents: Array<Celo_StakingEvent>;
   Celo_agreementEvent?: Maybe<Celo_AgreementEvent>;
   Celo_agreementEvents: Array<Celo_AgreementEvent>;
+  Celo_hatControlledModuleEvent?: Maybe<Celo_HatControlledModuleEvent>;
+  Celo_hatControlledModuleEvents: Array<Celo_HatControlledModuleEvent>;
   /** Access to subgraph metadata */
   Celo__meta?: Maybe<Celo__Meta_>;
 };
@@ -6987,6 +7837,114 @@ export type QueryCelo_coLinksEligibilitiesArgs = {
 };
 
 
+export type QueryCelo_hatControlledModuleArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_hatControlledModulesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlledModule_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlledModule_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_hatControlledModuleWearerStatusArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_hatControlledModuleWearerStatusesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlledModuleWearerStatus_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlledModuleWearerStatus_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_hatControlledModuleHatStatusArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_hatControlledModuleHatStatusesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlledModuleHatStatus_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlledModuleHatStatus_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_hatControlledWearerStatusSetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_hatControlledWearerStatusSetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlled_WearerStatusSet_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlled_WearerStatusSet_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_hatControlledHatStatusSetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_hatControlledHatStatusSetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlled_HatStatusSet_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlled_HatStatusSet_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_publicLockV14EligibilityArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_publicLockV14EligibilitiesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_PublicLockV14Eligibility_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_PublicLockV14Eligibility_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
 export type QueryCelo_hatsEligibilitiesChainArgs = {
   id: Scalars['ID']['input'];
   block?: InputMaybe<Celo_Block_height>;
@@ -7144,6 +8102,24 @@ export type QueryCelo_agreementEventsArgs = {
   orderBy?: InputMaybe<Celo_AgreementEvent_orderBy>;
   orderDirection?: InputMaybe<Celo_OrderDirection>;
   where?: InputMaybe<Celo_AgreementEvent_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_hatControlledModuleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_hatControlledModuleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlledModuleEvent_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlledModuleEvent_filter>;
   block?: InputMaybe<Celo_Block_height>;
   subgraphError?: Celo__SubgraphErrorPolicy_;
 };
@@ -8956,6 +9932,18 @@ export type Subscription = {
   Celo_gitcoinPassportEligibilities: Array<Celo_GitcoinPassportEligibility>;
   Celo_coLinksEligibility?: Maybe<Celo_CoLinksEligibility>;
   Celo_coLinksEligibilities: Array<Celo_CoLinksEligibility>;
+  Celo_hatControlledModule?: Maybe<Celo_HatControlledModule>;
+  Celo_hatControlledModules: Array<Celo_HatControlledModule>;
+  Celo_hatControlledModuleWearerStatus?: Maybe<Celo_HatControlledModuleWearerStatus>;
+  Celo_hatControlledModuleWearerStatuses: Array<Celo_HatControlledModuleWearerStatus>;
+  Celo_hatControlledModuleHatStatus?: Maybe<Celo_HatControlledModuleHatStatus>;
+  Celo_hatControlledModuleHatStatuses: Array<Celo_HatControlledModuleHatStatus>;
+  Celo_hatControlledWearerStatusSet?: Maybe<Celo_HatControlled_WearerStatusSet>;
+  Celo_hatControlledWearerStatusSets: Array<Celo_HatControlled_WearerStatusSet>;
+  Celo_hatControlledHatStatusSet?: Maybe<Celo_HatControlled_HatStatusSet>;
+  Celo_hatControlledHatStatusSets: Array<Celo_HatControlled_HatStatusSet>;
+  Celo_publicLockV14Eligibility?: Maybe<Celo_PublicLockV14Eligibility>;
+  Celo_publicLockV14Eligibilities: Array<Celo_PublicLockV14Eligibility>;
   Celo_hatsEligibilitiesChain?: Maybe<Celo_HatsEligibilitiesChain>;
   Celo_hatsEligibilitiesChains: Array<Celo_HatsEligibilitiesChain>;
   Celo_eligibilitiesRuleset?: Maybe<Celo_EligibilitiesRuleset>;
@@ -8974,6 +9962,8 @@ export type Subscription = {
   Celo_stakingEvents: Array<Celo_StakingEvent>;
   Celo_agreementEvent?: Maybe<Celo_AgreementEvent>;
   Celo_agreementEvents: Array<Celo_AgreementEvent>;
+  Celo_hatControlledModuleEvent?: Maybe<Celo_HatControlledModuleEvent>;
+  Celo_hatControlledModuleEvents: Array<Celo_HatControlledModuleEvent>;
   /** Access to subgraph metadata */
   Celo__meta?: Maybe<Celo__Meta_>;
 };
@@ -9933,6 +10923,114 @@ export type SubscriptionCelo_coLinksEligibilitiesArgs = {
 };
 
 
+export type SubscriptionCelo_hatControlledModuleArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_hatControlledModulesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlledModule_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlledModule_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_hatControlledModuleWearerStatusArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_hatControlledModuleWearerStatusesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlledModuleWearerStatus_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlledModuleWearerStatus_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_hatControlledModuleHatStatusArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_hatControlledModuleHatStatusesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlledModuleHatStatus_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlledModuleHatStatus_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_hatControlledWearerStatusSetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_hatControlledWearerStatusSetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlled_WearerStatusSet_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlled_WearerStatusSet_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_hatControlledHatStatusSetArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_hatControlledHatStatusSetsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlled_HatStatusSet_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlled_HatStatusSet_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_publicLockV14EligibilityArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_publicLockV14EligibilitiesArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_PublicLockV14Eligibility_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_PublicLockV14Eligibility_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
 export type SubscriptionCelo_hatsEligibilitiesChainArgs = {
   id: Scalars['ID']['input'];
   block?: InputMaybe<Celo_Block_height>;
@@ -10090,6 +11188,24 @@ export type SubscriptionCelo_agreementEventsArgs = {
   orderBy?: InputMaybe<Celo_AgreementEvent_orderBy>;
   orderDirection?: InputMaybe<Celo_OrderDirection>;
   where?: InputMaybe<Celo_AgreementEvent_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_hatControlledModuleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_hatControlledModuleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_HatControlledModuleEvent_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_HatControlledModuleEvent_filter>;
   block?: InputMaybe<Celo_Block_height>;
   subgraphError?: Celo__SubgraphErrorPolicy_;
 };
@@ -10346,6 +11462,30 @@ export type Celo__SubgraphErrorPolicy_ =
   /** null **/
   Celo_coLinksEligibilities: InContextSdkMethod<Query['Celo_coLinksEligibilities'], QueryCelo_coLinksEligibilitiesArgs, MeshContext>,
   /** null **/
+  Celo_hatControlledModule: InContextSdkMethod<Query['Celo_hatControlledModule'], QueryCelo_hatControlledModuleArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledModules: InContextSdkMethod<Query['Celo_hatControlledModules'], QueryCelo_hatControlledModulesArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledModuleWearerStatus: InContextSdkMethod<Query['Celo_hatControlledModuleWearerStatus'], QueryCelo_hatControlledModuleWearerStatusArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledModuleWearerStatuses: InContextSdkMethod<Query['Celo_hatControlledModuleWearerStatuses'], QueryCelo_hatControlledModuleWearerStatusesArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledModuleHatStatus: InContextSdkMethod<Query['Celo_hatControlledModuleHatStatus'], QueryCelo_hatControlledModuleHatStatusArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledModuleHatStatuses: InContextSdkMethod<Query['Celo_hatControlledModuleHatStatuses'], QueryCelo_hatControlledModuleHatStatusesArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledWearerStatusSet: InContextSdkMethod<Query['Celo_hatControlledWearerStatusSet'], QueryCelo_hatControlledWearerStatusSetArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledWearerStatusSets: InContextSdkMethod<Query['Celo_hatControlledWearerStatusSets'], QueryCelo_hatControlledWearerStatusSetsArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledHatStatusSet: InContextSdkMethod<Query['Celo_hatControlledHatStatusSet'], QueryCelo_hatControlledHatStatusSetArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledHatStatusSets: InContextSdkMethod<Query['Celo_hatControlledHatStatusSets'], QueryCelo_hatControlledHatStatusSetsArgs, MeshContext>,
+  /** null **/
+  Celo_publicLockV14Eligibility: InContextSdkMethod<Query['Celo_publicLockV14Eligibility'], QueryCelo_publicLockV14EligibilityArgs, MeshContext>,
+  /** null **/
+  Celo_publicLockV14Eligibilities: InContextSdkMethod<Query['Celo_publicLockV14Eligibilities'], QueryCelo_publicLockV14EligibilitiesArgs, MeshContext>,
+  /** null **/
   Celo_hatsEligibilitiesChain: InContextSdkMethod<Query['Celo_hatsEligibilitiesChain'], QueryCelo_hatsEligibilitiesChainArgs, MeshContext>,
   /** null **/
   Celo_hatsEligibilitiesChains: InContextSdkMethod<Query['Celo_hatsEligibilitiesChains'], QueryCelo_hatsEligibilitiesChainsArgs, MeshContext>,
@@ -10381,6 +11521,10 @@ export type Celo__SubgraphErrorPolicy_ =
   Celo_agreementEvent: InContextSdkMethod<Query['Celo_agreementEvent'], QueryCelo_agreementEventArgs, MeshContext>,
   /** null **/
   Celo_agreementEvents: InContextSdkMethod<Query['Celo_agreementEvents'], QueryCelo_agreementEventsArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledModuleEvent: InContextSdkMethod<Query['Celo_hatControlledModuleEvent'], QueryCelo_hatControlledModuleEventArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledModuleEvents: InContextSdkMethod<Query['Celo_hatControlledModuleEvents'], QueryCelo_hatControlledModuleEventsArgs, MeshContext>,
   /** Access to subgraph metadata **/
   Celo__meta: InContextSdkMethod<Query['Celo__meta'], QueryCelo__metaArgs, MeshContext>
   };
@@ -10603,6 +11747,30 @@ export type Celo__SubgraphErrorPolicy_ =
   /** null **/
   Celo_coLinksEligibilities: InContextSdkMethod<Subscription['Celo_coLinksEligibilities'], SubscriptionCelo_coLinksEligibilitiesArgs, MeshContext>,
   /** null **/
+  Celo_hatControlledModule: InContextSdkMethod<Subscription['Celo_hatControlledModule'], SubscriptionCelo_hatControlledModuleArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledModules: InContextSdkMethod<Subscription['Celo_hatControlledModules'], SubscriptionCelo_hatControlledModulesArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledModuleWearerStatus: InContextSdkMethod<Subscription['Celo_hatControlledModuleWearerStatus'], SubscriptionCelo_hatControlledModuleWearerStatusArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledModuleWearerStatuses: InContextSdkMethod<Subscription['Celo_hatControlledModuleWearerStatuses'], SubscriptionCelo_hatControlledModuleWearerStatusesArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledModuleHatStatus: InContextSdkMethod<Subscription['Celo_hatControlledModuleHatStatus'], SubscriptionCelo_hatControlledModuleHatStatusArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledModuleHatStatuses: InContextSdkMethod<Subscription['Celo_hatControlledModuleHatStatuses'], SubscriptionCelo_hatControlledModuleHatStatusesArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledWearerStatusSet: InContextSdkMethod<Subscription['Celo_hatControlledWearerStatusSet'], SubscriptionCelo_hatControlledWearerStatusSetArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledWearerStatusSets: InContextSdkMethod<Subscription['Celo_hatControlledWearerStatusSets'], SubscriptionCelo_hatControlledWearerStatusSetsArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledHatStatusSet: InContextSdkMethod<Subscription['Celo_hatControlledHatStatusSet'], SubscriptionCelo_hatControlledHatStatusSetArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledHatStatusSets: InContextSdkMethod<Subscription['Celo_hatControlledHatStatusSets'], SubscriptionCelo_hatControlledHatStatusSetsArgs, MeshContext>,
+  /** null **/
+  Celo_publicLockV14Eligibility: InContextSdkMethod<Subscription['Celo_publicLockV14Eligibility'], SubscriptionCelo_publicLockV14EligibilityArgs, MeshContext>,
+  /** null **/
+  Celo_publicLockV14Eligibilities: InContextSdkMethod<Subscription['Celo_publicLockV14Eligibilities'], SubscriptionCelo_publicLockV14EligibilitiesArgs, MeshContext>,
+  /** null **/
   Celo_hatsEligibilitiesChain: InContextSdkMethod<Subscription['Celo_hatsEligibilitiesChain'], SubscriptionCelo_hatsEligibilitiesChainArgs, MeshContext>,
   /** null **/
   Celo_hatsEligibilitiesChains: InContextSdkMethod<Subscription['Celo_hatsEligibilitiesChains'], SubscriptionCelo_hatsEligibilitiesChainsArgs, MeshContext>,
@@ -10638,6 +11806,10 @@ export type Celo__SubgraphErrorPolicy_ =
   Celo_agreementEvent: InContextSdkMethod<Subscription['Celo_agreementEvent'], SubscriptionCelo_agreementEventArgs, MeshContext>,
   /** null **/
   Celo_agreementEvents: InContextSdkMethod<Subscription['Celo_agreementEvents'], SubscriptionCelo_agreementEventsArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledModuleEvent: InContextSdkMethod<Subscription['Celo_hatControlledModuleEvent'], SubscriptionCelo_hatControlledModuleEventArgs, MeshContext>,
+  /** null **/
+  Celo_hatControlledModuleEvents: InContextSdkMethod<Subscription['Celo_hatControlledModuleEvents'], SubscriptionCelo_hatControlledModuleEventsArgs, MeshContext>,
   /** Access to subgraph metadata **/
   Celo__meta: InContextSdkMethod<Subscription['Celo__meta'], SubscriptionCelo__metaArgs, MeshContext>
   };

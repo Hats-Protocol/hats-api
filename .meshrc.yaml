@@ -11,7 +11,7 @@ sources:
   - name: Ethereum_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-ethereum-ancillary/v0.0.19
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-ethereum-ancillary/v0.0.20
     transforms:
       - prefix:
           mode: wrap
@@ -29,7 +29,7 @@ sources:
   - name: Optimism_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-optimism-ancillary/v0.0.19
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-optimism-ancillary/v0.0.20
     transforms:
       - prefix:
           mode: wrap
@@ -47,7 +47,7 @@ sources:
   - name: Arbitrum_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-arbitrum-ancillary/v0.0.19
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-arbitrum-ancillary/v0.0.20
     transforms:
       - prefix:
           mode: wrap
@@ -65,7 +65,7 @@ sources:
   - name: Gnosis_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-gnosis-chain-ancillary/v0.0.19
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-gnosis-chain-ancillary/v0.0.20
     transforms:
       - prefix:
           mode: wrap
@@ -83,7 +83,7 @@ sources:
   - name: Celo_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-celo-ancillary/v0.0.20
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-celo-ancillary/v0.0.21
     transforms:
       - prefix:
           mode: wrap
@@ -101,7 +101,7 @@ sources:
   - name: Base_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-base-ancillary/v0.0.20
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-base-ancillary/v0.0.21
     transforms:
       - prefix:
           mode: wrap
@@ -119,7 +119,7 @@ sources:
   - name: Polygon_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-polygon-ancillary/v0.0.19
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-polygon-ancillary/v0.0.20
     transforms:
       - prefix:
           mode: wrap
@@ -137,7 +137,7 @@ sources:
   - name: Sepolia_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-sepolia-ancillary/v0.0.19
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-sepolia-ancillary/v0.0.20
     transforms:
       - prefix:
           mode: wrap
@@ -393,6 +393,13 @@ plugins:
         - Sep_AgreementEligibility
         - Sep_HatsStakingShaman
         - Sep_HatsFarcasterDelegator
+        - Sep_PublicLockV14Eligibility
+        - Sep_HatControlledModule
+        - Sep_GitcoinPassportEligibility
+        - Sep_HatWearingEligibility
+        - Sep_Erc1155Eligibility
+        - Sep_Erc721Eligibility
+        - Sep_Erc20Eligibility
         - Pol_HatAuthority
         - Pol_JokeRaceEligibility
         - Pol_AllowListEligibility
@@ -404,6 +411,13 @@ plugins:
         - Pol_AgreementEligibility
         - Pol_HatsStakingShaman
         - Pol_HatsFarcasterDelegator
+        - Pol_PublicLockV14Eligibility
+        - Pol_HatControlledModule
+        - Pol_GitcoinPassportEligibility
+        - Pol_HatWearingEligibility
+        - Pol_Erc1155Eligibility
+        - Pol_Erc721Eligibility
+        - Pol_Erc20Eligibility
         - Base_HatAuthority
         - Base_JokeRaceEligibility
         - Base_AllowListEligibility
@@ -415,6 +429,13 @@ plugins:
         - Base_AgreementEligibility
         - Base_HatsStakingShaman
         - Base_HatsFarcasterDelegator
+        - Base_PublicLockV14Eligibility
+        - Base_HatControlledModule
+        - Base_GitcoinPassportEligibility
+        - Base_HatWearingEligibility
+        - Base_Erc1155Eligibility
+        - Base_Erc721Eligibility
+        - Base_Erc20Eligibility
         - Op_HatAuthority
         - Op_JokeRaceEligibility
         - Op_AllowListEligibility
@@ -426,6 +447,13 @@ plugins:
         - Op_AgreementEligibility
         - Op_HatsStakingShaman
         - Op_HatsFarcasterDelegator
+        - Op_PublicLockV14Eligibility
+        - Op_HatControlledModule
+        - Op_GitcoinPassportEligibility
+        - Op_HatWearingEligibility
+        - Op_Erc1155Eligibility
+        - Op_Erc721Eligibility
+        - Op_Erc20Eligibility
         - Eth_HatAuthority
         - Eth_JokeRaceEligibility
         - Eth_AllowListEligibility
@@ -437,6 +465,13 @@ plugins:
         - Eth_AgreementEligibility
         - Eth_HatsStakingShaman
         - Eth_HatsFarcasterDelegator
+        - Eth_PublicLockV14Eligibility
+        - Eth_HatControlledModule
+        - Eth_GitcoinPassportEligibility
+        - Eth_HatWearingEligibility
+        - Eth_Erc1155Eligibility
+        - Eth_Erc721Eligibility
+        - Eth_Erc20Eligibility
         - Arb_HatAuthority
         - Arb_JokeRaceEligibility
         - Arb_AllowListEligibility
@@ -448,6 +483,13 @@ plugins:
         - Arb_AgreementEligibility
         - Arb_HatsStakingShaman
         - Arb_HatsFarcasterDelegator
+        - Arb_PublicLockV14Eligibility
+        - Arb_HatControlledModule
+        - Arb_GitcoinPassportEligibility
+        - Arb_HatWearingEligibility
+        - Arb_Erc1155Eligibility
+        - Arb_Erc721Eligibility
+        - Arb_Erc20Eligibility
         - Gno_HatAuthority
         - Gno_JokeRaceEligibility
         - Gno_AllowListEligibility
@@ -459,6 +501,13 @@ plugins:
         - Gno_AgreementEligibility
         - Gno_HatsStakingShaman
         - Gno_HatsFarcasterDelegator
+        - Gno_PublicLockV14Eligibility
+        - Gno_HatControlledModule
+        - Gno_GitcoinPassportEligibility
+        - Gno_HatWearingEligibility
+        - Gno_Erc1155Eligibility
+        - Gno_Erc721Eligibility
+        - Gno_Erc20Eligibility
         - Celo_HatAuthority
         - Celo_JokeRaceEligibility
         - Celo_AllowListEligibility
@@ -470,6 +519,13 @@ plugins:
         - Celo_AgreementEligibility
         - Celo_HatsStakingShaman
         - Celo_HatsFarcasterDelegator
+        - Celo_PublicLockV14Eligibility
+        - Celo_HatControlledModule
+        - Celo_GitcoinPassportEligibility
+        - Celo_HatWearingEligibility
+        - Celo_Erc1155Eligibility
+        - Celo_Erc721Eligibility
+        - Celo_Erc20Eligibility
 cache:
   redis:
     host: "{env.REDIS_HOST}"

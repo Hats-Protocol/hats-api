@@ -3854,6 +3854,697 @@ enum Celo_HatAuthority_orderBy {
   hatsFarcasterDelegatorCaster
 }
 
+""" Hat Controlled Module """
+type Celo_HatControlledModule implements Celo_HatsModule {
+  id: ID!
+  version: String
+  hatId: String!
+  controllerHatId: String!
+  wearersStatusData(skip: Int = 0, first: Int = 100, orderBy: Celo_HatControlledModuleWearerStatus_orderBy, orderDirection: Celo_OrderDirection, where: Celo_HatControlledModuleWearerStatus_filter): [Celo_HatControlledModuleWearerStatus!]!
+  hatsStatusData(skip: Int = 0, first: Int = 100, orderBy: Celo_HatControlledModuleHatStatus_orderBy, orderDirection: Celo_OrderDirection, where: Celo_HatControlledModuleHatStatus_filter): [Celo_HatControlledModuleHatStatus!]!
+  events(skip: Int = 0, first: Int = 100, orderBy: Celo_HatControlledModuleEvent_orderBy, orderDirection: Celo_OrderDirection, where: Celo_HatControlledModuleEvent_filter): [Celo_HatControlledModuleEvent!]!
+}
+
+interface Celo_HatControlledModuleEvent {
+  id: ID!
+  module: Celo_HatsModule!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Celo_Bytes!
+  hatControlledModuleInstance: Celo_HatControlledModule!
+}
+
+input Celo_HatControlledModuleEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  module: String
+  module_not: String
+  module_gt: String
+  module_lt: String
+  module_gte: String
+  module_lte: String
+  module_in: [String!]
+  module_not_in: [String!]
+  module_contains: String
+  module_contains_nocase: String
+  module_not_contains: String
+  module_not_contains_nocase: String
+  module_starts_with: String
+  module_starts_with_nocase: String
+  module_not_starts_with: String
+  module_not_starts_with_nocase: String
+  module_ends_with: String
+  module_ends_with_nocase: String
+  module_not_ends_with: String
+  module_not_ends_with_nocase: String
+  module_: Celo_HatsModule_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Celo_Bytes
+  transactionID_not: Celo_Bytes
+  transactionID_gt: Celo_Bytes
+  transactionID_lt: Celo_Bytes
+  transactionID_gte: Celo_Bytes
+  transactionID_lte: Celo_Bytes
+  transactionID_in: [Celo_Bytes!]
+  transactionID_not_in: [Celo_Bytes!]
+  transactionID_contains: Celo_Bytes
+  transactionID_not_contains: Celo_Bytes
+  hatControlledModuleInstance: String
+  hatControlledModuleInstance_not: String
+  hatControlledModuleInstance_gt: String
+  hatControlledModuleInstance_lt: String
+  hatControlledModuleInstance_gte: String
+  hatControlledModuleInstance_lte: String
+  hatControlledModuleInstance_in: [String!]
+  hatControlledModuleInstance_not_in: [String!]
+  hatControlledModuleInstance_contains: String
+  hatControlledModuleInstance_contains_nocase: String
+  hatControlledModuleInstance_not_contains: String
+  hatControlledModuleInstance_not_contains_nocase: String
+  hatControlledModuleInstance_starts_with: String
+  hatControlledModuleInstance_starts_with_nocase: String
+  hatControlledModuleInstance_not_starts_with: String
+  hatControlledModuleInstance_not_starts_with_nocase: String
+  hatControlledModuleInstance_ends_with: String
+  hatControlledModuleInstance_ends_with_nocase: String
+  hatControlledModuleInstance_not_ends_with: String
+  hatControlledModuleInstance_not_ends_with_nocase: String
+  hatControlledModuleInstance_: Celo_HatControlledModule_filter
+  """Filter for the block changed event."""
+  _change_block: Celo_BlockChangedFilter
+  and: [Celo_HatControlledModuleEvent_filter]
+  or: [Celo_HatControlledModuleEvent_filter]
+}
+
+enum Celo_HatControlledModuleEvent_orderBy {
+  id
+  module
+  module__id
+  module__version
+  module__hatId
+  blockNumber
+  timestamp
+  transactionID
+  hatControlledModuleInstance
+  hatControlledModuleInstance__id
+  hatControlledModuleInstance__version
+  hatControlledModuleInstance__hatId
+  hatControlledModuleInstance__controllerHatId
+}
+
+type Celo_HatControlledModuleHatStatus {
+  id: ID!
+  hatControlledModule: Celo_HatControlledModule!
+  hatId: String!
+  active: Boolean!
+}
+
+input Celo_HatControlledModuleHatStatus_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hatControlledModule: String
+  hatControlledModule_not: String
+  hatControlledModule_gt: String
+  hatControlledModule_lt: String
+  hatControlledModule_gte: String
+  hatControlledModule_lte: String
+  hatControlledModule_in: [String!]
+  hatControlledModule_not_in: [String!]
+  hatControlledModule_contains: String
+  hatControlledModule_contains_nocase: String
+  hatControlledModule_not_contains: String
+  hatControlledModule_not_contains_nocase: String
+  hatControlledModule_starts_with: String
+  hatControlledModule_starts_with_nocase: String
+  hatControlledModule_not_starts_with: String
+  hatControlledModule_not_starts_with_nocase: String
+  hatControlledModule_ends_with: String
+  hatControlledModule_ends_with_nocase: String
+  hatControlledModule_not_ends_with: String
+  hatControlledModule_not_ends_with_nocase: String
+  hatControlledModule_: Celo_HatControlledModule_filter
+  hatId: String
+  hatId_not: String
+  hatId_gt: String
+  hatId_lt: String
+  hatId_gte: String
+  hatId_lte: String
+  hatId_in: [String!]
+  hatId_not_in: [String!]
+  hatId_contains: String
+  hatId_contains_nocase: String
+  hatId_not_contains: String
+  hatId_not_contains_nocase: String
+  hatId_starts_with: String
+  hatId_starts_with_nocase: String
+  hatId_not_starts_with: String
+  hatId_not_starts_with_nocase: String
+  hatId_ends_with: String
+  hatId_ends_with_nocase: String
+  hatId_not_ends_with: String
+  hatId_not_ends_with_nocase: String
+  active: Boolean
+  active_not: Boolean
+  active_in: [Boolean!]
+  active_not_in: [Boolean!]
+  """Filter for the block changed event."""
+  _change_block: Celo_BlockChangedFilter
+  and: [Celo_HatControlledModuleHatStatus_filter]
+  or: [Celo_HatControlledModuleHatStatus_filter]
+}
+
+enum Celo_HatControlledModuleHatStatus_orderBy {
+  id
+  hatControlledModule
+  hatControlledModule__id
+  hatControlledModule__version
+  hatControlledModule__hatId
+  hatControlledModule__controllerHatId
+  hatId
+  active
+}
+
+type Celo_HatControlledModuleWearerStatus {
+  id: ID!
+  hatControlledModule: Celo_HatControlledModule!
+  hatId: String!
+  wearer: String!
+  eligible: Boolean!
+  standing: Boolean!
+}
+
+input Celo_HatControlledModuleWearerStatus_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hatControlledModule: String
+  hatControlledModule_not: String
+  hatControlledModule_gt: String
+  hatControlledModule_lt: String
+  hatControlledModule_gte: String
+  hatControlledModule_lte: String
+  hatControlledModule_in: [String!]
+  hatControlledModule_not_in: [String!]
+  hatControlledModule_contains: String
+  hatControlledModule_contains_nocase: String
+  hatControlledModule_not_contains: String
+  hatControlledModule_not_contains_nocase: String
+  hatControlledModule_starts_with: String
+  hatControlledModule_starts_with_nocase: String
+  hatControlledModule_not_starts_with: String
+  hatControlledModule_not_starts_with_nocase: String
+  hatControlledModule_ends_with: String
+  hatControlledModule_ends_with_nocase: String
+  hatControlledModule_not_ends_with: String
+  hatControlledModule_not_ends_with_nocase: String
+  hatControlledModule_: Celo_HatControlledModule_filter
+  hatId: String
+  hatId_not: String
+  hatId_gt: String
+  hatId_lt: String
+  hatId_gte: String
+  hatId_lte: String
+  hatId_in: [String!]
+  hatId_not_in: [String!]
+  hatId_contains: String
+  hatId_contains_nocase: String
+  hatId_not_contains: String
+  hatId_not_contains_nocase: String
+  hatId_starts_with: String
+  hatId_starts_with_nocase: String
+  hatId_not_starts_with: String
+  hatId_not_starts_with_nocase: String
+  hatId_ends_with: String
+  hatId_ends_with_nocase: String
+  hatId_not_ends_with: String
+  hatId_not_ends_with_nocase: String
+  wearer: String
+  wearer_not: String
+  wearer_gt: String
+  wearer_lt: String
+  wearer_gte: String
+  wearer_lte: String
+  wearer_in: [String!]
+  wearer_not_in: [String!]
+  wearer_contains: String
+  wearer_contains_nocase: String
+  wearer_not_contains: String
+  wearer_not_contains_nocase: String
+  wearer_starts_with: String
+  wearer_starts_with_nocase: String
+  wearer_not_starts_with: String
+  wearer_not_starts_with_nocase: String
+  wearer_ends_with: String
+  wearer_ends_with_nocase: String
+  wearer_not_ends_with: String
+  wearer_not_ends_with_nocase: String
+  eligible: Boolean
+  eligible_not: Boolean
+  eligible_in: [Boolean!]
+  eligible_not_in: [Boolean!]
+  standing: Boolean
+  standing_not: Boolean
+  standing_in: [Boolean!]
+  standing_not_in: [Boolean!]
+  """Filter for the block changed event."""
+  _change_block: Celo_BlockChangedFilter
+  and: [Celo_HatControlledModuleWearerStatus_filter]
+  or: [Celo_HatControlledModuleWearerStatus_filter]
+}
+
+enum Celo_HatControlledModuleWearerStatus_orderBy {
+  id
+  hatControlledModule
+  hatControlledModule__id
+  hatControlledModule__version
+  hatControlledModule__hatId
+  hatControlledModule__controllerHatId
+  hatId
+  wearer
+  eligible
+  standing
+}
+
+input Celo_HatControlledModule_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  version: String
+  version_not: String
+  version_gt: String
+  version_lt: String
+  version_gte: String
+  version_lte: String
+  version_in: [String!]
+  version_not_in: [String!]
+  version_contains: String
+  version_contains_nocase: String
+  version_not_contains: String
+  version_not_contains_nocase: String
+  version_starts_with: String
+  version_starts_with_nocase: String
+  version_not_starts_with: String
+  version_not_starts_with_nocase: String
+  version_ends_with: String
+  version_ends_with_nocase: String
+  version_not_ends_with: String
+  version_not_ends_with_nocase: String
+  hatId: String
+  hatId_not: String
+  hatId_gt: String
+  hatId_lt: String
+  hatId_gte: String
+  hatId_lte: String
+  hatId_in: [String!]
+  hatId_not_in: [String!]
+  hatId_contains: String
+  hatId_contains_nocase: String
+  hatId_not_contains: String
+  hatId_not_contains_nocase: String
+  hatId_starts_with: String
+  hatId_starts_with_nocase: String
+  hatId_not_starts_with: String
+  hatId_not_starts_with_nocase: String
+  hatId_ends_with: String
+  hatId_ends_with_nocase: String
+  hatId_not_ends_with: String
+  hatId_not_ends_with_nocase: String
+  controllerHatId: String
+  controllerHatId_not: String
+  controllerHatId_gt: String
+  controllerHatId_lt: String
+  controllerHatId_gte: String
+  controllerHatId_lte: String
+  controllerHatId_in: [String!]
+  controllerHatId_not_in: [String!]
+  controllerHatId_contains: String
+  controllerHatId_contains_nocase: String
+  controllerHatId_not_contains: String
+  controllerHatId_not_contains_nocase: String
+  controllerHatId_starts_with: String
+  controllerHatId_starts_with_nocase: String
+  controllerHatId_not_starts_with: String
+  controllerHatId_not_starts_with_nocase: String
+  controllerHatId_ends_with: String
+  controllerHatId_ends_with_nocase: String
+  controllerHatId_not_ends_with: String
+  controllerHatId_not_ends_with_nocase: String
+  wearersStatusData_: Celo_HatControlledModuleWearerStatus_filter
+  hatsStatusData_: Celo_HatControlledModuleHatStatus_filter
+  events_: Celo_HatControlledModuleEvent_filter
+  """Filter for the block changed event."""
+  _change_block: Celo_BlockChangedFilter
+  and: [Celo_HatControlledModule_filter]
+  or: [Celo_HatControlledModule_filter]
+}
+
+enum Celo_HatControlledModule_orderBy {
+  id
+  version
+  hatId
+  controllerHatId
+  wearersStatusData
+  hatsStatusData
+  events
+}
+
+type Celo_HatControlled_HatStatusSet implements Celo_HatControlledModuleEvent {
+  id: ID!
+  module: Celo_HatsModule!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Celo_Bytes!
+  hatControlledModuleInstance: Celo_HatControlledModule!
+  hatId: String!
+  active: Boolean!
+}
+
+input Celo_HatControlled_HatStatusSet_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  module: String
+  module_not: String
+  module_gt: String
+  module_lt: String
+  module_gte: String
+  module_lte: String
+  module_in: [String!]
+  module_not_in: [String!]
+  module_contains: String
+  module_contains_nocase: String
+  module_not_contains: String
+  module_not_contains_nocase: String
+  module_starts_with: String
+  module_starts_with_nocase: String
+  module_not_starts_with: String
+  module_not_starts_with_nocase: String
+  module_ends_with: String
+  module_ends_with_nocase: String
+  module_not_ends_with: String
+  module_not_ends_with_nocase: String
+  module_: Celo_HatsModule_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Celo_Bytes
+  transactionID_not: Celo_Bytes
+  transactionID_gt: Celo_Bytes
+  transactionID_lt: Celo_Bytes
+  transactionID_gte: Celo_Bytes
+  transactionID_lte: Celo_Bytes
+  transactionID_in: [Celo_Bytes!]
+  transactionID_not_in: [Celo_Bytes!]
+  transactionID_contains: Celo_Bytes
+  transactionID_not_contains: Celo_Bytes
+  hatControlledModuleInstance: String
+  hatControlledModuleInstance_not: String
+  hatControlledModuleInstance_gt: String
+  hatControlledModuleInstance_lt: String
+  hatControlledModuleInstance_gte: String
+  hatControlledModuleInstance_lte: String
+  hatControlledModuleInstance_in: [String!]
+  hatControlledModuleInstance_not_in: [String!]
+  hatControlledModuleInstance_contains: String
+  hatControlledModuleInstance_contains_nocase: String
+  hatControlledModuleInstance_not_contains: String
+  hatControlledModuleInstance_not_contains_nocase: String
+  hatControlledModuleInstance_starts_with: String
+  hatControlledModuleInstance_starts_with_nocase: String
+  hatControlledModuleInstance_not_starts_with: String
+  hatControlledModuleInstance_not_starts_with_nocase: String
+  hatControlledModuleInstance_ends_with: String
+  hatControlledModuleInstance_ends_with_nocase: String
+  hatControlledModuleInstance_not_ends_with: String
+  hatControlledModuleInstance_not_ends_with_nocase: String
+  hatControlledModuleInstance_: Celo_HatControlledModule_filter
+  hatId: String
+  hatId_not: String
+  hatId_gt: String
+  hatId_lt: String
+  hatId_gte: String
+  hatId_lte: String
+  hatId_in: [String!]
+  hatId_not_in: [String!]
+  hatId_contains: String
+  hatId_contains_nocase: String
+  hatId_not_contains: String
+  hatId_not_contains_nocase: String
+  hatId_starts_with: String
+  hatId_starts_with_nocase: String
+  hatId_not_starts_with: String
+  hatId_not_starts_with_nocase: String
+  hatId_ends_with: String
+  hatId_ends_with_nocase: String
+  hatId_not_ends_with: String
+  hatId_not_ends_with_nocase: String
+  active: Boolean
+  active_not: Boolean
+  active_in: [Boolean!]
+  active_not_in: [Boolean!]
+  """Filter for the block changed event."""
+  _change_block: Celo_BlockChangedFilter
+  and: [Celo_HatControlled_HatStatusSet_filter]
+  or: [Celo_HatControlled_HatStatusSet_filter]
+}
+
+enum Celo_HatControlled_HatStatusSet_orderBy {
+  id
+  module
+  module__id
+  module__version
+  module__hatId
+  blockNumber
+  timestamp
+  transactionID
+  hatControlledModuleInstance
+  hatControlledModuleInstance__id
+  hatControlledModuleInstance__version
+  hatControlledModuleInstance__hatId
+  hatControlledModuleInstance__controllerHatId
+  hatId
+  active
+}
+
+type Celo_HatControlled_WearerStatusSet implements Celo_HatControlledModuleEvent {
+  id: ID!
+  module: Celo_HatsModule!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Celo_Bytes!
+  hatControlledModuleInstance: Celo_HatControlledModule!
+  wearer: String!
+  hatId: String!
+  eligible: Boolean!
+  standing: Boolean!
+}
+
+input Celo_HatControlled_WearerStatusSet_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  module: String
+  module_not: String
+  module_gt: String
+  module_lt: String
+  module_gte: String
+  module_lte: String
+  module_in: [String!]
+  module_not_in: [String!]
+  module_contains: String
+  module_contains_nocase: String
+  module_not_contains: String
+  module_not_contains_nocase: String
+  module_starts_with: String
+  module_starts_with_nocase: String
+  module_not_starts_with: String
+  module_not_starts_with_nocase: String
+  module_ends_with: String
+  module_ends_with_nocase: String
+  module_not_ends_with: String
+  module_not_ends_with_nocase: String
+  module_: Celo_HatsModule_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Celo_Bytes
+  transactionID_not: Celo_Bytes
+  transactionID_gt: Celo_Bytes
+  transactionID_lt: Celo_Bytes
+  transactionID_gte: Celo_Bytes
+  transactionID_lte: Celo_Bytes
+  transactionID_in: [Celo_Bytes!]
+  transactionID_not_in: [Celo_Bytes!]
+  transactionID_contains: Celo_Bytes
+  transactionID_not_contains: Celo_Bytes
+  hatControlledModuleInstance: String
+  hatControlledModuleInstance_not: String
+  hatControlledModuleInstance_gt: String
+  hatControlledModuleInstance_lt: String
+  hatControlledModuleInstance_gte: String
+  hatControlledModuleInstance_lte: String
+  hatControlledModuleInstance_in: [String!]
+  hatControlledModuleInstance_not_in: [String!]
+  hatControlledModuleInstance_contains: String
+  hatControlledModuleInstance_contains_nocase: String
+  hatControlledModuleInstance_not_contains: String
+  hatControlledModuleInstance_not_contains_nocase: String
+  hatControlledModuleInstance_starts_with: String
+  hatControlledModuleInstance_starts_with_nocase: String
+  hatControlledModuleInstance_not_starts_with: String
+  hatControlledModuleInstance_not_starts_with_nocase: String
+  hatControlledModuleInstance_ends_with: String
+  hatControlledModuleInstance_ends_with_nocase: String
+  hatControlledModuleInstance_not_ends_with: String
+  hatControlledModuleInstance_not_ends_with_nocase: String
+  hatControlledModuleInstance_: Celo_HatControlledModule_filter
+  wearer: String
+  wearer_not: String
+  wearer_gt: String
+  wearer_lt: String
+  wearer_gte: String
+  wearer_lte: String
+  wearer_in: [String!]
+  wearer_not_in: [String!]
+  wearer_contains: String
+  wearer_contains_nocase: String
+  wearer_not_contains: String
+  wearer_not_contains_nocase: String
+  wearer_starts_with: String
+  wearer_starts_with_nocase: String
+  wearer_not_starts_with: String
+  wearer_not_starts_with_nocase: String
+  wearer_ends_with: String
+  wearer_ends_with_nocase: String
+  wearer_not_ends_with: String
+  wearer_not_ends_with_nocase: String
+  hatId: String
+  hatId_not: String
+  hatId_gt: String
+  hatId_lt: String
+  hatId_gte: String
+  hatId_lte: String
+  hatId_in: [String!]
+  hatId_not_in: [String!]
+  hatId_contains: String
+  hatId_contains_nocase: String
+  hatId_not_contains: String
+  hatId_not_contains_nocase: String
+  hatId_starts_with: String
+  hatId_starts_with_nocase: String
+  hatId_not_starts_with: String
+  hatId_not_starts_with_nocase: String
+  hatId_ends_with: String
+  hatId_ends_with_nocase: String
+  hatId_not_ends_with: String
+  hatId_not_ends_with_nocase: String
+  eligible: Boolean
+  eligible_not: Boolean
+  eligible_in: [Boolean!]
+  eligible_not_in: [Boolean!]
+  standing: Boolean
+  standing_not: Boolean
+  standing_in: [Boolean!]
+  standing_not_in: [Boolean!]
+  """Filter for the block changed event."""
+  _change_block: Celo_BlockChangedFilter
+  and: [Celo_HatControlled_WearerStatusSet_filter]
+  or: [Celo_HatControlled_WearerStatusSet_filter]
+}
+
+enum Celo_HatControlled_WearerStatusSet_orderBy {
+  id
+  module
+  module__id
+  module__version
+  module__hatId
+  blockNumber
+  timestamp
+  transactionID
+  hatControlledModuleInstance
+  hatControlledModuleInstance__id
+  hatControlledModuleInstance__version
+  hatControlledModuleInstance__hatId
+  hatControlledModuleInstance__controllerHatId
+  wearer
+  hatId
+  eligible
+  standing
+}
+
 """ Hat Wearing Eligibility """
 type Celo_HatWearingEligibility implements Celo_HatsModule {
   id: ID!
@@ -5635,6 +6326,128 @@ enum Celo_PassthroughModule_orderBy {
   passthroughHat__primaryHatsAccount1ofNAddress
 }
 
+""" Public Lock V14 Eligibility """
+type Celo_PublicLockV14Eligibility implements Celo_HatsModule {
+  id: ID!
+  version: String
+  hatId: String!
+  lock: String!
+  referrer: String!
+  referrerFeePercentage: BigInt!
+}
+
+input Celo_PublicLockV14Eligibility_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  version: String
+  version_not: String
+  version_gt: String
+  version_lt: String
+  version_gte: String
+  version_lte: String
+  version_in: [String!]
+  version_not_in: [String!]
+  version_contains: String
+  version_contains_nocase: String
+  version_not_contains: String
+  version_not_contains_nocase: String
+  version_starts_with: String
+  version_starts_with_nocase: String
+  version_not_starts_with: String
+  version_not_starts_with_nocase: String
+  version_ends_with: String
+  version_ends_with_nocase: String
+  version_not_ends_with: String
+  version_not_ends_with_nocase: String
+  hatId: String
+  hatId_not: String
+  hatId_gt: String
+  hatId_lt: String
+  hatId_gte: String
+  hatId_lte: String
+  hatId_in: [String!]
+  hatId_not_in: [String!]
+  hatId_contains: String
+  hatId_contains_nocase: String
+  hatId_not_contains: String
+  hatId_not_contains_nocase: String
+  hatId_starts_with: String
+  hatId_starts_with_nocase: String
+  hatId_not_starts_with: String
+  hatId_not_starts_with_nocase: String
+  hatId_ends_with: String
+  hatId_ends_with_nocase: String
+  hatId_not_ends_with: String
+  hatId_not_ends_with_nocase: String
+  lock: String
+  lock_not: String
+  lock_gt: String
+  lock_lt: String
+  lock_gte: String
+  lock_lte: String
+  lock_in: [String!]
+  lock_not_in: [String!]
+  lock_contains: String
+  lock_contains_nocase: String
+  lock_not_contains: String
+  lock_not_contains_nocase: String
+  lock_starts_with: String
+  lock_starts_with_nocase: String
+  lock_not_starts_with: String
+  lock_not_starts_with_nocase: String
+  lock_ends_with: String
+  lock_ends_with_nocase: String
+  lock_not_ends_with: String
+  lock_not_ends_with_nocase: String
+  referrer: String
+  referrer_not: String
+  referrer_gt: String
+  referrer_lt: String
+  referrer_gte: String
+  referrer_lte: String
+  referrer_in: [String!]
+  referrer_not_in: [String!]
+  referrer_contains: String
+  referrer_contains_nocase: String
+  referrer_not_contains: String
+  referrer_not_contains_nocase: String
+  referrer_starts_with: String
+  referrer_starts_with_nocase: String
+  referrer_not_starts_with: String
+  referrer_not_starts_with_nocase: String
+  referrer_ends_with: String
+  referrer_ends_with_nocase: String
+  referrer_not_ends_with: String
+  referrer_not_ends_with_nocase: String
+  referrerFeePercentage: BigInt
+  referrerFeePercentage_not: BigInt
+  referrerFeePercentage_gt: BigInt
+  referrerFeePercentage_lt: BigInt
+  referrerFeePercentage_gte: BigInt
+  referrerFeePercentage_lte: BigInt
+  referrerFeePercentage_in: [BigInt!]
+  referrerFeePercentage_not_in: [BigInt!]
+  """Filter for the block changed event."""
+  _change_block: Celo_BlockChangedFilter
+  and: [Celo_PublicLockV14Eligibility_filter]
+  or: [Celo_PublicLockV14Eligibility_filter]
+}
+
+enum Celo_PublicLockV14Eligibility_orderBy {
+  id
+  version
+  hatId
+  lock
+  referrer
+  referrerFeePercentage
+}
+
 type Query {
   Celo_hatAuthority(
     id: ID!
@@ -7014,6 +7827,162 @@ type Query {
     """
     subgraphError: Celo__SubgraphErrorPolicy_! = deny
   ): [Celo_CoLinksEligibility!]!
+  Celo_hatControlledModule(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): Celo_HatControlledModule
+  Celo_hatControlledModules(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Celo_HatControlledModule_orderBy
+    orderDirection: Celo_OrderDirection
+    where: Celo_HatControlledModule_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): [Celo_HatControlledModule!]!
+  Celo_hatControlledModuleWearerStatus(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): Celo_HatControlledModuleWearerStatus
+  Celo_hatControlledModuleWearerStatuses(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Celo_HatControlledModuleWearerStatus_orderBy
+    orderDirection: Celo_OrderDirection
+    where: Celo_HatControlledModuleWearerStatus_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): [Celo_HatControlledModuleWearerStatus!]!
+  Celo_hatControlledModuleHatStatus(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): Celo_HatControlledModuleHatStatus
+  Celo_hatControlledModuleHatStatuses(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Celo_HatControlledModuleHatStatus_orderBy
+    orderDirection: Celo_OrderDirection
+    where: Celo_HatControlledModuleHatStatus_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): [Celo_HatControlledModuleHatStatus!]!
+  Celo_hatControlledWearerStatusSet(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): Celo_HatControlled_WearerStatusSet
+  Celo_hatControlledWearerStatusSets(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Celo_HatControlled_WearerStatusSet_orderBy
+    orderDirection: Celo_OrderDirection
+    where: Celo_HatControlled_WearerStatusSet_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): [Celo_HatControlled_WearerStatusSet!]!
+  Celo_hatControlledHatStatusSet(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): Celo_HatControlled_HatStatusSet
+  Celo_hatControlledHatStatusSets(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Celo_HatControlled_HatStatusSet_orderBy
+    orderDirection: Celo_OrderDirection
+    where: Celo_HatControlled_HatStatusSet_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): [Celo_HatControlled_HatStatusSet!]!
+  Celo_publicLockV14Eligibility(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): Celo_PublicLockV14Eligibility
+  Celo_publicLockV14Eligibilities(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Celo_PublicLockV14Eligibility_orderBy
+    orderDirection: Celo_OrderDirection
+    where: Celo_PublicLockV14Eligibility_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): [Celo_PublicLockV14Eligibility!]!
   Celo_hatsEligibilitiesChain(
     id: ID!
     """
@@ -7248,6 +8217,32 @@ type Query {
     """
     subgraphError: Celo__SubgraphErrorPolicy_! = deny
   ): [Celo_AgreementEvent!]!
+  Celo_hatControlledModuleEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): Celo_HatControlledModuleEvent
+  Celo_hatControlledModuleEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Celo_HatControlledModuleEvent_orderBy
+    orderDirection: Celo_OrderDirection
+    where: Celo_HatControlledModuleEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): [Celo_HatControlledModuleEvent!]!
   """Access to subgraph metadata"""
   Celo__meta(block: Celo_Block_height): Celo__Meta_
 }
@@ -10300,6 +11295,162 @@ type Subscription {
     """
     subgraphError: Celo__SubgraphErrorPolicy_! = deny
   ): [Celo_CoLinksEligibility!]!
+  Celo_hatControlledModule(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): Celo_HatControlledModule
+  Celo_hatControlledModules(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Celo_HatControlledModule_orderBy
+    orderDirection: Celo_OrderDirection
+    where: Celo_HatControlledModule_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): [Celo_HatControlledModule!]!
+  Celo_hatControlledModuleWearerStatus(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): Celo_HatControlledModuleWearerStatus
+  Celo_hatControlledModuleWearerStatuses(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Celo_HatControlledModuleWearerStatus_orderBy
+    orderDirection: Celo_OrderDirection
+    where: Celo_HatControlledModuleWearerStatus_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): [Celo_HatControlledModuleWearerStatus!]!
+  Celo_hatControlledModuleHatStatus(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): Celo_HatControlledModuleHatStatus
+  Celo_hatControlledModuleHatStatuses(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Celo_HatControlledModuleHatStatus_orderBy
+    orderDirection: Celo_OrderDirection
+    where: Celo_HatControlledModuleHatStatus_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): [Celo_HatControlledModuleHatStatus!]!
+  Celo_hatControlledWearerStatusSet(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): Celo_HatControlled_WearerStatusSet
+  Celo_hatControlledWearerStatusSets(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Celo_HatControlled_WearerStatusSet_orderBy
+    orderDirection: Celo_OrderDirection
+    where: Celo_HatControlled_WearerStatusSet_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): [Celo_HatControlled_WearerStatusSet!]!
+  Celo_hatControlledHatStatusSet(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): Celo_HatControlled_HatStatusSet
+  Celo_hatControlledHatStatusSets(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Celo_HatControlled_HatStatusSet_orderBy
+    orderDirection: Celo_OrderDirection
+    where: Celo_HatControlled_HatStatusSet_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): [Celo_HatControlled_HatStatusSet!]!
+  Celo_publicLockV14Eligibility(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): Celo_PublicLockV14Eligibility
+  Celo_publicLockV14Eligibilities(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Celo_PublicLockV14Eligibility_orderBy
+    orderDirection: Celo_OrderDirection
+    where: Celo_PublicLockV14Eligibility_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): [Celo_PublicLockV14Eligibility!]!
   Celo_hatsEligibilitiesChain(
     id: ID!
     """
@@ -10534,6 +11685,32 @@ type Subscription {
     """
     subgraphError: Celo__SubgraphErrorPolicy_! = deny
   ): [Celo_AgreementEvent!]!
+  Celo_hatControlledModuleEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): Celo_HatControlledModuleEvent
+  Celo_hatControlledModuleEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Celo_HatControlledModuleEvent_orderBy
+    orderDirection: Celo_OrderDirection
+    where: Celo_HatControlledModuleEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Celo_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Celo__SubgraphErrorPolicy_! = deny
+  ): [Celo_HatControlledModuleEvent!]!
   """Access to subgraph metadata"""
   Celo__meta(block: Celo_Block_height): Celo__Meta_
 }
