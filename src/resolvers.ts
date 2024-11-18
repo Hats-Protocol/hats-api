@@ -40,10 +40,10 @@ const resolvers: Resolvers = {
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
               { timeout: 12000 }
             );
-            const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
-              timeout: 12000,
-            });
-            const res = await Promise.race([fetchFromPinata, fetchFromIpfs]);
+            // const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
+            //   timeout: 12000,
+            // });
+            const res = await Promise.race([fetchFromPinata]);
             if (res.status === 200) {
               return JSON.stringify(res.data);
             } else {
@@ -208,10 +208,10 @@ const resolvers: Resolvers = {
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
               { timeout: 12000 }
             );
-            const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
-              timeout: 12000,
-            });
-            const res = await Promise.race([fetchFromPinata, fetchFromIpfs]);
+            // const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
+            //   timeout: 12000,
+            // });
+            const res = await Promise.race([fetchFromPinata]);
             if (res.status === 200) {
               return JSON.stringify(res.data);
             } else {
@@ -376,10 +376,10 @@ const resolvers: Resolvers = {
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
               { timeout: 12000 }
             );
-            const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
-              timeout: 12000,
-            });
-            const res = await Promise.race([fetchFromPinata, fetchFromIpfs]);
+            // const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
+            //   timeout: 12000,
+            // });
+            const res = await Promise.race([fetchFromPinata]);
             if (res.status === 200) {
               return JSON.stringify(res.data);
             } else {
@@ -547,10 +547,10 @@ const resolvers: Resolvers = {
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
               { timeout: 12000 }
             );
-            const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
-              timeout: 12000,
-            });
-            const res = await Promise.race([fetchFromPinata, fetchFromIpfs]);
+            // const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
+            //   timeout: 12000,
+            // });
+            const res = await Promise.race([fetchFromPinata]);
             if (res.status === 200) {
               return JSON.stringify(res.data);
             } else {
@@ -715,10 +715,10 @@ const resolvers: Resolvers = {
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
               { timeout: 12000 }
             );
-            const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
-              timeout: 12000,
-            });
-            const res = await Promise.race([fetchFromPinata, fetchFromIpfs]);
+            // const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
+            //   timeout: 12000,
+            // });
+            const res = await Promise.race([fetchFromPinata]);
             if (res.status === 200) {
               return JSON.stringify(res.data);
             } else {
@@ -883,10 +883,10 @@ const resolvers: Resolvers = {
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
               { timeout: 12000 }
             );
-            const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
-              timeout: 12000,
-            });
-            const res = await Promise.race([fetchFromPinata, fetchFromIpfs]);
+            // const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
+            //   timeout: 12000,
+            // });
+            const res = await Promise.race([fetchFromPinata]);
             if (res.status === 200) {
               return JSON.stringify(res.data);
             } else {
@@ -1054,10 +1054,10 @@ const resolvers: Resolvers = {
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
               { timeout: 12000 }
             );
-            const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
-              timeout: 12000,
-            });
-            const res = await Promise.race([fetchFromPinata, fetchFromIpfs]);
+            // const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
+            //   timeout: 12000,
+            // });
+            const res = await Promise.race([fetchFromPinata]);
             if (res.status === 200) {
               return JSON.stringify(res.data);
             } else {
@@ -1228,10 +1228,10 @@ const resolvers: Resolvers = {
               `${process.env.PINATA_GATEWAY_URL}${cid}?pinataGatewayToken=${process.env.PINATA_GATEWAY_TOKEN}`,
               { timeout: 12000 }
             );
-            const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
-              timeout: 12000,
-            });
-            const res = await Promise.race([fetchFromPinata, fetchFromIpfs]);
+            // const fetchFromIpfs = axios.get(`https://ipfs.io/ipfs/${cid}`, {
+            //   timeout: 12000,
+            // });
+            const res = await Promise.race([fetchFromPinata]);
             if (res.status === 200) {
               return JSON.stringify(res.data);
             } else {
