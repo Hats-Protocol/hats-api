@@ -137,7 +137,7 @@ sources:
   - name: Sepolia_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-sepolia-ancillary/v0.0.21
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-sepolia-ancillary/v0.0.22
     transforms:
       - prefix:
           mode: wrap

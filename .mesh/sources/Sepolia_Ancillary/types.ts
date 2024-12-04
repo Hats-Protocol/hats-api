@@ -3783,6 +3783,8 @@ export type Sep_HatAuthority = {
   hatsAccount1ofN: Array<Sep_HatsAccount1ofN>;
   hsgOwner: Array<Sep_HatsSignerGate>;
   hsgSigner: Array<Sep_HatsSignerGate>;
+  hsgV2Owner: Array<Sep_HatsSignerGateV2>;
+  hsgV2Signer: Array<Sep_HatsSignerGateV2>;
   jokeraceAdmin: Array<Sep_JokeRaceEligibility>;
   allowListOwner: Array<Sep_AllowListEligibility>;
   allowListArbitrator: Array<Sep_AllowListEligibility>;
@@ -3826,6 +3828,24 @@ export type Sep_HatAuthorityhsgSignerArgs = {
   orderBy?: InputMaybe<Sep_HatsSignerGate_orderBy>;
   orderDirection?: InputMaybe<Sep_OrderDirection>;
   where?: InputMaybe<Sep_HatsSignerGate_filter>;
+};
+
+
+export type Sep_HatAuthorityhsgV2OwnerArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+};
+
+
+export type Sep_HatAuthorityhsgV2SignerArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_filter>;
 };
 
 
@@ -4004,6 +4024,8 @@ export type Sep_HatAuthority_filter = {
   hatsAccount1ofN_?: InputMaybe<Sep_HatsAccount1ofN_filter>;
   hsgOwner_?: InputMaybe<Sep_HatsSignerGate_filter>;
   hsgSigner_?: InputMaybe<Sep_HatsSignerGate_filter>;
+  hsgV2Owner_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  hsgV2Signer_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
   jokeraceAdmin_?: InputMaybe<Sep_JokeRaceEligibility_filter>;
   allowListOwner_?: InputMaybe<Sep_AllowListEligibility_filter>;
   allowListArbitrator_?: InputMaybe<Sep_AllowListEligibility_filter>;
@@ -4032,6 +4054,8 @@ export type Sep_HatAuthority_orderBy =
   | 'hatsAccount1ofN'
   | 'hsgOwner'
   | 'hsgSigner'
+  | 'hsgV2Owner'
+  | 'hsgV2Signer'
   | 'jokeraceAdmin'
   | 'allowListOwner'
   | 'allowListArbitrator'
@@ -4853,6 +4877,7 @@ export type Sep_HatWearingEligibility_orderBy =
   | 'hatId'
   | 'criterionHat';
 
+/** Hats Account 1ofN */
 export type Sep_HatsAccount1ofN = {
   id: Scalars['ID']['output'];
   accountOfHat: Sep_HatAuthority;
@@ -4860,6 +4885,7 @@ export type Sep_HatsAccount1ofN = {
 };
 
 
+/** Hats Account 1ofN */
 export type Sep_HatsAccount1ofNoperationsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -5296,6 +5322,7 @@ export type Sep_HatsEligibilitiesChain_orderBy =
   | 'moduleAddresses'
   | 'numRulesets';
 
+/** Farcaster Delegator */
 export type Sep_HatsFarcasterDelegator = {
   id: Scalars['ID']['output'];
   caster: Sep_HatAuthority;
@@ -5515,7 +5542,7 @@ export type Sep_HatsModule_orderBy =
   | 'version'
   | 'hatId';
 
-/**  *** Gates ***  */
+/** Hats Signer Gate */
 export type Sep_HatsSignerGate = {
   id: Scalars['ID']['output'];
   type: Sep_HatsSignerGateType;
@@ -5528,7 +5555,7 @@ export type Sep_HatsSignerGate = {
 };
 
 
-/**  *** Gates ***  */
+/** Hats Signer Gate */
 export type Sep_HatsSignerGatesignerHatsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -5540,6 +5567,1550 @@ export type Sep_HatsSignerGatesignerHatsArgs = {
 export type Sep_HatsSignerGateType =
   | 'Single'
   | 'Multi';
+
+/** HSG v2 */
+export type Sep_HatsSignerGateV2 = {
+  id: Scalars['ID']['output'];
+  ownerHat: Sep_HatAuthority;
+  signerHats: Array<Sep_HatAuthority>;
+  safe: Scalars['String']['output'];
+  locked: Scalars['Boolean']['output'];
+  claimableFor: Scalars['Boolean']['output'];
+  implementation: Scalars['String']['output'];
+  enabledDelegatecallTargets: Array<Scalars['String']['output']>;
+  thresholdType: Sep_HatsSignerGateV2ThresholdType;
+  minThreshold: Scalars['BigInt']['output'];
+  targetThreshold: Scalars['BigInt']['output'];
+  guard: Scalars['String']['output'];
+  modules: Array<Scalars['String']['output']>;
+  events: Array<Sep_HatsSignerGateV2Event>;
+};
+
+
+/** HSG v2 */
+export type Sep_HatsSignerGateV2signerHatsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatAuthority_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatAuthority_filter>;
+};
+
+
+/** HSG v2 */
+export type Sep_HatsSignerGateV2eventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2Event_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2Event_filter>;
+};
+
+export type Sep_HatsSignerGateV2Event = {
+  id: Scalars['ID']['output'];
+  hsg: Sep_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
+};
+
+export type Sep_HatsSignerGateV2Event_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2Event_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2Event_filter>>>;
+};
+
+export type Sep_HatsSignerGateV2Event_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID';
+
+export type Sep_HatsSignerGateV2ThresholdType =
+  | 'ABSOLUTE'
+  | 'PROPORTIONAL';
+
+export type Sep_HatsSignerGateV2_ChangedGuardEvent = Sep_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Sep_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
+  guard: Scalars['String']['output'];
+};
+
+export type Sep_HatsSignerGateV2_ChangedGuardEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  guard?: InputMaybe<Scalars['String']['input']>;
+  guard_not?: InputMaybe<Scalars['String']['input']>;
+  guard_gt?: InputMaybe<Scalars['String']['input']>;
+  guard_lt?: InputMaybe<Scalars['String']['input']>;
+  guard_gte?: InputMaybe<Scalars['String']['input']>;
+  guard_lte?: InputMaybe<Scalars['String']['input']>;
+  guard_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  guard_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  guard_contains?: InputMaybe<Scalars['String']['input']>;
+  guard_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_not_contains?: InputMaybe<Scalars['String']['input']>;
+  guard_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_starts_with?: InputMaybe<Scalars['String']['input']>;
+  guard_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  guard_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_ends_with?: InputMaybe<Scalars['String']['input']>;
+  guard_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  guard_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_ChangedGuardEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_ChangedGuardEvent_filter>>>;
+};
+
+export type Sep_HatsSignerGateV2_ChangedGuardEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'guard';
+
+export type Sep_HatsSignerGateV2_ClaimableForSetEvent = Sep_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Sep_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
+  claimableFor: Scalars['Boolean']['output'];
+};
+
+export type Sep_HatsSignerGateV2_ClaimableForSetEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  claimableFor?: InputMaybe<Scalars['Boolean']['input']>;
+  claimableFor_not?: InputMaybe<Scalars['Boolean']['input']>;
+  claimableFor_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  claimableFor_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_ClaimableForSetEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_ClaimableForSetEvent_filter>>>;
+};
+
+export type Sep_HatsSignerGateV2_ClaimableForSetEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'claimableFor';
+
+export type Sep_HatsSignerGateV2_DelegatecallTargetEnabledEvent = Sep_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Sep_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
+  target: Scalars['String']['output'];
+  enabled: Scalars['Boolean']['output'];
+};
+
+export type Sep_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  target?: InputMaybe<Scalars['String']['input']>;
+  target_not?: InputMaybe<Scalars['String']['input']>;
+  target_gt?: InputMaybe<Scalars['String']['input']>;
+  target_lt?: InputMaybe<Scalars['String']['input']>;
+  target_gte?: InputMaybe<Scalars['String']['input']>;
+  target_lte?: InputMaybe<Scalars['String']['input']>;
+  target_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  target_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  target_contains?: InputMaybe<Scalars['String']['input']>;
+  target_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  target_not_contains?: InputMaybe<Scalars['String']['input']>;
+  target_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  target_starts_with?: InputMaybe<Scalars['String']['input']>;
+  target_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  target_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  target_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  target_ends_with?: InputMaybe<Scalars['String']['input']>;
+  target_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  target_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  target_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  enabled_not?: InputMaybe<Scalars['Boolean']['input']>;
+  enabled_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  enabled_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter>>>;
+};
+
+export type Sep_HatsSignerGateV2_DelegatecallTargetEnabledEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'target'
+  | 'enabled';
+
+export type Sep_HatsSignerGateV2_DetachedEvent = Sep_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Sep_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
+};
+
+export type Sep_HatsSignerGateV2_DetachedEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_DetachedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_DetachedEvent_filter>>>;
+};
+
+export type Sep_HatsSignerGateV2_DetachedEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID';
+
+export type Sep_HatsSignerGateV2_DisabledModuleEvent = Sep_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Sep_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
+  module: Scalars['String']['output'];
+};
+
+export type Sep_HatsSignerGateV2_DisabledModuleEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_DisabledModuleEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_DisabledModuleEvent_filter>>>;
+};
+
+export type Sep_HatsSignerGateV2_DisabledModuleEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'module';
+
+export type Sep_HatsSignerGateV2_EnabledModuleEvent = Sep_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Sep_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
+  module: Scalars['String']['output'];
+};
+
+export type Sep_HatsSignerGateV2_EnabledModuleEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_EnabledModuleEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_EnabledModuleEvent_filter>>>;
+};
+
+export type Sep_HatsSignerGateV2_EnabledModuleEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'module';
+
+export type Sep_HatsSignerGateV2_HSGLockedEvent = Sep_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Sep_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
+};
+
+export type Sep_HatsSignerGateV2_HSGLockedEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_HSGLockedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_HSGLockedEvent_filter>>>;
+};
+
+export type Sep_HatsSignerGateV2_HSGLockedEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID';
+
+export type Sep_HatsSignerGateV2_MigratedEvent = Sep_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Sep_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
+  newHsg: Scalars['String']['output'];
+};
+
+export type Sep_HatsSignerGateV2_MigratedEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  newHsg?: InputMaybe<Scalars['String']['input']>;
+  newHsg_not?: InputMaybe<Scalars['String']['input']>;
+  newHsg_gt?: InputMaybe<Scalars['String']['input']>;
+  newHsg_lt?: InputMaybe<Scalars['String']['input']>;
+  newHsg_gte?: InputMaybe<Scalars['String']['input']>;
+  newHsg_lte?: InputMaybe<Scalars['String']['input']>;
+  newHsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  newHsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  newHsg_contains?: InputMaybe<Scalars['String']['input']>;
+  newHsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  newHsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  newHsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  newHsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  newHsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  newHsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  newHsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  newHsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  newHsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  newHsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  newHsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_MigratedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_MigratedEvent_filter>>>;
+};
+
+export type Sep_HatsSignerGateV2_MigratedEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'newHsg';
+
+export type Sep_HatsSignerGateV2_OwnerHatSetEvent = Sep_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Sep_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
+  ownerHat: Scalars['String']['output'];
+};
+
+export type Sep_HatsSignerGateV2_OwnerHatSetEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  ownerHat?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_gt?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_lt?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_gte?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_lte?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ownerHat_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ownerHat_contains?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_contains?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_OwnerHatSetEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_OwnerHatSetEvent_filter>>>;
+};
+
+export type Sep_HatsSignerGateV2_OwnerHatSetEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'ownerHat';
+
+export type Sep_HatsSignerGateV2_RegisteredEvent = Sep_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Sep_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
+  hatId: Scalars['String']['output'];
+  signer: Scalars['String']['output'];
+};
+
+export type Sep_HatsSignerGateV2_RegisteredEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  signer?: InputMaybe<Scalars['String']['input']>;
+  signer_not?: InputMaybe<Scalars['String']['input']>;
+  signer_gt?: InputMaybe<Scalars['String']['input']>;
+  signer_lt?: InputMaybe<Scalars['String']['input']>;
+  signer_gte?: InputMaybe<Scalars['String']['input']>;
+  signer_lte?: InputMaybe<Scalars['String']['input']>;
+  signer_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  signer_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  signer_contains?: InputMaybe<Scalars['String']['input']>;
+  signer_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  signer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  signer_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  signer_starts_with?: InputMaybe<Scalars['String']['input']>;
+  signer_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  signer_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  signer_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  signer_ends_with?: InputMaybe<Scalars['String']['input']>;
+  signer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  signer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  signer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_RegisteredEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_RegisteredEvent_filter>>>;
+};
+
+export type Sep_HatsSignerGateV2_RegisteredEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'hatId'
+  | 'signer';
+
+export type Sep_HatsSignerGateV2_SignerHatsAddedEvent = Sep_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Sep_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
+  newSignerHats: Array<Scalars['String']['output']>;
+};
+
+export type Sep_HatsSignerGateV2_SignerHatsAddedEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  newSignerHats?: InputMaybe<Array<Scalars['String']['input']>>;
+  newSignerHats_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  newSignerHats_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  newSignerHats_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  newSignerHats_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  newSignerHats_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_SignerHatsAddedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_SignerHatsAddedEvent_filter>>>;
+};
+
+export type Sep_HatsSignerGateV2_SignerHatsAddedEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'newSignerHats';
+
+export type Sep_HatsSignerGateV2_ThresholdConfigSetEvent = Sep_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Sep_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Sep_Bytes']['output'];
+  thresholdType: Sep_HatsSignerGateV2ThresholdType;
+  minThreshold: Scalars['BigInt']['output'];
+  targetThreshold: Scalars['BigInt']['output'];
+};
+
+export type Sep_HatsSignerGateV2_ThresholdConfigSetEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Sep_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Sep_Bytes']['input']>;
+  thresholdType?: InputMaybe<Sep_HatsSignerGateV2ThresholdType>;
+  thresholdType_not?: InputMaybe<Sep_HatsSignerGateV2ThresholdType>;
+  thresholdType_in?: InputMaybe<Array<Sep_HatsSignerGateV2ThresholdType>>;
+  thresholdType_not_in?: InputMaybe<Array<Sep_HatsSignerGateV2ThresholdType>>;
+  minThreshold?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_not?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  minThreshold_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  targetThreshold?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_not?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  targetThreshold_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_ThresholdConfigSetEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_ThresholdConfigSetEvent_filter>>>;
+};
+
+export type Sep_HatsSignerGateV2_ThresholdConfigSetEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'thresholdType'
+  | 'minThreshold'
+  | 'targetThreshold';
+
+export type Sep_HatsSignerGateV2_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  ownerHat?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_gt?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_lt?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_gte?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_lte?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ownerHat_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ownerHat_contains?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_contains?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_?: InputMaybe<Sep_HatAuthority_filter>;
+  signerHats?: InputMaybe<Array<Scalars['String']['input']>>;
+  signerHats_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  signerHats_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  signerHats_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  signerHats_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  signerHats_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  signerHats_?: InputMaybe<Sep_HatAuthority_filter>;
+  safe?: InputMaybe<Scalars['String']['input']>;
+  safe_not?: InputMaybe<Scalars['String']['input']>;
+  safe_gt?: InputMaybe<Scalars['String']['input']>;
+  safe_lt?: InputMaybe<Scalars['String']['input']>;
+  safe_gte?: InputMaybe<Scalars['String']['input']>;
+  safe_lte?: InputMaybe<Scalars['String']['input']>;
+  safe_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  safe_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  safe_contains?: InputMaybe<Scalars['String']['input']>;
+  safe_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  safe_not_contains?: InputMaybe<Scalars['String']['input']>;
+  safe_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  safe_starts_with?: InputMaybe<Scalars['String']['input']>;
+  safe_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  safe_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  safe_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  safe_ends_with?: InputMaybe<Scalars['String']['input']>;
+  safe_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  safe_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  safe_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  locked?: InputMaybe<Scalars['Boolean']['input']>;
+  locked_not?: InputMaybe<Scalars['Boolean']['input']>;
+  locked_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  locked_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  claimableFor?: InputMaybe<Scalars['Boolean']['input']>;
+  claimableFor_not?: InputMaybe<Scalars['Boolean']['input']>;
+  claimableFor_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  claimableFor_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  implementation?: InputMaybe<Scalars['String']['input']>;
+  implementation_not?: InputMaybe<Scalars['String']['input']>;
+  implementation_gt?: InputMaybe<Scalars['String']['input']>;
+  implementation_lt?: InputMaybe<Scalars['String']['input']>;
+  implementation_gte?: InputMaybe<Scalars['String']['input']>;
+  implementation_lte?: InputMaybe<Scalars['String']['input']>;
+  implementation_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  implementation_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  implementation_contains?: InputMaybe<Scalars['String']['input']>;
+  implementation_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  implementation_not_contains?: InputMaybe<Scalars['String']['input']>;
+  implementation_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  implementation_starts_with?: InputMaybe<Scalars['String']['input']>;
+  implementation_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  implementation_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  implementation_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  implementation_ends_with?: InputMaybe<Scalars['String']['input']>;
+  implementation_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  implementation_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  implementation_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  enabledDelegatecallTargets?: InputMaybe<Array<Scalars['String']['input']>>;
+  enabledDelegatecallTargets_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  enabledDelegatecallTargets_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  enabledDelegatecallTargets_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  enabledDelegatecallTargets_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  enabledDelegatecallTargets_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  thresholdType?: InputMaybe<Sep_HatsSignerGateV2ThresholdType>;
+  thresholdType_not?: InputMaybe<Sep_HatsSignerGateV2ThresholdType>;
+  thresholdType_in?: InputMaybe<Array<Sep_HatsSignerGateV2ThresholdType>>;
+  thresholdType_not_in?: InputMaybe<Array<Sep_HatsSignerGateV2ThresholdType>>;
+  minThreshold?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_not?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  minThreshold_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  targetThreshold?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_not?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  targetThreshold_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  guard?: InputMaybe<Scalars['String']['input']>;
+  guard_not?: InputMaybe<Scalars['String']['input']>;
+  guard_gt?: InputMaybe<Scalars['String']['input']>;
+  guard_lt?: InputMaybe<Scalars['String']['input']>;
+  guard_gte?: InputMaybe<Scalars['String']['input']>;
+  guard_lte?: InputMaybe<Scalars['String']['input']>;
+  guard_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  guard_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  guard_contains?: InputMaybe<Scalars['String']['input']>;
+  guard_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_not_contains?: InputMaybe<Scalars['String']['input']>;
+  guard_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_starts_with?: InputMaybe<Scalars['String']['input']>;
+  guard_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  guard_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_ends_with?: InputMaybe<Scalars['String']['input']>;
+  guard_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  guard_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  modules?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  events_?: InputMaybe<Sep_HatsSignerGateV2Event_filter>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Sep_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Sep_HatsSignerGateV2_filter>>>;
+};
+
+export type Sep_HatsSignerGateV2_orderBy =
+  | 'id'
+  | 'ownerHat'
+  | 'ownerHat__id'
+  | 'ownerHat__primaryHatsAccount1ofNAddress'
+  | 'signerHats'
+  | 'safe'
+  | 'locked'
+  | 'claimableFor'
+  | 'implementation'
+  | 'enabledDelegatecallTargets'
+  | 'thresholdType'
+  | 'minThreshold'
+  | 'targetThreshold'
+  | 'guard'
+  | 'modules'
+  | 'events';
 
 export type Sep_HatsSignerGate_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
@@ -6744,6 +8315,32 @@ export type Query = {
   Sep_hatAuthorities: Array<Sep_HatAuthority>;
   Sep_hatsSignerGate?: Maybe<Sep_HatsSignerGate>;
   Sep_hatsSignerGates: Array<Sep_HatsSignerGate>;
+  Sep_hatsSignerGateV2?: Maybe<Sep_HatsSignerGateV2>;
+  Sep_hatsSignerGateV2S: Array<Sep_HatsSignerGateV2>;
+  Sep_hatsSignerGateV2OwnerHatSetEvent?: Maybe<Sep_HatsSignerGateV2_OwnerHatSetEvent>;
+  Sep_hatsSignerGateV2OwnerHatSetEvents: Array<Sep_HatsSignerGateV2_OwnerHatSetEvent>;
+  Sep_hatsSignerGateV2SignerHatsAddedEvent?: Maybe<Sep_HatsSignerGateV2_SignerHatsAddedEvent>;
+  Sep_hatsSignerGateV2SignerHatsAddedEvents: Array<Sep_HatsSignerGateV2_SignerHatsAddedEvent>;
+  Sep_hatsSignerGateV2ThresholdConfigSetEvent?: Maybe<Sep_HatsSignerGateV2_ThresholdConfigSetEvent>;
+  Sep_hatsSignerGateV2ThresholdConfigSetEvents: Array<Sep_HatsSignerGateV2_ThresholdConfigSetEvent>;
+  Sep_hatsSignerGateV2HSGLockedEvent?: Maybe<Sep_HatsSignerGateV2_HSGLockedEvent>;
+  Sep_hatsSignerGateV2HSGLockedEvents: Array<Sep_HatsSignerGateV2_HSGLockedEvent>;
+  Sep_hatsSignerGateV2ClaimableForSetEvent?: Maybe<Sep_HatsSignerGateV2_ClaimableForSetEvent>;
+  Sep_hatsSignerGateV2ClaimableForSetEvents: Array<Sep_HatsSignerGateV2_ClaimableForSetEvent>;
+  Sep_hatsSignerGateV2DetachedEvent?: Maybe<Sep_HatsSignerGateV2_DetachedEvent>;
+  Sep_hatsSignerGateV2DetachedEvents: Array<Sep_HatsSignerGateV2_DetachedEvent>;
+  Sep_hatsSignerGateV2MigratedEvent?: Maybe<Sep_HatsSignerGateV2_MigratedEvent>;
+  Sep_hatsSignerGateV2MigratedEvents: Array<Sep_HatsSignerGateV2_MigratedEvent>;
+  Sep_hatsSignerGateV2DelegatecallTargetEnabledEvent?: Maybe<Sep_HatsSignerGateV2_DelegatecallTargetEnabledEvent>;
+  Sep_hatsSignerGateV2DelegatecallTargetEnabledEvents: Array<Sep_HatsSignerGateV2_DelegatecallTargetEnabledEvent>;
+  Sep_hatsSignerGateV2RegisteredEvent?: Maybe<Sep_HatsSignerGateV2_RegisteredEvent>;
+  Sep_hatsSignerGateV2RegisteredEvents: Array<Sep_HatsSignerGateV2_RegisteredEvent>;
+  Sep_hatsSignerGateV2ChangedGuardEvent?: Maybe<Sep_HatsSignerGateV2_ChangedGuardEvent>;
+  Sep_hatsSignerGateV2ChangedGuardEvents: Array<Sep_HatsSignerGateV2_ChangedGuardEvent>;
+  Sep_hatsSignerGateV2EnabledModuleEvent?: Maybe<Sep_HatsSignerGateV2_EnabledModuleEvent>;
+  Sep_hatsSignerGateV2EnabledModuleEvents: Array<Sep_HatsSignerGateV2_EnabledModuleEvent>;
+  Sep_hatsSignerGateV2DisabledModuleEvent?: Maybe<Sep_HatsSignerGateV2_DisabledModuleEvent>;
+  Sep_hatsSignerGateV2DisabledModuleEvents: Array<Sep_HatsSignerGateV2_DisabledModuleEvent>;
   Sep_hatsAccount1OfN?: Maybe<Sep_HatsAccount1ofN>;
   Sep_hatsAccount1OfNs: Array<Sep_HatsAccount1ofN>;
   Sep_hatsAccount1OfNOperation?: Maybe<Sep_HatsAccount1ofNOperation>;
@@ -6862,6 +8459,8 @@ export type Query = {
   Sep_hatsEligibilitiesChains: Array<Sep_HatsEligibilitiesChain>;
   Sep_eligibilitiesRuleset?: Maybe<Sep_EligibilitiesRuleset>;
   Sep_eligibilitiesRulesets: Array<Sep_EligibilitiesRuleset>;
+  Sep_hatsSignerGateV2Event?: Maybe<Sep_HatsSignerGateV2Event>;
+  Sep_hatsSignerGateV2Events: Array<Sep_HatsSignerGateV2Event>;
   Sep_hatsModule?: Maybe<Sep_HatsModule>;
   Sep_hatsModules: Array<Sep_HatsModule>;
   Sep_hatsModuleEvent?: Maybe<Sep_HatsModuleEvent>;
@@ -6914,6 +8513,240 @@ export type QuerySep_hatsSignerGatesArgs = {
   orderBy?: InputMaybe<Sep_HatsSignerGate_orderBy>;
   orderDirection?: InputMaybe<Sep_OrderDirection>;
   where?: InputMaybe<Sep_HatsSignerGate_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2Args = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2SArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2OwnerHatSetEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2OwnerHatSetEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_OwnerHatSetEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_OwnerHatSetEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2SignerHatsAddedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2SignerHatsAddedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_SignerHatsAddedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_SignerHatsAddedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2ThresholdConfigSetEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2ThresholdConfigSetEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_ThresholdConfigSetEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_ThresholdConfigSetEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2HSGLockedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2HSGLockedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_HSGLockedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_HSGLockedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2ClaimableForSetEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2ClaimableForSetEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_ClaimableForSetEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_ClaimableForSetEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2DetachedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2DetachedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_DetachedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_DetachedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2MigratedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2MigratedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_MigratedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_MigratedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2DelegatecallTargetEnabledEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2DelegatecallTargetEnabledEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_DelegatecallTargetEnabledEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2RegisteredEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2RegisteredEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_RegisteredEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_RegisteredEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2ChangedGuardEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2ChangedGuardEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_ChangedGuardEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_ChangedGuardEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2EnabledModuleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2EnabledModuleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_EnabledModuleEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_EnabledModuleEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2DisabledModuleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2DisabledModuleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_DisabledModuleEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_DisabledModuleEvent_filter>;
   block?: InputMaybe<Sep_Block_height>;
   subgraphError?: Sep__SubgraphErrorPolicy_;
 };
@@ -7981,6 +9814,24 @@ export type QuerySep_eligibilitiesRulesetsArgs = {
 };
 
 
+export type QuerySep_hatsSignerGateV2EventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type QuerySep_hatsSignerGateV2EventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2Event_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2Event_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
 export type QuerySep_hatsModuleArgs = {
   id: Scalars['ID']['input'];
   block?: InputMaybe<Sep_Block_height>;
@@ -8215,6 +10066,7 @@ export type Sep_SeasonToggle_orderBy =
   | 'hatId'
   | 'hatAdmins';
 
+/** Shaman Stake */
 export type Sep_ShamanStake = {
   id: Scalars['ID']['output'];
   stakingShaman: Sep_HatsStakingShaman;
@@ -9830,6 +11682,32 @@ export type Subscription = {
   Sep_hatAuthorities: Array<Sep_HatAuthority>;
   Sep_hatsSignerGate?: Maybe<Sep_HatsSignerGate>;
   Sep_hatsSignerGates: Array<Sep_HatsSignerGate>;
+  Sep_hatsSignerGateV2?: Maybe<Sep_HatsSignerGateV2>;
+  Sep_hatsSignerGateV2S: Array<Sep_HatsSignerGateV2>;
+  Sep_hatsSignerGateV2OwnerHatSetEvent?: Maybe<Sep_HatsSignerGateV2_OwnerHatSetEvent>;
+  Sep_hatsSignerGateV2OwnerHatSetEvents: Array<Sep_HatsSignerGateV2_OwnerHatSetEvent>;
+  Sep_hatsSignerGateV2SignerHatsAddedEvent?: Maybe<Sep_HatsSignerGateV2_SignerHatsAddedEvent>;
+  Sep_hatsSignerGateV2SignerHatsAddedEvents: Array<Sep_HatsSignerGateV2_SignerHatsAddedEvent>;
+  Sep_hatsSignerGateV2ThresholdConfigSetEvent?: Maybe<Sep_HatsSignerGateV2_ThresholdConfigSetEvent>;
+  Sep_hatsSignerGateV2ThresholdConfigSetEvents: Array<Sep_HatsSignerGateV2_ThresholdConfigSetEvent>;
+  Sep_hatsSignerGateV2HSGLockedEvent?: Maybe<Sep_HatsSignerGateV2_HSGLockedEvent>;
+  Sep_hatsSignerGateV2HSGLockedEvents: Array<Sep_HatsSignerGateV2_HSGLockedEvent>;
+  Sep_hatsSignerGateV2ClaimableForSetEvent?: Maybe<Sep_HatsSignerGateV2_ClaimableForSetEvent>;
+  Sep_hatsSignerGateV2ClaimableForSetEvents: Array<Sep_HatsSignerGateV2_ClaimableForSetEvent>;
+  Sep_hatsSignerGateV2DetachedEvent?: Maybe<Sep_HatsSignerGateV2_DetachedEvent>;
+  Sep_hatsSignerGateV2DetachedEvents: Array<Sep_HatsSignerGateV2_DetachedEvent>;
+  Sep_hatsSignerGateV2MigratedEvent?: Maybe<Sep_HatsSignerGateV2_MigratedEvent>;
+  Sep_hatsSignerGateV2MigratedEvents: Array<Sep_HatsSignerGateV2_MigratedEvent>;
+  Sep_hatsSignerGateV2DelegatecallTargetEnabledEvent?: Maybe<Sep_HatsSignerGateV2_DelegatecallTargetEnabledEvent>;
+  Sep_hatsSignerGateV2DelegatecallTargetEnabledEvents: Array<Sep_HatsSignerGateV2_DelegatecallTargetEnabledEvent>;
+  Sep_hatsSignerGateV2RegisteredEvent?: Maybe<Sep_HatsSignerGateV2_RegisteredEvent>;
+  Sep_hatsSignerGateV2RegisteredEvents: Array<Sep_HatsSignerGateV2_RegisteredEvent>;
+  Sep_hatsSignerGateV2ChangedGuardEvent?: Maybe<Sep_HatsSignerGateV2_ChangedGuardEvent>;
+  Sep_hatsSignerGateV2ChangedGuardEvents: Array<Sep_HatsSignerGateV2_ChangedGuardEvent>;
+  Sep_hatsSignerGateV2EnabledModuleEvent?: Maybe<Sep_HatsSignerGateV2_EnabledModuleEvent>;
+  Sep_hatsSignerGateV2EnabledModuleEvents: Array<Sep_HatsSignerGateV2_EnabledModuleEvent>;
+  Sep_hatsSignerGateV2DisabledModuleEvent?: Maybe<Sep_HatsSignerGateV2_DisabledModuleEvent>;
+  Sep_hatsSignerGateV2DisabledModuleEvents: Array<Sep_HatsSignerGateV2_DisabledModuleEvent>;
   Sep_hatsAccount1OfN?: Maybe<Sep_HatsAccount1ofN>;
   Sep_hatsAccount1OfNs: Array<Sep_HatsAccount1ofN>;
   Sep_hatsAccount1OfNOperation?: Maybe<Sep_HatsAccount1ofNOperation>;
@@ -9948,6 +11826,8 @@ export type Subscription = {
   Sep_hatsEligibilitiesChains: Array<Sep_HatsEligibilitiesChain>;
   Sep_eligibilitiesRuleset?: Maybe<Sep_EligibilitiesRuleset>;
   Sep_eligibilitiesRulesets: Array<Sep_EligibilitiesRuleset>;
+  Sep_hatsSignerGateV2Event?: Maybe<Sep_HatsSignerGateV2Event>;
+  Sep_hatsSignerGateV2Events: Array<Sep_HatsSignerGateV2Event>;
   Sep_hatsModule?: Maybe<Sep_HatsModule>;
   Sep_hatsModules: Array<Sep_HatsModule>;
   Sep_hatsModuleEvent?: Maybe<Sep_HatsModuleEvent>;
@@ -10000,6 +11880,240 @@ export type SubscriptionSep_hatsSignerGatesArgs = {
   orderBy?: InputMaybe<Sep_HatsSignerGate_orderBy>;
   orderDirection?: InputMaybe<Sep_OrderDirection>;
   where?: InputMaybe<Sep_HatsSignerGate_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2Args = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2SArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2OwnerHatSetEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2OwnerHatSetEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_OwnerHatSetEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_OwnerHatSetEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2SignerHatsAddedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2SignerHatsAddedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_SignerHatsAddedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_SignerHatsAddedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2ThresholdConfigSetEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2ThresholdConfigSetEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_ThresholdConfigSetEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_ThresholdConfigSetEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2HSGLockedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2HSGLockedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_HSGLockedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_HSGLockedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2ClaimableForSetEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2ClaimableForSetEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_ClaimableForSetEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_ClaimableForSetEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2DetachedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2DetachedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_DetachedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_DetachedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2MigratedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2MigratedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_MigratedEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_MigratedEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2DelegatecallTargetEnabledEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2DelegatecallTargetEnabledEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_DelegatecallTargetEnabledEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2RegisteredEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2RegisteredEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_RegisteredEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_RegisteredEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2ChangedGuardEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2ChangedGuardEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_ChangedGuardEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_ChangedGuardEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2EnabledModuleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2EnabledModuleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_EnabledModuleEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_EnabledModuleEvent_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2DisabledModuleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2DisabledModuleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2_DisabledModuleEvent_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2_DisabledModuleEvent_filter>;
   block?: InputMaybe<Sep_Block_height>;
   subgraphError?: Sep__SubgraphErrorPolicy_;
 };
@@ -11067,6 +13181,24 @@ export type SubscriptionSep_eligibilitiesRulesetsArgs = {
 };
 
 
+export type SubscriptionSep_hatsSignerGateV2EventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionSep_hatsSignerGateV2EventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Sep_HatsSignerGateV2Event_orderBy>;
+  orderDirection?: InputMaybe<Sep_OrderDirection>;
+  where?: InputMaybe<Sep_HatsSignerGateV2Event_filter>;
+  block?: InputMaybe<Sep_Block_height>;
+  subgraphError?: Sep__SubgraphErrorPolicy_;
+};
+
+
 export type SubscriptionSep_hatsModuleArgs = {
   id: Scalars['ID']['input'];
   block?: InputMaybe<Sep_Block_height>;
@@ -11257,6 +13389,58 @@ export type Sep__SubgraphErrorPolicy_ =
   Sep_hatsSignerGate: InContextSdkMethod<Query['Sep_hatsSignerGate'], QuerySep_hatsSignerGateArgs, MeshContext>,
   /** null **/
   Sep_hatsSignerGates: InContextSdkMethod<Query['Sep_hatsSignerGates'], QuerySep_hatsSignerGatesArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2: InContextSdkMethod<Query['Sep_hatsSignerGateV2'], QuerySep_hatsSignerGateV2Args, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2S: InContextSdkMethod<Query['Sep_hatsSignerGateV2S'], QuerySep_hatsSignerGateV2SArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2OwnerHatSetEvent: InContextSdkMethod<Query['Sep_hatsSignerGateV2OwnerHatSetEvent'], QuerySep_hatsSignerGateV2OwnerHatSetEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2OwnerHatSetEvents: InContextSdkMethod<Query['Sep_hatsSignerGateV2OwnerHatSetEvents'], QuerySep_hatsSignerGateV2OwnerHatSetEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2SignerHatsAddedEvent: InContextSdkMethod<Query['Sep_hatsSignerGateV2SignerHatsAddedEvent'], QuerySep_hatsSignerGateV2SignerHatsAddedEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2SignerHatsAddedEvents: InContextSdkMethod<Query['Sep_hatsSignerGateV2SignerHatsAddedEvents'], QuerySep_hatsSignerGateV2SignerHatsAddedEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2ThresholdConfigSetEvent: InContextSdkMethod<Query['Sep_hatsSignerGateV2ThresholdConfigSetEvent'], QuerySep_hatsSignerGateV2ThresholdConfigSetEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2ThresholdConfigSetEvents: InContextSdkMethod<Query['Sep_hatsSignerGateV2ThresholdConfigSetEvents'], QuerySep_hatsSignerGateV2ThresholdConfigSetEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2HSGLockedEvent: InContextSdkMethod<Query['Sep_hatsSignerGateV2HSGLockedEvent'], QuerySep_hatsSignerGateV2HSGLockedEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2HSGLockedEvents: InContextSdkMethod<Query['Sep_hatsSignerGateV2HSGLockedEvents'], QuerySep_hatsSignerGateV2HSGLockedEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2ClaimableForSetEvent: InContextSdkMethod<Query['Sep_hatsSignerGateV2ClaimableForSetEvent'], QuerySep_hatsSignerGateV2ClaimableForSetEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2ClaimableForSetEvents: InContextSdkMethod<Query['Sep_hatsSignerGateV2ClaimableForSetEvents'], QuerySep_hatsSignerGateV2ClaimableForSetEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2DetachedEvent: InContextSdkMethod<Query['Sep_hatsSignerGateV2DetachedEvent'], QuerySep_hatsSignerGateV2DetachedEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2DetachedEvents: InContextSdkMethod<Query['Sep_hatsSignerGateV2DetachedEvents'], QuerySep_hatsSignerGateV2DetachedEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2MigratedEvent: InContextSdkMethod<Query['Sep_hatsSignerGateV2MigratedEvent'], QuerySep_hatsSignerGateV2MigratedEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2MigratedEvents: InContextSdkMethod<Query['Sep_hatsSignerGateV2MigratedEvents'], QuerySep_hatsSignerGateV2MigratedEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2DelegatecallTargetEnabledEvent: InContextSdkMethod<Query['Sep_hatsSignerGateV2DelegatecallTargetEnabledEvent'], QuerySep_hatsSignerGateV2DelegatecallTargetEnabledEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2DelegatecallTargetEnabledEvents: InContextSdkMethod<Query['Sep_hatsSignerGateV2DelegatecallTargetEnabledEvents'], QuerySep_hatsSignerGateV2DelegatecallTargetEnabledEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2RegisteredEvent: InContextSdkMethod<Query['Sep_hatsSignerGateV2RegisteredEvent'], QuerySep_hatsSignerGateV2RegisteredEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2RegisteredEvents: InContextSdkMethod<Query['Sep_hatsSignerGateV2RegisteredEvents'], QuerySep_hatsSignerGateV2RegisteredEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2ChangedGuardEvent: InContextSdkMethod<Query['Sep_hatsSignerGateV2ChangedGuardEvent'], QuerySep_hatsSignerGateV2ChangedGuardEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2ChangedGuardEvents: InContextSdkMethod<Query['Sep_hatsSignerGateV2ChangedGuardEvents'], QuerySep_hatsSignerGateV2ChangedGuardEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2EnabledModuleEvent: InContextSdkMethod<Query['Sep_hatsSignerGateV2EnabledModuleEvent'], QuerySep_hatsSignerGateV2EnabledModuleEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2EnabledModuleEvents: InContextSdkMethod<Query['Sep_hatsSignerGateV2EnabledModuleEvents'], QuerySep_hatsSignerGateV2EnabledModuleEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2DisabledModuleEvent: InContextSdkMethod<Query['Sep_hatsSignerGateV2DisabledModuleEvent'], QuerySep_hatsSignerGateV2DisabledModuleEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2DisabledModuleEvents: InContextSdkMethod<Query['Sep_hatsSignerGateV2DisabledModuleEvents'], QuerySep_hatsSignerGateV2DisabledModuleEventsArgs, MeshContext>,
   /** null **/
   Sep_hatsAccount1OfN: InContextSdkMethod<Query['Sep_hatsAccount1OfN'], QuerySep_hatsAccount1OfNArgs, MeshContext>,
   /** null **/
@@ -11494,6 +13678,10 @@ export type Sep__SubgraphErrorPolicy_ =
   /** null **/
   Sep_eligibilitiesRulesets: InContextSdkMethod<Query['Sep_eligibilitiesRulesets'], QuerySep_eligibilitiesRulesetsArgs, MeshContext>,
   /** null **/
+  Sep_hatsSignerGateV2Event: InContextSdkMethod<Query['Sep_hatsSignerGateV2Event'], QuerySep_hatsSignerGateV2EventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2Events: InContextSdkMethod<Query['Sep_hatsSignerGateV2Events'], QuerySep_hatsSignerGateV2EventsArgs, MeshContext>,
+  /** null **/
   Sep_hatsModule: InContextSdkMethod<Query['Sep_hatsModule'], QuerySep_hatsModuleArgs, MeshContext>,
   /** null **/
   Sep_hatsModules: InContextSdkMethod<Query['Sep_hatsModules'], QuerySep_hatsModulesArgs, MeshContext>,
@@ -11542,6 +13730,58 @@ export type Sep__SubgraphErrorPolicy_ =
   Sep_hatsSignerGate: InContextSdkMethod<Subscription['Sep_hatsSignerGate'], SubscriptionSep_hatsSignerGateArgs, MeshContext>,
   /** null **/
   Sep_hatsSignerGates: InContextSdkMethod<Subscription['Sep_hatsSignerGates'], SubscriptionSep_hatsSignerGatesArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2'], SubscriptionSep_hatsSignerGateV2Args, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2S: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2S'], SubscriptionSep_hatsSignerGateV2SArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2OwnerHatSetEvent: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2OwnerHatSetEvent'], SubscriptionSep_hatsSignerGateV2OwnerHatSetEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2OwnerHatSetEvents: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2OwnerHatSetEvents'], SubscriptionSep_hatsSignerGateV2OwnerHatSetEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2SignerHatsAddedEvent: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2SignerHatsAddedEvent'], SubscriptionSep_hatsSignerGateV2SignerHatsAddedEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2SignerHatsAddedEvents: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2SignerHatsAddedEvents'], SubscriptionSep_hatsSignerGateV2SignerHatsAddedEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2ThresholdConfigSetEvent: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2ThresholdConfigSetEvent'], SubscriptionSep_hatsSignerGateV2ThresholdConfigSetEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2ThresholdConfigSetEvents: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2ThresholdConfigSetEvents'], SubscriptionSep_hatsSignerGateV2ThresholdConfigSetEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2HSGLockedEvent: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2HSGLockedEvent'], SubscriptionSep_hatsSignerGateV2HSGLockedEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2HSGLockedEvents: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2HSGLockedEvents'], SubscriptionSep_hatsSignerGateV2HSGLockedEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2ClaimableForSetEvent: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2ClaimableForSetEvent'], SubscriptionSep_hatsSignerGateV2ClaimableForSetEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2ClaimableForSetEvents: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2ClaimableForSetEvents'], SubscriptionSep_hatsSignerGateV2ClaimableForSetEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2DetachedEvent: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2DetachedEvent'], SubscriptionSep_hatsSignerGateV2DetachedEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2DetachedEvents: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2DetachedEvents'], SubscriptionSep_hatsSignerGateV2DetachedEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2MigratedEvent: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2MigratedEvent'], SubscriptionSep_hatsSignerGateV2MigratedEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2MigratedEvents: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2MigratedEvents'], SubscriptionSep_hatsSignerGateV2MigratedEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2DelegatecallTargetEnabledEvent: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2DelegatecallTargetEnabledEvent'], SubscriptionSep_hatsSignerGateV2DelegatecallTargetEnabledEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2DelegatecallTargetEnabledEvents: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2DelegatecallTargetEnabledEvents'], SubscriptionSep_hatsSignerGateV2DelegatecallTargetEnabledEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2RegisteredEvent: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2RegisteredEvent'], SubscriptionSep_hatsSignerGateV2RegisteredEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2RegisteredEvents: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2RegisteredEvents'], SubscriptionSep_hatsSignerGateV2RegisteredEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2ChangedGuardEvent: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2ChangedGuardEvent'], SubscriptionSep_hatsSignerGateV2ChangedGuardEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2ChangedGuardEvents: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2ChangedGuardEvents'], SubscriptionSep_hatsSignerGateV2ChangedGuardEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2EnabledModuleEvent: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2EnabledModuleEvent'], SubscriptionSep_hatsSignerGateV2EnabledModuleEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2EnabledModuleEvents: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2EnabledModuleEvents'], SubscriptionSep_hatsSignerGateV2EnabledModuleEventsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2DisabledModuleEvent: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2DisabledModuleEvent'], SubscriptionSep_hatsSignerGateV2DisabledModuleEventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2DisabledModuleEvents: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2DisabledModuleEvents'], SubscriptionSep_hatsSignerGateV2DisabledModuleEventsArgs, MeshContext>,
   /** null **/
   Sep_hatsAccount1OfN: InContextSdkMethod<Subscription['Sep_hatsAccount1OfN'], SubscriptionSep_hatsAccount1OfNArgs, MeshContext>,
   /** null **/
@@ -11778,6 +14018,10 @@ export type Sep__SubgraphErrorPolicy_ =
   Sep_eligibilitiesRuleset: InContextSdkMethod<Subscription['Sep_eligibilitiesRuleset'], SubscriptionSep_eligibilitiesRulesetArgs, MeshContext>,
   /** null **/
   Sep_eligibilitiesRulesets: InContextSdkMethod<Subscription['Sep_eligibilitiesRulesets'], SubscriptionSep_eligibilitiesRulesetsArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2Event: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2Event'], SubscriptionSep_hatsSignerGateV2EventArgs, MeshContext>,
+  /** null **/
+  Sep_hatsSignerGateV2Events: InContextSdkMethod<Subscription['Sep_hatsSignerGateV2Events'], SubscriptionSep_hatsSignerGateV2EventsArgs, MeshContext>,
   /** null **/
   Sep_hatsModule: InContextSdkMethod<Subscription['Sep_hatsModule'], SubscriptionSep_hatsModuleArgs, MeshContext>,
   /** null **/
