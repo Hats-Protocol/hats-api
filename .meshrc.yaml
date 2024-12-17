@@ -11,7 +11,7 @@ sources:
   - name: Ethereum_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-ethereum-ancillary/v0.0.21
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-ethereum-ancillary/v0.0.22
     transforms:
       - prefix:
           mode: wrap
@@ -47,7 +47,7 @@ sources:
   - name: Arbitrum_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-arbitrum-ancillary/v0.0.21
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-arbitrum-ancillary/v0.0.22
     transforms:
       - prefix:
           mode: wrap
@@ -65,7 +65,7 @@ sources:
   - name: Gnosis_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-gnosis-chain-ancillary/v0.0.21
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-gnosis-chain-ancillary/v0.0.22
     transforms:
       - prefix:
           mode: wrap
@@ -83,7 +83,7 @@ sources:
   - name: Celo_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-celo-ancillary/v0.0.22
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-celo-ancillary/v0.0.23
     transforms:
       - prefix:
           mode: wrap
@@ -101,7 +101,7 @@ sources:
   - name: Base_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-base-ancillary/v0.0.22
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-base-ancillary/v0.0.23
     transforms:
       - prefix:
           mode: wrap
@@ -119,7 +119,7 @@ sources:
   - name: Polygon_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-polygon-ancillary/v0.0.21
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-polygon-ancillary/v0.0.22
     transforms:
       - prefix:
           mode: wrap
@@ -137,7 +137,7 @@ sources:
   - name: Sepolia_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-sepolia-ancillary/v0.0.22
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-sepolia-ancillary/v0.0.23
     transforms:
       - prefix:
           mode: wrap
