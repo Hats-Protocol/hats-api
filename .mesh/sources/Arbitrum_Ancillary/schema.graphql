@@ -3758,6 +3758,8 @@ type Arb_HatAuthority {
   hatsAccount1ofN(skip: Int = 0, first: Int = 100, orderBy: Arb_HatsAccount1ofN_orderBy, orderDirection: Arb_OrderDirection, where: Arb_HatsAccount1ofN_filter): [Arb_HatsAccount1ofN!]!
   hsgOwner(skip: Int = 0, first: Int = 100, orderBy: Arb_HatsSignerGate_orderBy, orderDirection: Arb_OrderDirection, where: Arb_HatsSignerGate_filter): [Arb_HatsSignerGate!]!
   hsgSigner(skip: Int = 0, first: Int = 100, orderBy: Arb_HatsSignerGate_orderBy, orderDirection: Arb_OrderDirection, where: Arb_HatsSignerGate_filter): [Arb_HatsSignerGate!]!
+  hsgV2Owner(skip: Int = 0, first: Int = 100, orderBy: Arb_HatsSignerGateV2_orderBy, orderDirection: Arb_OrderDirection, where: Arb_HatsSignerGateV2_filter): [Arb_HatsSignerGateV2!]!
+  hsgV2Signer(skip: Int = 0, first: Int = 100, orderBy: Arb_HatsSignerGateV2_orderBy, orderDirection: Arb_OrderDirection, where: Arb_HatsSignerGateV2_filter): [Arb_HatsSignerGateV2!]!
   jokeraceAdmin(skip: Int = 0, first: Int = 100, orderBy: Arb_JokeRaceEligibility_orderBy, orderDirection: Arb_OrderDirection, where: Arb_JokeRaceEligibility_filter): [Arb_JokeRaceEligibility!]!
   allowListOwner(skip: Int = 0, first: Int = 100, orderBy: Arb_AllowListEligibility_orderBy, orderDirection: Arb_OrderDirection, where: Arb_AllowListEligibility_filter): [Arb_AllowListEligibility!]!
   allowListArbitrator(skip: Int = 0, first: Int = 100, orderBy: Arb_AllowListEligibility_orderBy, orderDirection: Arb_OrderDirection, where: Arb_AllowListEligibility_filter): [Arb_AllowListEligibility!]!
@@ -3808,6 +3810,8 @@ input Arb_HatAuthority_filter {
   hatsAccount1ofN_: Arb_HatsAccount1ofN_filter
   hsgOwner_: Arb_HatsSignerGate_filter
   hsgSigner_: Arb_HatsSignerGate_filter
+  hsgV2Owner_: Arb_HatsSignerGateV2_filter
+  hsgV2Signer_: Arb_HatsSignerGateV2_filter
   jokeraceAdmin_: Arb_JokeRaceEligibility_filter
   allowListOwner_: Arb_AllowListEligibility_filter
   allowListArbitrator_: Arb_AllowListEligibility_filter
@@ -3836,6 +3840,8 @@ enum Arb_HatAuthority_orderBy {
   hatsAccount1ofN
   hsgOwner
   hsgSigner
+  hsgV2Owner
+  hsgV2Signer
   jokeraceAdmin
   allowListOwner
   allowListArbitrator
@@ -4635,6 +4641,7 @@ enum Arb_HatWearingEligibility_orderBy {
   criterionHat
 }
 
+"""Hats Account 1ofN"""
 type Arb_HatsAccount1ofN {
   id: ID!
   accountOfHat: Arb_HatAuthority!
@@ -5034,6 +5041,7 @@ enum Arb_HatsEligibilitiesChain_orderBy {
   numRulesets
 }
 
+"""Farcaster Delegator"""
 type Arb_HatsFarcasterDelegator {
   id: ID!
   caster: Arb_HatAuthority!
@@ -5256,7 +5264,7 @@ enum Arb_HatsModule_orderBy {
   hatId
 }
 
-""" *** Gates *** """
+"""Hats Signer Gate"""
 type Arb_HatsSignerGate {
   id: ID!
   type: Arb_HatsSignerGateType!
@@ -5271,6 +5279,1545 @@ type Arb_HatsSignerGate {
 enum Arb_HatsSignerGateType {
   Single
   Multi
+}
+
+"""HSG v2"""
+type Arb_HatsSignerGateV2 {
+  id: ID!
+  ownerHat: Arb_HatAuthority!
+  signerHats(skip: Int = 0, first: Int = 100, orderBy: Arb_HatAuthority_orderBy, orderDirection: Arb_OrderDirection, where: Arb_HatAuthority_filter): [Arb_HatAuthority!]!
+  safe: String!
+  locked: Boolean!
+  claimableFor: Boolean!
+  implementation: String!
+  enabledDelegatecallTargets: [String!]!
+  thresholdType: Arb_HatsSignerGateV2ThresholdType!
+  minThreshold: BigInt!
+  targetThreshold: BigInt!
+  guard: String!
+  modules: [String!]!
+  events(skip: Int = 0, first: Int = 100, orderBy: Arb_HatsSignerGateV2Event_orderBy, orderDirection: Arb_OrderDirection, where: Arb_HatsSignerGateV2Event_filter): [Arb_HatsSignerGateV2Event!]!
+}
+
+interface Arb_HatsSignerGateV2Event {
+  id: ID!
+  hsg: Arb_HatsSignerGateV2!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Arb_Bytes!
+}
+
+input Arb_HatsSignerGateV2Event_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hsg: String
+  hsg_not: String
+  hsg_gt: String
+  hsg_lt: String
+  hsg_gte: String
+  hsg_lte: String
+  hsg_in: [String!]
+  hsg_not_in: [String!]
+  hsg_contains: String
+  hsg_contains_nocase: String
+  hsg_not_contains: String
+  hsg_not_contains_nocase: String
+  hsg_starts_with: String
+  hsg_starts_with_nocase: String
+  hsg_not_starts_with: String
+  hsg_not_starts_with_nocase: String
+  hsg_ends_with: String
+  hsg_ends_with_nocase: String
+  hsg_not_ends_with: String
+  hsg_not_ends_with_nocase: String
+  hsg_: Arb_HatsSignerGateV2_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Arb_Bytes
+  transactionID_not: Arb_Bytes
+  transactionID_gt: Arb_Bytes
+  transactionID_lt: Arb_Bytes
+  transactionID_gte: Arb_Bytes
+  transactionID_lte: Arb_Bytes
+  transactionID_in: [Arb_Bytes!]
+  transactionID_not_in: [Arb_Bytes!]
+  transactionID_contains: Arb_Bytes
+  transactionID_not_contains: Arb_Bytes
+  """Filter for the block changed event."""
+  _change_block: Arb_BlockChangedFilter
+  and: [Arb_HatsSignerGateV2Event_filter]
+  or: [Arb_HatsSignerGateV2Event_filter]
+}
+
+enum Arb_HatsSignerGateV2Event_orderBy {
+  id
+  hsg
+  hsg__id
+  hsg__safe
+  hsg__locked
+  hsg__claimableFor
+  hsg__implementation
+  hsg__thresholdType
+  hsg__minThreshold
+  hsg__targetThreshold
+  hsg__guard
+  blockNumber
+  timestamp
+  transactionID
+}
+
+enum Arb_HatsSignerGateV2ThresholdType {
+  ABSOLUTE
+  PROPORTIONAL
+}
+
+type Arb_HatsSignerGateV2_ChangedGuardEvent implements Arb_HatsSignerGateV2Event {
+  id: ID!
+  hsg: Arb_HatsSignerGateV2!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Arb_Bytes!
+  guard: String!
+}
+
+input Arb_HatsSignerGateV2_ChangedGuardEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hsg: String
+  hsg_not: String
+  hsg_gt: String
+  hsg_lt: String
+  hsg_gte: String
+  hsg_lte: String
+  hsg_in: [String!]
+  hsg_not_in: [String!]
+  hsg_contains: String
+  hsg_contains_nocase: String
+  hsg_not_contains: String
+  hsg_not_contains_nocase: String
+  hsg_starts_with: String
+  hsg_starts_with_nocase: String
+  hsg_not_starts_with: String
+  hsg_not_starts_with_nocase: String
+  hsg_ends_with: String
+  hsg_ends_with_nocase: String
+  hsg_not_ends_with: String
+  hsg_not_ends_with_nocase: String
+  hsg_: Arb_HatsSignerGateV2_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Arb_Bytes
+  transactionID_not: Arb_Bytes
+  transactionID_gt: Arb_Bytes
+  transactionID_lt: Arb_Bytes
+  transactionID_gte: Arb_Bytes
+  transactionID_lte: Arb_Bytes
+  transactionID_in: [Arb_Bytes!]
+  transactionID_not_in: [Arb_Bytes!]
+  transactionID_contains: Arb_Bytes
+  transactionID_not_contains: Arb_Bytes
+  guard: String
+  guard_not: String
+  guard_gt: String
+  guard_lt: String
+  guard_gte: String
+  guard_lte: String
+  guard_in: [String!]
+  guard_not_in: [String!]
+  guard_contains: String
+  guard_contains_nocase: String
+  guard_not_contains: String
+  guard_not_contains_nocase: String
+  guard_starts_with: String
+  guard_starts_with_nocase: String
+  guard_not_starts_with: String
+  guard_not_starts_with_nocase: String
+  guard_ends_with: String
+  guard_ends_with_nocase: String
+  guard_not_ends_with: String
+  guard_not_ends_with_nocase: String
+  """Filter for the block changed event."""
+  _change_block: Arb_BlockChangedFilter
+  and: [Arb_HatsSignerGateV2_ChangedGuardEvent_filter]
+  or: [Arb_HatsSignerGateV2_ChangedGuardEvent_filter]
+}
+
+enum Arb_HatsSignerGateV2_ChangedGuardEvent_orderBy {
+  id
+  hsg
+  hsg__id
+  hsg__safe
+  hsg__locked
+  hsg__claimableFor
+  hsg__implementation
+  hsg__thresholdType
+  hsg__minThreshold
+  hsg__targetThreshold
+  hsg__guard
+  blockNumber
+  timestamp
+  transactionID
+  guard
+}
+
+type Arb_HatsSignerGateV2_ClaimableForSetEvent implements Arb_HatsSignerGateV2Event {
+  id: ID!
+  hsg: Arb_HatsSignerGateV2!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Arb_Bytes!
+  claimableFor: Boolean!
+}
+
+input Arb_HatsSignerGateV2_ClaimableForSetEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hsg: String
+  hsg_not: String
+  hsg_gt: String
+  hsg_lt: String
+  hsg_gte: String
+  hsg_lte: String
+  hsg_in: [String!]
+  hsg_not_in: [String!]
+  hsg_contains: String
+  hsg_contains_nocase: String
+  hsg_not_contains: String
+  hsg_not_contains_nocase: String
+  hsg_starts_with: String
+  hsg_starts_with_nocase: String
+  hsg_not_starts_with: String
+  hsg_not_starts_with_nocase: String
+  hsg_ends_with: String
+  hsg_ends_with_nocase: String
+  hsg_not_ends_with: String
+  hsg_not_ends_with_nocase: String
+  hsg_: Arb_HatsSignerGateV2_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Arb_Bytes
+  transactionID_not: Arb_Bytes
+  transactionID_gt: Arb_Bytes
+  transactionID_lt: Arb_Bytes
+  transactionID_gte: Arb_Bytes
+  transactionID_lte: Arb_Bytes
+  transactionID_in: [Arb_Bytes!]
+  transactionID_not_in: [Arb_Bytes!]
+  transactionID_contains: Arb_Bytes
+  transactionID_not_contains: Arb_Bytes
+  claimableFor: Boolean
+  claimableFor_not: Boolean
+  claimableFor_in: [Boolean!]
+  claimableFor_not_in: [Boolean!]
+  """Filter for the block changed event."""
+  _change_block: Arb_BlockChangedFilter
+  and: [Arb_HatsSignerGateV2_ClaimableForSetEvent_filter]
+  or: [Arb_HatsSignerGateV2_ClaimableForSetEvent_filter]
+}
+
+enum Arb_HatsSignerGateV2_ClaimableForSetEvent_orderBy {
+  id
+  hsg
+  hsg__id
+  hsg__safe
+  hsg__locked
+  hsg__claimableFor
+  hsg__implementation
+  hsg__thresholdType
+  hsg__minThreshold
+  hsg__targetThreshold
+  hsg__guard
+  blockNumber
+  timestamp
+  transactionID
+  claimableFor
+}
+
+type Arb_HatsSignerGateV2_DelegatecallTargetEnabledEvent implements Arb_HatsSignerGateV2Event {
+  id: ID!
+  hsg: Arb_HatsSignerGateV2!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Arb_Bytes!
+  target: String!
+  enabled: Boolean!
+}
+
+input Arb_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hsg: String
+  hsg_not: String
+  hsg_gt: String
+  hsg_lt: String
+  hsg_gte: String
+  hsg_lte: String
+  hsg_in: [String!]
+  hsg_not_in: [String!]
+  hsg_contains: String
+  hsg_contains_nocase: String
+  hsg_not_contains: String
+  hsg_not_contains_nocase: String
+  hsg_starts_with: String
+  hsg_starts_with_nocase: String
+  hsg_not_starts_with: String
+  hsg_not_starts_with_nocase: String
+  hsg_ends_with: String
+  hsg_ends_with_nocase: String
+  hsg_not_ends_with: String
+  hsg_not_ends_with_nocase: String
+  hsg_: Arb_HatsSignerGateV2_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Arb_Bytes
+  transactionID_not: Arb_Bytes
+  transactionID_gt: Arb_Bytes
+  transactionID_lt: Arb_Bytes
+  transactionID_gte: Arb_Bytes
+  transactionID_lte: Arb_Bytes
+  transactionID_in: [Arb_Bytes!]
+  transactionID_not_in: [Arb_Bytes!]
+  transactionID_contains: Arb_Bytes
+  transactionID_not_contains: Arb_Bytes
+  target: String
+  target_not: String
+  target_gt: String
+  target_lt: String
+  target_gte: String
+  target_lte: String
+  target_in: [String!]
+  target_not_in: [String!]
+  target_contains: String
+  target_contains_nocase: String
+  target_not_contains: String
+  target_not_contains_nocase: String
+  target_starts_with: String
+  target_starts_with_nocase: String
+  target_not_starts_with: String
+  target_not_starts_with_nocase: String
+  target_ends_with: String
+  target_ends_with_nocase: String
+  target_not_ends_with: String
+  target_not_ends_with_nocase: String
+  enabled: Boolean
+  enabled_not: Boolean
+  enabled_in: [Boolean!]
+  enabled_not_in: [Boolean!]
+  """Filter for the block changed event."""
+  _change_block: Arb_BlockChangedFilter
+  and: [Arb_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter]
+  or: [Arb_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter]
+}
+
+enum Arb_HatsSignerGateV2_DelegatecallTargetEnabledEvent_orderBy {
+  id
+  hsg
+  hsg__id
+  hsg__safe
+  hsg__locked
+  hsg__claimableFor
+  hsg__implementation
+  hsg__thresholdType
+  hsg__minThreshold
+  hsg__targetThreshold
+  hsg__guard
+  blockNumber
+  timestamp
+  transactionID
+  target
+  enabled
+}
+
+type Arb_HatsSignerGateV2_DetachedEvent implements Arb_HatsSignerGateV2Event {
+  id: ID!
+  hsg: Arb_HatsSignerGateV2!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Arb_Bytes!
+}
+
+input Arb_HatsSignerGateV2_DetachedEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hsg: String
+  hsg_not: String
+  hsg_gt: String
+  hsg_lt: String
+  hsg_gte: String
+  hsg_lte: String
+  hsg_in: [String!]
+  hsg_not_in: [String!]
+  hsg_contains: String
+  hsg_contains_nocase: String
+  hsg_not_contains: String
+  hsg_not_contains_nocase: String
+  hsg_starts_with: String
+  hsg_starts_with_nocase: String
+  hsg_not_starts_with: String
+  hsg_not_starts_with_nocase: String
+  hsg_ends_with: String
+  hsg_ends_with_nocase: String
+  hsg_not_ends_with: String
+  hsg_not_ends_with_nocase: String
+  hsg_: Arb_HatsSignerGateV2_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Arb_Bytes
+  transactionID_not: Arb_Bytes
+  transactionID_gt: Arb_Bytes
+  transactionID_lt: Arb_Bytes
+  transactionID_gte: Arb_Bytes
+  transactionID_lte: Arb_Bytes
+  transactionID_in: [Arb_Bytes!]
+  transactionID_not_in: [Arb_Bytes!]
+  transactionID_contains: Arb_Bytes
+  transactionID_not_contains: Arb_Bytes
+  """Filter for the block changed event."""
+  _change_block: Arb_BlockChangedFilter
+  and: [Arb_HatsSignerGateV2_DetachedEvent_filter]
+  or: [Arb_HatsSignerGateV2_DetachedEvent_filter]
+}
+
+enum Arb_HatsSignerGateV2_DetachedEvent_orderBy {
+  id
+  hsg
+  hsg__id
+  hsg__safe
+  hsg__locked
+  hsg__claimableFor
+  hsg__implementation
+  hsg__thresholdType
+  hsg__minThreshold
+  hsg__targetThreshold
+  hsg__guard
+  blockNumber
+  timestamp
+  transactionID
+}
+
+type Arb_HatsSignerGateV2_DisabledModuleEvent implements Arb_HatsSignerGateV2Event {
+  id: ID!
+  hsg: Arb_HatsSignerGateV2!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Arb_Bytes!
+  module: String!
+}
+
+input Arb_HatsSignerGateV2_DisabledModuleEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hsg: String
+  hsg_not: String
+  hsg_gt: String
+  hsg_lt: String
+  hsg_gte: String
+  hsg_lte: String
+  hsg_in: [String!]
+  hsg_not_in: [String!]
+  hsg_contains: String
+  hsg_contains_nocase: String
+  hsg_not_contains: String
+  hsg_not_contains_nocase: String
+  hsg_starts_with: String
+  hsg_starts_with_nocase: String
+  hsg_not_starts_with: String
+  hsg_not_starts_with_nocase: String
+  hsg_ends_with: String
+  hsg_ends_with_nocase: String
+  hsg_not_ends_with: String
+  hsg_not_ends_with_nocase: String
+  hsg_: Arb_HatsSignerGateV2_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Arb_Bytes
+  transactionID_not: Arb_Bytes
+  transactionID_gt: Arb_Bytes
+  transactionID_lt: Arb_Bytes
+  transactionID_gte: Arb_Bytes
+  transactionID_lte: Arb_Bytes
+  transactionID_in: [Arb_Bytes!]
+  transactionID_not_in: [Arb_Bytes!]
+  transactionID_contains: Arb_Bytes
+  transactionID_not_contains: Arb_Bytes
+  module: String
+  module_not: String
+  module_gt: String
+  module_lt: String
+  module_gte: String
+  module_lte: String
+  module_in: [String!]
+  module_not_in: [String!]
+  module_contains: String
+  module_contains_nocase: String
+  module_not_contains: String
+  module_not_contains_nocase: String
+  module_starts_with: String
+  module_starts_with_nocase: String
+  module_not_starts_with: String
+  module_not_starts_with_nocase: String
+  module_ends_with: String
+  module_ends_with_nocase: String
+  module_not_ends_with: String
+  module_not_ends_with_nocase: String
+  """Filter for the block changed event."""
+  _change_block: Arb_BlockChangedFilter
+  and: [Arb_HatsSignerGateV2_DisabledModuleEvent_filter]
+  or: [Arb_HatsSignerGateV2_DisabledModuleEvent_filter]
+}
+
+enum Arb_HatsSignerGateV2_DisabledModuleEvent_orderBy {
+  id
+  hsg
+  hsg__id
+  hsg__safe
+  hsg__locked
+  hsg__claimableFor
+  hsg__implementation
+  hsg__thresholdType
+  hsg__minThreshold
+  hsg__targetThreshold
+  hsg__guard
+  blockNumber
+  timestamp
+  transactionID
+  module
+}
+
+type Arb_HatsSignerGateV2_EnabledModuleEvent implements Arb_HatsSignerGateV2Event {
+  id: ID!
+  hsg: Arb_HatsSignerGateV2!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Arb_Bytes!
+  module: String!
+}
+
+input Arb_HatsSignerGateV2_EnabledModuleEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hsg: String
+  hsg_not: String
+  hsg_gt: String
+  hsg_lt: String
+  hsg_gte: String
+  hsg_lte: String
+  hsg_in: [String!]
+  hsg_not_in: [String!]
+  hsg_contains: String
+  hsg_contains_nocase: String
+  hsg_not_contains: String
+  hsg_not_contains_nocase: String
+  hsg_starts_with: String
+  hsg_starts_with_nocase: String
+  hsg_not_starts_with: String
+  hsg_not_starts_with_nocase: String
+  hsg_ends_with: String
+  hsg_ends_with_nocase: String
+  hsg_not_ends_with: String
+  hsg_not_ends_with_nocase: String
+  hsg_: Arb_HatsSignerGateV2_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Arb_Bytes
+  transactionID_not: Arb_Bytes
+  transactionID_gt: Arb_Bytes
+  transactionID_lt: Arb_Bytes
+  transactionID_gte: Arb_Bytes
+  transactionID_lte: Arb_Bytes
+  transactionID_in: [Arb_Bytes!]
+  transactionID_not_in: [Arb_Bytes!]
+  transactionID_contains: Arb_Bytes
+  transactionID_not_contains: Arb_Bytes
+  module: String
+  module_not: String
+  module_gt: String
+  module_lt: String
+  module_gte: String
+  module_lte: String
+  module_in: [String!]
+  module_not_in: [String!]
+  module_contains: String
+  module_contains_nocase: String
+  module_not_contains: String
+  module_not_contains_nocase: String
+  module_starts_with: String
+  module_starts_with_nocase: String
+  module_not_starts_with: String
+  module_not_starts_with_nocase: String
+  module_ends_with: String
+  module_ends_with_nocase: String
+  module_not_ends_with: String
+  module_not_ends_with_nocase: String
+  """Filter for the block changed event."""
+  _change_block: Arb_BlockChangedFilter
+  and: [Arb_HatsSignerGateV2_EnabledModuleEvent_filter]
+  or: [Arb_HatsSignerGateV2_EnabledModuleEvent_filter]
+}
+
+enum Arb_HatsSignerGateV2_EnabledModuleEvent_orderBy {
+  id
+  hsg
+  hsg__id
+  hsg__safe
+  hsg__locked
+  hsg__claimableFor
+  hsg__implementation
+  hsg__thresholdType
+  hsg__minThreshold
+  hsg__targetThreshold
+  hsg__guard
+  blockNumber
+  timestamp
+  transactionID
+  module
+}
+
+type Arb_HatsSignerGateV2_HSGLockedEvent implements Arb_HatsSignerGateV2Event {
+  id: ID!
+  hsg: Arb_HatsSignerGateV2!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Arb_Bytes!
+}
+
+input Arb_HatsSignerGateV2_HSGLockedEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hsg: String
+  hsg_not: String
+  hsg_gt: String
+  hsg_lt: String
+  hsg_gte: String
+  hsg_lte: String
+  hsg_in: [String!]
+  hsg_not_in: [String!]
+  hsg_contains: String
+  hsg_contains_nocase: String
+  hsg_not_contains: String
+  hsg_not_contains_nocase: String
+  hsg_starts_with: String
+  hsg_starts_with_nocase: String
+  hsg_not_starts_with: String
+  hsg_not_starts_with_nocase: String
+  hsg_ends_with: String
+  hsg_ends_with_nocase: String
+  hsg_not_ends_with: String
+  hsg_not_ends_with_nocase: String
+  hsg_: Arb_HatsSignerGateV2_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Arb_Bytes
+  transactionID_not: Arb_Bytes
+  transactionID_gt: Arb_Bytes
+  transactionID_lt: Arb_Bytes
+  transactionID_gte: Arb_Bytes
+  transactionID_lte: Arb_Bytes
+  transactionID_in: [Arb_Bytes!]
+  transactionID_not_in: [Arb_Bytes!]
+  transactionID_contains: Arb_Bytes
+  transactionID_not_contains: Arb_Bytes
+  """Filter for the block changed event."""
+  _change_block: Arb_BlockChangedFilter
+  and: [Arb_HatsSignerGateV2_HSGLockedEvent_filter]
+  or: [Arb_HatsSignerGateV2_HSGLockedEvent_filter]
+}
+
+enum Arb_HatsSignerGateV2_HSGLockedEvent_orderBy {
+  id
+  hsg
+  hsg__id
+  hsg__safe
+  hsg__locked
+  hsg__claimableFor
+  hsg__implementation
+  hsg__thresholdType
+  hsg__minThreshold
+  hsg__targetThreshold
+  hsg__guard
+  blockNumber
+  timestamp
+  transactionID
+}
+
+type Arb_HatsSignerGateV2_MigratedEvent implements Arb_HatsSignerGateV2Event {
+  id: ID!
+  hsg: Arb_HatsSignerGateV2!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Arb_Bytes!
+  newHsg: String!
+}
+
+input Arb_HatsSignerGateV2_MigratedEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hsg: String
+  hsg_not: String
+  hsg_gt: String
+  hsg_lt: String
+  hsg_gte: String
+  hsg_lte: String
+  hsg_in: [String!]
+  hsg_not_in: [String!]
+  hsg_contains: String
+  hsg_contains_nocase: String
+  hsg_not_contains: String
+  hsg_not_contains_nocase: String
+  hsg_starts_with: String
+  hsg_starts_with_nocase: String
+  hsg_not_starts_with: String
+  hsg_not_starts_with_nocase: String
+  hsg_ends_with: String
+  hsg_ends_with_nocase: String
+  hsg_not_ends_with: String
+  hsg_not_ends_with_nocase: String
+  hsg_: Arb_HatsSignerGateV2_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Arb_Bytes
+  transactionID_not: Arb_Bytes
+  transactionID_gt: Arb_Bytes
+  transactionID_lt: Arb_Bytes
+  transactionID_gte: Arb_Bytes
+  transactionID_lte: Arb_Bytes
+  transactionID_in: [Arb_Bytes!]
+  transactionID_not_in: [Arb_Bytes!]
+  transactionID_contains: Arb_Bytes
+  transactionID_not_contains: Arb_Bytes
+  newHsg: String
+  newHsg_not: String
+  newHsg_gt: String
+  newHsg_lt: String
+  newHsg_gte: String
+  newHsg_lte: String
+  newHsg_in: [String!]
+  newHsg_not_in: [String!]
+  newHsg_contains: String
+  newHsg_contains_nocase: String
+  newHsg_not_contains: String
+  newHsg_not_contains_nocase: String
+  newHsg_starts_with: String
+  newHsg_starts_with_nocase: String
+  newHsg_not_starts_with: String
+  newHsg_not_starts_with_nocase: String
+  newHsg_ends_with: String
+  newHsg_ends_with_nocase: String
+  newHsg_not_ends_with: String
+  newHsg_not_ends_with_nocase: String
+  """Filter for the block changed event."""
+  _change_block: Arb_BlockChangedFilter
+  and: [Arb_HatsSignerGateV2_MigratedEvent_filter]
+  or: [Arb_HatsSignerGateV2_MigratedEvent_filter]
+}
+
+enum Arb_HatsSignerGateV2_MigratedEvent_orderBy {
+  id
+  hsg
+  hsg__id
+  hsg__safe
+  hsg__locked
+  hsg__claimableFor
+  hsg__implementation
+  hsg__thresholdType
+  hsg__minThreshold
+  hsg__targetThreshold
+  hsg__guard
+  blockNumber
+  timestamp
+  transactionID
+  newHsg
+}
+
+type Arb_HatsSignerGateV2_OwnerHatSetEvent implements Arb_HatsSignerGateV2Event {
+  id: ID!
+  hsg: Arb_HatsSignerGateV2!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Arb_Bytes!
+  ownerHat: String!
+}
+
+input Arb_HatsSignerGateV2_OwnerHatSetEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hsg: String
+  hsg_not: String
+  hsg_gt: String
+  hsg_lt: String
+  hsg_gte: String
+  hsg_lte: String
+  hsg_in: [String!]
+  hsg_not_in: [String!]
+  hsg_contains: String
+  hsg_contains_nocase: String
+  hsg_not_contains: String
+  hsg_not_contains_nocase: String
+  hsg_starts_with: String
+  hsg_starts_with_nocase: String
+  hsg_not_starts_with: String
+  hsg_not_starts_with_nocase: String
+  hsg_ends_with: String
+  hsg_ends_with_nocase: String
+  hsg_not_ends_with: String
+  hsg_not_ends_with_nocase: String
+  hsg_: Arb_HatsSignerGateV2_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Arb_Bytes
+  transactionID_not: Arb_Bytes
+  transactionID_gt: Arb_Bytes
+  transactionID_lt: Arb_Bytes
+  transactionID_gte: Arb_Bytes
+  transactionID_lte: Arb_Bytes
+  transactionID_in: [Arb_Bytes!]
+  transactionID_not_in: [Arb_Bytes!]
+  transactionID_contains: Arb_Bytes
+  transactionID_not_contains: Arb_Bytes
+  ownerHat: String
+  ownerHat_not: String
+  ownerHat_gt: String
+  ownerHat_lt: String
+  ownerHat_gte: String
+  ownerHat_lte: String
+  ownerHat_in: [String!]
+  ownerHat_not_in: [String!]
+  ownerHat_contains: String
+  ownerHat_contains_nocase: String
+  ownerHat_not_contains: String
+  ownerHat_not_contains_nocase: String
+  ownerHat_starts_with: String
+  ownerHat_starts_with_nocase: String
+  ownerHat_not_starts_with: String
+  ownerHat_not_starts_with_nocase: String
+  ownerHat_ends_with: String
+  ownerHat_ends_with_nocase: String
+  ownerHat_not_ends_with: String
+  ownerHat_not_ends_with_nocase: String
+  """Filter for the block changed event."""
+  _change_block: Arb_BlockChangedFilter
+  and: [Arb_HatsSignerGateV2_OwnerHatSetEvent_filter]
+  or: [Arb_HatsSignerGateV2_OwnerHatSetEvent_filter]
+}
+
+enum Arb_HatsSignerGateV2_OwnerHatSetEvent_orderBy {
+  id
+  hsg
+  hsg__id
+  hsg__safe
+  hsg__locked
+  hsg__claimableFor
+  hsg__implementation
+  hsg__thresholdType
+  hsg__minThreshold
+  hsg__targetThreshold
+  hsg__guard
+  blockNumber
+  timestamp
+  transactionID
+  ownerHat
+}
+
+type Arb_HatsSignerGateV2_RegisteredEvent implements Arb_HatsSignerGateV2Event {
+  id: ID!
+  hsg: Arb_HatsSignerGateV2!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Arb_Bytes!
+  hatId: String!
+  signer: String!
+}
+
+input Arb_HatsSignerGateV2_RegisteredEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hsg: String
+  hsg_not: String
+  hsg_gt: String
+  hsg_lt: String
+  hsg_gte: String
+  hsg_lte: String
+  hsg_in: [String!]
+  hsg_not_in: [String!]
+  hsg_contains: String
+  hsg_contains_nocase: String
+  hsg_not_contains: String
+  hsg_not_contains_nocase: String
+  hsg_starts_with: String
+  hsg_starts_with_nocase: String
+  hsg_not_starts_with: String
+  hsg_not_starts_with_nocase: String
+  hsg_ends_with: String
+  hsg_ends_with_nocase: String
+  hsg_not_ends_with: String
+  hsg_not_ends_with_nocase: String
+  hsg_: Arb_HatsSignerGateV2_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Arb_Bytes
+  transactionID_not: Arb_Bytes
+  transactionID_gt: Arb_Bytes
+  transactionID_lt: Arb_Bytes
+  transactionID_gte: Arb_Bytes
+  transactionID_lte: Arb_Bytes
+  transactionID_in: [Arb_Bytes!]
+  transactionID_not_in: [Arb_Bytes!]
+  transactionID_contains: Arb_Bytes
+  transactionID_not_contains: Arb_Bytes
+  hatId: String
+  hatId_not: String
+  hatId_gt: String
+  hatId_lt: String
+  hatId_gte: String
+  hatId_lte: String
+  hatId_in: [String!]
+  hatId_not_in: [String!]
+  hatId_contains: String
+  hatId_contains_nocase: String
+  hatId_not_contains: String
+  hatId_not_contains_nocase: String
+  hatId_starts_with: String
+  hatId_starts_with_nocase: String
+  hatId_not_starts_with: String
+  hatId_not_starts_with_nocase: String
+  hatId_ends_with: String
+  hatId_ends_with_nocase: String
+  hatId_not_ends_with: String
+  hatId_not_ends_with_nocase: String
+  signer: String
+  signer_not: String
+  signer_gt: String
+  signer_lt: String
+  signer_gte: String
+  signer_lte: String
+  signer_in: [String!]
+  signer_not_in: [String!]
+  signer_contains: String
+  signer_contains_nocase: String
+  signer_not_contains: String
+  signer_not_contains_nocase: String
+  signer_starts_with: String
+  signer_starts_with_nocase: String
+  signer_not_starts_with: String
+  signer_not_starts_with_nocase: String
+  signer_ends_with: String
+  signer_ends_with_nocase: String
+  signer_not_ends_with: String
+  signer_not_ends_with_nocase: String
+  """Filter for the block changed event."""
+  _change_block: Arb_BlockChangedFilter
+  and: [Arb_HatsSignerGateV2_RegisteredEvent_filter]
+  or: [Arb_HatsSignerGateV2_RegisteredEvent_filter]
+}
+
+enum Arb_HatsSignerGateV2_RegisteredEvent_orderBy {
+  id
+  hsg
+  hsg__id
+  hsg__safe
+  hsg__locked
+  hsg__claimableFor
+  hsg__implementation
+  hsg__thresholdType
+  hsg__minThreshold
+  hsg__targetThreshold
+  hsg__guard
+  blockNumber
+  timestamp
+  transactionID
+  hatId
+  signer
+}
+
+type Arb_HatsSignerGateV2_SignerHatsAddedEvent implements Arb_HatsSignerGateV2Event {
+  id: ID!
+  hsg: Arb_HatsSignerGateV2!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Arb_Bytes!
+  newSignerHats: [String!]!
+}
+
+input Arb_HatsSignerGateV2_SignerHatsAddedEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hsg: String
+  hsg_not: String
+  hsg_gt: String
+  hsg_lt: String
+  hsg_gte: String
+  hsg_lte: String
+  hsg_in: [String!]
+  hsg_not_in: [String!]
+  hsg_contains: String
+  hsg_contains_nocase: String
+  hsg_not_contains: String
+  hsg_not_contains_nocase: String
+  hsg_starts_with: String
+  hsg_starts_with_nocase: String
+  hsg_not_starts_with: String
+  hsg_not_starts_with_nocase: String
+  hsg_ends_with: String
+  hsg_ends_with_nocase: String
+  hsg_not_ends_with: String
+  hsg_not_ends_with_nocase: String
+  hsg_: Arb_HatsSignerGateV2_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Arb_Bytes
+  transactionID_not: Arb_Bytes
+  transactionID_gt: Arb_Bytes
+  transactionID_lt: Arb_Bytes
+  transactionID_gte: Arb_Bytes
+  transactionID_lte: Arb_Bytes
+  transactionID_in: [Arb_Bytes!]
+  transactionID_not_in: [Arb_Bytes!]
+  transactionID_contains: Arb_Bytes
+  transactionID_not_contains: Arb_Bytes
+  newSignerHats: [String!]
+  newSignerHats_not: [String!]
+  newSignerHats_contains: [String!]
+  newSignerHats_contains_nocase: [String!]
+  newSignerHats_not_contains: [String!]
+  newSignerHats_not_contains_nocase: [String!]
+  """Filter for the block changed event."""
+  _change_block: Arb_BlockChangedFilter
+  and: [Arb_HatsSignerGateV2_SignerHatsAddedEvent_filter]
+  or: [Arb_HatsSignerGateV2_SignerHatsAddedEvent_filter]
+}
+
+enum Arb_HatsSignerGateV2_SignerHatsAddedEvent_orderBy {
+  id
+  hsg
+  hsg__id
+  hsg__safe
+  hsg__locked
+  hsg__claimableFor
+  hsg__implementation
+  hsg__thresholdType
+  hsg__minThreshold
+  hsg__targetThreshold
+  hsg__guard
+  blockNumber
+  timestamp
+  transactionID
+  newSignerHats
+}
+
+type Arb_HatsSignerGateV2_ThresholdConfigSetEvent implements Arb_HatsSignerGateV2Event {
+  id: ID!
+  hsg: Arb_HatsSignerGateV2!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Arb_Bytes!
+  thresholdType: Arb_HatsSignerGateV2ThresholdType!
+  minThreshold: BigInt!
+  targetThreshold: BigInt!
+}
+
+input Arb_HatsSignerGateV2_ThresholdConfigSetEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hsg: String
+  hsg_not: String
+  hsg_gt: String
+  hsg_lt: String
+  hsg_gte: String
+  hsg_lte: String
+  hsg_in: [String!]
+  hsg_not_in: [String!]
+  hsg_contains: String
+  hsg_contains_nocase: String
+  hsg_not_contains: String
+  hsg_not_contains_nocase: String
+  hsg_starts_with: String
+  hsg_starts_with_nocase: String
+  hsg_not_starts_with: String
+  hsg_not_starts_with_nocase: String
+  hsg_ends_with: String
+  hsg_ends_with_nocase: String
+  hsg_not_ends_with: String
+  hsg_not_ends_with_nocase: String
+  hsg_: Arb_HatsSignerGateV2_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Arb_Bytes
+  transactionID_not: Arb_Bytes
+  transactionID_gt: Arb_Bytes
+  transactionID_lt: Arb_Bytes
+  transactionID_gte: Arb_Bytes
+  transactionID_lte: Arb_Bytes
+  transactionID_in: [Arb_Bytes!]
+  transactionID_not_in: [Arb_Bytes!]
+  transactionID_contains: Arb_Bytes
+  transactionID_not_contains: Arb_Bytes
+  thresholdType: Arb_HatsSignerGateV2ThresholdType
+  thresholdType_not: Arb_HatsSignerGateV2ThresholdType
+  thresholdType_in: [Arb_HatsSignerGateV2ThresholdType!]
+  thresholdType_not_in: [Arb_HatsSignerGateV2ThresholdType!]
+  minThreshold: BigInt
+  minThreshold_not: BigInt
+  minThreshold_gt: BigInt
+  minThreshold_lt: BigInt
+  minThreshold_gte: BigInt
+  minThreshold_lte: BigInt
+  minThreshold_in: [BigInt!]
+  minThreshold_not_in: [BigInt!]
+  targetThreshold: BigInt
+  targetThreshold_not: BigInt
+  targetThreshold_gt: BigInt
+  targetThreshold_lt: BigInt
+  targetThreshold_gte: BigInt
+  targetThreshold_lte: BigInt
+  targetThreshold_in: [BigInt!]
+  targetThreshold_not_in: [BigInt!]
+  """Filter for the block changed event."""
+  _change_block: Arb_BlockChangedFilter
+  and: [Arb_HatsSignerGateV2_ThresholdConfigSetEvent_filter]
+  or: [Arb_HatsSignerGateV2_ThresholdConfigSetEvent_filter]
+}
+
+enum Arb_HatsSignerGateV2_ThresholdConfigSetEvent_orderBy {
+  id
+  hsg
+  hsg__id
+  hsg__safe
+  hsg__locked
+  hsg__claimableFor
+  hsg__implementation
+  hsg__thresholdType
+  hsg__minThreshold
+  hsg__targetThreshold
+  hsg__guard
+  blockNumber
+  timestamp
+  transactionID
+  thresholdType
+  minThreshold
+  targetThreshold
+}
+
+input Arb_HatsSignerGateV2_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  ownerHat: String
+  ownerHat_not: String
+  ownerHat_gt: String
+  ownerHat_lt: String
+  ownerHat_gte: String
+  ownerHat_lte: String
+  ownerHat_in: [String!]
+  ownerHat_not_in: [String!]
+  ownerHat_contains: String
+  ownerHat_contains_nocase: String
+  ownerHat_not_contains: String
+  ownerHat_not_contains_nocase: String
+  ownerHat_starts_with: String
+  ownerHat_starts_with_nocase: String
+  ownerHat_not_starts_with: String
+  ownerHat_not_starts_with_nocase: String
+  ownerHat_ends_with: String
+  ownerHat_ends_with_nocase: String
+  ownerHat_not_ends_with: String
+  ownerHat_not_ends_with_nocase: String
+  ownerHat_: Arb_HatAuthority_filter
+  signerHats: [String!]
+  signerHats_not: [String!]
+  signerHats_contains: [String!]
+  signerHats_contains_nocase: [String!]
+  signerHats_not_contains: [String!]
+  signerHats_not_contains_nocase: [String!]
+  signerHats_: Arb_HatAuthority_filter
+  safe: String
+  safe_not: String
+  safe_gt: String
+  safe_lt: String
+  safe_gte: String
+  safe_lte: String
+  safe_in: [String!]
+  safe_not_in: [String!]
+  safe_contains: String
+  safe_contains_nocase: String
+  safe_not_contains: String
+  safe_not_contains_nocase: String
+  safe_starts_with: String
+  safe_starts_with_nocase: String
+  safe_not_starts_with: String
+  safe_not_starts_with_nocase: String
+  safe_ends_with: String
+  safe_ends_with_nocase: String
+  safe_not_ends_with: String
+  safe_not_ends_with_nocase: String
+  locked: Boolean
+  locked_not: Boolean
+  locked_in: [Boolean!]
+  locked_not_in: [Boolean!]
+  claimableFor: Boolean
+  claimableFor_not: Boolean
+  claimableFor_in: [Boolean!]
+  claimableFor_not_in: [Boolean!]
+  implementation: String
+  implementation_not: String
+  implementation_gt: String
+  implementation_lt: String
+  implementation_gte: String
+  implementation_lte: String
+  implementation_in: [String!]
+  implementation_not_in: [String!]
+  implementation_contains: String
+  implementation_contains_nocase: String
+  implementation_not_contains: String
+  implementation_not_contains_nocase: String
+  implementation_starts_with: String
+  implementation_starts_with_nocase: String
+  implementation_not_starts_with: String
+  implementation_not_starts_with_nocase: String
+  implementation_ends_with: String
+  implementation_ends_with_nocase: String
+  implementation_not_ends_with: String
+  implementation_not_ends_with_nocase: String
+  enabledDelegatecallTargets: [String!]
+  enabledDelegatecallTargets_not: [String!]
+  enabledDelegatecallTargets_contains: [String!]
+  enabledDelegatecallTargets_contains_nocase: [String!]
+  enabledDelegatecallTargets_not_contains: [String!]
+  enabledDelegatecallTargets_not_contains_nocase: [String!]
+  thresholdType: Arb_HatsSignerGateV2ThresholdType
+  thresholdType_not: Arb_HatsSignerGateV2ThresholdType
+  thresholdType_in: [Arb_HatsSignerGateV2ThresholdType!]
+  thresholdType_not_in: [Arb_HatsSignerGateV2ThresholdType!]
+  minThreshold: BigInt
+  minThreshold_not: BigInt
+  minThreshold_gt: BigInt
+  minThreshold_lt: BigInt
+  minThreshold_gte: BigInt
+  minThreshold_lte: BigInt
+  minThreshold_in: [BigInt!]
+  minThreshold_not_in: [BigInt!]
+  targetThreshold: BigInt
+  targetThreshold_not: BigInt
+  targetThreshold_gt: BigInt
+  targetThreshold_lt: BigInt
+  targetThreshold_gte: BigInt
+  targetThreshold_lte: BigInt
+  targetThreshold_in: [BigInt!]
+  targetThreshold_not_in: [BigInt!]
+  guard: String
+  guard_not: String
+  guard_gt: String
+  guard_lt: String
+  guard_gte: String
+  guard_lte: String
+  guard_in: [String!]
+  guard_not_in: [String!]
+  guard_contains: String
+  guard_contains_nocase: String
+  guard_not_contains: String
+  guard_not_contains_nocase: String
+  guard_starts_with: String
+  guard_starts_with_nocase: String
+  guard_not_starts_with: String
+  guard_not_starts_with_nocase: String
+  guard_ends_with: String
+  guard_ends_with_nocase: String
+  guard_not_ends_with: String
+  guard_not_ends_with_nocase: String
+  modules: [String!]
+  modules_not: [String!]
+  modules_contains: [String!]
+  modules_contains_nocase: [String!]
+  modules_not_contains: [String!]
+  modules_not_contains_nocase: [String!]
+  events_: Arb_HatsSignerGateV2Event_filter
+  """Filter for the block changed event."""
+  _change_block: Arb_BlockChangedFilter
+  and: [Arb_HatsSignerGateV2_filter]
+  or: [Arb_HatsSignerGateV2_filter]
+}
+
+enum Arb_HatsSignerGateV2_orderBy {
+  id
+  ownerHat
+  ownerHat__id
+  ownerHat__primaryHatsAccount1ofNAddress
+  signerHats
+  safe
+  locked
+  claimableFor
+  implementation
+  enabledDelegatecallTargets
+  thresholdType
+  minThreshold
+  targetThreshold
+  guard
+  modules
+  events
 }
 
 input Arb_HatsSignerGate_filter {
@@ -6501,6 +8048,344 @@ type Query {
     """
     subgraphError: Arb__SubgraphErrorPolicy_! = deny
   ): [Arb_HatsSignerGate!]!
+  Arb_hatsSignerGateV2(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2
+  Arb_hatsSignerGateV2S(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2!]!
+  Arb_hatsSignerGateV2OwnerHatSetEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_OwnerHatSetEvent
+  Arb_hatsSignerGateV2OwnerHatSetEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_OwnerHatSetEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_OwnerHatSetEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_OwnerHatSetEvent!]!
+  Arb_hatsSignerGateV2SignerHatsAddedEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_SignerHatsAddedEvent
+  Arb_hatsSignerGateV2SignerHatsAddedEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_SignerHatsAddedEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_SignerHatsAddedEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_SignerHatsAddedEvent!]!
+  Arb_hatsSignerGateV2ThresholdConfigSetEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_ThresholdConfigSetEvent
+  Arb_hatsSignerGateV2ThresholdConfigSetEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_ThresholdConfigSetEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_ThresholdConfigSetEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_ThresholdConfigSetEvent!]!
+  Arb_hatsSignerGateV2HSGLockedEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_HSGLockedEvent
+  Arb_hatsSignerGateV2HSGLockedEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_HSGLockedEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_HSGLockedEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_HSGLockedEvent!]!
+  Arb_hatsSignerGateV2ClaimableForSetEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_ClaimableForSetEvent
+  Arb_hatsSignerGateV2ClaimableForSetEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_ClaimableForSetEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_ClaimableForSetEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_ClaimableForSetEvent!]!
+  Arb_hatsSignerGateV2DetachedEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_DetachedEvent
+  Arb_hatsSignerGateV2DetachedEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_DetachedEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_DetachedEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_DetachedEvent!]!
+  Arb_hatsSignerGateV2MigratedEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_MigratedEvent
+  Arb_hatsSignerGateV2MigratedEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_MigratedEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_MigratedEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_MigratedEvent!]!
+  Arb_hatsSignerGateV2DelegatecallTargetEnabledEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_DelegatecallTargetEnabledEvent
+  Arb_hatsSignerGateV2DelegatecallTargetEnabledEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_DelegatecallTargetEnabledEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_DelegatecallTargetEnabledEvent!]!
+  Arb_hatsSignerGateV2RegisteredEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_RegisteredEvent
+  Arb_hatsSignerGateV2RegisteredEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_RegisteredEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_RegisteredEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_RegisteredEvent!]!
+  Arb_hatsSignerGateV2ChangedGuardEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_ChangedGuardEvent
+  Arb_hatsSignerGateV2ChangedGuardEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_ChangedGuardEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_ChangedGuardEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_ChangedGuardEvent!]!
+  Arb_hatsSignerGateV2EnabledModuleEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_EnabledModuleEvent
+  Arb_hatsSignerGateV2EnabledModuleEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_EnabledModuleEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_EnabledModuleEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_EnabledModuleEvent!]!
+  Arb_hatsSignerGateV2DisabledModuleEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_DisabledModuleEvent
+  Arb_hatsSignerGateV2DisabledModuleEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_DisabledModuleEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_DisabledModuleEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_DisabledModuleEvent!]!
   Arb_hatsAccount1OfN(
     id: ID!
     """
@@ -8035,6 +9920,32 @@ type Query {
     """
     subgraphError: Arb__SubgraphErrorPolicy_! = deny
   ): [Arb_EligibilitiesRuleset!]!
+  Arb_hatsSignerGateV2Event(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2Event
+  Arb_hatsSignerGateV2Events(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2Event_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2Event_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2Event!]!
   Arb_hatsModule(
     id: ID!
     """
@@ -8324,6 +10235,7 @@ enum Arb_SeasonToggle_orderBy {
   hatAdmins
 }
 
+"""Shaman Stake"""
 type Arb_ShamanStake {
   id: ID!
   stakingShaman: Arb_HatsStakingShaman!
@@ -9969,6 +11881,344 @@ type Subscription {
     """
     subgraphError: Arb__SubgraphErrorPolicy_! = deny
   ): [Arb_HatsSignerGate!]!
+  Arb_hatsSignerGateV2(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2
+  Arb_hatsSignerGateV2S(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2!]!
+  Arb_hatsSignerGateV2OwnerHatSetEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_OwnerHatSetEvent
+  Arb_hatsSignerGateV2OwnerHatSetEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_OwnerHatSetEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_OwnerHatSetEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_OwnerHatSetEvent!]!
+  Arb_hatsSignerGateV2SignerHatsAddedEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_SignerHatsAddedEvent
+  Arb_hatsSignerGateV2SignerHatsAddedEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_SignerHatsAddedEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_SignerHatsAddedEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_SignerHatsAddedEvent!]!
+  Arb_hatsSignerGateV2ThresholdConfigSetEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_ThresholdConfigSetEvent
+  Arb_hatsSignerGateV2ThresholdConfigSetEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_ThresholdConfigSetEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_ThresholdConfigSetEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_ThresholdConfigSetEvent!]!
+  Arb_hatsSignerGateV2HSGLockedEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_HSGLockedEvent
+  Arb_hatsSignerGateV2HSGLockedEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_HSGLockedEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_HSGLockedEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_HSGLockedEvent!]!
+  Arb_hatsSignerGateV2ClaimableForSetEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_ClaimableForSetEvent
+  Arb_hatsSignerGateV2ClaimableForSetEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_ClaimableForSetEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_ClaimableForSetEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_ClaimableForSetEvent!]!
+  Arb_hatsSignerGateV2DetachedEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_DetachedEvent
+  Arb_hatsSignerGateV2DetachedEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_DetachedEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_DetachedEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_DetachedEvent!]!
+  Arb_hatsSignerGateV2MigratedEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_MigratedEvent
+  Arb_hatsSignerGateV2MigratedEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_MigratedEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_MigratedEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_MigratedEvent!]!
+  Arb_hatsSignerGateV2DelegatecallTargetEnabledEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_DelegatecallTargetEnabledEvent
+  Arb_hatsSignerGateV2DelegatecallTargetEnabledEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_DelegatecallTargetEnabledEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_DelegatecallTargetEnabledEvent!]!
+  Arb_hatsSignerGateV2RegisteredEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_RegisteredEvent
+  Arb_hatsSignerGateV2RegisteredEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_RegisteredEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_RegisteredEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_RegisteredEvent!]!
+  Arb_hatsSignerGateV2ChangedGuardEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_ChangedGuardEvent
+  Arb_hatsSignerGateV2ChangedGuardEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_ChangedGuardEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_ChangedGuardEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_ChangedGuardEvent!]!
+  Arb_hatsSignerGateV2EnabledModuleEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_EnabledModuleEvent
+  Arb_hatsSignerGateV2EnabledModuleEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_EnabledModuleEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_EnabledModuleEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_EnabledModuleEvent!]!
+  Arb_hatsSignerGateV2DisabledModuleEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2_DisabledModuleEvent
+  Arb_hatsSignerGateV2DisabledModuleEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2_DisabledModuleEvent_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2_DisabledModuleEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2_DisabledModuleEvent!]!
   Arb_hatsAccount1OfN(
     id: ID!
     """
@@ -11503,6 +13753,32 @@ type Subscription {
     """
     subgraphError: Arb__SubgraphErrorPolicy_! = deny
   ): [Arb_EligibilitiesRuleset!]!
+  Arb_hatsSignerGateV2Event(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): Arb_HatsSignerGateV2Event
+  Arb_hatsSignerGateV2Events(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Arb_HatsSignerGateV2Event_orderBy
+    orderDirection: Arb_OrderDirection
+    where: Arb_HatsSignerGateV2Event_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Arb_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Arb__SubgraphErrorPolicy_! = deny
+  ): [Arb_HatsSignerGateV2Event!]!
   Arb_hatsModule(
     id: ID!
     """

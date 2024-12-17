@@ -3783,6 +3783,8 @@ export type Base_HatAuthority = {
   hatsAccount1ofN: Array<Base_HatsAccount1ofN>;
   hsgOwner: Array<Base_HatsSignerGate>;
   hsgSigner: Array<Base_HatsSignerGate>;
+  hsgV2Owner: Array<Base_HatsSignerGateV2>;
+  hsgV2Signer: Array<Base_HatsSignerGateV2>;
   jokeraceAdmin: Array<Base_JokeRaceEligibility>;
   allowListOwner: Array<Base_AllowListEligibility>;
   allowListArbitrator: Array<Base_AllowListEligibility>;
@@ -3826,6 +3828,24 @@ export type Base_HatAuthorityhsgSignerArgs = {
   orderBy?: InputMaybe<Base_HatsSignerGate_orderBy>;
   orderDirection?: InputMaybe<Base_OrderDirection>;
   where?: InputMaybe<Base_HatsSignerGate_filter>;
+};
+
+
+export type Base_HatAuthorityhsgV2OwnerArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_filter>;
+};
+
+
+export type Base_HatAuthorityhsgV2SignerArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_filter>;
 };
 
 
@@ -4004,6 +4024,8 @@ export type Base_HatAuthority_filter = {
   hatsAccount1ofN_?: InputMaybe<Base_HatsAccount1ofN_filter>;
   hsgOwner_?: InputMaybe<Base_HatsSignerGate_filter>;
   hsgSigner_?: InputMaybe<Base_HatsSignerGate_filter>;
+  hsgV2Owner_?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  hsgV2Signer_?: InputMaybe<Base_HatsSignerGateV2_filter>;
   jokeraceAdmin_?: InputMaybe<Base_JokeRaceEligibility_filter>;
   allowListOwner_?: InputMaybe<Base_AllowListEligibility_filter>;
   allowListArbitrator_?: InputMaybe<Base_AllowListEligibility_filter>;
@@ -4032,6 +4054,8 @@ export type Base_HatAuthority_orderBy =
   | 'hatsAccount1ofN'
   | 'hsgOwner'
   | 'hsgSigner'
+  | 'hsgV2Owner'
+  | 'hsgV2Signer'
   | 'jokeraceAdmin'
   | 'allowListOwner'
   | 'allowListArbitrator'
@@ -4853,6 +4877,7 @@ export type Base_HatWearingEligibility_orderBy =
   | 'hatId'
   | 'criterionHat';
 
+/** Hats Account 1ofN */
 export type Base_HatsAccount1ofN = {
   id: Scalars['ID']['output'];
   accountOfHat: Base_HatAuthority;
@@ -4860,6 +4885,7 @@ export type Base_HatsAccount1ofN = {
 };
 
 
+/** Hats Account 1ofN */
 export type Base_HatsAccount1ofNoperationsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -5296,6 +5322,7 @@ export type Base_HatsEligibilitiesChain_orderBy =
   | 'moduleAddresses'
   | 'numRulesets';
 
+/** Farcaster Delegator */
 export type Base_HatsFarcasterDelegator = {
   id: Scalars['ID']['output'];
   caster: Base_HatAuthority;
@@ -5515,7 +5542,7 @@ export type Base_HatsModule_orderBy =
   | 'version'
   | 'hatId';
 
-/**  *** Gates ***  */
+/** Hats Signer Gate */
 export type Base_HatsSignerGate = {
   id: Scalars['ID']['output'];
   type: Base_HatsSignerGateType;
@@ -5528,7 +5555,7 @@ export type Base_HatsSignerGate = {
 };
 
 
-/**  *** Gates ***  */
+/** Hats Signer Gate */
 export type Base_HatsSignerGatesignerHatsArgs = {
   skip?: InputMaybe<Scalars['Int']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -5540,6 +5567,1550 @@ export type Base_HatsSignerGatesignerHatsArgs = {
 export type Base_HatsSignerGateType =
   | 'Single'
   | 'Multi';
+
+/** HSG v2 */
+export type Base_HatsSignerGateV2 = {
+  id: Scalars['ID']['output'];
+  ownerHat: Base_HatAuthority;
+  signerHats: Array<Base_HatAuthority>;
+  safe: Scalars['String']['output'];
+  locked: Scalars['Boolean']['output'];
+  claimableFor: Scalars['Boolean']['output'];
+  implementation: Scalars['String']['output'];
+  enabledDelegatecallTargets: Array<Scalars['String']['output']>;
+  thresholdType: Base_HatsSignerGateV2ThresholdType;
+  minThreshold: Scalars['BigInt']['output'];
+  targetThreshold: Scalars['BigInt']['output'];
+  guard: Scalars['String']['output'];
+  modules: Array<Scalars['String']['output']>;
+  events: Array<Base_HatsSignerGateV2Event>;
+};
+
+
+/** HSG v2 */
+export type Base_HatsSignerGateV2signerHatsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatAuthority_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatAuthority_filter>;
+};
+
+
+/** HSG v2 */
+export type Base_HatsSignerGateV2eventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2Event_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2Event_filter>;
+};
+
+export type Base_HatsSignerGateV2Event = {
+  id: Scalars['ID']['output'];
+  hsg: Base_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Base_Bytes']['output'];
+};
+
+export type Base_HatsSignerGateV2Event_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Base_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2Event_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2Event_filter>>>;
+};
+
+export type Base_HatsSignerGateV2Event_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID';
+
+export type Base_HatsSignerGateV2ThresholdType =
+  | 'ABSOLUTE'
+  | 'PROPORTIONAL';
+
+export type Base_HatsSignerGateV2_ChangedGuardEvent = Base_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Base_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Base_Bytes']['output'];
+  guard: Scalars['String']['output'];
+};
+
+export type Base_HatsSignerGateV2_ChangedGuardEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  guard?: InputMaybe<Scalars['String']['input']>;
+  guard_not?: InputMaybe<Scalars['String']['input']>;
+  guard_gt?: InputMaybe<Scalars['String']['input']>;
+  guard_lt?: InputMaybe<Scalars['String']['input']>;
+  guard_gte?: InputMaybe<Scalars['String']['input']>;
+  guard_lte?: InputMaybe<Scalars['String']['input']>;
+  guard_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  guard_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  guard_contains?: InputMaybe<Scalars['String']['input']>;
+  guard_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_not_contains?: InputMaybe<Scalars['String']['input']>;
+  guard_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_starts_with?: InputMaybe<Scalars['String']['input']>;
+  guard_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  guard_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_ends_with?: InputMaybe<Scalars['String']['input']>;
+  guard_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  guard_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Base_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_ChangedGuardEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_ChangedGuardEvent_filter>>>;
+};
+
+export type Base_HatsSignerGateV2_ChangedGuardEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'guard';
+
+export type Base_HatsSignerGateV2_ClaimableForSetEvent = Base_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Base_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Base_Bytes']['output'];
+  claimableFor: Scalars['Boolean']['output'];
+};
+
+export type Base_HatsSignerGateV2_ClaimableForSetEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  claimableFor?: InputMaybe<Scalars['Boolean']['input']>;
+  claimableFor_not?: InputMaybe<Scalars['Boolean']['input']>;
+  claimableFor_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  claimableFor_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Base_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_ClaimableForSetEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_ClaimableForSetEvent_filter>>>;
+};
+
+export type Base_HatsSignerGateV2_ClaimableForSetEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'claimableFor';
+
+export type Base_HatsSignerGateV2_DelegatecallTargetEnabledEvent = Base_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Base_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Base_Bytes']['output'];
+  target: Scalars['String']['output'];
+  enabled: Scalars['Boolean']['output'];
+};
+
+export type Base_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  target?: InputMaybe<Scalars['String']['input']>;
+  target_not?: InputMaybe<Scalars['String']['input']>;
+  target_gt?: InputMaybe<Scalars['String']['input']>;
+  target_lt?: InputMaybe<Scalars['String']['input']>;
+  target_gte?: InputMaybe<Scalars['String']['input']>;
+  target_lte?: InputMaybe<Scalars['String']['input']>;
+  target_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  target_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  target_contains?: InputMaybe<Scalars['String']['input']>;
+  target_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  target_not_contains?: InputMaybe<Scalars['String']['input']>;
+  target_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  target_starts_with?: InputMaybe<Scalars['String']['input']>;
+  target_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  target_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  target_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  target_ends_with?: InputMaybe<Scalars['String']['input']>;
+  target_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  target_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  target_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  enabled?: InputMaybe<Scalars['Boolean']['input']>;
+  enabled_not?: InputMaybe<Scalars['Boolean']['input']>;
+  enabled_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  enabled_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Base_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter>>>;
+};
+
+export type Base_HatsSignerGateV2_DelegatecallTargetEnabledEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'target'
+  | 'enabled';
+
+export type Base_HatsSignerGateV2_DetachedEvent = Base_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Base_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Base_Bytes']['output'];
+};
+
+export type Base_HatsSignerGateV2_DetachedEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Base_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_DetachedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_DetachedEvent_filter>>>;
+};
+
+export type Base_HatsSignerGateV2_DetachedEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID';
+
+export type Base_HatsSignerGateV2_DisabledModuleEvent = Base_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Base_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Base_Bytes']['output'];
+  module: Scalars['String']['output'];
+};
+
+export type Base_HatsSignerGateV2_DisabledModuleEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Base_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_DisabledModuleEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_DisabledModuleEvent_filter>>>;
+};
+
+export type Base_HatsSignerGateV2_DisabledModuleEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'module';
+
+export type Base_HatsSignerGateV2_EnabledModuleEvent = Base_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Base_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Base_Bytes']['output'];
+  module: Scalars['String']['output'];
+};
+
+export type Base_HatsSignerGateV2_EnabledModuleEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Base_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_EnabledModuleEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_EnabledModuleEvent_filter>>>;
+};
+
+export type Base_HatsSignerGateV2_EnabledModuleEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'module';
+
+export type Base_HatsSignerGateV2_HSGLockedEvent = Base_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Base_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Base_Bytes']['output'];
+};
+
+export type Base_HatsSignerGateV2_HSGLockedEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Base_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_HSGLockedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_HSGLockedEvent_filter>>>;
+};
+
+export type Base_HatsSignerGateV2_HSGLockedEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID';
+
+export type Base_HatsSignerGateV2_MigratedEvent = Base_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Base_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Base_Bytes']['output'];
+  newHsg: Scalars['String']['output'];
+};
+
+export type Base_HatsSignerGateV2_MigratedEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  newHsg?: InputMaybe<Scalars['String']['input']>;
+  newHsg_not?: InputMaybe<Scalars['String']['input']>;
+  newHsg_gt?: InputMaybe<Scalars['String']['input']>;
+  newHsg_lt?: InputMaybe<Scalars['String']['input']>;
+  newHsg_gte?: InputMaybe<Scalars['String']['input']>;
+  newHsg_lte?: InputMaybe<Scalars['String']['input']>;
+  newHsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  newHsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  newHsg_contains?: InputMaybe<Scalars['String']['input']>;
+  newHsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  newHsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  newHsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  newHsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  newHsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  newHsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  newHsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  newHsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  newHsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  newHsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  newHsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Base_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_MigratedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_MigratedEvent_filter>>>;
+};
+
+export type Base_HatsSignerGateV2_MigratedEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'newHsg';
+
+export type Base_HatsSignerGateV2_OwnerHatSetEvent = Base_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Base_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Base_Bytes']['output'];
+  ownerHat: Scalars['String']['output'];
+};
+
+export type Base_HatsSignerGateV2_OwnerHatSetEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  ownerHat?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_gt?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_lt?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_gte?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_lte?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ownerHat_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ownerHat_contains?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_contains?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Base_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_OwnerHatSetEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_OwnerHatSetEvent_filter>>>;
+};
+
+export type Base_HatsSignerGateV2_OwnerHatSetEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'ownerHat';
+
+export type Base_HatsSignerGateV2_RegisteredEvent = Base_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Base_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Base_Bytes']['output'];
+  hatId: Scalars['String']['output'];
+  signer: Scalars['String']['output'];
+};
+
+export type Base_HatsSignerGateV2_RegisteredEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  hatId?: InputMaybe<Scalars['String']['input']>;
+  hatId_not?: InputMaybe<Scalars['String']['input']>;
+  hatId_gt?: InputMaybe<Scalars['String']['input']>;
+  hatId_lt?: InputMaybe<Scalars['String']['input']>;
+  hatId_gte?: InputMaybe<Scalars['String']['input']>;
+  hatId_lte?: InputMaybe<Scalars['String']['input']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hatId_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  signer?: InputMaybe<Scalars['String']['input']>;
+  signer_not?: InputMaybe<Scalars['String']['input']>;
+  signer_gt?: InputMaybe<Scalars['String']['input']>;
+  signer_lt?: InputMaybe<Scalars['String']['input']>;
+  signer_gte?: InputMaybe<Scalars['String']['input']>;
+  signer_lte?: InputMaybe<Scalars['String']['input']>;
+  signer_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  signer_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  signer_contains?: InputMaybe<Scalars['String']['input']>;
+  signer_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  signer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  signer_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  signer_starts_with?: InputMaybe<Scalars['String']['input']>;
+  signer_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  signer_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  signer_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  signer_ends_with?: InputMaybe<Scalars['String']['input']>;
+  signer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  signer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  signer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Base_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_RegisteredEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_RegisteredEvent_filter>>>;
+};
+
+export type Base_HatsSignerGateV2_RegisteredEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'hatId'
+  | 'signer';
+
+export type Base_HatsSignerGateV2_SignerHatsAddedEvent = Base_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Base_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Base_Bytes']['output'];
+  newSignerHats: Array<Scalars['String']['output']>;
+};
+
+export type Base_HatsSignerGateV2_SignerHatsAddedEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  newSignerHats?: InputMaybe<Array<Scalars['String']['input']>>;
+  newSignerHats_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  newSignerHats_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  newSignerHats_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  newSignerHats_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  newSignerHats_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Base_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_SignerHatsAddedEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_SignerHatsAddedEvent_filter>>>;
+};
+
+export type Base_HatsSignerGateV2_SignerHatsAddedEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'newSignerHats';
+
+export type Base_HatsSignerGateV2_ThresholdConfigSetEvent = Base_HatsSignerGateV2Event & {
+  id: Scalars['ID']['output'];
+  hsg: Base_HatsSignerGateV2;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Base_Bytes']['output'];
+  thresholdType: Base_HatsSignerGateV2ThresholdType;
+  minThreshold: Scalars['BigInt']['output'];
+  targetThreshold: Scalars['BigInt']['output'];
+};
+
+export type Base_HatsSignerGateV2_ThresholdConfigSetEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  hsg?: InputMaybe<Scalars['String']['input']>;
+  hsg_not?: InputMaybe<Scalars['String']['input']>;
+  hsg_gt?: InputMaybe<Scalars['String']['input']>;
+  hsg_lt?: InputMaybe<Scalars['String']['input']>;
+  hsg_gte?: InputMaybe<Scalars['String']['input']>;
+  hsg_lte?: InputMaybe<Scalars['String']['input']>;
+  hsg_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  hsg_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  hsg_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  hsg_?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Base_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Base_Bytes']['input']>;
+  thresholdType?: InputMaybe<Base_HatsSignerGateV2ThresholdType>;
+  thresholdType_not?: InputMaybe<Base_HatsSignerGateV2ThresholdType>;
+  thresholdType_in?: InputMaybe<Array<Base_HatsSignerGateV2ThresholdType>>;
+  thresholdType_not_in?: InputMaybe<Array<Base_HatsSignerGateV2ThresholdType>>;
+  minThreshold?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_not?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  minThreshold_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  targetThreshold?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_not?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  targetThreshold_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Base_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_ThresholdConfigSetEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_ThresholdConfigSetEvent_filter>>>;
+};
+
+export type Base_HatsSignerGateV2_ThresholdConfigSetEvent_orderBy =
+  | 'id'
+  | 'hsg'
+  | 'hsg__id'
+  | 'hsg__safe'
+  | 'hsg__locked'
+  | 'hsg__claimableFor'
+  | 'hsg__implementation'
+  | 'hsg__thresholdType'
+  | 'hsg__minThreshold'
+  | 'hsg__targetThreshold'
+  | 'hsg__guard'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'thresholdType'
+  | 'minThreshold'
+  | 'targetThreshold';
+
+export type Base_HatsSignerGateV2_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  ownerHat?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_gt?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_lt?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_gte?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_lte?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ownerHat_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  ownerHat_contains?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_contains?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  ownerHat_?: InputMaybe<Base_HatAuthority_filter>;
+  signerHats?: InputMaybe<Array<Scalars['String']['input']>>;
+  signerHats_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  signerHats_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  signerHats_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  signerHats_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  signerHats_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  signerHats_?: InputMaybe<Base_HatAuthority_filter>;
+  safe?: InputMaybe<Scalars['String']['input']>;
+  safe_not?: InputMaybe<Scalars['String']['input']>;
+  safe_gt?: InputMaybe<Scalars['String']['input']>;
+  safe_lt?: InputMaybe<Scalars['String']['input']>;
+  safe_gte?: InputMaybe<Scalars['String']['input']>;
+  safe_lte?: InputMaybe<Scalars['String']['input']>;
+  safe_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  safe_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  safe_contains?: InputMaybe<Scalars['String']['input']>;
+  safe_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  safe_not_contains?: InputMaybe<Scalars['String']['input']>;
+  safe_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  safe_starts_with?: InputMaybe<Scalars['String']['input']>;
+  safe_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  safe_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  safe_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  safe_ends_with?: InputMaybe<Scalars['String']['input']>;
+  safe_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  safe_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  safe_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  locked?: InputMaybe<Scalars['Boolean']['input']>;
+  locked_not?: InputMaybe<Scalars['Boolean']['input']>;
+  locked_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  locked_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  claimableFor?: InputMaybe<Scalars['Boolean']['input']>;
+  claimableFor_not?: InputMaybe<Scalars['Boolean']['input']>;
+  claimableFor_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  claimableFor_not_in?: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  implementation?: InputMaybe<Scalars['String']['input']>;
+  implementation_not?: InputMaybe<Scalars['String']['input']>;
+  implementation_gt?: InputMaybe<Scalars['String']['input']>;
+  implementation_lt?: InputMaybe<Scalars['String']['input']>;
+  implementation_gte?: InputMaybe<Scalars['String']['input']>;
+  implementation_lte?: InputMaybe<Scalars['String']['input']>;
+  implementation_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  implementation_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  implementation_contains?: InputMaybe<Scalars['String']['input']>;
+  implementation_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  implementation_not_contains?: InputMaybe<Scalars['String']['input']>;
+  implementation_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  implementation_starts_with?: InputMaybe<Scalars['String']['input']>;
+  implementation_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  implementation_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  implementation_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  implementation_ends_with?: InputMaybe<Scalars['String']['input']>;
+  implementation_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  implementation_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  implementation_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  enabledDelegatecallTargets?: InputMaybe<Array<Scalars['String']['input']>>;
+  enabledDelegatecallTargets_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  enabledDelegatecallTargets_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  enabledDelegatecallTargets_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  enabledDelegatecallTargets_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  enabledDelegatecallTargets_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  thresholdType?: InputMaybe<Base_HatsSignerGateV2ThresholdType>;
+  thresholdType_not?: InputMaybe<Base_HatsSignerGateV2ThresholdType>;
+  thresholdType_in?: InputMaybe<Array<Base_HatsSignerGateV2ThresholdType>>;
+  thresholdType_not_in?: InputMaybe<Array<Base_HatsSignerGateV2ThresholdType>>;
+  minThreshold?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_not?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  minThreshold_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  minThreshold_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  targetThreshold?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_not?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  targetThreshold_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  targetThreshold_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  guard?: InputMaybe<Scalars['String']['input']>;
+  guard_not?: InputMaybe<Scalars['String']['input']>;
+  guard_gt?: InputMaybe<Scalars['String']['input']>;
+  guard_lt?: InputMaybe<Scalars['String']['input']>;
+  guard_gte?: InputMaybe<Scalars['String']['input']>;
+  guard_lte?: InputMaybe<Scalars['String']['input']>;
+  guard_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  guard_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  guard_contains?: InputMaybe<Scalars['String']['input']>;
+  guard_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_not_contains?: InputMaybe<Scalars['String']['input']>;
+  guard_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_starts_with?: InputMaybe<Scalars['String']['input']>;
+  guard_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  guard_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_ends_with?: InputMaybe<Scalars['String']['input']>;
+  guard_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  guard_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  guard_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  modules?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  modules_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  events_?: InputMaybe<Base_HatsSignerGateV2Event_filter>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Base_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Base_HatsSignerGateV2_filter>>>;
+};
+
+export type Base_HatsSignerGateV2_orderBy =
+  | 'id'
+  | 'ownerHat'
+  | 'ownerHat__id'
+  | 'ownerHat__primaryHatsAccount1ofNAddress'
+  | 'signerHats'
+  | 'safe'
+  | 'locked'
+  | 'claimableFor'
+  | 'implementation'
+  | 'enabledDelegatecallTargets'
+  | 'thresholdType'
+  | 'minThreshold'
+  | 'targetThreshold'
+  | 'guard'
+  | 'modules'
+  | 'events';
 
 export type Base_HatsSignerGate_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
@@ -6744,6 +8315,32 @@ export type Query = {
   Base_hatAuthorities: Array<Base_HatAuthority>;
   Base_hatsSignerGate?: Maybe<Base_HatsSignerGate>;
   Base_hatsSignerGates: Array<Base_HatsSignerGate>;
+  Base_hatsSignerGateV2?: Maybe<Base_HatsSignerGateV2>;
+  Base_hatsSignerGateV2S: Array<Base_HatsSignerGateV2>;
+  Base_hatsSignerGateV2OwnerHatSetEvent?: Maybe<Base_HatsSignerGateV2_OwnerHatSetEvent>;
+  Base_hatsSignerGateV2OwnerHatSetEvents: Array<Base_HatsSignerGateV2_OwnerHatSetEvent>;
+  Base_hatsSignerGateV2SignerHatsAddedEvent?: Maybe<Base_HatsSignerGateV2_SignerHatsAddedEvent>;
+  Base_hatsSignerGateV2SignerHatsAddedEvents: Array<Base_HatsSignerGateV2_SignerHatsAddedEvent>;
+  Base_hatsSignerGateV2ThresholdConfigSetEvent?: Maybe<Base_HatsSignerGateV2_ThresholdConfigSetEvent>;
+  Base_hatsSignerGateV2ThresholdConfigSetEvents: Array<Base_HatsSignerGateV2_ThresholdConfigSetEvent>;
+  Base_hatsSignerGateV2HSGLockedEvent?: Maybe<Base_HatsSignerGateV2_HSGLockedEvent>;
+  Base_hatsSignerGateV2HSGLockedEvents: Array<Base_HatsSignerGateV2_HSGLockedEvent>;
+  Base_hatsSignerGateV2ClaimableForSetEvent?: Maybe<Base_HatsSignerGateV2_ClaimableForSetEvent>;
+  Base_hatsSignerGateV2ClaimableForSetEvents: Array<Base_HatsSignerGateV2_ClaimableForSetEvent>;
+  Base_hatsSignerGateV2DetachedEvent?: Maybe<Base_HatsSignerGateV2_DetachedEvent>;
+  Base_hatsSignerGateV2DetachedEvents: Array<Base_HatsSignerGateV2_DetachedEvent>;
+  Base_hatsSignerGateV2MigratedEvent?: Maybe<Base_HatsSignerGateV2_MigratedEvent>;
+  Base_hatsSignerGateV2MigratedEvents: Array<Base_HatsSignerGateV2_MigratedEvent>;
+  Base_hatsSignerGateV2DelegatecallTargetEnabledEvent?: Maybe<Base_HatsSignerGateV2_DelegatecallTargetEnabledEvent>;
+  Base_hatsSignerGateV2DelegatecallTargetEnabledEvents: Array<Base_HatsSignerGateV2_DelegatecallTargetEnabledEvent>;
+  Base_hatsSignerGateV2RegisteredEvent?: Maybe<Base_HatsSignerGateV2_RegisteredEvent>;
+  Base_hatsSignerGateV2RegisteredEvents: Array<Base_HatsSignerGateV2_RegisteredEvent>;
+  Base_hatsSignerGateV2ChangedGuardEvent?: Maybe<Base_HatsSignerGateV2_ChangedGuardEvent>;
+  Base_hatsSignerGateV2ChangedGuardEvents: Array<Base_HatsSignerGateV2_ChangedGuardEvent>;
+  Base_hatsSignerGateV2EnabledModuleEvent?: Maybe<Base_HatsSignerGateV2_EnabledModuleEvent>;
+  Base_hatsSignerGateV2EnabledModuleEvents: Array<Base_HatsSignerGateV2_EnabledModuleEvent>;
+  Base_hatsSignerGateV2DisabledModuleEvent?: Maybe<Base_HatsSignerGateV2_DisabledModuleEvent>;
+  Base_hatsSignerGateV2DisabledModuleEvents: Array<Base_HatsSignerGateV2_DisabledModuleEvent>;
   Base_hatsAccount1OfN?: Maybe<Base_HatsAccount1ofN>;
   Base_hatsAccount1OfNs: Array<Base_HatsAccount1ofN>;
   Base_hatsAccount1OfNOperation?: Maybe<Base_HatsAccount1ofNOperation>;
@@ -6862,6 +8459,8 @@ export type Query = {
   Base_hatsEligibilitiesChains: Array<Base_HatsEligibilitiesChain>;
   Base_eligibilitiesRuleset?: Maybe<Base_EligibilitiesRuleset>;
   Base_eligibilitiesRulesets: Array<Base_EligibilitiesRuleset>;
+  Base_hatsSignerGateV2Event?: Maybe<Base_HatsSignerGateV2Event>;
+  Base_hatsSignerGateV2Events: Array<Base_HatsSignerGateV2Event>;
   Base_hatsModule?: Maybe<Base_HatsModule>;
   Base_hatsModules: Array<Base_HatsModule>;
   Base_hatsModuleEvent?: Maybe<Base_HatsModuleEvent>;
@@ -6914,6 +8513,240 @@ export type QueryBase_hatsSignerGatesArgs = {
   orderBy?: InputMaybe<Base_HatsSignerGate_orderBy>;
   orderDirection?: InputMaybe<Base_OrderDirection>;
   where?: InputMaybe<Base_HatsSignerGate_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2Args = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2SArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2OwnerHatSetEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2OwnerHatSetEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_OwnerHatSetEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_OwnerHatSetEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2SignerHatsAddedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2SignerHatsAddedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_SignerHatsAddedEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_SignerHatsAddedEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2ThresholdConfigSetEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2ThresholdConfigSetEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_ThresholdConfigSetEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_ThresholdConfigSetEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2HSGLockedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2HSGLockedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_HSGLockedEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_HSGLockedEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2ClaimableForSetEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2ClaimableForSetEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_ClaimableForSetEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_ClaimableForSetEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2DetachedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2DetachedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_DetachedEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_DetachedEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2MigratedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2MigratedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_MigratedEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_MigratedEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2DelegatecallTargetEnabledEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2DelegatecallTargetEnabledEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_DelegatecallTargetEnabledEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2RegisteredEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2RegisteredEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_RegisteredEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_RegisteredEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2ChangedGuardEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2ChangedGuardEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_ChangedGuardEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_ChangedGuardEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2EnabledModuleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2EnabledModuleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_EnabledModuleEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_EnabledModuleEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2DisabledModuleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2DisabledModuleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_DisabledModuleEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_DisabledModuleEvent_filter>;
   block?: InputMaybe<Base_Block_height>;
   subgraphError?: Base__SubgraphErrorPolicy_;
 };
@@ -7981,6 +9814,24 @@ export type QueryBase_eligibilitiesRulesetsArgs = {
 };
 
 
+export type QueryBase_hatsSignerGateV2EventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type QueryBase_hatsSignerGateV2EventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2Event_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2Event_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
 export type QueryBase_hatsModuleArgs = {
   id: Scalars['ID']['input'];
   block?: InputMaybe<Base_Block_height>;
@@ -8215,6 +10066,7 @@ export type Base_SeasonToggle_orderBy =
   | 'hatId'
   | 'hatAdmins';
 
+/** Shaman Stake */
 export type Base_ShamanStake = {
   id: Scalars['ID']['output'];
   stakingShaman: Base_HatsStakingShaman;
@@ -9830,6 +11682,32 @@ export type Subscription = {
   Base_hatAuthorities: Array<Base_HatAuthority>;
   Base_hatsSignerGate?: Maybe<Base_HatsSignerGate>;
   Base_hatsSignerGates: Array<Base_HatsSignerGate>;
+  Base_hatsSignerGateV2?: Maybe<Base_HatsSignerGateV2>;
+  Base_hatsSignerGateV2S: Array<Base_HatsSignerGateV2>;
+  Base_hatsSignerGateV2OwnerHatSetEvent?: Maybe<Base_HatsSignerGateV2_OwnerHatSetEvent>;
+  Base_hatsSignerGateV2OwnerHatSetEvents: Array<Base_HatsSignerGateV2_OwnerHatSetEvent>;
+  Base_hatsSignerGateV2SignerHatsAddedEvent?: Maybe<Base_HatsSignerGateV2_SignerHatsAddedEvent>;
+  Base_hatsSignerGateV2SignerHatsAddedEvents: Array<Base_HatsSignerGateV2_SignerHatsAddedEvent>;
+  Base_hatsSignerGateV2ThresholdConfigSetEvent?: Maybe<Base_HatsSignerGateV2_ThresholdConfigSetEvent>;
+  Base_hatsSignerGateV2ThresholdConfigSetEvents: Array<Base_HatsSignerGateV2_ThresholdConfigSetEvent>;
+  Base_hatsSignerGateV2HSGLockedEvent?: Maybe<Base_HatsSignerGateV2_HSGLockedEvent>;
+  Base_hatsSignerGateV2HSGLockedEvents: Array<Base_HatsSignerGateV2_HSGLockedEvent>;
+  Base_hatsSignerGateV2ClaimableForSetEvent?: Maybe<Base_HatsSignerGateV2_ClaimableForSetEvent>;
+  Base_hatsSignerGateV2ClaimableForSetEvents: Array<Base_HatsSignerGateV2_ClaimableForSetEvent>;
+  Base_hatsSignerGateV2DetachedEvent?: Maybe<Base_HatsSignerGateV2_DetachedEvent>;
+  Base_hatsSignerGateV2DetachedEvents: Array<Base_HatsSignerGateV2_DetachedEvent>;
+  Base_hatsSignerGateV2MigratedEvent?: Maybe<Base_HatsSignerGateV2_MigratedEvent>;
+  Base_hatsSignerGateV2MigratedEvents: Array<Base_HatsSignerGateV2_MigratedEvent>;
+  Base_hatsSignerGateV2DelegatecallTargetEnabledEvent?: Maybe<Base_HatsSignerGateV2_DelegatecallTargetEnabledEvent>;
+  Base_hatsSignerGateV2DelegatecallTargetEnabledEvents: Array<Base_HatsSignerGateV2_DelegatecallTargetEnabledEvent>;
+  Base_hatsSignerGateV2RegisteredEvent?: Maybe<Base_HatsSignerGateV2_RegisteredEvent>;
+  Base_hatsSignerGateV2RegisteredEvents: Array<Base_HatsSignerGateV2_RegisteredEvent>;
+  Base_hatsSignerGateV2ChangedGuardEvent?: Maybe<Base_HatsSignerGateV2_ChangedGuardEvent>;
+  Base_hatsSignerGateV2ChangedGuardEvents: Array<Base_HatsSignerGateV2_ChangedGuardEvent>;
+  Base_hatsSignerGateV2EnabledModuleEvent?: Maybe<Base_HatsSignerGateV2_EnabledModuleEvent>;
+  Base_hatsSignerGateV2EnabledModuleEvents: Array<Base_HatsSignerGateV2_EnabledModuleEvent>;
+  Base_hatsSignerGateV2DisabledModuleEvent?: Maybe<Base_HatsSignerGateV2_DisabledModuleEvent>;
+  Base_hatsSignerGateV2DisabledModuleEvents: Array<Base_HatsSignerGateV2_DisabledModuleEvent>;
   Base_hatsAccount1OfN?: Maybe<Base_HatsAccount1ofN>;
   Base_hatsAccount1OfNs: Array<Base_HatsAccount1ofN>;
   Base_hatsAccount1OfNOperation?: Maybe<Base_HatsAccount1ofNOperation>;
@@ -9948,6 +11826,8 @@ export type Subscription = {
   Base_hatsEligibilitiesChains: Array<Base_HatsEligibilitiesChain>;
   Base_eligibilitiesRuleset?: Maybe<Base_EligibilitiesRuleset>;
   Base_eligibilitiesRulesets: Array<Base_EligibilitiesRuleset>;
+  Base_hatsSignerGateV2Event?: Maybe<Base_HatsSignerGateV2Event>;
+  Base_hatsSignerGateV2Events: Array<Base_HatsSignerGateV2Event>;
   Base_hatsModule?: Maybe<Base_HatsModule>;
   Base_hatsModules: Array<Base_HatsModule>;
   Base_hatsModuleEvent?: Maybe<Base_HatsModuleEvent>;
@@ -10000,6 +11880,240 @@ export type SubscriptionBase_hatsSignerGatesArgs = {
   orderBy?: InputMaybe<Base_HatsSignerGate_orderBy>;
   orderDirection?: InputMaybe<Base_OrderDirection>;
   where?: InputMaybe<Base_HatsSignerGate_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2Args = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2SArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2OwnerHatSetEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2OwnerHatSetEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_OwnerHatSetEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_OwnerHatSetEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2SignerHatsAddedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2SignerHatsAddedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_SignerHatsAddedEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_SignerHatsAddedEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2ThresholdConfigSetEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2ThresholdConfigSetEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_ThresholdConfigSetEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_ThresholdConfigSetEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2HSGLockedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2HSGLockedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_HSGLockedEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_HSGLockedEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2ClaimableForSetEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2ClaimableForSetEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_ClaimableForSetEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_ClaimableForSetEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2DetachedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2DetachedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_DetachedEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_DetachedEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2MigratedEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2MigratedEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_MigratedEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_MigratedEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2DelegatecallTargetEnabledEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2DelegatecallTargetEnabledEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_DelegatecallTargetEnabledEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_DelegatecallTargetEnabledEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2RegisteredEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2RegisteredEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_RegisteredEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_RegisteredEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2ChangedGuardEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2ChangedGuardEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_ChangedGuardEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_ChangedGuardEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2EnabledModuleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2EnabledModuleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_EnabledModuleEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_EnabledModuleEvent_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2DisabledModuleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2DisabledModuleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2_DisabledModuleEvent_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2_DisabledModuleEvent_filter>;
   block?: InputMaybe<Base_Block_height>;
   subgraphError?: Base__SubgraphErrorPolicy_;
 };
@@ -11067,6 +13181,24 @@ export type SubscriptionBase_eligibilitiesRulesetsArgs = {
 };
 
 
+export type SubscriptionBase_hatsSignerGateV2EventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionBase_hatsSignerGateV2EventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Base_HatsSignerGateV2Event_orderBy>;
+  orderDirection?: InputMaybe<Base_OrderDirection>;
+  where?: InputMaybe<Base_HatsSignerGateV2Event_filter>;
+  block?: InputMaybe<Base_Block_height>;
+  subgraphError?: Base__SubgraphErrorPolicy_;
+};
+
+
 export type SubscriptionBase_hatsModuleArgs = {
   id: Scalars['ID']['input'];
   block?: InputMaybe<Base_Block_height>;
@@ -11257,6 +13389,58 @@ export type Base__SubgraphErrorPolicy_ =
   Base_hatsSignerGate: InContextSdkMethod<Query['Base_hatsSignerGate'], QueryBase_hatsSignerGateArgs, MeshContext>,
   /** null **/
   Base_hatsSignerGates: InContextSdkMethod<Query['Base_hatsSignerGates'], QueryBase_hatsSignerGatesArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2: InContextSdkMethod<Query['Base_hatsSignerGateV2'], QueryBase_hatsSignerGateV2Args, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2S: InContextSdkMethod<Query['Base_hatsSignerGateV2S'], QueryBase_hatsSignerGateV2SArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2OwnerHatSetEvent: InContextSdkMethod<Query['Base_hatsSignerGateV2OwnerHatSetEvent'], QueryBase_hatsSignerGateV2OwnerHatSetEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2OwnerHatSetEvents: InContextSdkMethod<Query['Base_hatsSignerGateV2OwnerHatSetEvents'], QueryBase_hatsSignerGateV2OwnerHatSetEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2SignerHatsAddedEvent: InContextSdkMethod<Query['Base_hatsSignerGateV2SignerHatsAddedEvent'], QueryBase_hatsSignerGateV2SignerHatsAddedEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2SignerHatsAddedEvents: InContextSdkMethod<Query['Base_hatsSignerGateV2SignerHatsAddedEvents'], QueryBase_hatsSignerGateV2SignerHatsAddedEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2ThresholdConfigSetEvent: InContextSdkMethod<Query['Base_hatsSignerGateV2ThresholdConfigSetEvent'], QueryBase_hatsSignerGateV2ThresholdConfigSetEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2ThresholdConfigSetEvents: InContextSdkMethod<Query['Base_hatsSignerGateV2ThresholdConfigSetEvents'], QueryBase_hatsSignerGateV2ThresholdConfigSetEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2HSGLockedEvent: InContextSdkMethod<Query['Base_hatsSignerGateV2HSGLockedEvent'], QueryBase_hatsSignerGateV2HSGLockedEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2HSGLockedEvents: InContextSdkMethod<Query['Base_hatsSignerGateV2HSGLockedEvents'], QueryBase_hatsSignerGateV2HSGLockedEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2ClaimableForSetEvent: InContextSdkMethod<Query['Base_hatsSignerGateV2ClaimableForSetEvent'], QueryBase_hatsSignerGateV2ClaimableForSetEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2ClaimableForSetEvents: InContextSdkMethod<Query['Base_hatsSignerGateV2ClaimableForSetEvents'], QueryBase_hatsSignerGateV2ClaimableForSetEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2DetachedEvent: InContextSdkMethod<Query['Base_hatsSignerGateV2DetachedEvent'], QueryBase_hatsSignerGateV2DetachedEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2DetachedEvents: InContextSdkMethod<Query['Base_hatsSignerGateV2DetachedEvents'], QueryBase_hatsSignerGateV2DetachedEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2MigratedEvent: InContextSdkMethod<Query['Base_hatsSignerGateV2MigratedEvent'], QueryBase_hatsSignerGateV2MigratedEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2MigratedEvents: InContextSdkMethod<Query['Base_hatsSignerGateV2MigratedEvents'], QueryBase_hatsSignerGateV2MigratedEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2DelegatecallTargetEnabledEvent: InContextSdkMethod<Query['Base_hatsSignerGateV2DelegatecallTargetEnabledEvent'], QueryBase_hatsSignerGateV2DelegatecallTargetEnabledEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2DelegatecallTargetEnabledEvents: InContextSdkMethod<Query['Base_hatsSignerGateV2DelegatecallTargetEnabledEvents'], QueryBase_hatsSignerGateV2DelegatecallTargetEnabledEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2RegisteredEvent: InContextSdkMethod<Query['Base_hatsSignerGateV2RegisteredEvent'], QueryBase_hatsSignerGateV2RegisteredEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2RegisteredEvents: InContextSdkMethod<Query['Base_hatsSignerGateV2RegisteredEvents'], QueryBase_hatsSignerGateV2RegisteredEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2ChangedGuardEvent: InContextSdkMethod<Query['Base_hatsSignerGateV2ChangedGuardEvent'], QueryBase_hatsSignerGateV2ChangedGuardEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2ChangedGuardEvents: InContextSdkMethod<Query['Base_hatsSignerGateV2ChangedGuardEvents'], QueryBase_hatsSignerGateV2ChangedGuardEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2EnabledModuleEvent: InContextSdkMethod<Query['Base_hatsSignerGateV2EnabledModuleEvent'], QueryBase_hatsSignerGateV2EnabledModuleEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2EnabledModuleEvents: InContextSdkMethod<Query['Base_hatsSignerGateV2EnabledModuleEvents'], QueryBase_hatsSignerGateV2EnabledModuleEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2DisabledModuleEvent: InContextSdkMethod<Query['Base_hatsSignerGateV2DisabledModuleEvent'], QueryBase_hatsSignerGateV2DisabledModuleEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2DisabledModuleEvents: InContextSdkMethod<Query['Base_hatsSignerGateV2DisabledModuleEvents'], QueryBase_hatsSignerGateV2DisabledModuleEventsArgs, MeshContext>,
   /** null **/
   Base_hatsAccount1OfN: InContextSdkMethod<Query['Base_hatsAccount1OfN'], QueryBase_hatsAccount1OfNArgs, MeshContext>,
   /** null **/
@@ -11494,6 +13678,10 @@ export type Base__SubgraphErrorPolicy_ =
   /** null **/
   Base_eligibilitiesRulesets: InContextSdkMethod<Query['Base_eligibilitiesRulesets'], QueryBase_eligibilitiesRulesetsArgs, MeshContext>,
   /** null **/
+  Base_hatsSignerGateV2Event: InContextSdkMethod<Query['Base_hatsSignerGateV2Event'], QueryBase_hatsSignerGateV2EventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2Events: InContextSdkMethod<Query['Base_hatsSignerGateV2Events'], QueryBase_hatsSignerGateV2EventsArgs, MeshContext>,
+  /** null **/
   Base_hatsModule: InContextSdkMethod<Query['Base_hatsModule'], QueryBase_hatsModuleArgs, MeshContext>,
   /** null **/
   Base_hatsModules: InContextSdkMethod<Query['Base_hatsModules'], QueryBase_hatsModulesArgs, MeshContext>,
@@ -11542,6 +13730,58 @@ export type Base__SubgraphErrorPolicy_ =
   Base_hatsSignerGate: InContextSdkMethod<Subscription['Base_hatsSignerGate'], SubscriptionBase_hatsSignerGateArgs, MeshContext>,
   /** null **/
   Base_hatsSignerGates: InContextSdkMethod<Subscription['Base_hatsSignerGates'], SubscriptionBase_hatsSignerGatesArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2: InContextSdkMethod<Subscription['Base_hatsSignerGateV2'], SubscriptionBase_hatsSignerGateV2Args, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2S: InContextSdkMethod<Subscription['Base_hatsSignerGateV2S'], SubscriptionBase_hatsSignerGateV2SArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2OwnerHatSetEvent: InContextSdkMethod<Subscription['Base_hatsSignerGateV2OwnerHatSetEvent'], SubscriptionBase_hatsSignerGateV2OwnerHatSetEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2OwnerHatSetEvents: InContextSdkMethod<Subscription['Base_hatsSignerGateV2OwnerHatSetEvents'], SubscriptionBase_hatsSignerGateV2OwnerHatSetEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2SignerHatsAddedEvent: InContextSdkMethod<Subscription['Base_hatsSignerGateV2SignerHatsAddedEvent'], SubscriptionBase_hatsSignerGateV2SignerHatsAddedEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2SignerHatsAddedEvents: InContextSdkMethod<Subscription['Base_hatsSignerGateV2SignerHatsAddedEvents'], SubscriptionBase_hatsSignerGateV2SignerHatsAddedEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2ThresholdConfigSetEvent: InContextSdkMethod<Subscription['Base_hatsSignerGateV2ThresholdConfigSetEvent'], SubscriptionBase_hatsSignerGateV2ThresholdConfigSetEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2ThresholdConfigSetEvents: InContextSdkMethod<Subscription['Base_hatsSignerGateV2ThresholdConfigSetEvents'], SubscriptionBase_hatsSignerGateV2ThresholdConfigSetEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2HSGLockedEvent: InContextSdkMethod<Subscription['Base_hatsSignerGateV2HSGLockedEvent'], SubscriptionBase_hatsSignerGateV2HSGLockedEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2HSGLockedEvents: InContextSdkMethod<Subscription['Base_hatsSignerGateV2HSGLockedEvents'], SubscriptionBase_hatsSignerGateV2HSGLockedEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2ClaimableForSetEvent: InContextSdkMethod<Subscription['Base_hatsSignerGateV2ClaimableForSetEvent'], SubscriptionBase_hatsSignerGateV2ClaimableForSetEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2ClaimableForSetEvents: InContextSdkMethod<Subscription['Base_hatsSignerGateV2ClaimableForSetEvents'], SubscriptionBase_hatsSignerGateV2ClaimableForSetEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2DetachedEvent: InContextSdkMethod<Subscription['Base_hatsSignerGateV2DetachedEvent'], SubscriptionBase_hatsSignerGateV2DetachedEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2DetachedEvents: InContextSdkMethod<Subscription['Base_hatsSignerGateV2DetachedEvents'], SubscriptionBase_hatsSignerGateV2DetachedEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2MigratedEvent: InContextSdkMethod<Subscription['Base_hatsSignerGateV2MigratedEvent'], SubscriptionBase_hatsSignerGateV2MigratedEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2MigratedEvents: InContextSdkMethod<Subscription['Base_hatsSignerGateV2MigratedEvents'], SubscriptionBase_hatsSignerGateV2MigratedEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2DelegatecallTargetEnabledEvent: InContextSdkMethod<Subscription['Base_hatsSignerGateV2DelegatecallTargetEnabledEvent'], SubscriptionBase_hatsSignerGateV2DelegatecallTargetEnabledEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2DelegatecallTargetEnabledEvents: InContextSdkMethod<Subscription['Base_hatsSignerGateV2DelegatecallTargetEnabledEvents'], SubscriptionBase_hatsSignerGateV2DelegatecallTargetEnabledEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2RegisteredEvent: InContextSdkMethod<Subscription['Base_hatsSignerGateV2RegisteredEvent'], SubscriptionBase_hatsSignerGateV2RegisteredEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2RegisteredEvents: InContextSdkMethod<Subscription['Base_hatsSignerGateV2RegisteredEvents'], SubscriptionBase_hatsSignerGateV2RegisteredEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2ChangedGuardEvent: InContextSdkMethod<Subscription['Base_hatsSignerGateV2ChangedGuardEvent'], SubscriptionBase_hatsSignerGateV2ChangedGuardEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2ChangedGuardEvents: InContextSdkMethod<Subscription['Base_hatsSignerGateV2ChangedGuardEvents'], SubscriptionBase_hatsSignerGateV2ChangedGuardEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2EnabledModuleEvent: InContextSdkMethod<Subscription['Base_hatsSignerGateV2EnabledModuleEvent'], SubscriptionBase_hatsSignerGateV2EnabledModuleEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2EnabledModuleEvents: InContextSdkMethod<Subscription['Base_hatsSignerGateV2EnabledModuleEvents'], SubscriptionBase_hatsSignerGateV2EnabledModuleEventsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2DisabledModuleEvent: InContextSdkMethod<Subscription['Base_hatsSignerGateV2DisabledModuleEvent'], SubscriptionBase_hatsSignerGateV2DisabledModuleEventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2DisabledModuleEvents: InContextSdkMethod<Subscription['Base_hatsSignerGateV2DisabledModuleEvents'], SubscriptionBase_hatsSignerGateV2DisabledModuleEventsArgs, MeshContext>,
   /** null **/
   Base_hatsAccount1OfN: InContextSdkMethod<Subscription['Base_hatsAccount1OfN'], SubscriptionBase_hatsAccount1OfNArgs, MeshContext>,
   /** null **/
@@ -11778,6 +14018,10 @@ export type Base__SubgraphErrorPolicy_ =
   Base_eligibilitiesRuleset: InContextSdkMethod<Subscription['Base_eligibilitiesRuleset'], SubscriptionBase_eligibilitiesRulesetArgs, MeshContext>,
   /** null **/
   Base_eligibilitiesRulesets: InContextSdkMethod<Subscription['Base_eligibilitiesRulesets'], SubscriptionBase_eligibilitiesRulesetsArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2Event: InContextSdkMethod<Subscription['Base_hatsSignerGateV2Event'], SubscriptionBase_hatsSignerGateV2EventArgs, MeshContext>,
+  /** null **/
+  Base_hatsSignerGateV2Events: InContextSdkMethod<Subscription['Base_hatsSignerGateV2Events'], SubscriptionBase_hatsSignerGateV2EventsArgs, MeshContext>,
   /** null **/
   Base_hatsModule: InContextSdkMethod<Subscription['Base_hatsModule'], SubscriptionBase_hatsModuleArgs, MeshContext>,
   /** null **/
