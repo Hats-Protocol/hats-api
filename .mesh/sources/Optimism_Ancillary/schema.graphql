@@ -727,6 +727,252 @@ enum Op_Agreement_ArbitratorHatSetEvent_orderBy {
   newArbitratorHat
 }
 
+type Op_Agreement_ForgivenMultipleEvent implements Op_AgreementEvent {
+  id: ID!
+  module: Op_HatsModule!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Op_Bytes!
+  agreementEligibilityInstance: Op_AgreementEligibility!
+  wearers: [String!]!
+}
+
+input Op_Agreement_ForgivenMultipleEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  module: String
+  module_not: String
+  module_gt: String
+  module_lt: String
+  module_gte: String
+  module_lte: String
+  module_in: [String!]
+  module_not_in: [String!]
+  module_contains: String
+  module_contains_nocase: String
+  module_not_contains: String
+  module_not_contains_nocase: String
+  module_starts_with: String
+  module_starts_with_nocase: String
+  module_not_starts_with: String
+  module_not_starts_with_nocase: String
+  module_ends_with: String
+  module_ends_with_nocase: String
+  module_not_ends_with: String
+  module_not_ends_with_nocase: String
+  module_: Op_HatsModule_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Op_Bytes
+  transactionID_not: Op_Bytes
+  transactionID_gt: Op_Bytes
+  transactionID_lt: Op_Bytes
+  transactionID_gte: Op_Bytes
+  transactionID_lte: Op_Bytes
+  transactionID_in: [Op_Bytes!]
+  transactionID_not_in: [Op_Bytes!]
+  transactionID_contains: Op_Bytes
+  transactionID_not_contains: Op_Bytes
+  agreementEligibilityInstance: String
+  agreementEligibilityInstance_not: String
+  agreementEligibilityInstance_gt: String
+  agreementEligibilityInstance_lt: String
+  agreementEligibilityInstance_gte: String
+  agreementEligibilityInstance_lte: String
+  agreementEligibilityInstance_in: [String!]
+  agreementEligibilityInstance_not_in: [String!]
+  agreementEligibilityInstance_contains: String
+  agreementEligibilityInstance_contains_nocase: String
+  agreementEligibilityInstance_not_contains: String
+  agreementEligibilityInstance_not_contains_nocase: String
+  agreementEligibilityInstance_starts_with: String
+  agreementEligibilityInstance_starts_with_nocase: String
+  agreementEligibilityInstance_not_starts_with: String
+  agreementEligibilityInstance_not_starts_with_nocase: String
+  agreementEligibilityInstance_ends_with: String
+  agreementEligibilityInstance_ends_with_nocase: String
+  agreementEligibilityInstance_not_ends_with: String
+  agreementEligibilityInstance_not_ends_with_nocase: String
+  agreementEligibilityInstance_: Op_AgreementEligibility_filter
+  wearers: [String!]
+  wearers_not: [String!]
+  wearers_contains: [String!]
+  wearers_contains_nocase: [String!]
+  wearers_not_contains: [String!]
+  wearers_not_contains_nocase: [String!]
+  """Filter for the block changed event."""
+  _change_block: Op_BlockChangedFilter
+  and: [Op_Agreement_ForgivenMultipleEvent_filter]
+  or: [Op_Agreement_ForgivenMultipleEvent_filter]
+}
+
+enum Op_Agreement_ForgivenMultipleEvent_orderBy {
+  id
+  module
+  module__id
+  module__version
+  module__hatId
+  blockNumber
+  timestamp
+  transactionID
+  agreementEligibilityInstance
+  agreementEligibilityInstance__id
+  agreementEligibilityInstance__version
+  agreementEligibilityInstance__hatId
+  agreementEligibilityInstance__currentAgreementNumber
+  wearers
+}
+
+type Op_Agreement_ForgivenSingleEvent implements Op_AgreementEvent {
+  id: ID!
+  module: Op_HatsModule!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Op_Bytes!
+  agreementEligibilityInstance: Op_AgreementEligibility!
+  wearer: String!
+}
+
+input Op_Agreement_ForgivenSingleEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  module: String
+  module_not: String
+  module_gt: String
+  module_lt: String
+  module_gte: String
+  module_lte: String
+  module_in: [String!]
+  module_not_in: [String!]
+  module_contains: String
+  module_contains_nocase: String
+  module_not_contains: String
+  module_not_contains_nocase: String
+  module_starts_with: String
+  module_starts_with_nocase: String
+  module_not_starts_with: String
+  module_not_starts_with_nocase: String
+  module_ends_with: String
+  module_ends_with_nocase: String
+  module_not_ends_with: String
+  module_not_ends_with_nocase: String
+  module_: Op_HatsModule_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Op_Bytes
+  transactionID_not: Op_Bytes
+  transactionID_gt: Op_Bytes
+  transactionID_lt: Op_Bytes
+  transactionID_gte: Op_Bytes
+  transactionID_lte: Op_Bytes
+  transactionID_in: [Op_Bytes!]
+  transactionID_not_in: [Op_Bytes!]
+  transactionID_contains: Op_Bytes
+  transactionID_not_contains: Op_Bytes
+  agreementEligibilityInstance: String
+  agreementEligibilityInstance_not: String
+  agreementEligibilityInstance_gt: String
+  agreementEligibilityInstance_lt: String
+  agreementEligibilityInstance_gte: String
+  agreementEligibilityInstance_lte: String
+  agreementEligibilityInstance_in: [String!]
+  agreementEligibilityInstance_not_in: [String!]
+  agreementEligibilityInstance_contains: String
+  agreementEligibilityInstance_contains_nocase: String
+  agreementEligibilityInstance_not_contains: String
+  agreementEligibilityInstance_not_contains_nocase: String
+  agreementEligibilityInstance_starts_with: String
+  agreementEligibilityInstance_starts_with_nocase: String
+  agreementEligibilityInstance_not_starts_with: String
+  agreementEligibilityInstance_not_starts_with_nocase: String
+  agreementEligibilityInstance_ends_with: String
+  agreementEligibilityInstance_ends_with_nocase: String
+  agreementEligibilityInstance_not_ends_with: String
+  agreementEligibilityInstance_not_ends_with_nocase: String
+  agreementEligibilityInstance_: Op_AgreementEligibility_filter
+  wearer: String
+  wearer_not: String
+  wearer_gt: String
+  wearer_lt: String
+  wearer_gte: String
+  wearer_lte: String
+  wearer_in: [String!]
+  wearer_not_in: [String!]
+  wearer_contains: String
+  wearer_contains_nocase: String
+  wearer_not_contains: String
+  wearer_not_contains_nocase: String
+  wearer_starts_with: String
+  wearer_starts_with_nocase: String
+  wearer_not_starts_with: String
+  wearer_not_starts_with_nocase: String
+  wearer_ends_with: String
+  wearer_ends_with_nocase: String
+  wearer_not_ends_with: String
+  wearer_not_ends_with_nocase: String
+  """Filter for the block changed event."""
+  _change_block: Op_BlockChangedFilter
+  and: [Op_Agreement_ForgivenSingleEvent_filter]
+  or: [Op_Agreement_ForgivenSingleEvent_filter]
+}
+
+enum Op_Agreement_ForgivenSingleEvent_orderBy {
+  id
+  module
+  module__id
+  module__version
+  module__hatId
+  blockNumber
+  timestamp
+  transactionID
+  agreementEligibilityInstance
+  agreementEligibilityInstance__id
+  agreementEligibilityInstance__version
+  agreementEligibilityInstance__hatId
+  agreementEligibilityInstance__currentAgreementNumber
+  wearer
+}
+
 type Op_Agreement_HatClaimedWithAgreementEvent implements Op_AgreementEvent {
   id: ID!
   module: Op_HatsModule!
@@ -1029,6 +1275,252 @@ enum Op_Agreement_OwnerHatSetEvent_orderBy {
   agreementEligibilityInstance__hatId
   agreementEligibilityInstance__currentAgreementNumber
   newOwnerHat
+}
+
+type Op_Agreement_RevokedMultipleEvent implements Op_AgreementEvent {
+  id: ID!
+  module: Op_HatsModule!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Op_Bytes!
+  agreementEligibilityInstance: Op_AgreementEligibility!
+  wearers: [String!]!
+}
+
+input Op_Agreement_RevokedMultipleEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  module: String
+  module_not: String
+  module_gt: String
+  module_lt: String
+  module_gte: String
+  module_lte: String
+  module_in: [String!]
+  module_not_in: [String!]
+  module_contains: String
+  module_contains_nocase: String
+  module_not_contains: String
+  module_not_contains_nocase: String
+  module_starts_with: String
+  module_starts_with_nocase: String
+  module_not_starts_with: String
+  module_not_starts_with_nocase: String
+  module_ends_with: String
+  module_ends_with_nocase: String
+  module_not_ends_with: String
+  module_not_ends_with_nocase: String
+  module_: Op_HatsModule_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Op_Bytes
+  transactionID_not: Op_Bytes
+  transactionID_gt: Op_Bytes
+  transactionID_lt: Op_Bytes
+  transactionID_gte: Op_Bytes
+  transactionID_lte: Op_Bytes
+  transactionID_in: [Op_Bytes!]
+  transactionID_not_in: [Op_Bytes!]
+  transactionID_contains: Op_Bytes
+  transactionID_not_contains: Op_Bytes
+  agreementEligibilityInstance: String
+  agreementEligibilityInstance_not: String
+  agreementEligibilityInstance_gt: String
+  agreementEligibilityInstance_lt: String
+  agreementEligibilityInstance_gte: String
+  agreementEligibilityInstance_lte: String
+  agreementEligibilityInstance_in: [String!]
+  agreementEligibilityInstance_not_in: [String!]
+  agreementEligibilityInstance_contains: String
+  agreementEligibilityInstance_contains_nocase: String
+  agreementEligibilityInstance_not_contains: String
+  agreementEligibilityInstance_not_contains_nocase: String
+  agreementEligibilityInstance_starts_with: String
+  agreementEligibilityInstance_starts_with_nocase: String
+  agreementEligibilityInstance_not_starts_with: String
+  agreementEligibilityInstance_not_starts_with_nocase: String
+  agreementEligibilityInstance_ends_with: String
+  agreementEligibilityInstance_ends_with_nocase: String
+  agreementEligibilityInstance_not_ends_with: String
+  agreementEligibilityInstance_not_ends_with_nocase: String
+  agreementEligibilityInstance_: Op_AgreementEligibility_filter
+  wearers: [String!]
+  wearers_not: [String!]
+  wearers_contains: [String!]
+  wearers_contains_nocase: [String!]
+  wearers_not_contains: [String!]
+  wearers_not_contains_nocase: [String!]
+  """Filter for the block changed event."""
+  _change_block: Op_BlockChangedFilter
+  and: [Op_Agreement_RevokedMultipleEvent_filter]
+  or: [Op_Agreement_RevokedMultipleEvent_filter]
+}
+
+enum Op_Agreement_RevokedMultipleEvent_orderBy {
+  id
+  module
+  module__id
+  module__version
+  module__hatId
+  blockNumber
+  timestamp
+  transactionID
+  agreementEligibilityInstance
+  agreementEligibilityInstance__id
+  agreementEligibilityInstance__version
+  agreementEligibilityInstance__hatId
+  agreementEligibilityInstance__currentAgreementNumber
+  wearers
+}
+
+type Op_Agreement_RevokedSingleEvent implements Op_AgreementEvent {
+  id: ID!
+  module: Op_HatsModule!
+  blockNumber: Int!
+  timestamp: BigInt!
+  transactionID: Op_Bytes!
+  agreementEligibilityInstance: Op_AgreementEligibility!
+  wearer: String!
+}
+
+input Op_Agreement_RevokedSingleEvent_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  module: String
+  module_not: String
+  module_gt: String
+  module_lt: String
+  module_gte: String
+  module_lte: String
+  module_in: [String!]
+  module_not_in: [String!]
+  module_contains: String
+  module_contains_nocase: String
+  module_not_contains: String
+  module_not_contains_nocase: String
+  module_starts_with: String
+  module_starts_with_nocase: String
+  module_not_starts_with: String
+  module_not_starts_with_nocase: String
+  module_ends_with: String
+  module_ends_with_nocase: String
+  module_not_ends_with: String
+  module_not_ends_with_nocase: String
+  module_: Op_HatsModule_filter
+  blockNumber: Int
+  blockNumber_not: Int
+  blockNumber_gt: Int
+  blockNumber_lt: Int
+  blockNumber_gte: Int
+  blockNumber_lte: Int
+  blockNumber_in: [Int!]
+  blockNumber_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  transactionID: Op_Bytes
+  transactionID_not: Op_Bytes
+  transactionID_gt: Op_Bytes
+  transactionID_lt: Op_Bytes
+  transactionID_gte: Op_Bytes
+  transactionID_lte: Op_Bytes
+  transactionID_in: [Op_Bytes!]
+  transactionID_not_in: [Op_Bytes!]
+  transactionID_contains: Op_Bytes
+  transactionID_not_contains: Op_Bytes
+  agreementEligibilityInstance: String
+  agreementEligibilityInstance_not: String
+  agreementEligibilityInstance_gt: String
+  agreementEligibilityInstance_lt: String
+  agreementEligibilityInstance_gte: String
+  agreementEligibilityInstance_lte: String
+  agreementEligibilityInstance_in: [String!]
+  agreementEligibilityInstance_not_in: [String!]
+  agreementEligibilityInstance_contains: String
+  agreementEligibilityInstance_contains_nocase: String
+  agreementEligibilityInstance_not_contains: String
+  agreementEligibilityInstance_not_contains_nocase: String
+  agreementEligibilityInstance_starts_with: String
+  agreementEligibilityInstance_starts_with_nocase: String
+  agreementEligibilityInstance_not_starts_with: String
+  agreementEligibilityInstance_not_starts_with_nocase: String
+  agreementEligibilityInstance_ends_with: String
+  agreementEligibilityInstance_ends_with_nocase: String
+  agreementEligibilityInstance_not_ends_with: String
+  agreementEligibilityInstance_not_ends_with_nocase: String
+  agreementEligibilityInstance_: Op_AgreementEligibility_filter
+  wearer: String
+  wearer_not: String
+  wearer_gt: String
+  wearer_lt: String
+  wearer_gte: String
+  wearer_lte: String
+  wearer_in: [String!]
+  wearer_not_in: [String!]
+  wearer_contains: String
+  wearer_contains_nocase: String
+  wearer_not_contains: String
+  wearer_not_contains_nocase: String
+  wearer_starts_with: String
+  wearer_starts_with_nocase: String
+  wearer_not_starts_with: String
+  wearer_not_starts_with_nocase: String
+  wearer_ends_with: String
+  wearer_ends_with_nocase: String
+  wearer_not_ends_with: String
+  wearer_not_ends_with_nocase: String
+  """Filter for the block changed event."""
+  _change_block: Op_BlockChangedFilter
+  and: [Op_Agreement_RevokedSingleEvent_filter]
+  or: [Op_Agreement_RevokedSingleEvent_filter]
+}
+
+enum Op_Agreement_RevokedSingleEvent_orderBy {
+  id
+  module
+  module__id
+  module__version
+  module__hatId
+  blockNumber
+  timestamp
+  transactionID
+  agreementEligibilityInstance
+  agreementEligibilityInstance__id
+  agreementEligibilityInstance__version
+  agreementEligibilityInstance__hatId
+  agreementEligibilityInstance__currentAgreementNumber
+  wearer
 }
 
 input Op_Agreement_filter {
@@ -9556,6 +10048,110 @@ type Query {
     """
     subgraphError: Op__SubgraphErrorPolicy_! = deny
   ): [Op_Agreement_ArbitratorHatSetEvent!]!
+  Op_agreementRevokedSingleEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): Op_Agreement_RevokedSingleEvent
+  Op_agreementRevokedSingleEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Op_Agreement_RevokedSingleEvent_orderBy
+    orderDirection: Op_OrderDirection
+    where: Op_Agreement_RevokedSingleEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): [Op_Agreement_RevokedSingleEvent!]!
+  Op_agreementRevokedMultipleEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): Op_Agreement_RevokedMultipleEvent
+  Op_agreementRevokedMultipleEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Op_Agreement_RevokedMultipleEvent_orderBy
+    orderDirection: Op_OrderDirection
+    where: Op_Agreement_RevokedMultipleEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): [Op_Agreement_RevokedMultipleEvent!]!
+  Op_agreementForgivenSingleEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): Op_Agreement_ForgivenSingleEvent
+  Op_agreementForgivenSingleEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Op_Agreement_ForgivenSingleEvent_orderBy
+    orderDirection: Op_OrderDirection
+    where: Op_Agreement_ForgivenSingleEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): [Op_Agreement_ForgivenSingleEvent!]!
+  Op_agreementForgivenMultipleEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): Op_Agreement_ForgivenMultipleEvent
+  Op_agreementForgivenMultipleEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Op_Agreement_ForgivenMultipleEvent_orderBy
+    orderDirection: Op_OrderDirection
+    where: Op_Agreement_ForgivenMultipleEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): [Op_Agreement_ForgivenMultipleEvent!]!
   Op_erc20Eligibility(
     id: ID!
     """
@@ -13389,6 +13985,110 @@ type Subscription {
     """
     subgraphError: Op__SubgraphErrorPolicy_! = deny
   ): [Op_Agreement_ArbitratorHatSetEvent!]!
+  Op_agreementRevokedSingleEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): Op_Agreement_RevokedSingleEvent
+  Op_agreementRevokedSingleEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Op_Agreement_RevokedSingleEvent_orderBy
+    orderDirection: Op_OrderDirection
+    where: Op_Agreement_RevokedSingleEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): [Op_Agreement_RevokedSingleEvent!]!
+  Op_agreementRevokedMultipleEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): Op_Agreement_RevokedMultipleEvent
+  Op_agreementRevokedMultipleEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Op_Agreement_RevokedMultipleEvent_orderBy
+    orderDirection: Op_OrderDirection
+    where: Op_Agreement_RevokedMultipleEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): [Op_Agreement_RevokedMultipleEvent!]!
+  Op_agreementForgivenSingleEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): Op_Agreement_ForgivenSingleEvent
+  Op_agreementForgivenSingleEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Op_Agreement_ForgivenSingleEvent_orderBy
+    orderDirection: Op_OrderDirection
+    where: Op_Agreement_ForgivenSingleEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): [Op_Agreement_ForgivenSingleEvent!]!
+  Op_agreementForgivenMultipleEvent(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): Op_Agreement_ForgivenMultipleEvent
+  Op_agreementForgivenMultipleEvents(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Op_Agreement_ForgivenMultipleEvent_orderBy
+    orderDirection: Op_OrderDirection
+    where: Op_Agreement_ForgivenMultipleEvent_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Op_Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: Op__SubgraphErrorPolicy_! = deny
+  ): [Op_Agreement_ForgivenMultipleEvent!]!
   Op_erc20Eligibility(
     id: ID!
     """

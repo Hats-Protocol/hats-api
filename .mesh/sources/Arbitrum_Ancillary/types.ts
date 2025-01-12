@@ -750,6 +750,250 @@ export type Arb_Agreement_ArbitratorHatSetEvent_orderBy =
   | 'agreementEligibilityInstance__currentAgreementNumber'
   | 'newArbitratorHat';
 
+export type Arb_Agreement_ForgivenMultipleEvent = Arb_AgreementEvent & {
+  id: Scalars['ID']['output'];
+  module: Arb_HatsModule;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Arb_Bytes']['output'];
+  agreementEligibilityInstance: Arb_AgreementEligibility;
+  wearers: Array<Scalars['String']['output']>;
+};
+
+export type Arb_Agreement_ForgivenMultipleEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_?: InputMaybe<Arb_HatsModule_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Arb_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Arb_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  agreementEligibilityInstance?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_?: InputMaybe<Arb_AgreementEligibility_filter>;
+  wearers?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Arb_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Arb_Agreement_ForgivenMultipleEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Arb_Agreement_ForgivenMultipleEvent_filter>>>;
+};
+
+export type Arb_Agreement_ForgivenMultipleEvent_orderBy =
+  | 'id'
+  | 'module'
+  | 'module__id'
+  | 'module__version'
+  | 'module__hatId'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'agreementEligibilityInstance'
+  | 'agreementEligibilityInstance__id'
+  | 'agreementEligibilityInstance__version'
+  | 'agreementEligibilityInstance__hatId'
+  | 'agreementEligibilityInstance__currentAgreementNumber'
+  | 'wearers';
+
+export type Arb_Agreement_ForgivenSingleEvent = Arb_AgreementEvent & {
+  id: Scalars['ID']['output'];
+  module: Arb_HatsModule;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Arb_Bytes']['output'];
+  agreementEligibilityInstance: Arb_AgreementEligibility;
+  wearer: Scalars['String']['output'];
+};
+
+export type Arb_Agreement_ForgivenSingleEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_?: InputMaybe<Arb_HatsModule_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Arb_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Arb_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  agreementEligibilityInstance?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_?: InputMaybe<Arb_AgreementEligibility_filter>;
+  wearer?: InputMaybe<Scalars['String']['input']>;
+  wearer_not?: InputMaybe<Scalars['String']['input']>;
+  wearer_gt?: InputMaybe<Scalars['String']['input']>;
+  wearer_lt?: InputMaybe<Scalars['String']['input']>;
+  wearer_gte?: InputMaybe<Scalars['String']['input']>;
+  wearer_lte?: InputMaybe<Scalars['String']['input']>;
+  wearer_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Arb_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Arb_Agreement_ForgivenSingleEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Arb_Agreement_ForgivenSingleEvent_filter>>>;
+};
+
+export type Arb_Agreement_ForgivenSingleEvent_orderBy =
+  | 'id'
+  | 'module'
+  | 'module__id'
+  | 'module__version'
+  | 'module__hatId'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'agreementEligibilityInstance'
+  | 'agreementEligibilityInstance__id'
+  | 'agreementEligibilityInstance__version'
+  | 'agreementEligibilityInstance__hatId'
+  | 'agreementEligibilityInstance__currentAgreementNumber'
+  | 'wearer';
+
 export type Arb_Agreement_HatClaimedWithAgreementEvent = Arb_AgreementEvent & {
   id: Scalars['ID']['output'];
   module: Arb_HatsModule;
@@ -1051,6 +1295,250 @@ export type Arb_Agreement_OwnerHatSetEvent_orderBy =
   | 'agreementEligibilityInstance__hatId'
   | 'agreementEligibilityInstance__currentAgreementNumber'
   | 'newOwnerHat';
+
+export type Arb_Agreement_RevokedMultipleEvent = Arb_AgreementEvent & {
+  id: Scalars['ID']['output'];
+  module: Arb_HatsModule;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Arb_Bytes']['output'];
+  agreementEligibilityInstance: Arb_AgreementEligibility;
+  wearers: Array<Scalars['String']['output']>;
+};
+
+export type Arb_Agreement_RevokedMultipleEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_?: InputMaybe<Arb_HatsModule_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Arb_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Arb_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  agreementEligibilityInstance?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_?: InputMaybe<Arb_AgreementEligibility_filter>;
+  wearers?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Arb_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Arb_Agreement_RevokedMultipleEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Arb_Agreement_RevokedMultipleEvent_filter>>>;
+};
+
+export type Arb_Agreement_RevokedMultipleEvent_orderBy =
+  | 'id'
+  | 'module'
+  | 'module__id'
+  | 'module__version'
+  | 'module__hatId'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'agreementEligibilityInstance'
+  | 'agreementEligibilityInstance__id'
+  | 'agreementEligibilityInstance__version'
+  | 'agreementEligibilityInstance__hatId'
+  | 'agreementEligibilityInstance__currentAgreementNumber'
+  | 'wearers';
+
+export type Arb_Agreement_RevokedSingleEvent = Arb_AgreementEvent & {
+  id: Scalars['ID']['output'];
+  module: Arb_HatsModule;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Arb_Bytes']['output'];
+  agreementEligibilityInstance: Arb_AgreementEligibility;
+  wearer: Scalars['String']['output'];
+};
+
+export type Arb_Agreement_RevokedSingleEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_?: InputMaybe<Arb_HatsModule_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Arb_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Arb_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Arb_Bytes']['input']>;
+  agreementEligibilityInstance?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_?: InputMaybe<Arb_AgreementEligibility_filter>;
+  wearer?: InputMaybe<Scalars['String']['input']>;
+  wearer_not?: InputMaybe<Scalars['String']['input']>;
+  wearer_gt?: InputMaybe<Scalars['String']['input']>;
+  wearer_lt?: InputMaybe<Scalars['String']['input']>;
+  wearer_gte?: InputMaybe<Scalars['String']['input']>;
+  wearer_lte?: InputMaybe<Scalars['String']['input']>;
+  wearer_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Arb_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Arb_Agreement_RevokedSingleEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Arb_Agreement_RevokedSingleEvent_filter>>>;
+};
+
+export type Arb_Agreement_RevokedSingleEvent_orderBy =
+  | 'id'
+  | 'module'
+  | 'module__id'
+  | 'module__version'
+  | 'module__hatId'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'agreementEligibilityInstance'
+  | 'agreementEligibilityInstance__id'
+  | 'agreementEligibilityInstance__version'
+  | 'agreementEligibilityInstance__hatId'
+  | 'agreementEligibilityInstance__currentAgreementNumber'
+  | 'wearer';
 
 export type Arb_Agreement_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
@@ -8431,6 +8919,14 @@ export type Query = {
   Arb_agreementOwnerHatSetEvents: Array<Arb_Agreement_OwnerHatSetEvent>;
   Arb_agreementArbitratorHatSetEvent?: Maybe<Arb_Agreement_ArbitratorHatSetEvent>;
   Arb_agreementArbitratorHatSetEvents: Array<Arb_Agreement_ArbitratorHatSetEvent>;
+  Arb_agreementRevokedSingleEvent?: Maybe<Arb_Agreement_RevokedSingleEvent>;
+  Arb_agreementRevokedSingleEvents: Array<Arb_Agreement_RevokedSingleEvent>;
+  Arb_agreementRevokedMultipleEvent?: Maybe<Arb_Agreement_RevokedMultipleEvent>;
+  Arb_agreementRevokedMultipleEvents: Array<Arb_Agreement_RevokedMultipleEvent>;
+  Arb_agreementForgivenSingleEvent?: Maybe<Arb_Agreement_ForgivenSingleEvent>;
+  Arb_agreementForgivenSingleEvents: Array<Arb_Agreement_ForgivenSingleEvent>;
+  Arb_agreementForgivenMultipleEvent?: Maybe<Arb_Agreement_ForgivenMultipleEvent>;
+  Arb_agreementForgivenMultipleEvents: Array<Arb_Agreement_ForgivenMultipleEvent>;
   Arb_erc20Eligibility?: Maybe<Arb_Erc20Eligibility>;
   Arb_erc20Eligibilities: Array<Arb_Erc20Eligibility>;
   Arb_erc721Eligibility?: Maybe<Arb_Erc721Eligibility>;
@@ -9557,6 +10053,78 @@ export type QueryArb_agreementArbitratorHatSetEventsArgs = {
   orderBy?: InputMaybe<Arb_Agreement_ArbitratorHatSetEvent_orderBy>;
   orderDirection?: InputMaybe<Arb_OrderDirection>;
   where?: InputMaybe<Arb_Agreement_ArbitratorHatSetEvent_filter>;
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type QueryArb_agreementRevokedSingleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type QueryArb_agreementRevokedSingleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Arb_Agreement_RevokedSingleEvent_orderBy>;
+  orderDirection?: InputMaybe<Arb_OrderDirection>;
+  where?: InputMaybe<Arb_Agreement_RevokedSingleEvent_filter>;
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type QueryArb_agreementRevokedMultipleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type QueryArb_agreementRevokedMultipleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Arb_Agreement_RevokedMultipleEvent_orderBy>;
+  orderDirection?: InputMaybe<Arb_OrderDirection>;
+  where?: InputMaybe<Arb_Agreement_RevokedMultipleEvent_filter>;
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type QueryArb_agreementForgivenSingleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type QueryArb_agreementForgivenSingleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Arb_Agreement_ForgivenSingleEvent_orderBy>;
+  orderDirection?: InputMaybe<Arb_OrderDirection>;
+  where?: InputMaybe<Arb_Agreement_ForgivenSingleEvent_filter>;
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type QueryArb_agreementForgivenMultipleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type QueryArb_agreementForgivenMultipleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Arb_Agreement_ForgivenMultipleEvent_orderBy>;
+  orderDirection?: InputMaybe<Arb_OrderDirection>;
+  where?: InputMaybe<Arb_Agreement_ForgivenMultipleEvent_filter>;
   block?: InputMaybe<Arb_Block_height>;
   subgraphError?: Arb__SubgraphErrorPolicy_;
 };
@@ -11798,6 +12366,14 @@ export type Subscription = {
   Arb_agreementOwnerHatSetEvents: Array<Arb_Agreement_OwnerHatSetEvent>;
   Arb_agreementArbitratorHatSetEvent?: Maybe<Arb_Agreement_ArbitratorHatSetEvent>;
   Arb_agreementArbitratorHatSetEvents: Array<Arb_Agreement_ArbitratorHatSetEvent>;
+  Arb_agreementRevokedSingleEvent?: Maybe<Arb_Agreement_RevokedSingleEvent>;
+  Arb_agreementRevokedSingleEvents: Array<Arb_Agreement_RevokedSingleEvent>;
+  Arb_agreementRevokedMultipleEvent?: Maybe<Arb_Agreement_RevokedMultipleEvent>;
+  Arb_agreementRevokedMultipleEvents: Array<Arb_Agreement_RevokedMultipleEvent>;
+  Arb_agreementForgivenSingleEvent?: Maybe<Arb_Agreement_ForgivenSingleEvent>;
+  Arb_agreementForgivenSingleEvents: Array<Arb_Agreement_ForgivenSingleEvent>;
+  Arb_agreementForgivenMultipleEvent?: Maybe<Arb_Agreement_ForgivenMultipleEvent>;
+  Arb_agreementForgivenMultipleEvents: Array<Arb_Agreement_ForgivenMultipleEvent>;
   Arb_erc20Eligibility?: Maybe<Arb_Erc20Eligibility>;
   Arb_erc20Eligibilities: Array<Arb_Erc20Eligibility>;
   Arb_erc721Eligibility?: Maybe<Arb_Erc721Eligibility>;
@@ -12929,6 +13505,78 @@ export type SubscriptionArb_agreementArbitratorHatSetEventsArgs = {
 };
 
 
+export type SubscriptionArb_agreementRevokedSingleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionArb_agreementRevokedSingleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Arb_Agreement_RevokedSingleEvent_orderBy>;
+  orderDirection?: InputMaybe<Arb_OrderDirection>;
+  where?: InputMaybe<Arb_Agreement_RevokedSingleEvent_filter>;
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionArb_agreementRevokedMultipleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionArb_agreementRevokedMultipleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Arb_Agreement_RevokedMultipleEvent_orderBy>;
+  orderDirection?: InputMaybe<Arb_OrderDirection>;
+  where?: InputMaybe<Arb_Agreement_RevokedMultipleEvent_filter>;
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionArb_agreementForgivenSingleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionArb_agreementForgivenSingleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Arb_Agreement_ForgivenSingleEvent_orderBy>;
+  orderDirection?: InputMaybe<Arb_OrderDirection>;
+  where?: InputMaybe<Arb_Agreement_ForgivenSingleEvent_filter>;
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionArb_agreementForgivenMultipleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionArb_agreementForgivenMultipleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Arb_Agreement_ForgivenMultipleEvent_orderBy>;
+  orderDirection?: InputMaybe<Arb_OrderDirection>;
+  where?: InputMaybe<Arb_Agreement_ForgivenMultipleEvent_filter>;
+  block?: InputMaybe<Arb_Block_height>;
+  subgraphError?: Arb__SubgraphErrorPolicy_;
+};
+
+
 export type SubscriptionArb_erc20EligibilityArgs = {
   id: Scalars['ID']['input'];
   block?: InputMaybe<Arb_Block_height>;
@@ -13622,6 +14270,22 @@ export type Arb__SubgraphErrorPolicy_ =
   /** null **/
   Arb_agreementArbitratorHatSetEvents: InContextSdkMethod<Query['Arb_agreementArbitratorHatSetEvents'], QueryArb_agreementArbitratorHatSetEventsArgs, MeshContext>,
   /** null **/
+  Arb_agreementRevokedSingleEvent: InContextSdkMethod<Query['Arb_agreementRevokedSingleEvent'], QueryArb_agreementRevokedSingleEventArgs, MeshContext>,
+  /** null **/
+  Arb_agreementRevokedSingleEvents: InContextSdkMethod<Query['Arb_agreementRevokedSingleEvents'], QueryArb_agreementRevokedSingleEventsArgs, MeshContext>,
+  /** null **/
+  Arb_agreementRevokedMultipleEvent: InContextSdkMethod<Query['Arb_agreementRevokedMultipleEvent'], QueryArb_agreementRevokedMultipleEventArgs, MeshContext>,
+  /** null **/
+  Arb_agreementRevokedMultipleEvents: InContextSdkMethod<Query['Arb_agreementRevokedMultipleEvents'], QueryArb_agreementRevokedMultipleEventsArgs, MeshContext>,
+  /** null **/
+  Arb_agreementForgivenSingleEvent: InContextSdkMethod<Query['Arb_agreementForgivenSingleEvent'], QueryArb_agreementForgivenSingleEventArgs, MeshContext>,
+  /** null **/
+  Arb_agreementForgivenSingleEvents: InContextSdkMethod<Query['Arb_agreementForgivenSingleEvents'], QueryArb_agreementForgivenSingleEventsArgs, MeshContext>,
+  /** null **/
+  Arb_agreementForgivenMultipleEvent: InContextSdkMethod<Query['Arb_agreementForgivenMultipleEvent'], QueryArb_agreementForgivenMultipleEventArgs, MeshContext>,
+  /** null **/
+  Arb_agreementForgivenMultipleEvents: InContextSdkMethod<Query['Arb_agreementForgivenMultipleEvents'], QueryArb_agreementForgivenMultipleEventsArgs, MeshContext>,
+  /** null **/
   Arb_erc20Eligibility: InContextSdkMethod<Query['Arb_erc20Eligibility'], QueryArb_erc20EligibilityArgs, MeshContext>,
   /** null **/
   Arb_erc20Eligibilities: InContextSdkMethod<Query['Arb_erc20Eligibilities'], QueryArb_erc20EligibilitiesArgs, MeshContext>,
@@ -13962,6 +14626,22 @@ export type Arb__SubgraphErrorPolicy_ =
   Arb_agreementArbitratorHatSetEvent: InContextSdkMethod<Subscription['Arb_agreementArbitratorHatSetEvent'], SubscriptionArb_agreementArbitratorHatSetEventArgs, MeshContext>,
   /** null **/
   Arb_agreementArbitratorHatSetEvents: InContextSdkMethod<Subscription['Arb_agreementArbitratorHatSetEvents'], SubscriptionArb_agreementArbitratorHatSetEventsArgs, MeshContext>,
+  /** null **/
+  Arb_agreementRevokedSingleEvent: InContextSdkMethod<Subscription['Arb_agreementRevokedSingleEvent'], SubscriptionArb_agreementRevokedSingleEventArgs, MeshContext>,
+  /** null **/
+  Arb_agreementRevokedSingleEvents: InContextSdkMethod<Subscription['Arb_agreementRevokedSingleEvents'], SubscriptionArb_agreementRevokedSingleEventsArgs, MeshContext>,
+  /** null **/
+  Arb_agreementRevokedMultipleEvent: InContextSdkMethod<Subscription['Arb_agreementRevokedMultipleEvent'], SubscriptionArb_agreementRevokedMultipleEventArgs, MeshContext>,
+  /** null **/
+  Arb_agreementRevokedMultipleEvents: InContextSdkMethod<Subscription['Arb_agreementRevokedMultipleEvents'], SubscriptionArb_agreementRevokedMultipleEventsArgs, MeshContext>,
+  /** null **/
+  Arb_agreementForgivenSingleEvent: InContextSdkMethod<Subscription['Arb_agreementForgivenSingleEvent'], SubscriptionArb_agreementForgivenSingleEventArgs, MeshContext>,
+  /** null **/
+  Arb_agreementForgivenSingleEvents: InContextSdkMethod<Subscription['Arb_agreementForgivenSingleEvents'], SubscriptionArb_agreementForgivenSingleEventsArgs, MeshContext>,
+  /** null **/
+  Arb_agreementForgivenMultipleEvent: InContextSdkMethod<Subscription['Arb_agreementForgivenMultipleEvent'], SubscriptionArb_agreementForgivenMultipleEventArgs, MeshContext>,
+  /** null **/
+  Arb_agreementForgivenMultipleEvents: InContextSdkMethod<Subscription['Arb_agreementForgivenMultipleEvents'], SubscriptionArb_agreementForgivenMultipleEventsArgs, MeshContext>,
   /** null **/
   Arb_erc20Eligibility: InContextSdkMethod<Subscription['Arb_erc20Eligibility'], SubscriptionArb_erc20EligibilityArgs, MeshContext>,
   /** null **/
