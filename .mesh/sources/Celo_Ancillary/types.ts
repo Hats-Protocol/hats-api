@@ -750,6 +750,250 @@ export type Celo_Agreement_ArbitratorHatSetEvent_orderBy =
   | 'agreementEligibilityInstance__currentAgreementNumber'
   | 'newArbitratorHat';
 
+export type Celo_Agreement_ForgivenMultipleEvent = Celo_AgreementEvent & {
+  id: Scalars['ID']['output'];
+  module: Celo_HatsModule;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Celo_Bytes']['output'];
+  agreementEligibilityInstance: Celo_AgreementEligibility;
+  wearers: Array<Scalars['String']['output']>;
+};
+
+export type Celo_Agreement_ForgivenMultipleEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_?: InputMaybe<Celo_HatsModule_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Celo_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Celo_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  agreementEligibilityInstance?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_?: InputMaybe<Celo_AgreementEligibility_filter>;
+  wearers?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Celo_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Celo_Agreement_ForgivenMultipleEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Celo_Agreement_ForgivenMultipleEvent_filter>>>;
+};
+
+export type Celo_Agreement_ForgivenMultipleEvent_orderBy =
+  | 'id'
+  | 'module'
+  | 'module__id'
+  | 'module__version'
+  | 'module__hatId'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'agreementEligibilityInstance'
+  | 'agreementEligibilityInstance__id'
+  | 'agreementEligibilityInstance__version'
+  | 'agreementEligibilityInstance__hatId'
+  | 'agreementEligibilityInstance__currentAgreementNumber'
+  | 'wearers';
+
+export type Celo_Agreement_ForgivenSingleEvent = Celo_AgreementEvent & {
+  id: Scalars['ID']['output'];
+  module: Celo_HatsModule;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Celo_Bytes']['output'];
+  agreementEligibilityInstance: Celo_AgreementEligibility;
+  wearer: Scalars['String']['output'];
+};
+
+export type Celo_Agreement_ForgivenSingleEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_?: InputMaybe<Celo_HatsModule_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Celo_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Celo_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  agreementEligibilityInstance?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_?: InputMaybe<Celo_AgreementEligibility_filter>;
+  wearer?: InputMaybe<Scalars['String']['input']>;
+  wearer_not?: InputMaybe<Scalars['String']['input']>;
+  wearer_gt?: InputMaybe<Scalars['String']['input']>;
+  wearer_lt?: InputMaybe<Scalars['String']['input']>;
+  wearer_gte?: InputMaybe<Scalars['String']['input']>;
+  wearer_lte?: InputMaybe<Scalars['String']['input']>;
+  wearer_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Celo_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Celo_Agreement_ForgivenSingleEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Celo_Agreement_ForgivenSingleEvent_filter>>>;
+};
+
+export type Celo_Agreement_ForgivenSingleEvent_orderBy =
+  | 'id'
+  | 'module'
+  | 'module__id'
+  | 'module__version'
+  | 'module__hatId'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'agreementEligibilityInstance'
+  | 'agreementEligibilityInstance__id'
+  | 'agreementEligibilityInstance__version'
+  | 'agreementEligibilityInstance__hatId'
+  | 'agreementEligibilityInstance__currentAgreementNumber'
+  | 'wearer';
+
 export type Celo_Agreement_HatClaimedWithAgreementEvent = Celo_AgreementEvent & {
   id: Scalars['ID']['output'];
   module: Celo_HatsModule;
@@ -1051,6 +1295,250 @@ export type Celo_Agreement_OwnerHatSetEvent_orderBy =
   | 'agreementEligibilityInstance__hatId'
   | 'agreementEligibilityInstance__currentAgreementNumber'
   | 'newOwnerHat';
+
+export type Celo_Agreement_RevokedMultipleEvent = Celo_AgreementEvent & {
+  id: Scalars['ID']['output'];
+  module: Celo_HatsModule;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Celo_Bytes']['output'];
+  agreementEligibilityInstance: Celo_AgreementEligibility;
+  wearers: Array<Scalars['String']['output']>;
+};
+
+export type Celo_Agreement_RevokedMultipleEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_?: InputMaybe<Celo_HatsModule_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Celo_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Celo_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  agreementEligibilityInstance?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_?: InputMaybe<Celo_AgreementEligibility_filter>;
+  wearers?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_not?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_not_contains?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearers_not_contains_nocase?: InputMaybe<Array<Scalars['String']['input']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Celo_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Celo_Agreement_RevokedMultipleEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Celo_Agreement_RevokedMultipleEvent_filter>>>;
+};
+
+export type Celo_Agreement_RevokedMultipleEvent_orderBy =
+  | 'id'
+  | 'module'
+  | 'module__id'
+  | 'module__version'
+  | 'module__hatId'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'agreementEligibilityInstance'
+  | 'agreementEligibilityInstance__id'
+  | 'agreementEligibilityInstance__version'
+  | 'agreementEligibilityInstance__hatId'
+  | 'agreementEligibilityInstance__currentAgreementNumber'
+  | 'wearers';
+
+export type Celo_Agreement_RevokedSingleEvent = Celo_AgreementEvent & {
+  id: Scalars['ID']['output'];
+  module: Celo_HatsModule;
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['BigInt']['output'];
+  transactionID: Scalars['Celo_Bytes']['output'];
+  agreementEligibilityInstance: Celo_AgreementEligibility;
+  wearer: Scalars['String']['output'];
+};
+
+export type Celo_Agreement_RevokedSingleEvent_filter = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  id_not?: InputMaybe<Scalars['ID']['input']>;
+  id_gt?: InputMaybe<Scalars['ID']['input']>;
+  id_lt?: InputMaybe<Scalars['ID']['input']>;
+  id_gte?: InputMaybe<Scalars['ID']['input']>;
+  id_lte?: InputMaybe<Scalars['ID']['input']>;
+  id_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']['input']>>;
+  module?: InputMaybe<Scalars['String']['input']>;
+  module_not?: InputMaybe<Scalars['String']['input']>;
+  module_gt?: InputMaybe<Scalars['String']['input']>;
+  module_lt?: InputMaybe<Scalars['String']['input']>;
+  module_gte?: InputMaybe<Scalars['String']['input']>;
+  module_lte?: InputMaybe<Scalars['String']['input']>;
+  module_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  module_contains?: InputMaybe<Scalars['String']['input']>;
+  module_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains?: InputMaybe<Scalars['String']['input']>;
+  module_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  module_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  module_?: InputMaybe<Celo_HatsModule_filter>;
+  blockNumber?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  transactionID?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_not?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_gt?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_lt?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_gte?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_lte?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_in?: InputMaybe<Array<Scalars['Celo_Bytes']['input']>>;
+  transactionID_not_in?: InputMaybe<Array<Scalars['Celo_Bytes']['input']>>;
+  transactionID_contains?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  transactionID_not_contains?: InputMaybe<Scalars['Celo_Bytes']['input']>;
+  agreementEligibilityInstance?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lt?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_gte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_lte?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  agreementEligibilityInstance_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  agreementEligibilityInstance_?: InputMaybe<Celo_AgreementEligibility_filter>;
+  wearer?: InputMaybe<Scalars['String']['input']>;
+  wearer_not?: InputMaybe<Scalars['String']['input']>;
+  wearer_gt?: InputMaybe<Scalars['String']['input']>;
+  wearer_lt?: InputMaybe<Scalars['String']['input']>;
+  wearer_gte?: InputMaybe<Scalars['String']['input']>;
+  wearer_lte?: InputMaybe<Scalars['String']['input']>;
+  wearer_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  wearer_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_contains_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_starts_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with?: InputMaybe<Scalars['String']['input']>;
+  wearer_not_ends_with_nocase?: InputMaybe<Scalars['String']['input']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<Celo_BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Celo_Agreement_RevokedSingleEvent_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Celo_Agreement_RevokedSingleEvent_filter>>>;
+};
+
+export type Celo_Agreement_RevokedSingleEvent_orderBy =
+  | 'id'
+  | 'module'
+  | 'module__id'
+  | 'module__version'
+  | 'module__hatId'
+  | 'blockNumber'
+  | 'timestamp'
+  | 'transactionID'
+  | 'agreementEligibilityInstance'
+  | 'agreementEligibilityInstance__id'
+  | 'agreementEligibilityInstance__version'
+  | 'agreementEligibilityInstance__hatId'
+  | 'agreementEligibilityInstance__currentAgreementNumber'
+  | 'wearer';
 
 export type Celo_Agreement_filter = {
   id?: InputMaybe<Scalars['ID']['input']>;
@@ -8431,6 +8919,14 @@ export type Query = {
   Celo_agreementOwnerHatSetEvents: Array<Celo_Agreement_OwnerHatSetEvent>;
   Celo_agreementArbitratorHatSetEvent?: Maybe<Celo_Agreement_ArbitratorHatSetEvent>;
   Celo_agreementArbitratorHatSetEvents: Array<Celo_Agreement_ArbitratorHatSetEvent>;
+  Celo_agreementRevokedSingleEvent?: Maybe<Celo_Agreement_RevokedSingleEvent>;
+  Celo_agreementRevokedSingleEvents: Array<Celo_Agreement_RevokedSingleEvent>;
+  Celo_agreementRevokedMultipleEvent?: Maybe<Celo_Agreement_RevokedMultipleEvent>;
+  Celo_agreementRevokedMultipleEvents: Array<Celo_Agreement_RevokedMultipleEvent>;
+  Celo_agreementForgivenSingleEvent?: Maybe<Celo_Agreement_ForgivenSingleEvent>;
+  Celo_agreementForgivenSingleEvents: Array<Celo_Agreement_ForgivenSingleEvent>;
+  Celo_agreementForgivenMultipleEvent?: Maybe<Celo_Agreement_ForgivenMultipleEvent>;
+  Celo_agreementForgivenMultipleEvents: Array<Celo_Agreement_ForgivenMultipleEvent>;
   Celo_erc20Eligibility?: Maybe<Celo_Erc20Eligibility>;
   Celo_erc20Eligibilities: Array<Celo_Erc20Eligibility>;
   Celo_erc721Eligibility?: Maybe<Celo_Erc721Eligibility>;
@@ -9557,6 +10053,78 @@ export type QueryCelo_agreementArbitratorHatSetEventsArgs = {
   orderBy?: InputMaybe<Celo_Agreement_ArbitratorHatSetEvent_orderBy>;
   orderDirection?: InputMaybe<Celo_OrderDirection>;
   where?: InputMaybe<Celo_Agreement_ArbitratorHatSetEvent_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_agreementRevokedSingleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_agreementRevokedSingleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_Agreement_RevokedSingleEvent_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_Agreement_RevokedSingleEvent_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_agreementRevokedMultipleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_agreementRevokedMultipleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_Agreement_RevokedMultipleEvent_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_Agreement_RevokedMultipleEvent_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_agreementForgivenSingleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_agreementForgivenSingleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_Agreement_ForgivenSingleEvent_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_Agreement_ForgivenSingleEvent_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_agreementForgivenMultipleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type QueryCelo_agreementForgivenMultipleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_Agreement_ForgivenMultipleEvent_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_Agreement_ForgivenMultipleEvent_filter>;
   block?: InputMaybe<Celo_Block_height>;
   subgraphError?: Celo__SubgraphErrorPolicy_;
 };
@@ -11798,6 +12366,14 @@ export type Subscription = {
   Celo_agreementOwnerHatSetEvents: Array<Celo_Agreement_OwnerHatSetEvent>;
   Celo_agreementArbitratorHatSetEvent?: Maybe<Celo_Agreement_ArbitratorHatSetEvent>;
   Celo_agreementArbitratorHatSetEvents: Array<Celo_Agreement_ArbitratorHatSetEvent>;
+  Celo_agreementRevokedSingleEvent?: Maybe<Celo_Agreement_RevokedSingleEvent>;
+  Celo_agreementRevokedSingleEvents: Array<Celo_Agreement_RevokedSingleEvent>;
+  Celo_agreementRevokedMultipleEvent?: Maybe<Celo_Agreement_RevokedMultipleEvent>;
+  Celo_agreementRevokedMultipleEvents: Array<Celo_Agreement_RevokedMultipleEvent>;
+  Celo_agreementForgivenSingleEvent?: Maybe<Celo_Agreement_ForgivenSingleEvent>;
+  Celo_agreementForgivenSingleEvents: Array<Celo_Agreement_ForgivenSingleEvent>;
+  Celo_agreementForgivenMultipleEvent?: Maybe<Celo_Agreement_ForgivenMultipleEvent>;
+  Celo_agreementForgivenMultipleEvents: Array<Celo_Agreement_ForgivenMultipleEvent>;
   Celo_erc20Eligibility?: Maybe<Celo_Erc20Eligibility>;
   Celo_erc20Eligibilities: Array<Celo_Erc20Eligibility>;
   Celo_erc721Eligibility?: Maybe<Celo_Erc721Eligibility>;
@@ -12929,6 +13505,78 @@ export type SubscriptionCelo_agreementArbitratorHatSetEventsArgs = {
 };
 
 
+export type SubscriptionCelo_agreementRevokedSingleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_agreementRevokedSingleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_Agreement_RevokedSingleEvent_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_Agreement_RevokedSingleEvent_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_agreementRevokedMultipleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_agreementRevokedMultipleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_Agreement_RevokedMultipleEvent_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_Agreement_RevokedMultipleEvent_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_agreementForgivenSingleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_agreementForgivenSingleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_Agreement_ForgivenSingleEvent_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_Agreement_ForgivenSingleEvent_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_agreementForgivenMultipleEventArgs = {
+  id: Scalars['ID']['input'];
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionCelo_agreementForgivenMultipleEventsArgs = {
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Celo_Agreement_ForgivenMultipleEvent_orderBy>;
+  orderDirection?: InputMaybe<Celo_OrderDirection>;
+  where?: InputMaybe<Celo_Agreement_ForgivenMultipleEvent_filter>;
+  block?: InputMaybe<Celo_Block_height>;
+  subgraphError?: Celo__SubgraphErrorPolicy_;
+};
+
+
 export type SubscriptionCelo_erc20EligibilityArgs = {
   id: Scalars['ID']['input'];
   block?: InputMaybe<Celo_Block_height>;
@@ -13622,6 +14270,22 @@ export type Celo__SubgraphErrorPolicy_ =
   /** null **/
   Celo_agreementArbitratorHatSetEvents: InContextSdkMethod<Query['Celo_agreementArbitratorHatSetEvents'], QueryCelo_agreementArbitratorHatSetEventsArgs, MeshContext>,
   /** null **/
+  Celo_agreementRevokedSingleEvent: InContextSdkMethod<Query['Celo_agreementRevokedSingleEvent'], QueryCelo_agreementRevokedSingleEventArgs, MeshContext>,
+  /** null **/
+  Celo_agreementRevokedSingleEvents: InContextSdkMethod<Query['Celo_agreementRevokedSingleEvents'], QueryCelo_agreementRevokedSingleEventsArgs, MeshContext>,
+  /** null **/
+  Celo_agreementRevokedMultipleEvent: InContextSdkMethod<Query['Celo_agreementRevokedMultipleEvent'], QueryCelo_agreementRevokedMultipleEventArgs, MeshContext>,
+  /** null **/
+  Celo_agreementRevokedMultipleEvents: InContextSdkMethod<Query['Celo_agreementRevokedMultipleEvents'], QueryCelo_agreementRevokedMultipleEventsArgs, MeshContext>,
+  /** null **/
+  Celo_agreementForgivenSingleEvent: InContextSdkMethod<Query['Celo_agreementForgivenSingleEvent'], QueryCelo_agreementForgivenSingleEventArgs, MeshContext>,
+  /** null **/
+  Celo_agreementForgivenSingleEvents: InContextSdkMethod<Query['Celo_agreementForgivenSingleEvents'], QueryCelo_agreementForgivenSingleEventsArgs, MeshContext>,
+  /** null **/
+  Celo_agreementForgivenMultipleEvent: InContextSdkMethod<Query['Celo_agreementForgivenMultipleEvent'], QueryCelo_agreementForgivenMultipleEventArgs, MeshContext>,
+  /** null **/
+  Celo_agreementForgivenMultipleEvents: InContextSdkMethod<Query['Celo_agreementForgivenMultipleEvents'], QueryCelo_agreementForgivenMultipleEventsArgs, MeshContext>,
+  /** null **/
   Celo_erc20Eligibility: InContextSdkMethod<Query['Celo_erc20Eligibility'], QueryCelo_erc20EligibilityArgs, MeshContext>,
   /** null **/
   Celo_erc20Eligibilities: InContextSdkMethod<Query['Celo_erc20Eligibilities'], QueryCelo_erc20EligibilitiesArgs, MeshContext>,
@@ -13962,6 +14626,22 @@ export type Celo__SubgraphErrorPolicy_ =
   Celo_agreementArbitratorHatSetEvent: InContextSdkMethod<Subscription['Celo_agreementArbitratorHatSetEvent'], SubscriptionCelo_agreementArbitratorHatSetEventArgs, MeshContext>,
   /** null **/
   Celo_agreementArbitratorHatSetEvents: InContextSdkMethod<Subscription['Celo_agreementArbitratorHatSetEvents'], SubscriptionCelo_agreementArbitratorHatSetEventsArgs, MeshContext>,
+  /** null **/
+  Celo_agreementRevokedSingleEvent: InContextSdkMethod<Subscription['Celo_agreementRevokedSingleEvent'], SubscriptionCelo_agreementRevokedSingleEventArgs, MeshContext>,
+  /** null **/
+  Celo_agreementRevokedSingleEvents: InContextSdkMethod<Subscription['Celo_agreementRevokedSingleEvents'], SubscriptionCelo_agreementRevokedSingleEventsArgs, MeshContext>,
+  /** null **/
+  Celo_agreementRevokedMultipleEvent: InContextSdkMethod<Subscription['Celo_agreementRevokedMultipleEvent'], SubscriptionCelo_agreementRevokedMultipleEventArgs, MeshContext>,
+  /** null **/
+  Celo_agreementRevokedMultipleEvents: InContextSdkMethod<Subscription['Celo_agreementRevokedMultipleEvents'], SubscriptionCelo_agreementRevokedMultipleEventsArgs, MeshContext>,
+  /** null **/
+  Celo_agreementForgivenSingleEvent: InContextSdkMethod<Subscription['Celo_agreementForgivenSingleEvent'], SubscriptionCelo_agreementForgivenSingleEventArgs, MeshContext>,
+  /** null **/
+  Celo_agreementForgivenSingleEvents: InContextSdkMethod<Subscription['Celo_agreementForgivenSingleEvents'], SubscriptionCelo_agreementForgivenSingleEventsArgs, MeshContext>,
+  /** null **/
+  Celo_agreementForgivenMultipleEvent: InContextSdkMethod<Subscription['Celo_agreementForgivenMultipleEvent'], SubscriptionCelo_agreementForgivenMultipleEventArgs, MeshContext>,
+  /** null **/
+  Celo_agreementForgivenMultipleEvents: InContextSdkMethod<Subscription['Celo_agreementForgivenMultipleEvents'], SubscriptionCelo_agreementForgivenMultipleEventsArgs, MeshContext>,
   /** null **/
   Celo_erc20Eligibility: InContextSdkMethod<Subscription['Celo_erc20Eligibility'], SubscriptionCelo_erc20EligibilityArgs, MeshContext>,
   /** null **/
