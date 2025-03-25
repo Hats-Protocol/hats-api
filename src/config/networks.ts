@@ -17,7 +17,7 @@ export const NETWORKS: Record<string, NetworkConfig> = {
     name: 'Ethereum',
     mainSubgraphEndpoint: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/subgraphs/id/AtrhAMCcVfPbmejxTez3G59Kdfu5tMFoiPsTUjdCzpKx`,
     ancillarySubgraphEndpoint:
-      'https://api.studio.thegraph.com/query/55784/hats-v1-ethereum-ancillary/v0.0.24',
+      'https://api.studio.thegraph.com/query/55784/hats-v1-ethereum-ancillary/v0.0.27',
   },
   optimism: {
     prefix: 'Op_',
