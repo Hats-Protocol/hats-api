@@ -33,8 +33,6 @@ This API uses GraphQL Mesh to unify multiple subgraphs across different networks
 │   ├── resolvers.ts      # Resolver implementations
 │   ├── config/
 │   │   └── networks.ts   # Network configurations
-│   ├── types/
-│   │   └── resolvers.ts  # TypeScript types for resolvers
 │   ├── utils/
 │   │   └── ipfs.ts       # IPFS utility functions
 │   └── web3.ts           # Web3 utility functions
@@ -135,76 +133,3 @@ additionalTypeDefs: |
 ```
 
 The resolvers will automatically work for the new network due to the factory pattern in `src/resolvers.ts`.
-
-## Environment Variables
-
-Required environment variables:
-
-- `GRAPH_NETWORK_API_KEY`: API key for The Graph Network
-- `WEB3_RPC_[NETWORK]`: RPC endpoint for each network (e.g., `WEB3_RPC_ETHEREUM`)
-
-## Development
-
-1. Install dependencies:
-
-```bash
-yarn install
-```
-
-2. Generate GraphQL Mesh files:
-
-```bash
-yarn mesh generate
-```
-
-3. Start the development server:
-
-```bash
-yarn dev
-```
-
-## Testing
-
-1. Run tests:
-
-```bash
-yarn test
-```
-
-2. Test a specific network:
-
-```bash
-yarn test:network [network-name]
-```
-
-## Production
-
-1. Build the project:
-
-```bash
-yarn build
-```
-
-2. Start the production server:
-
-```bash
-yarn start
-```
-
-## Common Issues
-
-1. **Subgraph Sync Issues**: If a subgraph is not synced, some data might be missing or outdated. Check the subgraph status on The Graph's explorer.
-
-2. **RPC Rate Limits**: Web3 calls are rate-limited. Consider using a paid RPC provider for production.
-
-3. **IPFS Timeouts**: IPFS requests might timeout. The API implements retries and fallbacks.
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Submit a pull request
-
-## License
-
-[Insert License Information]

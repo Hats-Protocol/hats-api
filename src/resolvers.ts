@@ -9,34 +9,43 @@ import {
   getHatStatus,
 } from './web3';
 import { fetchFromIpfs, validateIpfsImage } from './utils/ipfs';
-import {
-  ResolverRoot,
-  ResolverContext,
-  WearerResolvers,
-  HatResolvers,
-} from './types/resolvers';
+import { GraphQLResolveInfo } from 'graphql';
 
-const createWearerResolvers = (network: NetworkConfig): WearerResolvers => ({
+// match  the types in .meshrc.yaml
+type WearerRoot = {
+  id: string;
+};
+
+type HatRoot = {
+  id: string;
+  details?: string;
+  imageUri?: string;
+  eligibility?: string;
+  toggle?: string;
+  wearers?: Array<{ id: string }>;
+};
+
+const createWearerResolvers = (network: NetworkConfig) => ({
   ensName: {
-    resolve: async (root) => {
+    resolve: async (root: WearerRoot) => {
       return getEnsName(network.chainId, root.id as `0x${string}`);
     },
   },
   isContract: {
-    resolve: async (root) => {
+    resolve: async (root: WearerRoot) => {
       return isContract(network.chainId, root.id as `0x${string}`);
     },
   },
   contractName: {
-    resolve: async (root) => {
+    resolve: async (root: WearerRoot) => {
       return getContractName(network.chainId, root.id as `0x${string}`);
     },
   },
 });
 
-const createHatResolvers = (network: NetworkConfig): HatResolvers => ({
+const createHatResolvers = (network: NetworkConfig) => ({
   detailsMetadata: {
-    resolve: async (root) => {
+    resolve: async (root: HatRoot) => {
       if (!root.details?.startsWith('ipfs://')) return null;
       const data = await fetchFromIpfs(root.details.slice(7));
       return data ? JSON.stringify(data) : null;
@@ -48,18 +57,26 @@ const createHatResolvers = (network: NetworkConfig): HatResolvers => ({
         id
       }
     `,
-    resolve: async (root, _args, context) => {
-      const contextKey = `${network.prefix.slice(0, -1)}_Ancillary`;
-      const queryKey = `${network.prefix}hatAuthority`;
-      return context[contextKey].Query[queryKey]({
+    resolve: async (
+      root: HatRoot,
+      _args: unknown,
+      context: Resolvers,
+      info: GraphQLResolveInfo
+    ) => {
+      return await context[`${network.name}_Ancillary`].Query[
+        `${network.prefix}hatAuthority`
+      ]({
         root,
-        args: { id: root.id },
+        args: {
+          id: root.id,
+        },
         context,
+        info,
       });
     },
   },
   eligibleWearers: {
-    resolve: async (root) => {
+    resolve: async (root: HatRoot) => {
       if (!root.wearers) return [];
       const wearersEligibility = await getWearersEligibility(
         network.chainId,
@@ -72,19 +89,19 @@ const createHatResolvers = (network: NetworkConfig): HatResolvers => ({
     },
   },
   eligibilityEnsName: {
-    resolve: async (root) => {
+    resolve: async (root: HatRoot) => {
       if (!root.eligibility) return null;
       return getEnsName(network.chainId, root.eligibility as `0x${string}`);
     },
   },
   toggleEnsName: {
-    resolve: async (root) => {
+    resolve: async (root: HatRoot) => {
       if (!root.toggle) return null;
       return getEnsName(network.chainId, root.toggle as `0x${string}`);
     },
   },
   isImageValid: {
-    resolve: async (root) => {
+    resolve: async (root: HatRoot) => {
       if (!root.imageUri) return false;
       if (!root.imageUri.startsWith('ipfs://')) {
         try {
@@ -98,18 +115,18 @@ const createHatResolvers = (network: NetworkConfig): HatResolvers => ({
     },
   },
   nearestImage: {
-    resolve: async (root) => {
+    resolve: async (root: HatRoot) => {
       return getHatImage(network.chainId, BigInt(root.id));
     },
   },
   eligibilityIsContract: {
-    resolve: async (root) => {
+    resolve: async (root: HatRoot) => {
       if (!root.eligibility) return false;
       return isContract(network.chainId, root.eligibility as `0x${string}`);
     },
   },
   eligibilityContractName: {
-    resolve: async (root) => {
+    resolve: async (root: HatRoot) => {
       if (!root.eligibility) return null;
       return getContractName(
         network.chainId,
@@ -118,19 +135,19 @@ const createHatResolvers = (network: NetworkConfig): HatResolvers => ({
     },
   },
   toggleIsContract: {
-    resolve: async (root) => {
+    resolve: async (root: HatRoot) => {
       if (!root.toggle) return false;
       return isContract(network.chainId, root.toggle as `0x${string}`);
     },
   },
   toggleContractName: {
-    resolve: async (root) => {
+    resolve: async (root: HatRoot) => {
       if (!root.toggle) return null;
       return getContractName(network.chainId, root.toggle as `0x${string}`);
     },
   },
   dynamicStatus: {
-    resolve: async (root) => {
+    resolve: async (root: HatRoot) => {
       return getHatStatus(network.chainId, BigInt(root.id));
     },
   },
