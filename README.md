@@ -132,4 +132,4 @@ additionalTypeDefs: |
   }
 ```
 
-The resolvers will automatically work for the new network due to the factory pattern in `src/resolvers.ts`.
+The resolvers will automatically work for the new network due to the pattern used in `src/resolvers.ts`.
