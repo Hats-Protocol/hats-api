@@ -76,6 +76,15 @@ export const NETWORKS: Record<string, NetworkConfig> = {
     ancillarySubgraphEndpoint:
       'https://api.studio.thegraph.com/query/55784/hats-v1-sepolia-ancillary/v0.0.25',
   },
+  baseSepolia: {
+    prefix: 'BaseSep_',
+    chainId: '84532',
+    name: 'Base Sepolia',
+    mainSubgraphEndpoint:
+      'https://api.studio.thegraph.com/query/55784/hats-v1-base-sepolia/v0.0.8',
+    ancillarySubgraphEndpoint:
+      'https://api.studio.thegraph.com/query/55784/hats-v1-base-sepolia-ancillary/v0.0.1',
+  },
 } as const;
 
 // Utility types and helpers

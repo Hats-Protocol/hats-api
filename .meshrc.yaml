@@ -143,6 +143,24 @@ sources:
           mode: wrap
           value: Sep_
           includeRootOperations: true
+  - name: BaseSepolia_Main
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-base-sepolia/v0.0.8
+    transforms:
+      - prefix:
+          mode: wrap
+          value: BaseSep_
+          includeRootOperations: true
+  - name: BaseSepolia_Ancillary
+    handler:
+      graphql:
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-base-sepolia-ancillary/v0.0.1
+    transforms:
+      - prefix:
+          mode: wrap
+          value: BaseSep_
+          includeRootOperations: true
 additionalTypeDefs: |
   extend type Eth_Wearer {
     ensName: String
@@ -180,6 +198,11 @@ additionalTypeDefs: |
     contractName: String
   }
   extend type Sep_Wearer {
+    ensName: String
+    isContract: Boolean!
+    contractName: String
+  }
+  extend type BaseSep_Wearer {
     ensName: String
     isContract: Boolean!
     contractName: String
@@ -296,6 +319,20 @@ additionalTypeDefs: |
     toggleContractName: String
     dynamicStatus: Boolean!
   }
+  extend type BaseSep_Hat {
+    detailsMetadata: String
+    authorities: BaseSep_HatAuthority!
+    eligibleWearers: [String!]!
+    eligibilityEnsName: String
+    toggleEnsName: String
+    isImageValid: Boolean!
+    nearestImage: String!
+    eligibilityIsContract: Boolean!
+    eligibilityContractName: String
+    toggleIsContract: Boolean!
+    toggleContractName: String
+    dynamicStatus: Boolean!
+  }
 additionalResolvers:
   - './src/resolvers'
 plugins:
@@ -380,6 +417,16 @@ plugins:
         - coordinate: Celo_Hat.toggleEnsName
           ttl: 86400000
         - coordinate: Celo_Hat.dynamicStatus
+          ttl: 0
+        - coordinate: BaseSep_Wearer.ensName
+          ttl: 86400000
+        - coordinate: BaseSep_Hat.eligibleWearers
+          ttl: 0
+        - coordinate: BaseSep_Hat.eligibilityEnsName
+          ttl: 86400000
+        - coordinate: BaseSep_Hat.toggleEnsName
+          ttl: 86400000
+        - coordinate: BaseSep_Hat.dynamicStatus
           ttl: 0
       ignoredTypes:
         - Sep_HatAuthority
@@ -526,6 +573,24 @@ plugins:
         - Celo_Erc1155Eligibility
         - Celo_Erc721Eligibility
         - Celo_Erc20Eligibility
+        - BaseSep_HatAuthority
+        - BaseSep_JokeRaceEligibility
+        - BaseSep_AllowListEligibility
+        - BaseSep_HatsElectionEligibility
+        - BaseSep_PassthroughModule
+        - BaseSep_StakingEligibility
+        - BaseSep_SeasonToggle
+        - BaseSep_CharacterSheetsLevelEligibility
+        - BaseSep_AgreementEligibility
+        - BaseSep_HatsStakingShaman
+        - BaseSep_HatsFarcasterDelegator
+        - BaseSep_PublicLockV14Eligibility
+        - BaseSep_HatControlledModule
+        - BaseSep_GitcoinPassportEligibility
+        - BaseSep_HatWearingEligibility
+        - BaseSep_Erc1155Eligibility
+        - BaseSep_Erc721Eligibility
+        - BaseSep_Erc20Eligibility
 cache:
   redis:
     host: '{env.REDIS_HOST}'
