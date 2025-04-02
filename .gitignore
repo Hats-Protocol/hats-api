@@ -6,3 +6,6 @@ dist
 .idea
 .vscode
 .env
+
+# GraphQL Mesh generated files
+.mesh
