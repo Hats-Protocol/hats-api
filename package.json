@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/src/index.js",
   "scripts": {
-    "build": "npx tsc",
+    "build": "pnpm build-mesh && npx tsc",
     "start": "node dist/src/index.js",
     "dev": "nodemon src/index.ts",
     "build-mesh": "mesh build"

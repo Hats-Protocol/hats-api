@@ -5,14 +5,14 @@ import { createBuiltMeshHTTPHandler } from "../.mesh";
 import { CacheInvalidationManager } from "./invalidation";
 import logger from "./log";
 import {
-  ValidationError,
+  // ValidationError,
   TransactionNotFoundError,
   SubgraphSyncError,
   InvalidationError,
 } from "./errors";
 
-const cachaeInvalidationManager = new CacheInvalidationManager();
-cachaeInvalidationManager.startServices();
+const cacheInvalidationManager = new CacheInvalidationManager();
+cacheInvalidationManager.startServices();
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -46,7 +46,7 @@ app.post("/invalidate", async (req, res) => {
   }
 
   try {
-    await cachaeInvalidationManager.processTransaction(
+    await cacheInvalidationManager.processTransaction(
       transactionId,
       networkId,
       force
