@@ -7,7 +7,7 @@ import {
   CHAIN_TO_ETHERSCAN_API,
   CHAIN_TO_ETHERSCAN_API_KEY,
 } from "./constants";
-import type { PublicClient, Client } from "viem";
+import type { PublicClient } from "viem";
 import axios from "axios";
 
 export const publicClients: Record<string, PublicClient> = Object.keys(

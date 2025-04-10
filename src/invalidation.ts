@@ -52,6 +52,7 @@ export class CacheInvalidationManager {
   private celoInvalidationClient: CacheInvalidationService;
   private optimismInvalidationClient: CacheInvalidationService;
   private arbitrumInvalidationClient: CacheInvalidationService;
+  private baseSepoliaInvalidationClient: CacheInvalidationService;
 
   constructor() {
     this.cache = new RedisCacheClient();
@@ -87,6 +88,10 @@ export class CacheInvalidationManager {
       this.cache,
       "11155111"
     );
+    this.baseSepoliaInvalidationClient = new CacheInvalidationService(
+      this.cache,
+      "84532"
+    );
   }
 
   startServices() {
@@ -98,6 +103,7 @@ export class CacheInvalidationManager {
     this.celoInvalidationClient.start();
     this.sepoliaInvalidationClient.start();
     this.polygonInvalidationClient.start();
+    this.baseSepoliaInvalidationClient.start();
   }
 
   async processTransaction(
@@ -154,6 +160,12 @@ export class CacheInvalidationManager {
           force
         );
         break;
+      case "84532":
+        await this.baseSepoliaInvalidationClient.processTransaction(
+          txHash.toLowerCase() as `0x${string}`,
+          force
+        );
+        break;
       default:
         logger.info(`network ${networkId} not supported`);
     }
@@ -204,7 +216,7 @@ export class CacheInvalidationService {
       });
     }
 
-    // watch Calims Hatters events
+    // watch Claims Hatters events
     const unwatchClaimsHatter = this.publicSocketClient.watchEvent({
       events: CLAIMS_HATTER_EVENTS,
       onLogs: (logs: any) => {
@@ -418,9 +430,8 @@ export class CacheInvalidationService {
       if (!subgraphSynced) {
         logger.log({
           level: "error",
-          message: `${
-            this.chainId
-          }-${txHash}: timeout while waiting for block number ${transactionReceipt.blockNumber.toString()}`,
+          message: `${this.chainId
+            }-${txHash}: timeout while waiting for block number ${transactionReceipt.blockNumber.toString()}`,
           networkId: this.chainId,
           txHash: txHash,
         });
@@ -434,9 +445,8 @@ export class CacheInvalidationService {
     } catch (error) {
       logger.log({
         level: "error",
-        message: `${
-          this.chainId
-        }-${txHash}: unexpected error while waiting for block number ${transactionReceipt.blockNumber.toString()}`,
+        message: `${this.chainId
+          }-${txHash}: unexpected error while waiting for block number ${transactionReceipt.blockNumber.toString()}`,
         networkId: this.chainId,
         txHash: txHash,
         error: error,
@@ -444,8 +454,7 @@ export class CacheInvalidationService {
       this.inMemCache.set(txHash, 0);
 
       throw new SubgraphSyncError(
-        `Error: failed waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
-          this.chainId
+        `Error: failed waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${this.chainId
         }`
       );
     }
