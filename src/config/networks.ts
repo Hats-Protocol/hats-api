@@ -83,7 +83,7 @@ export const NETWORKS: Record<string, NetworkConfig> = {
     mainSubgraphEndpoint:
       'https://api.studio.thegraph.com/query/55784/hats-v1-base-sepolia/v0.0.8',
     ancillarySubgraphEndpoint:
-      'https://api.studio.thegraph.com/query/55784/hats-v1-base-sepolia-ancillary/v0.0.1',
+      'https://api.studio.thegraph.com/query/55784/hats-v1-base-sepolia-ancillary/v0.0.2',
   },
 } as const;
 
