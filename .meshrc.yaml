@@ -155,7 +155,7 @@ sources:
   - name: BaseSepolia_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-base-sepolia-ancillary/v0.0.1
+        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-base-sepolia-ancillary/v0.0.2
     transforms:
       - prefix:
           mode: wrap
@@ -334,7 +334,7 @@ additionalTypeDefs: |
     dynamicStatus: Boolean!
   }
 additionalResolvers:
-  - './src/resolvers'
+  - "./src/resolvers"
 plugins:
   - responseCache:
       ttlPerCoordinate:
@@ -593,8 +593,8 @@ plugins:
         - BaseSep_Erc20Eligibility
 cache:
   redis:
-    host: '{env.REDIS_HOST}'
-    port: '{env.REDIS_PORT}' # port should be a string
-    password: '{env.REDIS_PASSWORD}'
+    host: "{env.REDIS_HOST}"
+    port: "{env.REDIS_PORT}" # port should be a string
+    password: "{env.REDIS_PASSWORD}"
 serve:
   playground: true

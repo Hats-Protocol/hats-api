@@ -132,4 +132,28 @@ additionalTypeDefs: |
   }
 ```
 
+4. Add the invalidation service for the new network:
+
+```typescript
+import { CacheInvalidationService } from './invalidation';
+
+switch (networkId) {
+  case "networkId":
+    await this.networkInvalidationClient.processTransaction(
+      txHash.toLowerCase() as `0x${string}`,
+      force
+    );
+    break;
+
+  // ... other networks ...
+}
+
+const networkInvalidationService = new CacheInvalidationService(
+  new RedisCacheClient(),
+  'networkId'
+);
+
+networkInvalidationService.start();
+```
+
 The resolvers will automatically work for the new network due to the pattern used in `src/resolvers.ts`.
