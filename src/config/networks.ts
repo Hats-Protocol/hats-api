@@ -72,7 +72,8 @@ export const NETWORKS: Record<string, NetworkConfig> = {
     chainId: '11155111',
     name: 'Sepolia',
     mainSubgraphEndpoint:
-      'https://api.studio.thegraph.com/query/55784/hats-v1-sepolia/v1.1.0',
+      // ! NOTE no v prefix on this version
+      'https://api.studio.thegraph.com/query/55784/hats-v1-sepolia/1.1.3',
     ancillarySubgraphEndpoint:
       'https://api.studio.thegraph.com/query/55784/hats-v1-sepolia-ancillary/v0.0.25',
   },
