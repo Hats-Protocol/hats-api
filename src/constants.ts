@@ -73,15 +73,16 @@ export const CHAIN_ID_TO_VIEM_CHAIN: { [key: string]: Chain } = {
 };
 
 export const CHAIN_ID_TO_MAIN_SUBGRAPH: { [key: string]: string } = {
-  1: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/subgraphs/id/AtrhAMCcVfPbmejxTez3G59Kdfu5tMFoiPsTUjdCzpKx`,
-  10: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/subgraphs/id/9nmXXk3ysDVY4sFygWQNQknwiJLCPnrUNzDRw8bxw61q`,
-  42161: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/subgraphs/id/4CiXQPjzKshBbyK2dgJiknTNWcj8cGUJsopTsXfm5HEk`,
-  100: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/subgraphs/id/2VPQUuAeS9Xy8VtinpjHRJEMnZS1sqzFQyCHAys1wb5n`,
-  42220: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/subgraphs/id/GpKseh3Z4nX2X8W5HjQPp5hpSSxPxsaQ3t1KpEjhvz7t`,
+  1: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/deployments/id/QmUwJCVnS2oj3pBSqeWQNnD1UWfk2SGnhpZgkD7migTp4k`,
+  10: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/deployments/id/QmSZNPgFGssw9UgkntFta9fEsZE1rFTeKa88Eh4yUyGXok`,
+  42161: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/deployments/id/QmQbh7ypYVJzrebLPtmxCfMBsy4BMkRo5XVXpZcdK1EE1s`,
+  100: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/deployments/id/QmUTPc5dEDGi6kFBhJKjqM9dk9WE6XxkK9eunfKUmUCfSW`,
+  42220: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/deployments/id/Qma8QFDs29rmh7rpY7rGmHcMgoLh8wJGTMD3Rqpc4uFNuN`,
+  137: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/deployments/id/QmbU99oKzupsrDHoTvjZ3yZ5qKJ8PvydWGu21AUT4ag2vj`,
+  8453: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/deployments/id/QmcP8hY2vkwLugNG4c3miaX76RBSg1d7JNHdwqsREotPmL`,
+  // testnets
   11155111: `https://api.studio.thegraph.com/query/55784/hats-v1-sepolia/1.1.3`, // ! NOTE no v prefix on this version
-  137: `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}/subgraphs/id/7MxsRb1p4UQNET8AgrWd93h3GUgeQ7NWrk5SHLEPCxBP`,
-  8453: `https://api.studio.thegraph.com/query/55784/hats-v1-base/v1.1.0`,
-  84532: `https://api.studio.thegraph.com/query/55784/hats-v1-base-sepolia/v0.0.8`,
+  84532: `https://api.studio.thegraph.com/query/55784/hats-v1-base-sepolia/v0.0.9`,
 };
 
 export const CHAIN_TO_ETHERSCAN_API: { [key: string]: string } = {
