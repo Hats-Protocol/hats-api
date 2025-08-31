@@ -5,12 +5,19 @@ export class RedisCacheClient {
   private readonly _client: Redis;
 
   constructor() {
-    this._client = new Redis({
-      port: Number(process.env.REDIS_PORT),
-      host: process.env.REDIS_HOST,
-      username: "default",
-      password: process.env.REDIS_PASSWORD,
-    });
+    const redisConfig: any = {
+      port: Number(process.env.REDIS_PORT || 6379),
+      host: process.env.REDIS_HOST || 'localhost',
+      maxRetriesPerRequest: null, // Required for BullMQ blocking operations
+    };
+
+    // Only include auth credentials if password is defined
+    if (process.env.REDIS_PASSWORD) {
+      redisConfig.username = "default";
+      redisConfig.password = process.env.REDIS_PASSWORD;
+    }
+
+    this._client = new Redis(redisConfig);
   }
 
   async invalidateEntity(
@@ -28,7 +35,7 @@ export class RedisCacheClient {
       entity: `${entityName}.${entityId}`,
     });
 
-    const matchParam = `*${entity}*`;
+    const matchParam = `response-cache:*${entity}*`;
     const stream = this._client.scanStream({
       match: matchParam,
       count: 100,
@@ -41,17 +48,10 @@ export class RedisCacheClient {
       await new Promise((resolve, reject) => {
         stream.on("data", (resultKeys: string[]) => {
           for (let fullKey of resultKeys) {
-            const key = fullKey.slice(15);
-            let hash: string | undefined = undefined;
-            if (key.startsWith(entity)) {
-              hash = key.slice(entity.length + 1);
-            } else if (key.endsWith(entity)) {
-              hash = key.slice(0, key.length - entity.length - 1);
-            }
-
-            if (hash !== undefined && !keysToDelete.includes(hash)) {
-              keysToDelete.push(hash);
-              pipeline.del(`response-cache:${hash}`);
+            // Check if the key contains the entity we're looking for
+            if (fullKey.includes(entity)) {
+              keysToDelete.push(fullKey);
+              pipeline.del(fullKey);
             }
 
             if (pipeline.length > 100) {
@@ -100,7 +100,7 @@ export class RedisCacheClient {
       networkId: networkId,
     });
 
-    const matchParam = `*${entityPrefix}*`;
+    const matchParam = `response-cache:*${entityPrefix}*`;
     const stream = this._client.scanStream({
       match: matchParam,
       count: 100,
@@ -113,20 +113,10 @@ export class RedisCacheClient {
       await new Promise((resolve, reject) => {
         stream.on("data", (resultKeys: string[]) => {
           for (let fullKey of resultKeys) {
-            const key = fullKey.slice(15);
-            let hash: string | undefined = undefined;
-            if (key.startsWith(entityPrefix)) {
-              hash = key.slice(exampleEntity.length + 1);
-            } else if (
-              key.length > 56 &&
-              key.slice(0, -56).endsWith(entityPrefix)
-            ) {
-              hash = key.slice(0, key.length - exampleEntity.length - 1);
-            }
-
-            if (hash !== undefined && !keysToDelete.includes(hash)) {
-              keysToDelete.push(hash);
-              pipeline.del(`response-cache:${hash}`);
+            // Check if the key contains a hat ID from this tree
+            if (fullKey.includes(entityPrefix)) {
+              keysToDelete.push(fullKey);
+              pipeline.del(fullKey);
             }
 
             if (pipeline.length > 100) {
@@ -159,5 +149,10 @@ export class RedisCacheClient {
         `Error invalidating hats of tree ${treeId} in network ${networkPrefix}: ${error}`
       );
     }
+  }
+
+  // Getter method to access Redis client for BullMQ
+  getRedisClient(): Redis {
+    return this._client;
   }
 }

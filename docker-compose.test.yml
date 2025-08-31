@@ -1,0 +1,14 @@
+services:
+  redis-test:
+    image: redis:7-alpine
+    container_name: hats-api-redis-test
+    command: redis-server --requirepass testpassword123
+    ports:
+      - "6380:6379"
+    environment:
+      - REDIS_PASSWORD=testpassword123
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "testpassword123", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
