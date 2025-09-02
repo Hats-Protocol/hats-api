@@ -87,12 +87,12 @@ const mockQueueEvents = {
 
 vi.mock('bullmq', () => ({
   Queue: vi.fn().mockImplementation((name: string) => {
-    mockQueue.name = name
+    ;(mockQueue as any).name = name
     return mockQueue
   }),
   Worker: vi.fn().mockImplementation((queueName: string, processor: Function) => {
-    mockWorker.processor = processor
-    mockWorker.queueName = queueName
+    ;(mockWorker as any).processor = processor
+    ;(mockWorker as any).queueName = queueName
     return mockWorker
   }),
   QueueEvents: vi.fn(() => mockQueueEvents)
@@ -108,7 +108,7 @@ vi.mock('../../src/constants', () => ({
 describe('BullMQ Processing Integration', () => {
   let processor: BullMQTransactionProcessor
   let mockRedis: Redis
-  let mockProcessCallback: vi.Mock
+  let mockProcessCallback: ReturnType<typeof vi.fn>
   let processorFunction: Function
 
   beforeEach(() => {
@@ -142,7 +142,7 @@ describe('BullMQ Processing Integration', () => {
     )
 
     // Get the processor function that was passed to the Worker
-    processorFunction = mockWorker.processor
+    processorFunction = (mockWorker as any).processor
   })
 
   afterEach(async () => {

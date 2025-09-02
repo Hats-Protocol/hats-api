@@ -643,17 +643,14 @@ export class CacheInvalidationService {
       if (!subgraphSynced) {
         logger.log({
           level: "error",
-          message: `${this.chainId
-            }-${txHash}: timeout while waiting for block number ${transactionReceipt.blockNumber.toString()}`,
+          message: `${this.chainId}-${txHash}: subgraph sync timeout for block ${transactionReceipt.blockNumber.toString()}`,
           networkId: this.chainId,
           txHash: txHash,
         });
-
-        // throw new SubgraphSyncError(
-        //   `Error: failed waiting for block number ${transactionReceipt.blockNumber.toString()} in chain ${
-        //     this.chainId
-        //   }`
-        // );
+        this.setCacheEntry(txHash, TransactionCacheState.RETRYING, 'Subgraph sync timeout');
+        throw new SubgraphSyncError(
+          `Error: failed waiting for block ${transactionReceipt.blockNumber.toString()} on chain ${this.chainId}`
+        );
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);

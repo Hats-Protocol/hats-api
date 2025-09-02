@@ -48,7 +48,7 @@ vi.mock('bullmq', () => ({
 describe('BullMQTransactionProcessor', () => {
   let processor: BullMQTransactionProcessor
   let mockRedis: RedisMock
-  let mockProcessCallback: vi.Mock
+  let mockProcessCallback: ReturnType<typeof vi.fn>
 
   beforeEach(() => {
     vi.clearAllMocks()

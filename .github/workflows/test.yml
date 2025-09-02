@@ -1,0 +1,129 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [develop,main]
+  pull_request:
+    branches: [develop]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build project
+        run: NODE_OPTIONS="--max-old-space-size=4096" pnpm run build
+        env:
+          GRAPH_NETWORK_API_KEY: ${{ secrets.GRAPH_NETWORK_API_KEY }}
+
+      - name: Start Redis test container
+        run: |
+          # Use docker-compose for Redis setup (matches local development)
+          echo "REDIS_HOST=localhost" > .env.test
+          echo "REDIS_PORT=6379" >> .env.test  
+          echo "REDIS_PASSWORD=testpassword123" >> .env.test
+          echo "ETHEREUM_SOCKET_URL=ws://127.0.0.1:0" >> .env.test
+          echo "ETHEREUM_HTTP_URL=http://127.0.0.1:0" >> .env.test
+          
+          # Start Redis container
+          docker run -d \
+            --name redis-test \
+            -p 6379:6379 \
+            redis:7-alpine \
+            redis-server --requirepass testpassword123
+          
+          # Wait for Redis to be ready
+          echo "Waiting for Redis..."
+          for i in {1..30}; do
+            if docker exec redis-test redis-cli -a testpassword123 ping >/dev/null 2>&1; then
+              echo "✅ Redis is ready!"
+              break
+            fi
+            sleep 1
+            if [ $i -eq 30 ]; then
+              echo "❌ Redis failed to start"
+              docker logs redis-test
+              exit 1
+            fi
+          done
+
+      - name: Run tests
+        run: pnpm run test:run
+        env:
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+          REDIS_PASSWORD: testpassword123
+          NODE_ENV: test
+          ETHEREUM_SOCKET_URL: ws://127.0.0.1:0
+          ETHEREUM_HTTP_URL: http://127.0.0.1:0
+
+      - name: Generate coverage report
+        run: pnpm run test:coverage
+        env:
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+          REDIS_PASSWORD: testpassword123
+          NODE_ENV: test
+          ETHEREUM_SOCKET_URL: ws://127.0.0.1:0
+          ETHEREUM_HTTP_URL: http://127.0.0.1:0
+
+      - name: Stop Redis
+        if: always()
+        run: |
+          docker stop redis-test >/dev/null 2>&1 || true
+          docker rm redis-test >/dev/null 2>&1 || true
+
+  typecheck:
+    name: TypeScript Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate mesh schema
+        run: NODE_OPTIONS="--max-old-space-size=4096" pnpm run build
+        env:
+          GRAPH_NETWORK_API_KEY: ${{ secrets.GRAPH_NETWORK_API_KEY }}
+
+      - name: TypeScript check
+        run: NODE_OPTIONS="--max-old-space-size=4096" npx tsc --noEmit --skipLibCheck
