@@ -157,3 +157,42 @@ networkInvalidationService.start();
 ```
 
 The resolvers will automatically work for the new network due to the pattern used in `src/resolvers.ts`.
+
+## Development
+
+```bash
+pnpm build          # Build GraphQL Mesh and TypeScript
+pnpm start          # Start the server
+pnpm dev            # Development mode
+pnpm test           # Run tests
+pnpm test:coverage  # Run tests with coverage
+```
+
+### Testing
+
+Tests cover cache invalidation, BullMQ processing, and error handling. See [TESTING.md](./TESTING.md) for details.
+
+Start the test Redis before running tests:
+
+```bash
+docker compose -f docker-compose.test.yml up -d
+pnpm test
+docker compose -f docker-compose.test.yml down -v
+```
+
+### Continuous Integration
+
+The project uses GitHub Actions for CI/CD:
+
+- **Test Suite**: Runs on all PRs and pushes to main
+  - Installs dependencies and builds the project
+  - Starts Redis test container with password authentication
+  - Runs the full test suite with coverage reporting
+  - Performs TypeScript type checking
+
+The workflow automatically manages Redis lifecycle and provides comprehensive test coverage validation.
+
+### Cache Invalidation
+
+The system monitors blockchain events and invalidates related cache entries using BullMQ for reliable processing across all supported networks.
+

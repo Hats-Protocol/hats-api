@@ -1,16 +1,28 @@
 import { Redis } from "ioredis";
+import type { RedisOptions } from "ioredis";
 import logger from "./log";
 
 export class RedisCacheClient {
   private readonly _client: Redis;
 
   constructor() {
-    this._client = new Redis({
-      port: Number(process.env.REDIS_PORT),
-      host: process.env.REDIS_HOST,
-      username: "default",
-      password: process.env.REDIS_PASSWORD,
-    });
+    const redisConfig: RedisOptions = {
+      port: Number(process.env.REDIS_PORT || 6379),
+      host: process.env.REDIS_HOST || 'localhost',
+      maxRetriesPerRequest: null, // Required for BullMQ blocking operations
+      enableReadyCheck: false, // BullMQ best practice with ioredis
+    };
+
+    // Only include auth credentials if password is defined
+    if (process.env.REDIS_PASSWORD) {
+      redisConfig.username = process.env.REDIS_USERNAME || "default";
+      redisConfig.password = process.env.REDIS_PASSWORD;
+    }
+
+    const clientOptions = process.env.REDIS_URL
+      ? process.env.REDIS_URL
+      : redisConfig;
+    this._client = new Redis(clientOptions as any);
   }
 
   async invalidateEntity(
@@ -28,7 +40,7 @@ export class RedisCacheClient {
       entity: `${entityName}.${entityId}`,
     });
 
-    const matchParam = `*${entity}*`;
+    const matchParam = `response-cache:*${entity}*`;
     const stream = this._client.scanStream({
       match: matchParam,
       count: 100,
@@ -38,34 +50,37 @@ export class RedisCacheClient {
     let pipeline = this._client.pipeline();
 
     try {
-      await new Promise((resolve, reject) => {
+      await new Promise<void>((resolve, reject) => {
+        const execs: Promise<any>[] = [];
         stream.on("data", (resultKeys: string[]) => {
           for (let fullKey of resultKeys) {
-            const key = fullKey.slice(15);
-            let hash: string | undefined = undefined;
-            if (key.startsWith(entity)) {
-              hash = key.slice(entity.length + 1);
-            } else if (key.endsWith(entity)) {
-              hash = key.slice(0, key.length - entity.length - 1);
-            }
-
-            if (hash !== undefined && !keysToDelete.includes(hash)) {
-              keysToDelete.push(hash);
-              pipeline.del(`response-cache:${hash}`);
-            }
-
-            if (pipeline.length > 100) {
-              pipeline.exec();
+            // Keys already match via SCAN 'match'; no extra includes() check needed
+            keysToDelete.push(fullKey);
+            pipeline.unlink(fullKey); // non-blocking delete
+            
+            if (pipeline.length >= 100) {
+              execs.push(pipeline.exec());
               pipeline = this._client.pipeline();
             }
           }
         });
 
-        stream.on("end", () => {
-          pipeline.exec(() => resolve("success"));
+        stream.on("end", async () => {
+          try {
+            if (pipeline.length > 0) execs.push(pipeline.exec());
+            await Promise.all(execs);
+            resolve();
+          } catch (err) {
+            reject(err);
+          }
         });
-        stream.on("error", () => {
-          pipeline.exec(() => reject("failure"));
+        stream.on("error", async (err) => {
+          try {
+            if (pipeline.length > 0) execs.push(pipeline.exec());
+            await Promise.allSettled(execs);
+          } finally {
+            reject(err);
+          }
         });
       });
     } catch (error) {
@@ -80,7 +95,8 @@ export class RedisCacheClient {
       });
 
       throw new Error(
-        `Error invalidating entity ${entityName} with ID ${entityId}: ${error}`
+        `Error invalidating entity ${entityName} with ID ${entityId}`,
+        { cause: error as Error }
       );
     }
   }
@@ -92,7 +108,6 @@ export class RedisCacheClient {
     treeId: string
   ): Promise<void> {
     const entityPrefix = `${networkPrefix}_Hat.${treeId}`;
-    const exampleEntity = `${networkPrefix}_Hat.0x0000000100000000000000000000000000000000000000000000000000000000`;
     logger.log({
       level: "info",
       message: `${networkId}-${txHash}: invalidating hats of tree ${treeId}`,
@@ -100,7 +115,7 @@ export class RedisCacheClient {
       networkId: networkId,
     });
 
-    const matchParam = `*${entityPrefix}*`;
+    const matchParam = `response-cache:*${entityPrefix}*`;
     const stream = this._client.scanStream({
       match: matchParam,
       count: 100,
@@ -110,37 +125,37 @@ export class RedisCacheClient {
     let pipeline = this._client.pipeline();
 
     try {
-      await new Promise((resolve, reject) => {
+      await new Promise<void>((resolve, reject) => {
+        const execs: Promise<any>[] = [];
         stream.on("data", (resultKeys: string[]) => {
           for (let fullKey of resultKeys) {
-            const key = fullKey.slice(15);
-            let hash: string | undefined = undefined;
-            if (key.startsWith(entityPrefix)) {
-              hash = key.slice(exampleEntity.length + 1);
-            } else if (
-              key.length > 56 &&
-              key.slice(0, -56).endsWith(entityPrefix)
-            ) {
-              hash = key.slice(0, key.length - exampleEntity.length - 1);
-            }
-
-            if (hash !== undefined && !keysToDelete.includes(hash)) {
-              keysToDelete.push(hash);
-              pipeline.del(`response-cache:${hash}`);
-            }
-
-            if (pipeline.length > 100) {
-              pipeline.exec();
+            // Keys already match via SCAN 'match'; no extra includes() check needed
+            keysToDelete.push(fullKey);
+            pipeline.unlink(fullKey); // non-blocking delete
+            
+            if (pipeline.length >= 100) {
+              execs.push(pipeline.exec());
               pipeline = this._client.pipeline();
             }
           }
         });
 
-        stream.on("end", () => {
-          pipeline.exec(() => resolve("success"));
+        stream.on("end", async () => {
+          try {
+            if (pipeline.length > 0) execs.push(pipeline.exec());
+            await Promise.all(execs);
+            resolve();
+          } catch (err) {
+            reject(err);
+          }
         });
-        stream.on("error", () => {
-          pipeline.exec(() => reject("failure"));
+        stream.on("error", async (err) => {
+          try {
+            if (pipeline.length > 0) execs.push(pipeline.exec());
+            await Promise.allSettled(execs);
+          } finally {
+            reject(err);
+          }
         });
       });
     } catch (error) {
@@ -156,8 +171,18 @@ export class RedisCacheClient {
       });
 
       throw new Error(
-        `Error invalidating hats of tree ${treeId} in network ${networkPrefix}: ${error}`
+        `Error invalidating hats of tree ${treeId} in network ${networkPrefix}`,
+        { cause: error as Error }
       );
     }
+  }
+
+  /**
+   * Getter method to access the underlying Redis client for BullMQ.
+   * The client is shared across BullMQ and cache invalidation operations.
+   * Caller is responsible for connection lifecycle management.
+   */
+  getRedisClient(): Redis {
+    return this._client;
   }
 }

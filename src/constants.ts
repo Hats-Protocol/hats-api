@@ -116,6 +116,12 @@ export const CHAIN_TO_ETHERSCAN_API_KEY: { [key: string]: string } = {
 
 export const HATS_ADDRESS = '0x3bc1A0Ad72417f2d411118085256fC53CBdDd137';
 
+// Timeout configuration
+export const TRANSACTION_PROCESSING_TIMEOUT = parseInt(process.env.TRANSACTION_PROCESSING_TIMEOUT || '60000');
+export const SUBGRAPH_SYNC_TIMEOUT = parseInt(process.env.SUBGRAPH_SYNC_TIMEOUT || '30000');
+export const WEBSOCKET_RETRY_ATTEMPTS = parseInt(process.env.WEBSOCKET_RETRY_ATTEMPTS || '3');
+export const WEBSOCKET_RETRY_DELAY = parseInt(process.env.WEBSOCKET_RETRY_DELAY || '5000');
+
 export const CLAIMS_HATTER_EVENTS = parseAbi([
   'event HatsClaimabilitySet(uint256[] hatIds, uint8[] claimTypes)',
   'event HatClaimabilitySet(uint256 hatId, uint8 claimType)',
