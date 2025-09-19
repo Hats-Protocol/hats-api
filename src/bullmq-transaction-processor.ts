@@ -2,7 +2,6 @@ import { Queue, Worker, Job, QueueEvents } from 'bullmq';
 import type { Redis } from 'ioredis';
 import logger from './log';
 import {
-  TRANSACTION_PROCESSING_TIMEOUT,
   WEBSOCKET_RETRY_ATTEMPTS,
   WEBSOCKET_RETRY_DELAY,
   CHAIN_ID_TO_NETWORK_NAME,
