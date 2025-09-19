@@ -15,6 +15,21 @@ export class BullDashboardSetup {
   }
 
   setupDashboard(app: Express, invalidationManager: CacheInvalidationManager): void {
+    // Only setup dashboard in development and when password is set
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    const hasPassword = !!process.env.BULL_DASHBOARD_PASSWORD;
+
+    if (!isDevelopment || !hasPassword) {
+      logger.log({
+        level: 'info',
+        message: 'Bull dashboard not enabled',
+        reason: !isDevelopment ? 'not in development mode' : 'no dashboard password set',
+        nodeEnv: process.env.NODE_ENV,
+        hasPassword
+      });
+      return;
+    }
+
     try {
       // Get all invalidation services
       const services = invalidationManager.getAllServices();

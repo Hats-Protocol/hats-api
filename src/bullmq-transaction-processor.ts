@@ -5,7 +5,10 @@ import {
   TRANSACTION_PROCESSING_TIMEOUT,
   WEBSOCKET_RETRY_ATTEMPTS,
   WEBSOCKET_RETRY_DELAY,
+  CHAIN_ID_TO_NETWORK_NAME,
 } from './constants';
+import { TransactionNotFoundError } from './errors';
+import { formatTxHash } from './utils';
 
 export interface TransactionJobData {
   txHash: `0x${string}`;
@@ -21,6 +24,13 @@ export interface BullMQProcessorConfig {
   backoffDelay?: number;
 }
 
+export interface JobContext {
+  jobId: string;
+  attempt: number;
+  maxAttempts: number;
+  job?: Job<TransactionJobData>;
+}
+
 export class BullMQTransactionProcessor {
   private queue: Queue<TransactionJobData>;
   private worker: Worker<TransactionJobData>;
@@ -32,7 +42,7 @@ export class BullMQTransactionProcessor {
   constructor(
     chainId: string,
     redis: Redis,
-    processCallback: (txHash: `0x${string}`, chainId: string, force?: boolean) => Promise<void>,
+    processCallback: (txHash: `0x${string}`, chainId: string, force?: boolean, jobContext?: JobContext) => Promise<void>,
     config: BullMQProcessorConfig = {}
   ) {
     this.chainId = chainId;
@@ -46,14 +56,15 @@ export class BullMQTransactionProcessor {
       backoffDelay = WEBSOCKET_RETRY_DELAY,
     } = config;
 
-    const queueName = `transaction-processing-${chainId}`;
-    
+    const networkName = CHAIN_ID_TO_NETWORK_NAME[chainId] || `Chain-${chainId}`;
+    const queueName = networkName;
+
     // Create queue with Redis connection
     this.queue = new Queue<TransactionJobData>(queueName, {
       connection: redis,
       defaultJobOptions: {
-        removeOnComplete: 100, // Keep last 100 completed jobs for monitoring
-        removeOnFail: 50,      // Keep last 50 failed jobs for debugging
+        removeOnComplete: 200, // Keep last 200 completed jobs for auditability
+        removeOnFail: 100,     // Keep last 100 failed jobs for debugging
         attempts: maxAttempts,
         backoff: {
           type: 'exponential',
@@ -72,35 +83,32 @@ export class BullMQTransactionProcessor {
         }
 
         const { txHash, chainId, force } = job.data;
-        
-        logger.log({
-          level: 'info',
-          message: `BullMQ: Processing transaction ${txHash}`,
-          jobId: job.id,
-          chainId,
-          txHash,
-          force,
-          attempt: job.attemptsMade + 1,
-          maxAttempts: job.opts.attempts,
-        });
+
+        await job.log(`Processing transaction \`${formatTxHash(txHash)}\` (attempt ${job.attemptsMade + 1}/${job.opts.attempts})`);
 
         // Update job progress
         await job.updateProgress(10);
 
+        const jobContext: JobContext = {
+          jobId: job.id?.toString() || 'unknown',
+          attempt: job.attemptsMade + 1,
+          maxAttempts: job.opts.attempts || 1,
+          job: job,
+        };
+
         try {
-          await processCallback(txHash, chainId, force);
+          await processCallback(txHash, chainId, force, jobContext);
           await job.updateProgress(100);
         } catch (error) {
-          logger.log({
-            level: 'error',
-            message: `BullMQ: Failed to process transaction ${txHash}`,
-            jobId: job.id,
-            chainId,
-            txHash,
-            error,
-            attempt: job.attemptsMade + 1,
-          });
-          throw error; // Re-throw to let BullMQ handle retries
+          // Don't retry for TransactionNotFoundError - transaction doesn't exist
+          if (error instanceof TransactionNotFoundError) {
+            await job.log(`Transaction not found, marking as permanently failed (attempt ${job.attemptsMade + 1})`);
+            // Mark job as failed without retry by setting attempts to max
+            job.opts.attempts = job.attemptsMade + 1;
+          }
+
+          await job.log(`Failed to process transaction \`${formatTxHash(txHash)}\` - ${error instanceof Error ? error.message : 'Unknown error'} (attempt ${job.attemptsMade + 1})`);
+          throw error; // Re-throw to let BullMQ handle retries (or immediate failure for TransactionNotFoundError)
         }
       },
       {
@@ -124,22 +132,14 @@ export class BullMQTransactionProcessor {
   private setupEventHandlers(): void {
     // Worker events
     this.worker.on('completed', (job: Job<TransactionJobData>) => {
-      logger.log({
-        level: 'info',
-        message: `BullMQ: Transaction processing completed`,
-        jobId: job.id,
-        chainId: job.data.chainId,
-        txHash: job.data.txHash,
-        duration: Date.now() - job.timestamp,
-        attempts: job.attemptsMade + 1,
-      });
+      // Completion message is logged by the transaction processor itself
     });
 
     this.worker.on('failed', (job: Job<TransactionJobData> | undefined, err: Error) => {
       if (!job) return;
-      
+
       const isLastAttempt = (job.attemptsMade + 1) >= (job.opts.attempts || 1);
-      
+
       logger.log({
         level: isLastAttempt ? 'error' : 'warn',
         message: `BullMQ: Transaction processing ${isLastAttempt ? 'failed permanently' : 'failed, will retry'}`,
@@ -212,7 +212,7 @@ export class BullMQTransactionProcessor {
     }
 
     const jobId = `${chainId}-${txHash}`;
-    
+
     try {
       const job = await this.queue.add(
         'process-transaction',
@@ -221,7 +221,7 @@ export class BullMQTransactionProcessor {
           jobId, // Prevents duplicates - BullMQ will update existing job if same ID
           priority: priority * 100, // BullMQ uses higher numbers for higher priority
           delay: force ? 0 : 1000, // Immediate processing if forced, otherwise slight delay
-          removeOnComplete: true,   // Remove on completion to save memory
+          removeOnComplete: false,  // Use default retention policy for auditability
           removeOnFail: false,      // Keep failed jobs for debugging
         }
       );
@@ -314,7 +314,7 @@ export class BullMQTransactionProcessor {
 
   async shutdown(): Promise<void> {
     this.isShuttingDown = true;
-    
+
     logger.log({
       level: 'info',
       message: `BullMQ: Starting graceful shutdown`,
@@ -324,10 +324,10 @@ export class BullMQTransactionProcessor {
     try {
       // Close worker first to stop processing new jobs
       await this.worker.close();
-      
+
       // Close queue events
       await this.queueEvents.close();
-      
+
       // Close queue
       await this.queue.close();
 

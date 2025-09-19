@@ -360,10 +360,10 @@ describe('Full Invalidation Flow Integration', () => {
       // For a top hat (adminHat === null), invalidateHatsInTree is not called
       // Instead, verify that invalidateEntity was called for both the current and previous tree
       expect(invalidateEntitySpy).toHaveBeenCalledWith(
-        '1', txHash, 'Eth_Tree', '0x00000001'
+        '1', txHash, 'Eth_Tree', '0x00000001', undefined
       )
       expect(invalidateEntitySpy).toHaveBeenCalledWith(
-        '1', txHash, 'Eth_Tree', '0x00000000'
+        '1', txHash, 'Eth_Tree', '0x00000000', undefined
       )
     })
 
@@ -450,10 +450,10 @@ describe('Full Invalidation Flow Integration', () => {
       
       // Should invalidate tree entity for both current and previous tree (for top hat)
       expect(invalidateEntitySpy).toHaveBeenCalledWith(
-        '1', txHash, 'Eth_Tree', '0x00000001'
+        '1', txHash, 'Eth_Tree', '0x00000001', undefined
       )
       expect(invalidateEntitySpy).toHaveBeenCalledWith(
-        '1', txHash, 'Eth_Tree', '0x00000000'
+        '1', txHash, 'Eth_Tree', '0x00000000', undefined
       )
       
       // For a top hat, invalidateHatsInTree is not called
@@ -499,10 +499,10 @@ describe('Full Invalidation Flow Integration', () => {
       
       // Should invalidate wearer entities
       expect(invalidateEntitySpy).toHaveBeenCalledWith(
-        '1', txHash, 'Eth_Wearer', '0x1111111111111111111111111111111111111111'
+        '1', txHash, 'Eth_Wearer', '0x1111111111111111111111111111111111111111', undefined
       )
       expect(invalidateEntitySpy).toHaveBeenCalledWith(
-        '1', txHash, 'Eth_Wearer', '0x2222222222222222222222222222222222222222'
+        '1', txHash, 'Eth_Wearer', '0x2222222222222222222222222222222222222222', undefined
       )
     })
   })
@@ -516,7 +516,7 @@ describe('Full Invalidation Flow Integration', () => {
       const processCallback = mockTransactionProcessor._processCallback
       
       await expect(processCallback(txHash, '1', false)).rejects.toThrow(
-        'Error: failed fetching transaction with ID 0x123abc456def from chain 1'
+        'Timeout waiting for transaction'
       )
       
       // Should mark as failed

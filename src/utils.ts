@@ -26,3 +26,13 @@ export const parentHat: (hatId: `0x${string}`) => `0x${string}` | null = (
     throw new Error("Invalid hatId");
   }
 };
+
+/**
+ * Formats a transaction hash for display by showing first 4 and last 4 characters
+ * @param txHash The transaction hash to format
+ * @returns Formatted hash like "0x1234...abcd"
+ */
+export const formatTxHash = (txHash: `0x${string}`): string => {
+  if (txHash.length < 10) return txHash;
+  return `${txHash.slice(0, 6)}...${txHash.slice(-4)}`;
+};

@@ -1,6 +1,7 @@
 import { Redis } from "ioredis";
 import type { RedisOptions } from "ioredis";
 import logger from "./log";
+import { JobContext } from "./bullmq-transaction-processor";
 
 export class RedisCacheClient {
   private readonly _client: Redis;
@@ -29,7 +30,8 @@ export class RedisCacheClient {
     networkId: string,
     txHash: string,
     entityName: string,
-    entityId: string
+    entityId: string,
+    jobContext?: JobContext
   ): Promise<void> {
     const entity = `${entityName}.${entityId}`;
     logger.log({
@@ -39,6 +41,26 @@ export class RedisCacheClient {
       networkId: networkId,
       entity: `${entityName}.${entityId}`,
     });
+
+    // Log to job dashboard if available
+    if (jobContext?.job) {
+      if (entityName.includes('_Wearer')) {
+        if (entityId === 'undefined') {
+          await jobContext.job.log(`Clearing cache for undefined wearer records`);
+        } else {
+          await jobContext.job.log(`Invalidating wearer details for \`${entityId}\``);
+        }
+      } else if (entityName.includes('_Tree')) {
+        const treeIdDecimal = parseInt(entityId, 16);
+        await jobContext.job.log(`Invalidating tree ${treeIdDecimal} details`);
+      } else if (entityName.includes('_Hat')) {
+        await jobContext.job.log(`Invalidating hat \`${entityId}\` details`);
+      } else if (entityName.includes('_ClaimsHatter')) {
+        await jobContext.job.log(`Invalidating claims hatter \`${entityId}\` details`);
+      } else {
+        await jobContext.job.log(`Invalidating entity ${entityName} with ID ${entityId}`);
+      }
+    }
 
     const matchParam = `response-cache:*${entity}*`;
     const stream = this._client.scanStream({
@@ -57,7 +79,7 @@ export class RedisCacheClient {
             // Keys already match via SCAN 'match'; no extra includes() check needed
             keysToDelete.push(fullKey);
             pipeline.unlink(fullKey); // non-blocking delete
-            
+
             if (pipeline.length >= 100) {
               execs.push(pipeline.exec());
               pipeline = this._client.pipeline();
@@ -105,7 +127,8 @@ export class RedisCacheClient {
     networkId: string,
     txHash: string,
     networkPrefix: string,
-    treeId: string
+    treeId: string,
+    jobContext?: JobContext
   ): Promise<void> {
     const entityPrefix = `${networkPrefix}_Hat.${treeId}`;
     logger.log({
@@ -114,6 +137,12 @@ export class RedisCacheClient {
       txHash: txHash,
       networkId: networkId,
     });
+
+    // Log to job dashboard if available
+    if (jobContext?.job) {
+      const treeIdDecimal = parseInt(treeId, 16);
+      await jobContext.job.log(`Invalidating hats of tree ${treeIdDecimal}`);
+    }
 
     const matchParam = `response-cache:*${entityPrefix}*`;
     const stream = this._client.scanStream({
@@ -132,7 +161,7 @@ export class RedisCacheClient {
             // Keys already match via SCAN 'match'; no extra includes() check needed
             keysToDelete.push(fullKey);
             pipeline.unlink(fullKey); // non-blocking delete
-            
+
             if (pipeline.length >= 100) {
               execs.push(pipeline.exec());
               pipeline = this._client.pipeline();

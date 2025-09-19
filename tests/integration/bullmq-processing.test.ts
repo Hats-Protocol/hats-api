@@ -19,7 +19,8 @@ const mockQueue = {
       attemptsMade: 0,
       updateProgress: vi.fn(),
       getState: vi.fn().mockResolvedValue('waiting'),
-      getPosition: vi.fn().mockResolvedValue(mockJobs.size)
+      getPosition: vi.fn().mockResolvedValue(mockJobs.size),
+      log: vi.fn()
     }
     mockJobs.set(opts.jobId, job)
     
@@ -102,7 +103,13 @@ vi.mock('bullmq', () => ({
 vi.mock('../../src/constants', () => ({
   TRANSACTION_PROCESSING_TIMEOUT: 5000,
   WEBSOCKET_RETRY_ATTEMPTS: 3,
-  WEBSOCKET_RETRY_DELAY: 1000
+  WEBSOCKET_RETRY_DELAY: 1000,
+  CHAIN_ID_TO_NETWORK_NAME: {
+    'test-chain': 'Test Chain',
+    '1': 'Ethereum',
+    '10': 'Optimism',
+    '137': 'Polygon'
+  }
 }))
 
 describe('BullMQ Processing Integration', () => {
@@ -181,7 +188,12 @@ describe('BullMQ Processing Integration', () => {
       await processorFunction(job)
       
       // Verify processing callback was called
-      expect(mockProcessCallback).toHaveBeenCalledWith(txHash, chainId, false)
+      expect(mockProcessCallback).toHaveBeenCalledWith(txHash, chainId, false, expect.objectContaining({
+        jobId: expect.any(String),
+        attempt: 1,
+        maxAttempts: expect.any(Number),
+        job: expect.any(Object)
+      }))
       expect(job.updateProgress).toHaveBeenCalledWith(10)
       expect(job.updateProgress).toHaveBeenCalledWith(100)
       

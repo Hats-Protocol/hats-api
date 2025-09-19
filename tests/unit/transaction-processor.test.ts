@@ -30,7 +30,8 @@ const mockJob = {
   attemptsMade: 0,
   opts: { attempts: 3 },
   updateProgress: vi.fn(),
-  getState: vi.fn()
+  getState: vi.fn(),
+  log: vi.fn()
 }
 
 // Store the job processor function
@@ -113,7 +114,7 @@ describe('BullMQTransactionProcessor', () => {
           jobId: `${chainId}-${txHash}`,
           priority: 200, // 2 * 100
           delay: 1000, // Not forced, so has delay
-          removeOnComplete: true,
+          removeOnComplete: false,
           removeOnFail: false
         }
       )
@@ -132,7 +133,7 @@ describe('BullMQTransactionProcessor', () => {
           jobId: '1-0x456def',
           priority: 500, // 5 * 100
           delay: 0, // Forced, so no delay
-          removeOnComplete: true,
+          removeOnComplete: false,
           removeOnFail: false
         }
       )
@@ -203,7 +204,13 @@ describe('BullMQTransactionProcessor', () => {
       expect(mockProcessCallback).toHaveBeenCalledWith(
         mockJob.data.txHash,
         mockJob.data.chainId,
-        mockJob.data.force
+        mockJob.data.force,
+        expect.objectContaining({
+          jobId: 'test-job-id',
+          attempt: 1,
+          maxAttempts: 3,
+          job: mockJob
+        })
       )
       expect(mockJob.updateProgress).toHaveBeenCalledWith(10)
       expect(mockJob.updateProgress).toHaveBeenCalledWith(100)

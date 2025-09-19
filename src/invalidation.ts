@@ -45,7 +45,7 @@ import {
 import { GraphQLClient, gql } from "graphql-request";
 import { LRUCache } from "lru-cache";
 import { retryAsync, CircuitBreaker, RetryOptions } from "./retry-utils";
-import { BullMQTransactionProcessor, BullMQProcessorConfig } from "./bullmq-transaction-processor";
+import { BullMQTransactionProcessor, BullMQProcessorConfig, JobContext } from "./bullmq-transaction-processor";
 
 enum TransactionCacheState {
   NOT_STARTED = 0,
@@ -285,13 +285,17 @@ export class CacheInvalidationService {
       chain: CHAIN_ID_TO_VIEM_CHAIN[chainId],
       transport: http(CHAIN_ID_TO_HTTP_URL[chainId]),
     });
-    this.graphqlClient = new GraphQLClient(CHAIN_ID_TO_MAIN_SUBGRAPH[chainId]);
-    
+    this.graphqlClient = new GraphQLClient(CHAIN_ID_TO_MAIN_SUBGRAPH[chainId], {
+      headers: {
+        Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`,
+      },
+    });
+
     // Initialize circuit breakers
     this.socketCircuitBreaker = new CircuitBreaker(5, 60000, `Socket-${chainId}`);
     this.httpCircuitBreaker = new CircuitBreaker(5, 60000, `HTTP-${chainId}`);
     this.subgraphCircuitBreaker = new CircuitBreaker(5, 60000, `Subgraph-${chainId}`);
-    
+
     // Initialize BullMQ transaction processor
     const processorConfig: BullMQProcessorConfig = {
       concurrency: 3,        // Max 3 concurrent transactions per chain
@@ -304,8 +308,8 @@ export class CacheInvalidationService {
     this.transactionProcessor = new BullMQTransactionProcessor(
       chainId,
       cacheClient.getRedisClient(),
-      (txHash: `0x${string}`, chainId: string, force?: boolean) => 
-        this.processTransactionInternal(txHash, force),
+      (txHash: `0x${string}`, chainId: string, force?: boolean, jobContext?: JobContext) =>
+        this.processTransactionInternal(txHash, force, jobContext),
       processorConfig
     );
   }
@@ -381,7 +385,7 @@ export class CacheInvalidationService {
             }
           },
         });
-        
+
         logger.log({
           level: "info",
           message: `Event watchers set up for network ${this.chainId}`,
@@ -438,22 +442,22 @@ export class CacheInvalidationService {
           reason: ev.reason,
         });
         clearInterval(intervalId);
-        
+
         // Only clean up if socket client exists
         if (socketRpcClient && socketRpcClient.socket) {
           socketRpcClient.socket.removeEventListener("error", onError);
           socketRpcClient.socket.removeEventListener("close", onClose);
         }
-        
+
         // Clean up event watchers
         if (unwatchClaimsHatter) unwatchClaimsHatter();
         if (unwatchHats) unwatchHats();
-        
+
         // Close socket client if it exists
         if (socketRpcClient) {
           socketRpcClient.close();
         }
-        
+
         // NOTE: IMPORTANT: invalidate viem's socketClientCache! When close
         // happens on socket level, the same socketClient with the closed websocket will be
         // re-used from cache leading to 'Socket is closed.' error.
@@ -464,7 +468,7 @@ export class CacheInvalidationService {
             key: this.key.toString(),
           }),
         });
-        
+
         // Restart with retry logic
         setTimeout(() => {
           this.start();
@@ -501,15 +505,15 @@ export class CacheInvalidationService {
       retryCount: existing?.retryCount || 0,
       lastError: error,
     };
-    
+
     if (state === TransactionCacheState.RETRYING) {
       entry.retryCount = (existing?.retryCount || 0) + 1;
     } else if (state === TransactionCacheState.NOT_STARTED || state === TransactionCacheState.PROCESSING) {
       entry.retryCount = existing?.retryCount || 0;
     }
-    
+
     this.inMemCache.set(txHash, entry);
-    
+
     logger.log({
       level: "debug",
       message: `Cache state updated for ${this.chainId}-${txHash}: ${TransactionCacheState[state]}`,
@@ -533,7 +537,7 @@ export class CacheInvalidationService {
   async processTransaction(txHash: `0x${string}`, force?: boolean) {
     // Check if already processing/completed with improved logic
     const entry = this.getCacheEntry(txHash);
-    
+
     if (entry && !force) {
       if (entry.state === TransactionCacheState.COMPLETED) {
         logger.log({
@@ -544,7 +548,7 @@ export class CacheInvalidationService {
         });
         return;
       }
-      
+
       if (entry.state === TransactionCacheState.PROCESSING && !this.isTransactionStale(entry)) {
         logger.log({
           level: "info",
@@ -554,7 +558,7 @@ export class CacheInvalidationService {
         });
         return;
       }
-      
+
       if (this.isTransactionStale(entry)) {
         logger.log({
           level: "warn",
@@ -566,7 +570,7 @@ export class CacheInvalidationService {
         this.setCacheEntry(txHash, TransactionCacheState.NOT_STARTED);
       }
     }
-    
+
     // Add to BullMQ queue instead of processing directly
     const priority = force ? 5 : 1;
     try {
@@ -583,19 +587,54 @@ export class CacheInvalidationService {
     }
   }
 
-  private async processTransactionInternal(txHash: `0x${string}`, force?: boolean) {
+  private async processTransactionInternal(txHash: `0x${string}`, force?: boolean, jobContext?: JobContext) {
     logger.log({
       level: "info",
-      message: `${this.chainId}-${txHash}: start processing internal`,
+      message: `Start processing transaction internally`,
       networkId: this.chainId,
       txHash: txHash,
       isForce: force ?? false,
     });
 
+    // Log to job if available
+    if (jobContext?.job) {
+      await jobContext.job.log(`Start processing transaction internally`);
+    }
+
     // Set processing state
     this.setCacheEntry(txHash, TransactionCacheState.PROCESSING);
 
     let transactionReceipt: TransactionReceipt;
+
+    // First, quickly check if transaction exists at all
+    try {
+      const tx = await this.publicHttpClient.getTransaction({ hash: txHash });
+      if (!tx) {
+        logger.log({
+          level: "error",
+          message: `Transaction \`${txHash}\` not found on blockchain`,
+          networkId: this.chainId,
+          txHash: txHash,
+        });
+        this.setCacheEntry(txHash, TransactionCacheState.FAILED, "Transaction not found");
+        throw new TransactionNotFoundError(
+          `Transaction ${txHash} not found on chain ${this.chainId}`
+        );
+      }
+    } catch (err) {
+      if (err instanceof TransactionNotFoundError) {
+        throw err; // Re-throw our custom error
+      }
+
+      logger.log({
+        level: "warn",
+        message: `Error checking transaction \`${txHash}\` existence, proceeding anyway`,
+        networkId: this.chainId,
+        txHash: txHash,
+        error: err,
+      });
+    }
+
     // fetch transaction receipt with retry logic
     try {
       transactionReceipt = await this.httpCircuitBreaker.execute(async () => {
@@ -603,36 +642,66 @@ export class CacheInvalidationService {
           async () => {
             const receipt = await this.publicHttpClient.waitForTransactionReceipt({
               hash: txHash,
-              timeout: TRANSACTION_PROCESSING_TIMEOUT,
+              timeout: Math.min(TRANSACTION_PROCESSING_TIMEOUT, 30000), // Cap at 30 seconds
             });
-            
+
             if (!receipt) {
               throw new Error("Transaction receipt is null");
             }
-            
+
             return receipt;
           },
           {
-            maxAttempts: 3,
-            baseDelay: 2000,
-            maxDelay: 10000,
+            maxAttempts: 2, // Reduce from 3 to 2 attempts
+            baseDelay: 1000, // Reduce from 2000 to 1000ms
+            maxDelay: 5000,  // Reduce from 10000 to 5000ms
           },
           `${this.chainId}-${txHash}: fetching transaction receipt`
         );
       });
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : String(err);
+
+      // Check if this is a timeout error for a potentially non-existent transaction
+      const isTimeoutError = errorMessage.includes('Timed out') || errorMessage.includes('timeout');
+
       logger.log({
         level: "error",
-        message: `${this.chainId}-${txHash}: error fetching transaction after retries`,
+        message: `Error fetching transaction \`${txHash}\` after retries`,
         networkId: this.chainId,
         txHash: txHash,
         error: err,
       });
+
       this.setCacheEntry(txHash, TransactionCacheState.FAILED, errorMessage);
-      throw new TransactionNotFoundError(
-        `Error: failed fetching transaction with ID ${txHash} from chain ${this.chainId}`
-      );
+
+      if (isTimeoutError) {
+        throw new TransactionNotFoundError(
+          `Timeout waiting for transaction ${txHash} on chain ${this.chainId} - transaction may not exist or is taking too long to confirm`
+        );
+      } else {
+        throw new TransactionNotFoundError(
+          `Error: failed fetching transaction with ID ${txHash} from chain ${this.chainId}`
+        );
+      }
+    }
+
+    // Add BullMQ log for transaction receipt obtained
+    if (jobContext) {
+      logger.log({
+        level: "info",
+        message: `BullMQ: Transaction receipt obtained for block ${transactionReceipt.blockNumber}`,
+        jobId: jobContext.jobId,
+        chainId: this.chainId,
+        txHash: txHash,
+        blockNumber: transactionReceipt.blockNumber.toString(),
+        attempt: jobContext.attempt,
+      });
+
+      // Log to job dashboard
+      if (jobContext.job) {
+        await jobContext.job.log(`Transaction receipt obtained for block ${transactionReceipt.blockNumber}`);
+      }
     }
 
     // wait for the subgraph to sync before invalidating
@@ -643,7 +712,7 @@ export class CacheInvalidationService {
       if (!subgraphSynced) {
         logger.log({
           level: "error",
-          message: `${this.chainId}-${txHash}: subgraph sync timeout for block ${transactionReceipt.blockNumber.toString()}`,
+          message: `Subgraph sync timeout for transaction \`${txHash}\` at block ${transactionReceipt.blockNumber.toString()}`,
           networkId: this.chainId,
           txHash: txHash,
         });
@@ -656,8 +725,7 @@ export class CacheInvalidationService {
       const errorMessage = error instanceof Error ? error.message : String(error);
       logger.log({
         level: "error",
-        message: `${this.chainId
-          }-${txHash}: unexpected error while waiting for block number ${transactionReceipt.blockNumber.toString()}`,
+        message: `Unexpected error while waiting for block ${transactionReceipt.blockNumber.toString()} for transaction \`${txHash}\``,
         networkId: this.chainId,
         txHash: txHash,
         error: error,
@@ -698,18 +766,20 @@ export class CacheInvalidationService {
         txHash,
         hatsLogs,
         CHAIN_ID_TO_NETWORK_NAME[this.chainId],
-        CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
+        CHAIN_ID_TO_ENTITY_PREFIX[this.chainId],
+        jobContext
       );
       await this.handleClaimsHatterEvents(
         txHash,
         claimsHatterInstances,
-        CHAIN_ID_TO_ENTITY_PREFIX[this.chainId]
+        CHAIN_ID_TO_ENTITY_PREFIX[this.chainId],
+        jobContext
       );
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : String(err);
       logger.log({
         level: "error",
-        message: `${this.chainId}-${txHash}: error processing hats events`,
+        message: `Error processing hats events for transaction \`${txHash}\``,
         networkId: this.chainId,
         txHash: txHash,
         error: err,
@@ -721,11 +791,30 @@ export class CacheInvalidationService {
       );
     }
 
+    // Add BullMQ completion summary
+    if (jobContext) {
+      logger.log({
+        level: "info",
+        message: `BullMQ: Transaction processing completed successfully`,
+        jobId: jobContext.jobId,
+        chainId: this.chainId,
+        txHash: txHash,
+        blockNumber: transactionReceipt.blockNumber.toString(),
+        attempt: jobContext.attempt,
+        maxAttempts: jobContext.maxAttempts,
+      });
+
+      // Log to job dashboard
+      if (jobContext.job) {
+        await jobContext.job.log(`Transaction processing completed successfully`);
+      }
+    }
+
     // Successfully completed
     this.setCacheEntry(txHash, TransactionCacheState.COMPLETED);
     logger.log({
       level: "info",
-      message: `${this.chainId}-${txHash}: processing completed successfully`,
+      message: `Transaction \`${txHash}\` processing completed successfully`,
       networkId: this.chainId,
       txHash: txHash,
     });
@@ -735,7 +824,8 @@ export class CacheInvalidationService {
     txHash: string,
     logs: (Log | RpcLog)[],
     networkName: string,
-    entityPrefix: string
+    entityPrefix: string,
+    jobContext?: JobContext
   ) {
     const parsedLogs = parseEventLogs({
       abi: HATS_ABI,
@@ -744,17 +834,57 @@ export class CacheInvalidationService {
 
     const processedHatsOfTrees: string[] = [];
     const processedEntities: string[] = [];
+    const processedWearers: string[] = [];
+    const processedTrees: string[] = [];
+    const processedHats: string[] = [];
+
+    // Add BullMQ log for events found
+    if (jobContext && parsedLogs.length > 0) {
+      logger.log({
+        level: "info",
+        message: `BullMQ: Found ${parsedLogs.length} Hat events to process`,
+        jobId: jobContext.jobId,
+        chainId: this.chainId,
+        txHash: txHash,
+        eventCount: parsedLogs.length,
+        attempt: jobContext.attempt,
+      });
+
+      // Log to job dashboard
+      if (jobContext.job) {
+        await jobContext.job.log(`Found ${parsedLogs.length} Hat events to process`);
+      }
+    }
 
     for (let i = 0; i < parsedLogs.length; i++) {
       const log = parsedLogs[i];
       logger.log({
         level: "info",
-        message: `${this.chainId}-${txHash}: processing event ${log.eventName}`,
+        message: `Processing event ${log.eventName}`,
         txHash: log.transactionHash,
         networkId: this.chainId,
         logIndex: log.logIndex,
         index: i,
       });
+
+      // Add BullMQ log for each event
+      if (jobContext) {
+        logger.log({
+          level: "info",
+          message: `BullMQ: Processing event ${log.eventName} (${i + 1}/${parsedLogs.length})`,
+          jobId: jobContext.jobId,
+          chainId: this.chainId,
+          txHash: txHash,
+          eventName: log.eventName,
+          logIndex: log.logIndex,
+          attempt: jobContext.attempt,
+        });
+
+        // Log to job dashboard
+        if (jobContext.job) {
+          await jobContext.job.log(`Processing event ${log.eventName} (${i + 1}/${parsedLogs.length})`);
+        }
+      }
 
       if (
         log.eventName === "HatDetailsChanged" ||
@@ -773,7 +903,8 @@ export class CacheInvalidationService {
             this.chainId,
             txHash,
             entityPrefix,
-            treeId
+            treeId,
+            jobContext
           );
         }
       } else if (log.eventName === "HatCreated") {
@@ -782,28 +913,30 @@ export class CacheInvalidationService {
         const treeId = treeIdDecimalToHex(treeIdNum);
         const adminHat = parentHat(hatIdDecimalToHex(hatId));
         const treeKey = `${entityPrefix}_Tree.${treeId}`;
-        const prevTreeKey = treeIdNum > 0 
+        const prevTreeKey = treeIdNum > 0
           ? `${entityPrefix}_Tree.${treeIdDecimalToHex(treeIdNum - 1)}`
           : null;
 
-        if (!processedEntities.includes(treeKey)) {
-          processedEntities.push(treeKey);
+        if (!processedTrees.includes(treeKey)) {
+          processedTrees.push(treeKey);
           await this.cache.invalidateEntity(
             this.chainId,
             txHash,
             `${entityPrefix}_Tree`,
-            treeId
+            treeId,
+            jobContext
           );
         }
         // if the hat is a top-hat, invalidate also the previous tree for tree pagination queries
-        if (adminHat === null && prevTreeKey && !processedEntities.includes(prevTreeKey)) {
-          processedEntities.push(prevTreeKey);
+        if (adminHat === null && prevTreeKey && !processedTrees.includes(prevTreeKey)) {
+          processedTrees.push(prevTreeKey);
           if (treeIdNum > 0) {
             await this.cache.invalidateEntity(
               this.chainId,
               txHash,
               `${entityPrefix}_Tree`,
-              treeIdDecimalToHex(treeIdNum - 1)
+              treeIdDecimalToHex(treeIdNum - 1),
+              jobContext
             );
           }
         }
@@ -814,7 +947,8 @@ export class CacheInvalidationService {
             this.chainId,
             txHash,
             entityPrefix,
-            treeId
+            treeId,
+            jobContext
           );
         }
       } else if (
@@ -825,22 +959,24 @@ export class CacheInvalidationService {
         const adminHatId = log.args.newAdmin;
         const treeKey = `${entityPrefix}_Tree.${treeIdDecimalToHex(treeId)}`;
         const hatKey = `${entityPrefix}_Hat.${hatIdDecimalToHex(adminHatId)}`;
-        if (!processedEntities.includes(treeKey)) {
-          processedEntities.push(treeKey);
+        if (!processedTrees.includes(treeKey)) {
+          processedTrees.push(treeKey);
           await this.cache.invalidateEntity(
             this.chainId,
             txHash,
             `${entityPrefix}_Tree`,
-            treeIdDecimalToHex(treeId)
+            treeIdDecimalToHex(treeId),
+            jobContext
           );
         }
-        if (!processedEntities.includes(hatKey)) {
-          processedEntities.push(hatKey);
+        if (!processedHats.includes(hatKey)) {
+          processedHats.push(hatKey);
           await this.cache.invalidateEntity(
             this.chainId,
             txHash,
             `${entityPrefix}_Hat`,
-            hatIdDecimalToHex(adminHatId)
+            hatIdDecimalToHex(adminHatId),
+            jobContext
           );
         }
       } else if (log.eventName === "TransferSingle") {
@@ -861,42 +997,85 @@ export class CacheInvalidationService {
             this.chainId,
             txHash,
             entityPrefix,
-            treeId
+            treeId,
+            jobContext
           );
         }
         if (
           to !== "0x0000000000000000000000000000000000000000" &&
-          !processedEntities.includes(toKey)
+          !processedWearers.includes(toKey)
         ) {
-          processedEntities.push(toKey);
+          processedWearers.push(toKey);
           await this.cache.invalidateEntity(
             this.chainId,
             txHash,
             `${entityPrefix}_Wearer`,
-            (to as string).toLowerCase()
+            (to as string).toLowerCase(),
+            jobContext
           );
         }
         if (
           from !== "0x0000000000000000000000000000000000000000" &&
-          !processedEntities.includes(fromKey)
+          !processedWearers.includes(fromKey)
         ) {
-          processedEntities.push(fromKey);
+          processedWearers.push(fromKey);
           await this.cache.invalidateEntity(
             this.chainId,
             txHash,
             `${entityPrefix}_Wearer`,
-            (from as string).toLowerCase()
+            (from as string).toLowerCase(),
+            jobContext
           );
         }
-        if (!processedEntities.includes(nonExistentWearerKey)) {
-          processedEntities.push(nonExistentWearerKey);
+        if (!processedWearers.includes(nonExistentWearerKey)) {
+          processedWearers.push(nonExistentWearerKey);
           await this.cache.invalidateEntity(
             this.chainId,
             txHash,
             `${entityPrefix}_Wearer`,
-            "undefined"
+            "undefined",
+            jobContext
           );
         }
+      }
+    }
+
+    // Add BullMQ summary for hat events processing
+    if (jobContext) {
+      logger.log({
+        level: "info",
+        message: `BullMQ: Hat events processing completed`,
+        jobId: jobContext.jobId,
+        chainId: this.chainId,
+        txHash: txHash,
+        eventsProcessed: parsedLogs.length,
+        treeCollectionsInvalidated: processedHatsOfTrees.length,
+        wearersInvalidated: processedWearers.length,
+        treeDetailsInvalidated: processedTrees.length,
+        hatDetailsInvalidated: processedHats.length,
+        otherEntitiesInvalidated: processedEntities.length,
+        attempt: jobContext.attempt,
+      });
+
+      // Log to job dashboard
+      if (jobContext.job) {
+        const summaryItems = [`${parsedLogs.length} events processed`];
+        if (processedHatsOfTrees.length > 0) {
+          summaryItems.push(`${processedHatsOfTrees.length} tree collections invalidated`);
+        }
+        if (processedWearers.length > 0) {
+          summaryItems.push(`${processedWearers.length} wearers invalidated`);
+        }
+        if (processedTrees.length > 0) {
+          summaryItems.push(`${processedTrees.length} tree details invalidated`);
+        }
+        if (processedHats.length > 0) {
+          summaryItems.push(`${processedHats.length} hat details invalidated`);
+        }
+        if (processedEntities.length > 0) {
+          summaryItems.push(`${processedEntities.length} other entities invalidated`);
+        }
+        await jobContext.job.log(`Hat events processing completed:\n• ${summaryItems.join('\n• ')}`);
       }
     }
   }
@@ -904,13 +1083,14 @@ export class CacheInvalidationService {
   async handleClaimsHatterEvents(
     txHash: string,
     claimsHatters: `0x${string}`[],
-    entityPrefix: string
+    entityPrefix: string,
+    jobContext?: JobContext
   ) {
     await Promise.all(
       claimsHatters.map((hatter) => {
         logger.log({
           level: "info",
-          message: `${this.chainId}-${txHash}: processing claims hatter event of address ${hatter}`,
+          message: `Processing claims hatter event of address \`${hatter}\``,
           txHash: txHash,
           networkId: this.chainId,
           entity: `${entityPrefix}_ClaimsHatter.${hatter.toLowerCase()}`,
@@ -919,7 +1099,8 @@ export class CacheInvalidationService {
           this.chainId,
           txHash,
           `${entityPrefix}_ClaimsHatter`,
-          hatter.toLowerCase()
+          hatter.toLowerCase(),
+          jobContext
         );
       })
     );
