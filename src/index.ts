@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import { createBuiltMeshHTTPHandler } from "../.mesh";
 import { CacheInvalidationManager } from "./invalidation";
+import { BullDashboardSetup } from "./bull-dashboard";
 import logger from "./log";
 import {
   // ValidationError,
@@ -21,6 +22,10 @@ app.use(cors({ maxAge: 86400 }));
 app.use(express.json());
 
 app.use("/graphql", createBuiltMeshHTTPHandler());
+
+// Setup Bull Dashboard for queue monitoring
+const bullDashboardSetup = new BullDashboardSetup();
+bullDashboardSetup.setupDashboard(app, cacheInvalidationManager);
 
 app.post("/invalidate", async (req, res) => {
   const {
