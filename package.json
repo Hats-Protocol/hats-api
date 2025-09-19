@@ -2,7 +2,6 @@
   "name": "mesh",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "main": "dist/src/index.js",
   "scripts": {
     "build": "pnpm build-mesh && npx tsc",

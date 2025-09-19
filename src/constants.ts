@@ -75,7 +75,7 @@ export const CHAIN_ID_TO_VIEM_CHAIN: { [key: string]: Chain } = {
   84532: baseSepolia,
 };
 
-const GATEWAY_URL = `https://gateway-arbitrum.network.thegraph.com/api/${process.env.GRAPH_NETWORK_API_KEY}`;
+const GATEWAY_URL = `https://gateway.thegraph.com/api`;
 const gatewayNetworkUrl = (id: string) => {
   return `${GATEWAY_URL}/subgraphs/id/${id}`;
 };
