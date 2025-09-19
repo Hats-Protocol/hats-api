@@ -161,24 +161,7 @@ export class ServerWithBullMQ {
   }
 
   private setupBullMQDashboard(): void {
-    // Add authentication middleware if credentials are provided
-    const dashboardPassword = process.env.BULL_DASHBOARD_PASSWORD;
-    const dashboardToken = process.env.BULL_DASHBOARD_TOKEN;
-    
-    if (dashboardPassword || dashboardToken) {
-      this.app.use('/admin/queues', BullDashboardSetup.createAuthMiddleware());
-      logger.log({
-        level: 'info',
-        message: 'BullMQ dashboard protected with authentication',
-      });
-    } else {
-      logger.log({
-        level: 'warn',
-        message: 'BullMQ dashboard running without authentication - not recommended for production',
-      });
-    }
-
-    // Setup the dashboard
+    // Setup the dashboard (includes authentication if credentials are provided)
     this.bullDashboardSetup.setupDashboard(this.app, this.invalidationManager);
   }
 

@@ -15,19 +15,35 @@ export class BullDashboardSetup {
   }
 
   setupDashboard(app: Express, invalidationManager: CacheInvalidationManager): void {
-    // Only setup dashboard in development and when password is set
+    // Setup dashboard in development (always) or other environments (only with credentials)
     const isDevelopment = process.env.NODE_ENV === 'development';
-    const hasPassword = !!process.env.BULL_DASHBOARD_PASSWORD;
+    const bullUser = process.env.BULL_USER;
+    const bullPass = process.env.BULL_PASS;
+    const hasCredentials = !!bullUser && !!bullPass;
 
-    if (!isDevelopment || !hasPassword) {
+    if (!isDevelopment && !hasCredentials) {
       logger.log({
         level: 'info',
         message: 'Bull dashboard not enabled',
-        reason: !isDevelopment ? 'not in development mode' : 'no dashboard password set',
+        reason: 'not in development mode and no bull credentials set',
         nodeEnv: process.env.NODE_ENV,
-        hasPassword
+        hasCredentials
       });
       return;
+    }
+
+    if (!isDevelopment && !bullUser) {
+      logger.log({
+        level: 'warn',
+        message: 'BULL_USER not set. Bull Board routes may be unprotected!',
+      });
+    }
+
+    if (!isDevelopment && !bullPass) {
+      logger.log({
+        level: 'warn',
+        message: 'BULL_PASS not set. Bull Board routes may be unprotected!',
+      });
     }
 
     try {
@@ -82,8 +98,12 @@ export class BullDashboardSetup {
         },
       });
 
-      // Mount the dashboard
-      app.use('/admin/queues', this.serverAdapter.getRouter());
+      // Mount the dashboard with authentication (only if credentials are set)
+      if (hasCredentials) {
+        app.use('/admin/queues', BullDashboardSetup.createBasicAuthMiddleware(bullUser!, bullPass!), this.serverAdapter.getRouter());
+      } else {
+        app.use('/admin/queues', this.serverAdapter.getRouter());
+      }
 
       logger.log({
         level: 'info',
@@ -100,33 +120,24 @@ export class BullDashboardSetup {
     }
   }
 
-  // Add authentication middleware for production
-  static createAuthMiddleware() {
+  // Add basic authentication middleware
+  static createBasicAuthMiddleware(username: string, password: string) {
     return (req: any, res: any, next: any) => {
-      // In production, you might want to check API keys, JWT tokens, etc.
-      const adminPassword = process.env.BULL_DASHBOARD_PASSWORD;
+      const auth = req.get('Authorization');
 
-      if (!adminPassword) {
-        // If no password is set, require authentication
-        const auth = req.get('Authorization');
-        if (!auth || !auth.startsWith('Bearer ')) {
-          res.status(401).json({ error: 'Authentication required' });
-          return;
-        }
+      if (!auth || !auth.startsWith('Basic ')) {
+        res.set('WWW-Authenticate', 'Basic realm="Bull Dashboard"');
+        res.status(401).send('Authentication required');
+        return;
+      }
 
-        // You can implement your own auth logic here
-        const token = auth.substring(7);
-        if (token !== process.env.BULL_DASHBOARD_TOKEN) {
-          res.status(401).json({ error: 'Invalid credentials' });
-          return;
-        }
-      } else {
-        // Simple password-based auth
-        const providedPassword = req.query.password || req.headers['x-admin-password'];
-        if (providedPassword !== adminPassword) {
-          res.status(401).json({ error: 'Invalid admin password' });
-          return;
-        }
+      const credentials = Buffer.from(auth.substring(6), 'base64').toString();
+      const [providedUsername, providedPassword] = credentials.split(':');
+
+      if (providedUsername !== username || providedPassword !== password) {
+        res.set('WWW-Authenticate', 'Basic realm="Bull Dashboard"');
+        res.status(401).send('Invalid credentials');
+        return;
       }
 
       next();
