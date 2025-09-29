@@ -2,7 +2,7 @@ sources:
   - name: Ethereum_Main
     handler:
       graphql:
-        endpoint: https://gateway.thegraph.com/api/deployments/id/QmUwJCVnS2oj3pBSqeWQNnD1UWfk2SGnhpZgkD7migTp4k
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmUwJCVnS2oj3pBSqeWQNnD1UWfk2SGnhpZgkD7migTp4k # v1.1.1
         operationHeaders:
           Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
         schemaHeaders:
@@ -15,7 +15,11 @@ sources:
   - name: Ethereum_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-ethereum-ancillary/v0.0.27
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmZGW5e6tqSCn3M7YZ2JsrepCH16C6dTKpLrzoLfwf43Ea # v0.0.27
+        operationHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
+        schemaHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
     transforms:
       - prefix:
           mode: wrap
@@ -24,7 +28,7 @@ sources:
   - name: Optimism_Main
     handler:
       graphql:
-        endpoint: https://gateway.thegraph.com/api/deployments/id/QmSZNPgFGssw9UgkntFta9fEsZE1rFTeKa88Eh4yUyGXok
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmSZNPgFGssw9UgkntFta9fEsZE1rFTeKa88Eh4yUyGXok # v1.1.2
         operationHeaders:
           Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
         schemaHeaders:
@@ -37,7 +41,11 @@ sources:
   - name: Optimism_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-optimism-ancillary/v0.0.24
+        endpoint: https://gateway.thegraph.com/api/deployments/id/Qma7GugAzyZ2ajnZZhLQJ5zivHs71BLtssfwmXiJjHjsw5 # v0.0.24
+        operationHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
+        schemaHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
     transforms:
       - prefix:
           mode: wrap
@@ -46,7 +54,7 @@ sources:
   - name: Arbitrum_Main
     handler:
       graphql:
-        endpoint: https://gateway.thegraph.com/api/deployments/id/QmQbh7ypYVJzrebLPtmxCfMBsy4BMkRo5XVXpZcdK1EE1s
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmQbh7ypYVJzrebLPtmxCfMBsy4BMkRo5XVXpZcdK1EE1s # v1.1.1
         operationHeaders:
           Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
         schemaHeaders:
@@ -59,7 +67,11 @@ sources:
   - name: Arbitrum_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-arbitrum-ancillary/v0.0.24
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmWniKERfGiCC2qxVPyUsbWuJYBjAvNTUMSmhFKVQWvJfJ # v0.0.24
+        operationHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
+        schemaHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
     transforms:
       - prefix:
           mode: wrap
@@ -68,7 +80,7 @@ sources:
   - name: Gnosis_Main
     handler:
       graphql:
-        endpoint: https://gateway.thegraph.com/api/deployments/id/QmUTPc5dEDGi6kFBhJKjqM9dk9WE6XxkK9eunfKUmUCfSW
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmUTPc5dEDGi6kFBhJKjqM9dk9WE6XxkK9eunfKUmUCfSW # v1.1.1
         operationHeaders:
           Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
         schemaHeaders:
@@ -81,7 +93,11 @@ sources:
   - name: Gnosis_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-gnosis-chain-ancillary/v0.0.24
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmUNp1ETRWsACMBStYp3shs74TZwNSohyhRKowim9wZqiV # v0.0.24
+        operationHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
+        schemaHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
     transforms:
       - prefix:
           mode: wrap
@@ -90,7 +106,7 @@ sources:
   - name: Celo_Main
     handler:
       graphql:
-        endpoint: https://gateway.thegraph.com/api/deployments/id/Qma8QFDs29rmh7rpY7rGmHcMgoLh8wJGTMD3Rqpc4uFNuN
+        endpoint: https://gateway.thegraph.com/api/deployments/id/Qma8QFDs29rmh7rpY7rGmHcMgoLh8wJGTMD3Rqpc4uFNuN # v1.1.1
         operationHeaders:
           Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
         schemaHeaders:
@@ -103,7 +119,11 @@ sources:
   - name: Celo_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-celo-ancillary/v0.0.25
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmZXqnwo39NXTdtdqdSVVMwz3pJWXExTZKgNXjgUj8xuq7 # v0.0.25
+        operationHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
+        schemaHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
     transforms:
       - prefix:
           mode: wrap
@@ -112,7 +132,7 @@ sources:
   - name: Base_Main
     handler:
       graphql:
-        endpoint: https://gateway.thegraph.com/api/deployments/id/QmcP8hY2vkwLugNG4c3miaX76RBSg1d7JNHdwqsREotPmL
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmcP8hY2vkwLugNG4c3miaX76RBSg1d7JNHdwqsREotPmL # v1.1.1
         operationHeaders:
           Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
         schemaHeaders:
@@ -125,7 +145,11 @@ sources:
   - name: Base_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-base-ancillary/v0.0.25
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmcYWJrsq6auFS4uGrP6MLognzNzeb1EtZHmRyMBh5dQzB # v0.0.25
+        operationHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
+        schemaHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
     transforms:
       - prefix:
           mode: wrap
@@ -134,7 +158,7 @@ sources:
   - name: Polygon_Main
     handler:
       graphql:
-        endpoint: https://gateway.thegraph.com/api/deployments/id/QmbU99oKzupsrDHoTvjZ3yZ5qKJ8PvydWGu21AUT4ag2vj
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmbU99oKzupsrDHoTvjZ3yZ5qKJ8PvydWGu21AUT4ag2vj # v1.1.1
         operationHeaders:
           Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
         schemaHeaders:
@@ -147,7 +171,11 @@ sources:
   - name: Polygon_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-polygon-ancillary/v0.0.24
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmdShtgvKUVZRehnsXCKnwGDQdkiC9cm4htBwU7jbBgGWB # v0.0.24
+        operationHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
+        schemaHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
     transforms:
       - prefix:
           mode: wrap
@@ -156,7 +184,7 @@ sources:
   - name: Sepolia_Main
     handler:
       graphql:
-        endpoint: https://gateway.thegraph.com/api/deployments/id/QmXb6pJU1Rgoa6f3Bm1oaG5UAh7R5g9EybpFmA7AFrJ86a
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmXb6pJU1Rgoa6f3Bm1oaG5UAh7R5g9EybpFmA7AFrJ86a # v1.1.3
         operationHeaders:
           Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
         schemaHeaders:
@@ -169,7 +197,11 @@ sources:
   - name: Sepolia_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-sepolia-ancillary/v0.0.25
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmdpsMh99K431gHar7jdCjU6NLc5S8Em8Po5eci6G3HAbM # v0.0.25
+        operationHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
+        schemaHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
     transforms:
       - prefix:
           mode: wrap
@@ -178,7 +210,11 @@ sources:
   - name: BaseSepolia_Main
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-base-sepolia/v0.0.9
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmQBD8BVa2Kw5KPyMrLTUcacmtiwSj1zg5ncs4oVkYdBcm # v0.0.9
+        operationHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
+        schemaHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
     transforms:
       - prefix:
           mode: wrap
@@ -187,7 +223,11 @@ sources:
   - name: BaseSepolia_Ancillary
     handler:
       graphql:
-        endpoint: https://api.studio.thegraph.com/query/55784/hats-v1-base-sepolia-ancillary/v0.0.2
+        endpoint: https://gateway.thegraph.com/api/deployments/id/QmXgU6qGCDGkACtDh4UCYB4wAjShETHbB2A4n7dwxQBzCG # v0.0.2
+        operationHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
+        schemaHeaders:
+          Authorization: Bearer {env.GRAPH_NETWORK_API_KEY}
     transforms:
       - prefix:
           mode: wrap
