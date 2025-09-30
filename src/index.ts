@@ -47,25 +47,58 @@ app.post("/invalidate", async (req, res) => {
   });
 
   if (!transactionId || !networkId) {
-    return res.status(400).send("Missing transaction hash or network ID");
+    return res.status(400).json({
+      error: "Missing transaction hash or network ID"
+    });
   }
 
   try {
-    await cacheInvalidationManager.processTransaction(
+    const result = await cacheInvalidationManager.processTransaction(
       transactionId,
       networkId,
       force
     );
-    res.send("success");
+
+    // Determine appropriate status code based on result
+    let statusCode = 200;
+    if (result && typeof result === 'object' && 'status' in result) {
+      switch (result.status) {
+        case 'already_processing':
+          statusCode = 202; // Accepted - already being processed
+          break;
+        case 'already_queued':
+          statusCode = 409; // Conflict - duplicate request
+          break;
+        case 'queued':
+        case 'requeued':
+          statusCode = 200; // OK - successfully queued
+          break;
+      }
+      res.status(statusCode).json(result);
+    } else {
+      // Backward compatibility - old format response
+      res.status(200).json({
+        status: 'queued',
+        message: 'Transaction queued for processing'
+      });
+    }
   } catch (error) {
     if (error instanceof TransactionNotFoundError) {
-      res.status(400).send(error.message);
+      res.status(400).json({
+        error: error.message
+      });
     } else if (error instanceof SubgraphSyncError) {
-      res.status(400).send(error.message);
+      res.status(400).json({
+        error: error.message
+      });
     } else if (error instanceof InvalidationError) {
-      res.status(500).send(error.message);
+      res.status(500).json({
+        error: error.message
+      });
     } else {
-      res.status(500).send("Internal Server Error");
+      res.status(500).json({
+        error: "Internal Server Error"
+      });
     }
   }
 });

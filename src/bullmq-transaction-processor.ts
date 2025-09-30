@@ -205,7 +205,12 @@ export class BullMQTransactionProcessor {
     chainId: string,
     force = false,
     priority = 1
-  ): Promise<string | undefined> {
+  ): Promise<{
+    jobId: string;
+    status: 'queued' | 'requeued' | 'already_processing' | 'already_queued';
+    previousState?: string;
+    message: string;
+  }> {
     if (this.isShuttingDown) {
       throw new Error('Processor is shutting down, cannot add new transactions');
     }
@@ -213,30 +218,174 @@ export class BullMQTransactionProcessor {
     const jobId = `${chainId}-${txHash}`;
 
     try {
-      const job = await this.queue.add(
-        'process-transaction',
-        { txHash, chainId, force },
-        {
-          jobId, // Prevents duplicates - BullMQ will update existing job if same ID
-          priority: priority * 100, // BullMQ uses higher numbers for higher priority
-          delay: force ? 0 : 1000, // Immediate processing if forced, otherwise slight delay
-          removeOnComplete: false,  // Use default retention policy for auditability
-          removeOnFail: false,      // Keep failed jobs for debugging
+      // Check if job already exists
+      const existingJob = await this.queue.getJob(jobId);
+
+      if (existingJob) {
+        const existingState = await existingJob.getState();
+
+        // Handle force flag
+        if (force) {
+          // Force: Remove existing job regardless of state and re-queue
+          await existingJob.remove();
+
+          const newJob = await this.queue.add(
+            'process-transaction',
+            { txHash, chainId, force },
+            {
+              jobId,
+              priority: priority * 100,
+              delay: 0, // Immediate processing when forced
+              removeOnComplete: false,
+              removeOnFail: false,
+            }
+          );
+
+          logger.log({
+            level: 'info',
+            message: `BullMQ: Transaction force re-queued (was ${existingState})`,
+            jobId: newJob.id,
+            chainId,
+            txHash,
+            force,
+            priority,
+            previousState: existingState,
+          });
+
+          return {
+            jobId: newJob.id!,
+            status: 'requeued',
+            previousState: existingState,
+            message: `Transaction force re-queued for processing (was ${existingState})`,
+          };
+        } else {
+          // No force: Handle based on existing state
+          if (existingState === 'active') {
+            logger.log({
+              level: 'info',
+              message: `BullMQ: Transaction already processing`,
+              jobId,
+              chainId,
+              txHash,
+            });
+
+            return {
+              jobId,
+              status: 'already_processing',
+              previousState: existingState,
+              message: 'Transaction is already being processed',
+            };
+          } else if (existingState === 'waiting' || existingState === 'delayed') {
+            logger.log({
+              level: 'info',
+              message: `BullMQ: Transaction already queued`,
+              jobId,
+              chainId,
+              txHash,
+              state: existingState,
+            });
+
+            return {
+              jobId,
+              status: 'already_queued',
+              previousState: existingState,
+              message: `Transaction is already in queue (${existingState})`,
+            };
+          } else if (existingState === 'completed' || existingState === 'failed') {
+            // Completed or failed: Allow re-queue
+            await existingJob.remove();
+
+            const newJob = await this.queue.add(
+              'process-transaction',
+              { txHash, chainId, force },
+              {
+                jobId,
+                priority: priority * 100,
+                delay: 1000, // Normal delay when not forced
+                removeOnComplete: false,
+                removeOnFail: false,
+              }
+            );
+
+            logger.log({
+              level: 'info',
+              message: `BullMQ: Transaction re-queued (was ${existingState})`,
+              jobId: newJob.id,
+              chainId,
+              txHash,
+              force,
+              priority,
+              previousState: existingState,
+            });
+
+            return {
+              jobId: newJob.id!,
+              status: 'requeued',
+              previousState: existingState,
+              message: `Transaction re-queued for processing (was ${existingState})`,
+            };
+          } else {
+            // Unknown state, log warning and try to re-queue
+            logger.log({
+              level: 'warn',
+              message: `BullMQ: Unknown job state, attempting re-queue`,
+              jobId,
+              chainId,
+              txHash,
+              state: existingState,
+            });
+
+            await existingJob.remove();
+            const newJob = await this.queue.add(
+              'process-transaction',
+              { txHash, chainId, force },
+              {
+                jobId,
+                priority: priority * 100,
+                delay: 1000,
+                removeOnComplete: false,
+                removeOnFail: false,
+              }
+            );
+
+            return {
+              jobId: newJob.id!,
+              status: 'requeued',
+              previousState: existingState,
+              message: `Transaction re-queued for processing (was ${existingState})`,
+            };
+          }
         }
-      );
+      } else {
+        // No existing job, add normally
+        const job = await this.queue.add(
+          'process-transaction',
+          { txHash, chainId, force },
+          {
+            jobId,
+            priority: priority * 100,
+            delay: force ? 0 : 1000,
+            removeOnComplete: false,
+            removeOnFail: false,
+          }
+        );
 
-      logger.log({
-        level: 'info',
-        message: `BullMQ: Transaction added to queue`,
-        jobId: job.id,
-        chainId,
-        txHash,
-        force,
-        priority,
-        // queuePosition: await job.getPosition(), // Position info not available in this version
-      });
+        logger.log({
+          level: 'info',
+          message: `BullMQ: Transaction added to queue`,
+          jobId: job.id,
+          chainId,
+          txHash,
+          force,
+          priority,
+        });
 
-      return job.id;
+        return {
+          jobId: job.id!,
+          status: 'queued',
+          message: 'Transaction queued for processing',
+        };
+      }
     } catch (error) {
       logger.log({
         level: 'error',

@@ -133,61 +133,53 @@ export class CacheInvalidationManager {
   ) {
     switch (networkId) {
       case "1":
-        await this.mainnetInvalidationClient.processTransaction(
+        return await this.mainnetInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "137":
-        await this.polygonInvalidationClient.processTransaction(
+        return await this.polygonInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "100":
-        await this.gnosisInvalidationClient.processTransaction(
+        return await this.gnosisInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "42220":
-        await this.celoInvalidationClient.processTransaction(
+        return await this.celoInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "8453":
-        await this.baseInvalidationClient.processTransaction(
+        return await this.baseInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "10":
-        await this.optimismInvalidationClient.processTransaction(
+        return await this.optimismInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "42161":
-        await this.arbitrumInvalidationClient.processTransaction(
+        return await this.arbitrumInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "11155111":
-        await this.sepoliaInvalidationClient.processTransaction(
+        return await this.sepoliaInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "84532":
-        await this.baseSepoliaInvalidationClient.processTransaction(
+        return await this.baseSepoliaInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       default:
         logger.info(`network ${networkId} not supported`);
+        throw new Error(`Network ${networkId} not supported`);
     }
   }
 
@@ -546,7 +538,7 @@ export class CacheInvalidationService {
           networkId: this.chainId,
           txHash: txHash,
         });
-        return;
+        // Don't return early - let BullMQ handle the decision
       }
 
       if (entry.state === TransactionCacheState.PROCESSING && !this.isTransactionStale(entry)) {
@@ -556,7 +548,7 @@ export class CacheInvalidationService {
           networkId: this.chainId,
           txHash: txHash,
         });
-        return;
+        // Don't return early - let BullMQ handle the decision
       }
 
       if (this.isTransactionStale(entry)) {
@@ -571,10 +563,11 @@ export class CacheInvalidationService {
       }
     }
 
-    // Add to BullMQ queue instead of processing directly
+    // Add to BullMQ queue and return the result
     const priority = force ? 5 : 1;
     try {
-      await this.transactionProcessor.addTransaction(txHash, this.chainId, force || false, priority);
+      const result = await this.transactionProcessor.addTransaction(txHash, this.chainId, force || false, priority);
+      return result;
     } catch (error) {
       logger.log({
         level: 'error',

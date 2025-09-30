@@ -196,3 +196,48 @@ The workflow automatically manages Redis lifecycle and provides comprehensive te
 
 The system monitors blockchain events and invalidates related cache entries using BullMQ for reliable processing across all supported networks.
 
+#### Manual Invalidation Endpoint
+
+The API provides a `/invalidate` endpoint for manually triggering cache invalidation:
+
+```http
+POST /invalidate
+Content-Type: application/json
+
+{
+  "transactionId": "0x...",
+  "networkId": "1",
+  "force": false
+}
+```
+
+**Parameters:**
+- `transactionId`: The transaction hash to process
+- `networkId`: The network chain ID (e.g., "1" for Ethereum, "137" for Polygon)
+- `force` (optional): Boolean flag to control job handling behavior
+
+**Force Flag Behavior:**
+- `force: true` - Removes any existing job (regardless of state) and re-queues it immediately
+- `force: false/undefined` - Smart handling based on job state:
+  - If job doesn't exist: Queues normally
+  - If job is completed/failed: Re-queues automatically
+  - If job is active: Returns 202 (already processing)
+  - If job is waiting/delayed: Returns 409 (already queued)
+
+**Response Format:**
+```json
+{
+  "status": "queued|requeued|already_processing|already_queued",
+  "jobId": "chainId-txHash",
+  "previousState": "completed|failed|active|waiting|null",
+  "message": "Human-readable status message"
+}
+```
+
+**Response Status Codes:**
+- `200 OK`: Transaction successfully queued or re-queued
+- `202 Accepted`: Transaction is already being processed
+- `409 Conflict`: Transaction is already in the queue
+- `400 Bad Request`: Invalid parameters or transaction not found
+- `500 Internal Server Error`: Processing error
+
