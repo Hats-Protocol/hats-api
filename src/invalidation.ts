@@ -940,7 +940,7 @@ export class CacheInvalidationService {
             );
           }
         }
-        // invalidate athe admin hat if it exists
+        // invalidate the admin hat if it exists
         if (adminHat !== null && !processedHatsOfTrees.includes(treeId)) {
           processedHatsOfTrees.push(treeId);
           await this.cache.invalidateHatsInTree(

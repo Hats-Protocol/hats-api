@@ -77,7 +77,7 @@ export const CHAIN_ID_TO_VIEM_CHAIN: { [key: string]: Chain } = {
 
 const GATEWAY_URL = `https://gateway.thegraph.com/api`;
 const gatewayNetworkUrl = (id: string) => {
-  return `${GATEWAY_URL}/subgraphs/id/${id}`;
+  return `${GATEWAY_URL}/subgraphs/id/${id}`; // ! USES SUBGRAPH ID, NOT DEPLOYMENT
 };
 
 export const CHAIN_ID_TO_MAIN_SUBGRAPH: { [key: string]: string } = {
@@ -89,8 +89,8 @@ export const CHAIN_ID_TO_MAIN_SUBGRAPH: { [key: string]: string } = {
   137: gatewayNetworkUrl('7MxsRb1p4UQNET8AgrWd93h3GUgeQ7NWrk5SHLEPCxBP'),
   8453: gatewayNetworkUrl('FWeAqrp36QYqv9gDWLwr7em8vtvPnPrmRRQgnBb6QbBs'),
   // testnets
-  11155111: 'https://api.studio.thegraph.com/query/55784/hats-v1-sepolia/1.1.3',
-  84532: 'https://api.studio.thegraph.com/query/55784/hats-v1-base-sepolia/v0.0.8',
+  11155111: gatewayNetworkUrl('GphqDnDUibK3keP5vNSDgnKxidvLKtdM7j9FA1Lpe6sX'),
+  84532: gatewayNetworkUrl('ErLvK6LwwsxkRqd8jvDJ258qfxn1hXhjFGnX78rq1g45'),
 };
 
 export const CHAIN_TO_ETHERSCAN_API: { [key: string]: string } = {
@@ -123,7 +123,7 @@ export const HATS_ADDRESS = '0x3bc1A0Ad72417f2d411118085256fC53CBdDd137';
 export const TRANSACTION_PROCESSING_TIMEOUT = parseInt(process.env.TRANSACTION_PROCESSING_TIMEOUT || '60000');
 export const SUBGRAPH_SYNC_TIMEOUT = parseInt(process.env.SUBGRAPH_SYNC_TIMEOUT || '30000');
 export const WEBSOCKET_RETRY_ATTEMPTS = parseInt(process.env.WEBSOCKET_RETRY_ATTEMPTS || '3');
-export const WEBSOCKET_RETRY_DELAY = parseInt(process.env.WEBSOCKET_RETRY_DELAY || '5000');
+export const WEBSOCKET_RETRY_DELAY = parseInt(process.env.WEBSOCKET_RETRY_DELAY || '30000');
 
 export const CLAIMS_HATTER_EVENTS = parseAbi([
   'event HatsClaimabilitySet(uint256[] hatIds, uint8[] claimTypes)',
