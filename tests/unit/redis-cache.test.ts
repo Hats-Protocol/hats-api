@@ -102,11 +102,55 @@ describe('RedisCacheClient', () => {
 
     it('should handle tree invalidation with no matching keys', async () => {
       const treeId = '0x99999999'
-      
+
       // Should not throw when no keys match
       await expect(
         cacheClient.invalidateHatsInTree('1', 'tx123', 'mainnet', treeId)
       ).resolves.not.toThrow()
+    })
+  })
+
+  describe('invalidateAllForNetwork', () => {
+    it('should invalidate all cache entries for a specific network', async () => {
+      // Setup: Add cache entries for multiple networks
+      await redisClient.set('response-cache:hash1:Eth_Hat.0x123:query1', 'eth-data1')
+      await redisClient.set('response-cache:hash2:Eth_Wearer.0x456:query2', 'eth-data2')
+      await redisClient.set('response-cache:hash3:Op_Hat.0x789:query3', 'op-data1')
+      await redisClient.set('response-cache:hash4:Base_Tree.0xabc:query4', 'base-data1')
+      await redisClient.set('response-cache:hash5:non-network:query5', 'other-data')
+
+      // Execute: Invalidate all Ethereum cache entries
+      const deletedCount = await cacheClient.invalidateAllForNetwork('1')
+
+      // Verify: Only Ethereum entries should be deleted
+      expect(deletedCount).toBe(2)
+      expect(await redisClient.get('response-cache:hash1:Eth_Hat.0x123:query1')).toBeNull()
+      expect(await redisClient.get('response-cache:hash2:Eth_Wearer.0x456:query2')).toBeNull()
+      // Other networks should remain
+      expect(await redisClient.get('response-cache:hash3:Op_Hat.0x789:query3')).toBe('op-data1')
+      expect(await redisClient.get('response-cache:hash4:Base_Tree.0xabc:query4')).toBe('base-data1')
+      expect(await redisClient.get('response-cache:hash5:non-network:query5')).toBe('other-data')
+    })
+
+    it('should handle invalidation with no matching keys for network', async () => {
+      // Setup: Add cache entries for other networks only
+      await redisClient.set('response-cache:hash1:Op_Hat.0x123:query1', 'op-data1')
+      await redisClient.set('response-cache:hash2:Base_Tree.0x456:query2', 'base-data1')
+
+      // Execute: Try to invalidate Ethereum cache entries (should find none)
+      const deletedCount = await cacheClient.invalidateAllForNetwork('1')
+
+      // Verify: No entries deleted, other networks remain
+      expect(deletedCount).toBe(0)
+      expect(await redisClient.get('response-cache:hash1:Op_Hat.0x123:query1')).toBe('op-data1')
+      expect(await redisClient.get('response-cache:hash2:Base_Tree.0x456:query2')).toBe('base-data1')
+    })
+
+    it('should throw error for unsupported network ID', async () => {
+      // Execute & Verify: Should throw for invalid network ID
+      await expect(
+        cacheClient.invalidateAllForNetwork('999')
+      ).rejects.toThrow('Unsupported network ID: 999')
     })
   })
 })

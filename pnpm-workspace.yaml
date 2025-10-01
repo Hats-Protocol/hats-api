@@ -1,4 +1,5 @@
-onlyBuiltDependencies:
-  - node-libcurl
 packages:
   - .
+onlyBuiltDependencies:
+  - esbuild
+  - node-libcurl

@@ -99,13 +99,14 @@ describe('BullMQTransactionProcessor', () => {
   describe('addTransaction', () => {
     beforeEach(() => {
       mockQueue.add.mockResolvedValue({ id: 'job-123' })
+      mockQueue.getJob.mockResolvedValue(undefined) // Default: no existing job
     })
 
-    it('should add transaction to queue with correct parameters', async () => {
+    it('should add new transaction to queue with correct parameters', async () => {
       const txHash = '0x123abc' as `0x${string}`
       const chainId = '1'
-      
-      const jobId = await processor.addTransaction(txHash, chainId, false, 2)
+
+      const result = await processor.addTransaction(txHash, chainId, false, 2)
 
       expect(mockQueue.add).toHaveBeenCalledWith(
         'process-transaction',
@@ -114,17 +115,17 @@ describe('BullMQTransactionProcessor', () => {
           jobId: `${chainId}-${txHash}`,
           priority: 200, // 2 * 100
           delay: 1000, // Not forced, so has delay
-          removeOnComplete: false,
-          removeOnFail: false
         }
       )
-      expect(jobId).toBe('job-123')
+      expect(result.jobId).toBe('job-123')
+      expect(result.status).toBe('queued')
+      expect(result.message).toBe('Transaction queued for processing')
     })
 
     it('should add forced transaction with higher priority and no delay', async () => {
       const txHash = '0x456def' as `0x${string}`
-      
-      await processor.addTransaction(txHash, '1', true, 5)
+
+      const result = await processor.addTransaction(txHash, '1', true, 5)
 
       expect(mockQueue.add).toHaveBeenCalledWith(
         'process-transaction',
@@ -133,13 +134,117 @@ describe('BullMQTransactionProcessor', () => {
           jobId: '1-0x456def',
           priority: 500, // 5 * 100
           delay: 0, // Forced, so no delay
-          removeOnComplete: false,
-          removeOnFail: false
         }
       )
+      expect(result.status).toBe('queued')
+    })
+
+    it('should force re-queue existing job when force=true', async () => {
+      const txHash = '0xforce123' as `0x${string}`
+      const chainId = '1'
+      const mockExistingJob = {
+        id: 'existing-job',
+        getState: vi.fn().mockResolvedValue('completed'),
+        remove: vi.fn().mockResolvedValue(undefined)
+      }
+
+      mockQueue.getJob.mockResolvedValue(mockExistingJob)
+      mockQueue.add.mockResolvedValue({ id: 'new-job-123' })
+
+      const result = await processor.addTransaction(txHash, chainId, true, 1)
+
+      expect(mockExistingJob.remove).toHaveBeenCalled()
+      expect(mockQueue.add).toHaveBeenCalled()
+      expect(result.jobId).toBe('new-job-123')
+      expect(result.status).toBe('requeued')
+      expect(result.previousState).toBe('completed')
+      expect(result.message).toContain('force re-queued')
+    })
+
+    it('should return already_processing for active job without force', async () => {
+      const txHash = '0xactive123' as `0x${string}`
+      const chainId = '1'
+      const mockExistingJob = {
+        id: 'active-job',
+        getState: vi.fn().mockResolvedValue('active'),
+        remove: vi.fn()
+      }
+
+      mockQueue.getJob.mockResolvedValue(mockExistingJob)
+
+      const result = await processor.addTransaction(txHash, chainId, false, 1)
+
+      expect(mockExistingJob.remove).not.toHaveBeenCalled()
+      expect(mockQueue.add).not.toHaveBeenCalled()
+      expect(result.status).toBe('already_processing')
+      expect(result.previousState).toBe('active')
+      expect(result.message).toBe('Transaction is already being processed')
+    })
+
+    it('should return already_queued for waiting job without force', async () => {
+      const txHash = '0xwaiting123' as `0x${string}`
+      const chainId = '1'
+      const mockExistingJob = {
+        id: 'waiting-job',
+        getState: vi.fn().mockResolvedValue('waiting'),
+        remove: vi.fn()
+      }
+
+      mockQueue.getJob.mockResolvedValue(mockExistingJob)
+
+      const result = await processor.addTransaction(txHash, chainId, false, 1)
+
+      expect(mockExistingJob.remove).not.toHaveBeenCalled()
+      expect(mockQueue.add).not.toHaveBeenCalled()
+      expect(result.status).toBe('already_queued')
+      expect(result.previousState).toBe('waiting')
+      expect(result.message).toContain('already in queue')
+    })
+
+    it('should re-queue completed job without force', async () => {
+      const txHash = '0xcompleted123' as `0x${string}`
+      const chainId = '1'
+      const mockExistingJob = {
+        id: 'completed-job',
+        getState: vi.fn().mockResolvedValue('completed'),
+        remove: vi.fn().mockResolvedValue(undefined)
+      }
+
+      mockQueue.getJob.mockResolvedValue(mockExistingJob)
+      mockQueue.add.mockResolvedValue({ id: 'requeued-job' })
+
+      const result = await processor.addTransaction(txHash, chainId, false, 1)
+
+      expect(mockExistingJob.remove).toHaveBeenCalled()
+      expect(mockQueue.add).toHaveBeenCalled()
+      expect(result.status).toBe('requeued')
+      expect(result.previousState).toBe('completed')
+      expect(result.message).toContain('re-queued for processing (was completed)')
+    })
+
+    it('should re-queue failed job without force', async () => {
+      const txHash = '0xfailed123' as `0x${string}`
+      const chainId = '1'
+      const mockExistingJob = {
+        id: 'failed-job',
+        getState: vi.fn().mockResolvedValue('failed'),
+        remove: vi.fn().mockResolvedValue(undefined)
+      }
+
+      mockQueue.getJob.mockResolvedValue(mockExistingJob)
+      mockQueue.add.mockResolvedValue({ id: 'requeued-job' })
+
+      const result = await processor.addTransaction(txHash, chainId, false, 1)
+
+      expect(mockExistingJob.remove).toHaveBeenCalled()
+      expect(mockQueue.add).toHaveBeenCalled()
+      expect(result.status).toBe('requeued')
+      expect(result.previousState).toBe('failed')
+      expect(result.message).toContain('re-queued for processing (was failed)')
     })
 
     it('should handle queue errors', async () => {
+      mockQueue.getJob.mockResolvedValue(undefined)
       mockQueue.add.mockRejectedValue(new Error('Queue full'))
 
       await expect(

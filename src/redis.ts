@@ -206,6 +206,89 @@ export class RedisCacheClient {
     }
   }
 
+  async invalidateAllForNetwork(networkId: string): Promise<number> {
+    logger.log({
+      level: "info",
+      message: `Invalidating all cache entries for network ${networkId}`,
+      networkId: networkId,
+    });
+
+    const { CHAIN_ID_TO_ENTITY_PREFIX } = await import("./constants");
+    const networkPrefix = CHAIN_ID_TO_ENTITY_PREFIX[networkId];
+
+    if (!networkPrefix) {
+      throw new Error(`Unsupported network ID: ${networkId}`);
+    }
+
+    const matchParam = `response-cache:*${networkPrefix}_*`;
+    const stream = this._client.scanStream({
+      match: matchParam,
+      count: 100,
+    });
+
+    const keysToDelete: string[] = [];
+    let pipeline = this._client.pipeline();
+    let deletedCount = 0;
+
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const execs: Promise<any>[] = [];
+        stream.on("data", (resultKeys: string[]) => {
+          for (let fullKey of resultKeys) {
+            keysToDelete.push(fullKey);
+            pipeline.unlink(fullKey);
+            deletedCount++;
+
+            if (pipeline.length >= 100) {
+              execs.push(pipeline.exec());
+              pipeline = this._client.pipeline();
+            }
+          }
+        });
+
+        stream.on("end", async () => {
+          try {
+            if (pipeline.length > 0) execs.push(pipeline.exec());
+            await Promise.all(execs);
+            resolve();
+          } catch (err) {
+            reject(err);
+          }
+        });
+        stream.on("error", async (err) => {
+          try {
+            if (pipeline.length > 0) execs.push(pipeline.exec());
+            await Promise.allSettled(execs);
+          } finally {
+            reject(err);
+          }
+        });
+      });
+
+      logger.log({
+        level: "info",
+        message: `Successfully invalidated ${deletedCount} cache entries for network ${networkId}`,
+        networkId: networkId,
+        deletedCount: deletedCount,
+      });
+
+      return deletedCount;
+    } catch (error) {
+      logger.log({
+        level: "error",
+        message: `Error invalidating all cache entries for network ${networkId}`,
+        networkId: networkId,
+        keysToDelete: keysToDelete,
+        error: error,
+      });
+
+      throw new Error(
+        `Error invalidating all cache entries for network ${networkId}`,
+        { cause: error as Error }
+      );
+    }
+  }
+
   /**
    * Getter method to access the underlying Redis client for BullMQ.
    * The client is shared across BullMQ and cache invalidation operations.

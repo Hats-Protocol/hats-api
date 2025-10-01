@@ -85,8 +85,8 @@ export const NETWORKS: Record<string, NetworkConfig> = {
     prefix: 'New_', // Prefix for GraphQL types
     chainId: '12345', // Network chain ID
     name: 'New Network', // Human-readable name
-    mainSubgraphEndpoint: '...', // Main subgraph endpoint
-    ancillarySubgraphEndpoint: '...', // Ancillary subgraph endpoint
+    // mainSubgraphEndpoint: '...', // Main subgraph endpoint
+    // ancillarySubgraphEndpoint: '...', // Ancillary subgraph endpoint
   },
 };
 ```
@@ -192,7 +192,180 @@ The project uses GitHub Actions for CI/CD:
 
 The workflow automatically manages Redis lifecycle and provides comprehensive test coverage validation.
 
-### Cache Invalidation
+## Event Listeners and RPC Events
+
+The system automatically monitors blockchain events via WebSocket connections to each supported network, triggering cache invalidation when Hats Protocol transactions occur. This real-time event monitoring ensures the cache stays synchronized with on-chain state changes.
+
+### Architecture Overview
+
+Each network has a dedicated `CacheInvalidationService` instance that:
+- Establishes WebSocket connections to network RPC endpoints
+- Sets up event watchers for specific contract events
+- Automatically processes detected transactions through BullMQ queues
+- Falls back to HTTP connections when WebSocket is unavailable
+
+### Monitored Event Types
+
+#### Hats Protocol Events
+
+The system monitors events from the main Hats Protocol contract (`0x3bc1A0Ad72417f2d411118085256fC53CBdDd137`):
+
+**Hat Lifecycle Events:**
+- `HatCreated` - New hat creation, triggers tree and admin hat invalidation
+- `HatStatusChanged` - Hat activation/deactivation status changes
+- `HatMutabilityChanged` - Changes to hat mutability settings
+
+**Hat Configuration Events:**
+- `HatDetailsChanged` - Updates to hat metadata and details
+- `HatImageURIChanged` - Hat image URI modifications
+- `HatMaxSupplyChanged` - Maximum supply limit changes
+- `HatEligibilityChanged` - Eligibility contract address changes
+- `HatToggleChanged` - Toggle contract address changes
+
+**Hat Transfer Events:**
+- `TransferSingle` - Hat transfers between wearers (ERC-1155 standard)
+- `WearerStandingChanged` - Changes to wearer standing status
+
+**Tree Management Events:**
+- `TopHatLinkRequested` - Tree linking requests
+- `TopHatLinked` - Completed tree linking operations
+
+#### Claims Hatter Events
+
+The system also monitors events from Claims Hatter contract instances:
+
+- `HatsClaimabilitySet` - Bulk claimability changes for multiple hats
+- `HatClaimabilitySet` - Individual hat claimability changes
+
+### Technical Implementation
+
+```typescript
+// WebSocket event watchers are set up for each network
+unwatchHats = this.publicSocketClient.watchEvent({
+  address: HATS_ADDRESS,
+  events: HATS_EVENTS,
+  onLogs: (logs) => {
+    // Process each transaction automatically
+    logs.forEach(log => {
+      this.processTransaction(log.transactionHash);
+    });
+  },
+});
+
+unwatchClaimsHatter = this.publicSocketClient.watchEvent({
+  events: CLAIMS_HATTER_EVENTS,
+  onLogs: (logs) => {
+    // Process Claims Hatter transactions
+    logs.forEach(log => {
+      this.processTransaction(log.transactionHash);
+    });
+  },
+});
+```
+
+### Connection Management
+
+**WebSocket Reliability:**
+- Automatic reconnection with exponential backoff on connection failures
+- Circuit breaker pattern to handle persistent connection issues
+- Heartbeat monitoring every 5 minutes to detect stale connections
+
+**Error Handling:**
+- Graceful fallback to HTTP-only mode when WebSocket unavailable
+- Connection state tracking and automatic recovery
+- Detailed logging for monitoring and debugging
+
+**Network-Specific Configuration:**
+- Each network uses dedicated RPC endpoints (WebSocket and HTTP)
+- Independent connection management per chain
+- Configurable retry attempts and delays via environment variables
+
+### Event Processing Flow
+
+1. **Event Detection**: WebSocket listeners detect relevant blockchain events
+2. **Transaction Queuing**: Event transactions are automatically added to BullMQ processing queues
+3. **Cache Invalidation**: Transaction processor handles cache invalidation based on event types
+4. **Subgraph Synchronization**: System waits for subgraph sync before invalidating cache
+5. **Targeted Invalidation**: Cache entries are invalidated based on affected entities (hats, trees, wearers)
+
+This automated event monitoring ensures that cached GraphQL responses are invalidated immediately when on-chain state changes, maintaining data consistency without manual intervention.
+
+## Manual Invalidation
 
 The system monitors blockchain events and invalidates related cache entries using BullMQ for reliable processing across all supported networks.
 
+### Transaction-Specific Cache Invalidation Endpoint
+
+The API provides a `/invalidate` endpoint for manually triggering cache invalidation:
+
+```http
+POST /invalidate
+Content-Type: application/json
+
+{
+  "transactionId": "0x...",
+  "networkId": "1",
+  "force": false
+}
+```
+
+**Parameters:**
+- `transactionId`: The transaction hash to process
+- `networkId`: The network chain ID (e.g., "1" for Ethereum, "137" for Polygon)
+- `force` (optional): Boolean flag to control job handling behavior
+
+**Force Flag Behavior:**
+- `force: true` - Removes any existing job (regardless of state) and re-queues it immediately
+- `force: false/undefined` - Smart handling based on job state:
+  - If job doesn't exist: Queues normally
+  - If job is completed/failed: Re-queues automatically
+  - If job is active: Returns 202 (already processing)
+  - If job is waiting/delayed: Returns 409 (already queued)
+
+**Response Format:**
+```json
+{
+  "status": "queued|requeued|already_processing|already_queued",
+  "jobId": "chainId-txHash",
+  "previousState": "completed|failed|active|waiting|null",
+  "message": "Human-readable status message"
+}
+```
+
+**Response Status Codes:**
+- `200 OK`: Transaction successfully queued or re-queued
+- `202 Accepted`: Transaction is already being processed
+- `409 Conflict`: Transaction is already in the queue
+- `400 Bad Request`: Invalid parameters or transaction not found
+- `500 Internal Server Error`: Processing error
+
+### Network-Wide Cache Invalidation Endpoint
+
+For emergency situations when normal invalidation fails, the API provides an `/invalidate-all` endpoint that clears all cached values for a specific network while preserving queue data and other networks' cache:
+
+```http
+POST /invalidate-all
+Content-Type: application/json
+
+{
+  "networkId": "1"
+}
+```
+
+**Parameters:**
+- `networkId`: The network chain ID (e.g., "1" for Ethereum, "137" for Polygon, "8453" for Base)
+
+**Response Format:**
+```json
+{
+  "status": "success",
+  "message": "Successfully invalidated 42 cache entries for network 1",
+  "deletedCount": 42,
+  "networkId": "1"
+}
+```
+
+**Response Status Codes:**
+- `200 OK`: Cache invalidation completed successfully
+- `400 Bad Request`: Missing or unsupported network ID
+- `500 Internal Server Error`: Processing error

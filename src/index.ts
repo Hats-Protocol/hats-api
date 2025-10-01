@@ -47,25 +47,102 @@ app.post("/invalidate", async (req, res) => {
   });
 
   if (!transactionId || !networkId) {
-    return res.status(400).send("Missing transaction hash or network ID");
+    return res.status(400).json({
+      error: "Missing transaction hash or network ID"
+    });
   }
 
   try {
-    await cacheInvalidationManager.processTransaction(
+    const result = await cacheInvalidationManager.processTransaction(
       transactionId,
       networkId,
       force
     );
-    res.send("success");
+
+    // Determine appropriate status code based on result
+    let statusCode = 200;
+    if (result && typeof result === 'object' && 'status' in result) {
+      switch (result.status) {
+        case 'already_processing':
+          statusCode = 202; // Accepted - already being processed
+          break;
+        case 'already_queued':
+          statusCode = 409; // Conflict - duplicate request
+          break;
+        case 'queued':
+        case 'requeued':
+          statusCode = 200; // OK - successfully queued
+          break;
+      }
+      res.status(statusCode).json(result);
+    } else {
+      // Backward compatibility - old format response
+      res.status(200).json({
+        status: 'queued',
+        message: 'Transaction queued for processing'
+      });
+    }
   } catch (error) {
     if (error instanceof TransactionNotFoundError) {
-      res.status(400).send(error.message);
+      res.status(400).json({
+        error: error.message
+      });
     } else if (error instanceof SubgraphSyncError) {
-      res.status(400).send(error.message);
+      res.status(400).json({
+        error: error.message
+      });
     } else if (error instanceof InvalidationError) {
-      res.status(500).send(error.message);
+      res.status(500).json({
+        error: error.message
+      });
     } else {
-      res.status(500).send("Internal Server Error");
+      res.status(500).json({
+        error: "Internal Server Error"
+      });
+    }
+  }
+});
+
+app.post("/invalidate-all", async (req, res) => {
+  const { networkId }: { networkId: string } = req.body;
+
+  logger.log({
+    level: "info",
+    message: "POST /invalidate-all",
+    networkId: networkId,
+  });
+
+  if (!networkId) {
+    return res.status(400).json({
+      error: "Missing network ID"
+    });
+  }
+
+  try {
+    const deletedCount = await cacheInvalidationManager.redisClient.invalidateAllForNetwork(networkId);
+
+    res.status(200).json({
+      status: 'success',
+      message: `Successfully invalidated ${deletedCount} cache entries for network ${networkId}`,
+      deletedCount: deletedCount,
+      networkId: networkId
+    });
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('Unsupported network ID')) {
+      res.status(400).json({
+        error: error.message
+      });
+    } else {
+      logger.log({
+        level: "error",
+        message: "Error in /invalidate-all endpoint",
+        networkId: networkId,
+        error: error,
+      });
+
+      res.status(500).json({
+        error: "Internal Server Error"
+      });
     }
   }
 });
