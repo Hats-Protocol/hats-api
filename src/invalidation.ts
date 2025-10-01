@@ -247,6 +247,11 @@ export class CacheInvalidationManager {
       this.baseSepoliaInvalidationClient,
     ];
   }
+
+  // Get Redis client for direct access
+  get redisClient(): RedisCacheClient {
+    return this.cache;
+  }
 }
 
 export class CacheInvalidationService {

@@ -103,6 +103,50 @@ app.post("/invalidate", async (req, res) => {
   }
 });
 
+app.post("/invalidate-all", async (req, res) => {
+  const { networkId }: { networkId: string } = req.body;
+
+  logger.log({
+    level: "info",
+    message: "POST /invalidate-all",
+    networkId: networkId,
+  });
+
+  if (!networkId) {
+    return res.status(400).json({
+      error: "Missing network ID"
+    });
+  }
+
+  try {
+    const deletedCount = await cacheInvalidationManager.redisClient.invalidateAllForNetwork(networkId);
+
+    res.status(200).json({
+      status: 'success',
+      message: `Successfully invalidated ${deletedCount} cache entries for network ${networkId}`,
+      deletedCount: deletedCount,
+      networkId: networkId
+    });
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('Unsupported network ID')) {
+      res.status(400).json({
+        error: error.message
+      });
+    } else {
+      logger.log({
+        level: "error",
+        message: "Error in /invalidate-all endpoint",
+        networkId: networkId,
+        error: error,
+      });
+
+      res.status(500).json({
+        error: "Internal Server Error"
+      });
+    }
+  }
+});
+
 app.listen(PORT, () => {
   logger.log({ level: "info", message: `server started on port ${PORT}` });
 });
