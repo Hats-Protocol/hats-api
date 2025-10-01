@@ -6,8 +6,9 @@ import {
   WEBSOCKET_RETRY_DELAY,
   CHAIN_ID_TO_NETWORK_NAME,
 } from './constants';
-import { TransactionNotFoundError } from './errors';
+import { TransactionNotFoundError, SubgraphSyncError } from './errors';
 import { formatTxHash } from './utils';
+import { sendSubgraphFailureNotification } from './telegram-notifier';
 
 export interface TransactionJobData {
   txHash: `0x${string}`;
@@ -21,6 +22,11 @@ export interface BullMQProcessorConfig {
   rateLimitDuration?: number;
   maxAttempts?: number;
   backoffDelay?: number;
+}
+
+export interface BlockInfoProvider {
+  getCurrentBlock: () => Promise<bigint | null>;
+  getSubgraphBlock: () => Promise<bigint | null>;
 }
 
 export interface JobContext {
@@ -37,15 +43,18 @@ export class BullMQTransactionProcessor {
   private redis: Redis;
   private chainId: string;
   private isShuttingDown = false;
+  private blockInfoProvider?: BlockInfoProvider;
 
   constructor(
     chainId: string,
     redis: Redis,
     processCallback: (txHash: `0x${string}`, chainId: string, force?: boolean, jobContext?: JobContext) => Promise<void>,
-    config: BullMQProcessorConfig = {}
+    config: BullMQProcessorConfig = {},
+    blockInfoProvider?: BlockInfoProvider
   ) {
     this.chainId = chainId;
     this.redis = redis;
+    this.blockInfoProvider = blockInfoProvider;
 
     const {
       concurrency = parseInt(process.env.BULLMQ_MAX_CONCURRENCY || '3'),
@@ -134,22 +143,122 @@ export class BullMQTransactionProcessor {
       // Completion message is logged by the transaction processor itself
     });
 
-    this.worker.on('failed', (job: Job<TransactionJobData> | undefined, err: Error) => {
+    this.worker.on('failed', async (job: Job<TransactionJobData> | undefined, err: Error) => {
       if (!job) return;
 
       const isLastAttempt = (job.attemptsMade + 1) >= (job.opts.attempts || 1);
 
-      logger.log({
-        level: isLastAttempt ? 'error' : 'warn',
-        message: `BullMQ: Transaction processing ${isLastAttempt ? 'failed permanently' : 'failed, will retry'}`,
-        jobId: job.id,
-        chainId: job.data.chainId,
-        txHash: job.data.txHash,
-        error: err,
-        attempt: job.attemptsMade + 1,
-        maxAttempts: job.opts.attempts,
-        nextRetryDelay: isLastAttempt ? null : job.opts.backoff,
-      });
+      // Calculate retry delay for non-final attempts
+      let retryDelayMs: number | null = null;
+      let nextRunTime: Date | null = null;
+
+      if (!isLastAttempt && job.opts.backoff) {
+        if (typeof job.opts.backoff === 'object' && job.opts.backoff.type === 'exponential') {
+          const baseDelay = job.opts.backoff.delay || WEBSOCKET_RETRY_DELAY;
+          retryDelayMs = Math.min(baseDelay * Math.pow(2, job.attemptsMade), 60000); // Cap at 60 seconds
+          nextRunTime = new Date(Date.now() + retryDelayMs);
+        } else if (typeof job.opts.backoff === 'object' && job.opts.backoff.type === 'fixed') {
+          retryDelayMs = job.opts.backoff.delay || WEBSOCKET_RETRY_DELAY;
+          nextRunTime = new Date(Date.now() + retryDelayMs);
+        } else if (typeof job.opts.backoff === 'number') {
+          // Simple delay
+          retryDelayMs = job.opts.backoff;
+          nextRunTime = new Date(Date.now() + retryDelayMs);
+        }
+      }
+
+      // Enhanced logging for subgraph timeouts with retry details
+      if (err instanceof SubgraphSyncError && !isLastAttempt) {
+        const retryMessage = retryDelayMs
+          ? `Subgraph sync timeout, will retry in ${Math.round(retryDelayMs / 1000)} seconds at ${nextRunTime?.toLocaleString()}`
+          : 'Subgraph sync timeout, will retry';
+
+        await job.log(retryMessage);
+
+        logger.log({
+          level: 'warn',
+          message: `BullMQ: Subgraph sync timeout, will retry with delay`,
+          jobId: job.id,
+          chainId: job.data.chainId,
+          txHash: job.data.txHash,
+          error: err.message,
+          attempt: job.attemptsMade + 1,
+          maxAttempts: job.opts.attempts,
+          retryDelayMs,
+          retryDelaySeconds: retryDelayMs ? Math.round(retryDelayMs / 1000) : null,
+          nextRunTime: nextRunTime?.toISOString(),
+          nextRunTimeLocal: nextRunTime?.toLocaleString(),
+        });
+      } else {
+        if (!isLastAttempt && retryDelayMs) {
+          const retryMessage = `Processing failed, will retry in ${Math.round(retryDelayMs / 1000)} seconds at ${nextRunTime?.toLocaleString()}`;
+          await job.log(retryMessage);
+        }
+
+        logger.log({
+          level: isLastAttempt ? 'error' : 'warn',
+          message: `BullMQ: Transaction processing ${isLastAttempt ? 'failed permanently' : 'failed, will retry'}`,
+          jobId: job.id,
+          chainId: job.data.chainId,
+          txHash: job.data.txHash,
+          error: err,
+          attempt: job.attemptsMade + 1,
+          maxAttempts: job.opts.attempts,
+          retryDelayMs,
+          retryDelaySeconds: retryDelayMs ? Math.round(retryDelayMs / 1000) : null,
+          nextRunTime: nextRunTime?.toISOString(),
+          nextRunTimeLocal: nextRunTime?.toLocaleString(),
+        });
+      }
+
+      // Send notification for subgraph sync failures on final attempt
+      if (isLastAttempt && err instanceof SubgraphSyncError && this.blockInfoProvider) {
+        try {
+          await job.log('Sending subgraph failure notification to team');
+
+          // Get current blockchain and subgraph block numbers
+          const [currentBlock, subgraphBlock] = await Promise.allSettled([
+            this.blockInfoProvider.getCurrentBlock(),
+            this.blockInfoProvider.getSubgraphBlock(),
+          ]);
+
+          const currentBlockNumber = currentBlock.status === 'fulfilled' ? currentBlock.value : null;
+          const subgraphBlockNumber = subgraphBlock.status === 'fulfilled' ? subgraphBlock.value : null;
+
+          const notificationSent = await sendSubgraphFailureNotification({
+            chainId: job.data.chainId,
+            txHash: job.data.txHash,
+            currentBlock: currentBlockNumber,
+            subgraphBlock: subgraphBlockNumber,
+            error: err.message,
+            attempt: job.attemptsMade + 1,
+            maxAttempts: job.opts.attempts || 1,
+          });
+
+          await job.log(`Subgraph failure notification ${notificationSent ? 'sent successfully' : 'failed or rate limited'}`);
+
+          logger.log({
+            level: 'info',
+            message: `Subgraph failure notification ${notificationSent ? 'sent' : 'skipped'}`,
+            jobId: job.id,
+            chainId: job.data.chainId,
+            txHash: job.data.txHash,
+            currentBlock: currentBlockNumber?.toString(),
+            subgraphBlock: subgraphBlockNumber?.toString(),
+          });
+        } catch (notificationError) {
+          await job.log(`Failed to send subgraph failure notification: ${notificationError instanceof Error ? notificationError.message : 'Unknown error'}`);
+
+          logger.log({
+            level: 'error',
+            message: 'Failed to send subgraph failure notification',
+            jobId: job.id,
+            chainId: job.data.chainId,
+            txHash: job.data.txHash,
+            error: notificationError,
+          });
+        }
+      }
     });
 
     this.worker.on('stalled', (jobId: string) => {

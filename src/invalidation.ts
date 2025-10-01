@@ -45,7 +45,7 @@ import {
 import { GraphQLClient, gql } from "graphql-request";
 import { LRUCache } from "lru-cache";
 import { retryAsync, CircuitBreaker, RetryOptions } from "./retry-utils";
-import { BullMQTransactionProcessor, BullMQProcessorConfig, JobContext } from "./bullmq-transaction-processor";
+import { BullMQTransactionProcessor, BullMQProcessorConfig, JobContext, BlockInfoProvider } from "./bullmq-transaction-processor";
 
 enum TransactionCacheState {
   NOT_STARTED = 0,
@@ -297,12 +297,43 @@ export class CacheInvalidationService {
       backoffDelay: WEBSOCKET_RETRY_DELAY,
     };
 
+    // Create block info provider for notifications
+    const blockInfoProvider = {
+      getCurrentBlock: async (): Promise<bigint | null> => {
+        try {
+          return await this.publicHttpClient.getBlockNumber();
+        } catch (error) {
+          logger.log({
+            level: 'warn',
+            message: 'Failed to get current block number for notification',
+            chainId: this.chainId,
+            error,
+          });
+          return null;
+        }
+      },
+      getSubgraphBlock: async (): Promise<bigint | null> => {
+        try {
+          return await this.getLatestBlockMainSubgraph();
+        } catch (error) {
+          logger.log({
+            level: 'warn',
+            message: 'Failed to get subgraph block number for notification',
+            chainId: this.chainId,
+            error,
+          });
+          return null;
+        }
+      },
+    };
+
     this.transactionProcessor = new BullMQTransactionProcessor(
       chainId,
       cacheClient.getRedisClient(),
       (txHash: `0x${string}`, chainId: string, force?: boolean, jobContext?: JobContext) =>
         this.processTransactionInternal(txHash, force, jobContext),
-      processorConfig
+      processorConfig,
+      blockInfoProvider
     );
   }
 
