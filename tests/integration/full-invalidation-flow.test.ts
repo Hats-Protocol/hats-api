@@ -327,7 +327,11 @@ describe('Full Invalidation Flow Integration', () => {
       })
       
       // Setup mocks to simulate successful processing
-      mockTransactionProcessor.addTransaction.mockResolvedValue('job-123')
+      mockTransactionProcessor.addTransaction.mockResolvedValue({
+        jobId: 'job-123',
+        status: 'queued',
+        message: 'Transaction queued for processing'
+      })
 
       // Process the transaction
       await service.processTransaction(txHash)
@@ -394,28 +398,53 @@ describe('Full Invalidation Flow Integration', () => {
 
     it('should handle duplicate transaction submissions', async () => {
       const txHash = '0x123abc456def' as `0x${string}`
-      
-      mockTransactionProcessor.addTransaction.mockResolvedValue('job-123')
-      
+
+      // Mock different responses - first queued, then BullMQ handles duplicates
+      mockTransactionProcessor.addTransaction
+        .mockResolvedValueOnce({
+          jobId: 'job-123',
+          status: 'queued',
+          message: 'Transaction queued for processing'
+        })
+        .mockResolvedValueOnce({
+          jobId: 'job-123',
+          status: 'requeued',
+          previousState: 'completed',
+          message: 'Transaction re-queued for processing (was completed)'
+        })
+        .mockResolvedValueOnce({
+          jobId: 'job-123',
+          status: 'requeued',
+          previousState: 'completed',
+          message: 'Transaction re-queued for processing (was completed)'
+        })
+
       // First call - should be queued
-      await service.processTransaction(txHash)
-      
+      const result1 = await service.processTransaction(txHash)
+      expect(result1.status).toBe('queued')
+
       // Mark transaction as completed in cache to simulate completion
       service['setCacheEntry'](txHash, 2) // COMPLETED state
-      
-      // Subsequent calls should be skipped due to completed state
-      await service.processTransaction(txHash)
-      await service.processTransaction(txHash)
-      
-      // Should only be queued once (subsequent calls should be skipped)
-      expect(mockTransactionProcessor.addTransaction).toHaveBeenCalledTimes(1)
+
+      // Subsequent calls are now delegated to BullMQ
+      const result2 = await service.processTransaction(txHash)
+      const result3 = await service.processTransaction(txHash)
+
+      // All calls go through to BullMQ now (it handles duplicate logic internally)
+      expect(mockTransactionProcessor.addTransaction).toHaveBeenCalledTimes(3)
+      expect(result2.status).toBe('requeued')
+      expect(result3.status).toBe('requeued')
     })
 
     it('should process forced transactions immediately', async () => {
       const txHash = '0x123abc456def' as `0x${string}`
       
       // First process normally
-      mockTransactionProcessor.addTransaction.mockResolvedValue('job-123')
+      mockTransactionProcessor.addTransaction.mockResolvedValue({
+        jobId: 'job-123',
+        status: 'queued',
+        message: 'Transaction queued for processing'
+      })
       await service.processTransaction(txHash)
       
       // Mark as completed
@@ -620,7 +649,11 @@ describe('Full Invalidation Flow Integration', () => {
     it('should maintain transaction state consistency under concurrent access', async () => {
       const txHash = '0x123abc456def' as `0x${string}`
       
-      mockTransactionProcessor.addTransaction.mockResolvedValue('job-123')
+      mockTransactionProcessor.addTransaction.mockResolvedValue({
+        jobId: 'job-123',
+        status: 'queued',
+        message: 'Transaction queued for processing'
+      })
       
       // First, process a transaction to create a cache entry
       await service.processTransaction(txHash)

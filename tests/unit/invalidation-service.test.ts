@@ -183,34 +183,62 @@ describe('CacheInvalidationService', () => {
   })
 
   describe('processTransaction', () => {
-    it('should skip already completed transactions', async () => {
+    it('should delegate completed transaction handling to BullMQ', async () => {
       const txHash = '0x123abc' as `0x${string}`
 
       // Set as completed
       service['setCacheEntry'](txHash, 2) // COMPLETED
 
+      // Mock the return value to match new signature
+      mockTransactionProcessor.addTransaction.mockResolvedValue({
+        jobId: 'job-id',
+        status: 'requeued',
+        previousState: 'completed',
+        message: 'Transaction re-queued for processing (was completed)'
+      })
+
       await service.processTransaction(txHash)
 
-      // Should not call transaction processor
-      expect(mockTransactionProcessor.addTransaction).not.toHaveBeenCalled()
+      // Should call transaction processor (BullMQ will handle duplicate logic)
+      expect(mockTransactionProcessor.addTransaction).toHaveBeenCalledWith(
+        txHash, '1', false, 1
+      )
     })
 
-    it('should skip already processing transactions', async () => {
+    it('should delegate processing transaction handling to BullMQ', async () => {
       const txHash = '0x123abc' as `0x${string}`
 
       // Set as processing with recent timestamp
       service['setCacheEntry'](txHash, 1) // PROCESSING
 
+      // Mock the return value to match new signature
+      mockTransactionProcessor.addTransaction.mockResolvedValue({
+        jobId: 'job-id',
+        status: 'already_processing',
+        previousState: 'active',
+        message: 'Transaction is already being processed'
+      })
+
       await service.processTransaction(txHash)
 
-      expect(mockTransactionProcessor.addTransaction).not.toHaveBeenCalled()
+      // Should call transaction processor (BullMQ will handle duplicate logic)
+      expect(mockTransactionProcessor.addTransaction).toHaveBeenCalledWith(
+        txHash, '1', false, 1
+      )
     })
 
     it('should process forced transactions even if completed', async () => {
       const txHash = '0x123abc' as `0x${string}`
 
       service['setCacheEntry'](txHash, 2) // COMPLETED
-      mockTransactionProcessor.addTransaction.mockResolvedValue('job-id')
+
+      // Mock the return value to match new signature
+      mockTransactionProcessor.addTransaction.mockResolvedValue({
+        jobId: 'job-id',
+        status: 'requeued',
+        previousState: 'completed',
+        message: 'Transaction force re-queued for processing (was completed)'
+      })
 
       await service.processTransaction(txHash, true)
 
@@ -227,7 +255,12 @@ describe('CacheInvalidationService', () => {
       const entry = service['getCacheEntry'](txHash)!
       entry.timestamp = Date.now() - 130000 // Make it stale
 
-      mockTransactionProcessor.addTransaction.mockResolvedValue('job-id')
+      // Mock the return value to match new signature
+      mockTransactionProcessor.addTransaction.mockResolvedValue({
+        jobId: 'job-id',
+        status: 'queued',
+        message: 'Transaction queued for processing'
+      })
 
       await service.processTransaction(txHash)
 
@@ -237,7 +270,12 @@ describe('CacheInvalidationService', () => {
     it('should add transaction to queue with correct priority', async () => {
       const txHash = '0x123abc' as `0x${string}`
 
-      mockTransactionProcessor.addTransaction.mockResolvedValue('job-id')
+      // Mock the return value to match new signature
+      mockTransactionProcessor.addTransaction.mockResolvedValue({
+        jobId: 'job-id',
+        status: 'queued',
+        message: 'Transaction queued for processing'
+      })
 
       await service.processTransaction(txHash, false)
 

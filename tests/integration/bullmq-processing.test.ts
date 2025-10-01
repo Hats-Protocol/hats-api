@@ -20,7 +20,12 @@ const mockQueue = {
       updateProgress: vi.fn(),
       getState: vi.fn().mockResolvedValue('waiting'),
       getPosition: vi.fn().mockResolvedValue(mockJobs.size),
-      log: vi.fn()
+      log: vi.fn(),
+      remove: vi.fn().mockImplementation(() => {
+        // Remove from mockJobs when remove is called
+        mockJobs.delete(opts.jobId)
+        return Promise.resolve()
+      })
     }
     mockJobs.set(opts.jobId, job)
     
@@ -265,6 +270,163 @@ describe('BullMQ Processing Integration', () => {
       )
       
       expect(mockProcessCallback).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('Duplicate Job Handling with Force Flag', () => {
+    it('should handle duplicate job with force=true by removing and re-queuing', async () => {
+      const txHash = '0xdup123' as `0x${string}`
+      const chainId = 'test-chain'
+
+      // Add initial job
+      const result1 = await processor.addTransaction(txHash, chainId, false, 1)
+      expect(result1.status).toBe('queued')
+      expect(result1.message).toBe('Transaction queued for processing')
+
+      // Mark job as completed
+      const job = mockJobs.get(`${chainId}-${txHash}`)!
+      job.getState = vi.fn().mockResolvedValue('completed')
+
+      // Try to add same job with force=true
+      const result2 = await processor.addTransaction(txHash, chainId, true, 5)
+      expect(result2.status).toBe('requeued')
+      expect(result2.previousState).toBe('completed')
+      expect(result2.message).toContain('force re-queued')
+
+      // Verify remove was called
+      expect(job.remove).toHaveBeenCalled()
+    })
+
+    it('should allow re-queue of completed job without force', async () => {
+      const txHash = '0xcomplete123' as `0x${string}`
+      const chainId = 'test-chain'
+
+      // Add initial job
+      const result1 = await processor.addTransaction(txHash, chainId, false, 1)
+      expect(result1.status).toBe('queued')
+
+      // Mark job as completed
+      const job = mockJobs.get(`${chainId}-${txHash}`)!
+      job.getState = vi.fn().mockResolvedValue('completed')
+
+      // Try to add same job without force
+      const result2 = await processor.addTransaction(txHash, chainId, false, 1)
+      expect(result2.status).toBe('requeued')
+      expect(result2.previousState).toBe('completed')
+      expect(result2.message).toContain('re-queued for processing (was completed)')
+
+      // Verify remove was called
+      expect(job.remove).toHaveBeenCalled()
+    })
+
+    it('should allow re-queue of failed job without force', async () => {
+      const txHash = '0xfailed123' as `0x${string}`
+      const chainId = 'test-chain'
+
+      // Add initial job
+      const result1 = await processor.addTransaction(txHash, chainId, false, 1)
+      expect(result1.status).toBe('queued')
+
+      // Mark job as failed
+      const job = mockJobs.get(`${chainId}-${txHash}`)!
+      job.getState = vi.fn().mockResolvedValue('failed')
+
+      // Try to add same job without force
+      const result2 = await processor.addTransaction(txHash, chainId, false, 1)
+      expect(result2.status).toBe('requeued')
+      expect(result2.previousState).toBe('failed')
+      expect(result2.message).toContain('re-queued for processing (was failed)')
+
+      // Verify remove was called
+      expect(job.remove).toHaveBeenCalled()
+    })
+
+    it('should return already_processing for active job without force', async () => {
+      const txHash = '0xactive123' as `0x${string}`
+      const chainId = 'test-chain'
+
+      // Add initial job
+      const result1 = await processor.addTransaction(txHash, chainId, false, 1)
+      expect(result1.status).toBe('queued')
+
+      // Mark job as active
+      const job = mockJobs.get(`${chainId}-${txHash}`)!
+      job.getState = vi.fn().mockResolvedValue('active')
+
+      // Try to add same job without force
+      const result2 = await processor.addTransaction(txHash, chainId, false, 1)
+      expect(result2.status).toBe('already_processing')
+      expect(result2.previousState).toBe('active')
+      expect(result2.message).toBe('Transaction is already being processed')
+
+      // Verify remove was NOT called
+      expect(job.remove).not.toHaveBeenCalled()
+    })
+
+    it('should return already_queued for waiting job without force', async () => {
+      const txHash = '0xwaiting123' as `0x${string}`
+      const chainId = 'test-chain'
+
+      // Add initial job
+      const result1 = await processor.addTransaction(txHash, chainId, false, 1)
+      expect(result1.status).toBe('queued')
+
+      // Mark job as waiting
+      const job = mockJobs.get(`${chainId}-${txHash}`)!
+      job.getState = vi.fn().mockResolvedValue('waiting')
+
+      // Try to add same job without force
+      const result2 = await processor.addTransaction(txHash, chainId, false, 1)
+      expect(result2.status).toBe('already_queued')
+      expect(result2.previousState).toBe('waiting')
+      expect(result2.message).toContain('already in queue (waiting)')
+
+      // Verify remove was NOT called
+      expect(job.remove).not.toHaveBeenCalled()
+    })
+
+    it('should return already_queued for delayed job without force', async () => {
+      const txHash = '0xdelayed123' as `0x${string}`
+      const chainId = 'test-chain'
+
+      // Add initial job
+      const result1 = await processor.addTransaction(txHash, chainId, false, 1)
+      expect(result1.status).toBe('queued')
+
+      // Mark job as delayed
+      const job = mockJobs.get(`${chainId}-${txHash}`)!
+      job.getState = vi.fn().mockResolvedValue('delayed')
+
+      // Try to add same job without force
+      const result2 = await processor.addTransaction(txHash, chainId, false, 1)
+      expect(result2.status).toBe('already_queued')
+      expect(result2.previousState).toBe('delayed')
+      expect(result2.message).toContain('already in queue (delayed)')
+
+      // Verify remove was NOT called
+      expect(job.remove).not.toHaveBeenCalled()
+    })
+
+    it('should remove and re-queue active job with force=true', async () => {
+      const txHash = '0xforceactive' as `0x${string}`
+      const chainId = 'test-chain'
+
+      // Add initial job
+      const result1 = await processor.addTransaction(txHash, chainId, false, 1)
+      expect(result1.status).toBe('queued')
+
+      // Mark job as active
+      const job = mockJobs.get(`${chainId}-${txHash}`)!
+      job.getState = vi.fn().mockResolvedValue('active')
+
+      // Try to add same job with force=true
+      const result2 = await processor.addTransaction(txHash, chainId, true, 5)
+      expect(result2.status).toBe('requeued')
+      expect(result2.previousState).toBe('active')
+      expect(result2.message).toContain('force re-queued')
+
+      // Verify remove was called even though it was active
+      expect(job.remove).toHaveBeenCalled()
     })
   })
 

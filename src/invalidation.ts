@@ -45,7 +45,7 @@ import {
 import { GraphQLClient, gql } from "graphql-request";
 import { LRUCache } from "lru-cache";
 import { retryAsync, CircuitBreaker, RetryOptions } from "./retry-utils";
-import { BullMQTransactionProcessor, BullMQProcessorConfig, JobContext } from "./bullmq-transaction-processor";
+import { BullMQTransactionProcessor, BullMQProcessorConfig, JobContext, BlockInfoProvider } from "./bullmq-transaction-processor";
 
 enum TransactionCacheState {
   NOT_STARTED = 0,
@@ -133,61 +133,53 @@ export class CacheInvalidationManager {
   ) {
     switch (networkId) {
       case "1":
-        await this.mainnetInvalidationClient.processTransaction(
+        return await this.mainnetInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "137":
-        await this.polygonInvalidationClient.processTransaction(
+        return await this.polygonInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "100":
-        await this.gnosisInvalidationClient.processTransaction(
+        return await this.gnosisInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "42220":
-        await this.celoInvalidationClient.processTransaction(
+        return await this.celoInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "8453":
-        await this.baseInvalidationClient.processTransaction(
+        return await this.baseInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "10":
-        await this.optimismInvalidationClient.processTransaction(
+        return await this.optimismInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "42161":
-        await this.arbitrumInvalidationClient.processTransaction(
+        return await this.arbitrumInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "11155111":
-        await this.sepoliaInvalidationClient.processTransaction(
+        return await this.sepoliaInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       case "84532":
-        await this.baseSepoliaInvalidationClient.processTransaction(
+        return await this.baseSepoliaInvalidationClient.processTransaction(
           txHash.toLowerCase() as `0x${string}`,
           force
         );
-        break;
       default:
         logger.info(`network ${networkId} not supported`);
+        throw new Error(`Network ${networkId} not supported`);
     }
   }
 
@@ -255,6 +247,11 @@ export class CacheInvalidationManager {
       this.baseSepoliaInvalidationClient,
     ];
   }
+
+  // Get Redis client for direct access
+  get redisClient(): RedisCacheClient {
+    return this.cache;
+  }
 }
 
 export class CacheInvalidationService {
@@ -305,12 +302,43 @@ export class CacheInvalidationService {
       backoffDelay: WEBSOCKET_RETRY_DELAY,
     };
 
+    // Create block info provider for notifications
+    const blockInfoProvider = {
+      getCurrentBlock: async (): Promise<bigint | null> => {
+        try {
+          return await this.publicHttpClient.getBlockNumber();
+        } catch (error) {
+          logger.log({
+            level: 'warn',
+            message: 'Failed to get current block number for notification',
+            chainId: this.chainId,
+            error,
+          });
+          return null;
+        }
+      },
+      getSubgraphBlock: async (): Promise<bigint | null> => {
+        try {
+          return await this.getLatestBlockMainSubgraph();
+        } catch (error) {
+          logger.log({
+            level: 'warn',
+            message: 'Failed to get subgraph block number for notification',
+            chainId: this.chainId,
+            error,
+          });
+          return null;
+        }
+      },
+    };
+
     this.transactionProcessor = new BullMQTransactionProcessor(
       chainId,
       cacheClient.getRedisClient(),
       (txHash: `0x${string}`, chainId: string, force?: boolean, jobContext?: JobContext) =>
         this.processTransactionInternal(txHash, force, jobContext),
-      processorConfig
+      processorConfig,
+      blockInfoProvider
     );
   }
 
@@ -546,7 +574,7 @@ export class CacheInvalidationService {
           networkId: this.chainId,
           txHash: txHash,
         });
-        return;
+        // Don't return early - let BullMQ handle the decision
       }
 
       if (entry.state === TransactionCacheState.PROCESSING && !this.isTransactionStale(entry)) {
@@ -556,7 +584,7 @@ export class CacheInvalidationService {
           networkId: this.chainId,
           txHash: txHash,
         });
-        return;
+        // Don't return early - let BullMQ handle the decision
       }
 
       if (this.isTransactionStale(entry)) {
@@ -571,10 +599,11 @@ export class CacheInvalidationService {
       }
     }
 
-    // Add to BullMQ queue instead of processing directly
+    // Add to BullMQ queue and return the result
     const priority = force ? 5 : 1;
     try {
-      await this.transactionProcessor.addTransaction(txHash, this.chainId, force || false, priority);
+      const result = await this.transactionProcessor.addTransaction(txHash, this.chainId, force || false, priority);
+      return result;
     } catch (error) {
       logger.log({
         level: 'error',
