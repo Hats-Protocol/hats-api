@@ -50,7 +50,6 @@ const shouldSendNotification = (chainId: string): boolean => {
   const timeSinceLastNotification = now - lastNotification;
 
   if (timeSinceLastNotification >= NOTIFICATION_INTERVAL_MS) {
-    lastNotificationTimes.set(chainId, now);
     return true;
   }
 
@@ -151,6 +150,9 @@ export const sendSubgraphFailureNotification = async ({
       parse_mode: 'MarkdownV2',
       disable_web_page_preview: true,
     });
+
+    // Update rate limiting timestamp only after successful delivery
+    lastNotificationTimes.set(chainId, Date.now());
 
     logger.log({
       level: 'info',

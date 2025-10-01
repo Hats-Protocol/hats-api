@@ -146,7 +146,7 @@ export class BullMQTransactionProcessor {
     this.worker.on('failed', async (job: Job<TransactionJobData> | undefined, err: Error) => {
       if (!job) return;
 
-      const isLastAttempt = (job.attemptsMade + 1) >= (job.opts.attempts || 1);
+      const isLastAttempt = job.attemptsMade >= (job.opts.attempts || 1);
 
       // Calculate retry delay for non-final attempts
       let retryDelayMs: number | null = null;
@@ -182,7 +182,7 @@ export class BullMQTransactionProcessor {
           chainId: job.data.chainId,
           txHash: job.data.txHash,
           error: err.message,
-          attempt: job.attemptsMade + 1,
+          attempt: job.attemptsMade,
           maxAttempts: job.opts.attempts,
           retryDelayMs,
           retryDelaySeconds: retryDelayMs ? Math.round(retryDelayMs / 1000) : null,
@@ -202,7 +202,7 @@ export class BullMQTransactionProcessor {
           chainId: job.data.chainId,
           txHash: job.data.txHash,
           error: err,
-          attempt: job.attemptsMade + 1,
+          attempt: job.attemptsMade,
           maxAttempts: job.opts.attempts,
           retryDelayMs,
           retryDelaySeconds: retryDelayMs ? Math.round(retryDelayMs / 1000) : null,
@@ -231,7 +231,7 @@ export class BullMQTransactionProcessor {
             currentBlock: currentBlockNumber,
             subgraphBlock: subgraphBlockNumber,
             error: err.message,
-            attempt: job.attemptsMade + 1,
+            attempt: job.attemptsMade,
             maxAttempts: job.opts.attempts || 1,
           });
 
@@ -345,8 +345,6 @@ export class BullMQTransactionProcessor {
               jobId,
               priority: priority * 100,
               delay: 0, // Immediate processing when forced
-              removeOnComplete: false,
-              removeOnFail: false,
             }
           );
 
@@ -411,8 +409,6 @@ export class BullMQTransactionProcessor {
                 jobId,
                 priority: priority * 100,
                 delay: 1000, // Normal delay when not forced
-                removeOnComplete: false,
-                removeOnFail: false,
               }
             );
 
@@ -452,8 +448,6 @@ export class BullMQTransactionProcessor {
                 jobId,
                 priority: priority * 100,
                 delay: 1000,
-                removeOnComplete: false,
-                removeOnFail: false,
               }
             );
 
@@ -474,8 +468,6 @@ export class BullMQTransactionProcessor {
             jobId,
             priority: priority * 100,
             delay: force ? 0 : 1000,
-            removeOnComplete: false,
-            removeOnFail: false,
           }
         );
 

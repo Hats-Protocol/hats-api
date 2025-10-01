@@ -115,8 +115,6 @@ describe('BullMQTransactionProcessor', () => {
           jobId: `${chainId}-${txHash}`,
           priority: 200, // 2 * 100
           delay: 1000, // Not forced, so has delay
-          removeOnComplete: false,
-          removeOnFail: false
         }
       )
       expect(result.jobId).toBe('job-123')
@@ -136,8 +134,6 @@ describe('BullMQTransactionProcessor', () => {
           jobId: '1-0x456def',
           priority: 500, // 5 * 100
           delay: 0, // Forced, so no delay
-          removeOnComplete: false,
-          removeOnFail: false
         }
       )
       expect(result.status).toBe('queued')

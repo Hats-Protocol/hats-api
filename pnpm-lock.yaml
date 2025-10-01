@@ -87,8 +87,8 @@ importers:
         specifier: ^11.0.0
         version: 11.1.0
       node-telegram-bot-api:
-        specifier: ^0.66.0
-        version: 0.66.0(request@2.88.2)
+        specifier: ^0.64.0
+        version: 0.64.0(request@2.88.2)
       redis:
         specifier: ^4.6.13
         version: 4.7.1
@@ -3141,8 +3141,8 @@ packages:
   node-releases@2.0.19:
     resolution: {integrity: sha512-xxOWJsBKtzAq7DY0J+DTzuz58K8e7sJbdgwkbMWQe8UYB6ekmsQ45q0M/tJDsGaZmbC+l7n57UV8Hl5tHxO9uw==}
 
-  node-telegram-bot-api@0.66.0:
-    resolution: {integrity: sha512-s4Hrg5q+VPl4/tJVG++pImxF6eb8tNJNj4KnDqAOKL6zGU34lo9RXmyAN158njwGN+v8hdNf8s9fWIYW9hPb5A==}
+  node-telegram-bot-api@0.64.0:
+    resolution: {integrity: sha512-/gxCuaEDUyWMBiHInP0ufopUkaaKprXiv3lyP9MMZdPy2KPfYKNYNKfd1Ph7o9KhfURDtOYowPZCi4UCr+2caw==}
     engines: {node: '>=0.12'}
 
   nodemon@3.1.10:
@@ -7875,7 +7875,7 @@ snapshots:
 
   node-releases@2.0.19: {}
 
-  node-telegram-bot-api@0.66.0(request@2.88.2):
+  node-telegram-bot-api@0.64.0(request@2.88.2):
     dependencies:
       '@cypress/request': 3.0.9
       '@cypress/request-promise': 5.0.0(@cypress/request@3.0.9)(request@2.88.2)
