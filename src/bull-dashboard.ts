@@ -82,11 +82,15 @@ export class BullDashboardSetup {
         serverAdapter: this.serverAdapter,
         options: {
           uiConfig: {
-            boardTitle: 'Hats API Transaction Processing Queues',
+            boardTitle: 'Transaction Queue',
             boardLogo: {
-              path: 'https://hatsprotocol.xyz/favicon.ico',
-              width: '100px',
-              height: '100px',
+              path: 'https://app.hatsprotocol.xyz/hats.png',
+              width: '50px',
+              height: '50px',
+            },
+            favIcon: {
+              default: 'https://app.hatsprotocol.xyz/hats.png',
+              alternative: 'https://app.hatsprotocol.xyz/hats.png',
             },
             miscLinks: [
               {
