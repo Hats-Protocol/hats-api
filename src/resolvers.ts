@@ -1,4 +1,3 @@
-import { Resolvers } from '../.mesh';
 import { NETWORKS, NetworkConfig } from './config/networks';
 import {
   getWearersEligibility,
@@ -10,6 +9,20 @@ import {
 } from './web3';
 import { fetchFromIpfs, validateIpfsImage } from './utils/ipfs';
 import { GraphQLResolveInfo } from 'graphql';
+
+// Type definition for the gateway context containing subgraph resolvers
+type ResolverContext = {
+  [key: string]: {
+    Query: {
+      [queryName: string]: (args: {
+        root: any;
+        args: any;
+        context: ResolverContext;
+        info: GraphQLResolveInfo;
+      }) => Promise<any>;
+    };
+  };
+};
 
 // match  the types in .meshrc.yaml
 type WearerRoot = {
@@ -43,39 +56,49 @@ const createWearerResolvers = (network: NetworkConfig) => ({
   },
 });
 
-const createHatResolvers = (network: NetworkConfig) => ({
-  detailsMetadata: {
-    resolve: async (root: HatRoot) => {
-      if (!root.details?.startsWith('ipfs://')) return null;
-      const data = await fetchFromIpfs(root.details.slice(7));
-      return data ? JSON.stringify(data) : null;
+const createHatResolvers = (network: NetworkConfig) => {
+  const baseResolvers = {
+    detailsMetadata: {
+      resolve: async (root: HatRoot) => {
+        if (!root.details?.startsWith('ipfs://')) return null;
+        const data = await fetchFromIpfs(root.details.slice(7));
+        return data ? JSON.stringify(data) : null;
+      },
     },
-  },
-  authorities: {
-    selectionSet: /* GraphQL */ `
-      {
-        id
-      }
-    `,
-    resolve: async (
-      root: HatRoot,
-      _args: unknown,
-      context: Resolvers,
-      info: GraphQLResolveInfo
-    ) => {
-      return await context[`${network.name}_Ancillary`].Query[
-        `${network.prefix}hatAuthority`
-      ]({
-        root,
-        args: {
-          id: root.id,
-        },
-        context,
-        info,
-      });
+  };
+
+  // Only add authorities resolver if the network has an ancillary subgraph
+  const authoritiesResolver = network.chainId === '84532' ? {} : {
+    authorities: {
+      selectionSet: /* GraphQL */ `
+        {
+          id
+        }
+      `,
+      resolve: async (
+        root: HatRoot,
+        _args: unknown,
+        context: ResolverContext,
+        info: GraphQLResolveInfo
+      ) => {
+        return await context[`${network.name}_Ancillary`].Query[
+          `${network.prefix}hatAuthority`
+        ]({
+          root,
+          args: {
+            id: root.id,
+          },
+          context,
+          info,
+        });
+      },
     },
-  },
-  eligibleWearers: {
+  };
+
+  return {
+    ...baseResolvers,
+    ...authoritiesResolver,
+    eligibleWearers: {
     resolve: async (root: HatRoot) => {
       if (!root.wearers) return [];
       const wearersEligibility = await getWearersEligibility(
@@ -151,10 +174,11 @@ const createHatResolvers = (network: NetworkConfig) => ({
       return getHatStatus(network.chainId, BigInt(root.id));
     },
   },
-});
+  };
+};
 
 // Generate resolvers for all networks
-const resolvers: Resolvers = Object.entries(NETWORKS).reduce(
+const resolvers: Record<string, any> = Object.entries(NETWORKS).reduce(
   (acc, [_, network]) => {
     const wearerKey = `${network.prefix}Wearer`;
     const hatKey = `${network.prefix}Hat`;

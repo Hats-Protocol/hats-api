@@ -3,6 +3,12 @@ import type { RedisOptions } from "ioredis";
 import logger from "./log";
 import { JobContext } from "./bullmq-transaction-processor";
 
+// Entity type for cache invalidation
+export interface CacheEntity {
+  typename: string;
+  id: string;
+}
+
 export class RedisCacheClient {
   private readonly _client: Redis;
 
@@ -26,6 +32,109 @@ export class RedisCacheClient {
     this._client = new Redis(clientOptions as any);
   }
 
+  /**
+   * Invalidate cache entries by entity using new entity-based cache keys.
+   * Works with Hive Gateway's entity-based caching (typename:id format).
+   */
+  async invalidateEntities(
+    entities: CacheEntity[],
+    networkId: string,
+    txHash: string,
+    jobContext?: JobContext
+  ): Promise<void> {
+    logger.log({
+      level: "info",
+      message: `${networkId}-${txHash}: invalidating ${entities.length} entities`,
+      txHash: txHash,
+      networkId: networkId,
+      entities: entities.map(e => `${e.typename}:${e.id}`),
+    });
+
+    for (const entity of entities) {
+      // Log to job dashboard if available
+      if (jobContext?.job) {
+        if (entity.typename.includes('_Wearer')) {
+          if (entity.id === 'undefined') {
+            await jobContext.job.log(`Clearing cache for undefined wearer records`);
+          } else {
+            await jobContext.job.log(`Invalidating wearer details for \`${entity.id}\``);
+          }
+        } else if (entity.typename.includes('_Tree')) {
+          const treeIdDecimal = parseInt(entity.id, 16);
+          await jobContext.job.log(`Invalidating tree ${treeIdDecimal} details`);
+        } else if (entity.typename.includes('_Hat')) {
+          await jobContext.job.log(`Invalidating hat \`${entity.id}\` details`);
+        } else if (entity.typename.includes('_ClaimsHatter')) {
+          await jobContext.job.log(`Invalidating claims hatter \`${entity.id}\` details`);
+        } else {
+          await jobContext.job.log(`Invalidating entity ${entity.typename}:${entity.id}`);
+        }
+      }
+    }
+
+    // Entity-based key pattern: envelop response cache uses sets for entity->response mapping
+    // We need to invalidate both the entity set and any response keys linked to it
+    const keysToDelete: string[] = [];
+    let pipeline = this._client.pipeline();
+
+    try {
+      for (const entity of entities) {
+        // Pattern for entity keys: entity:{typename}:{id}
+        const entityKey = `entity:${entity.typename}:${entity.id}`;
+
+        // Get all response IDs associated with this entity
+        const responseIds = await this._client.smembers(entityKey);
+
+        // Delete the entity set
+        keysToDelete.push(entityKey);
+        pipeline.del(entityKey);
+
+        // Delete all associated response cache entries
+        for (const responseId of responseIds) {
+          const responseKey = `response:${responseId}`;
+          keysToDelete.push(responseKey);
+          pipeline.unlink(responseKey);
+        }
+
+        // Execute pipeline in batches of 100
+        if (pipeline.length >= 100) {
+          await pipeline.exec();
+          pipeline = this._client.pipeline();
+        }
+      }
+
+      // Execute remaining commands
+      if (pipeline.length > 0) {
+        await pipeline.exec();
+      }
+
+      logger.log({
+        level: "info",
+        message: `Successfully invalidated ${keysToDelete.length} cache keys`,
+        txHash: txHash,
+        networkId: networkId,
+      });
+    } catch (error) {
+      logger.log({
+        level: "error",
+        message: `Entity invalidation error`,
+        txHash: txHash,
+        networkId: networkId,
+        entities: entities,
+        keysToDelete: keysToDelete,
+        error: error,
+      });
+
+      throw new Error(
+        `Error invalidating entities`,
+        { cause: error as Error }
+      );
+    }
+  }
+
+  /**
+   * Legacy method for backward compatibility - converts to entity-based format
+   */
   async invalidateEntity(
     networkId: string,
     txHash: string,
@@ -33,96 +142,18 @@ export class RedisCacheClient {
     entityId: string,
     jobContext?: JobContext
   ): Promise<void> {
-    const entity = `${entityName}.${entityId}`;
-    logger.log({
-      level: "info",
-      message: `${networkId}-${txHash}: invalidating entity ${entityName} with ID ${entityId}`,
-      txHash: txHash,
-      networkId: networkId,
-      entity: `${entityName}.${entityId}`,
-    });
-
-    // Log to job dashboard if available
-    if (jobContext?.job) {
-      if (entityName.includes('_Wearer')) {
-        if (entityId === 'undefined') {
-          await jobContext.job.log(`Clearing cache for undefined wearer records`);
-        } else {
-          await jobContext.job.log(`Invalidating wearer details for \`${entityId}\``);
-        }
-      } else if (entityName.includes('_Tree')) {
-        const treeIdDecimal = parseInt(entityId, 16);
-        await jobContext.job.log(`Invalidating tree ${treeIdDecimal} details`);
-      } else if (entityName.includes('_Hat')) {
-        await jobContext.job.log(`Invalidating hat \`${entityId}\` details`);
-      } else if (entityName.includes('_ClaimsHatter')) {
-        await jobContext.job.log(`Invalidating claims hatter \`${entityId}\` details`);
-      } else {
-        await jobContext.job.log(`Invalidating entity ${entityName} with ID ${entityId}`);
-      }
-    }
-
-    const matchParam = `response-cache:*${entity}*`;
-    const stream = this._client.scanStream({
-      match: matchParam,
-      count: 100,
-    });
-
-    const keysToDelete: string[] = [];
-    let pipeline = this._client.pipeline();
-
-    try {
-      await new Promise<void>((resolve, reject) => {
-        const execs: Promise<any>[] = [];
-        stream.on("data", (resultKeys: string[]) => {
-          for (let fullKey of resultKeys) {
-            // Keys already match via SCAN 'match'; no extra includes() check needed
-            keysToDelete.push(fullKey);
-            pipeline.unlink(fullKey); // non-blocking delete
-
-            if (pipeline.length >= 100) {
-              execs.push(pipeline.exec());
-              pipeline = this._client.pipeline();
-            }
-          }
-        });
-
-        stream.on("end", async () => {
-          try {
-            if (pipeline.length > 0) execs.push(pipeline.exec());
-            await Promise.all(execs);
-            resolve();
-          } catch (err) {
-            reject(err);
-          }
-        });
-        stream.on("error", async (err) => {
-          try {
-            if (pipeline.length > 0) execs.push(pipeline.exec());
-            await Promise.allSettled(execs);
-          } finally {
-            reject(err);
-          }
-        });
-      });
-    } catch (error) {
-      logger.log({
-        level: "error",
-        message: `Invalidation error`,
-        txHash: txHash,
-        networkId: networkId,
-        entity: `${entityName}.${entityId}`,
-        keysToDelete: keysToDelete,
-        error: error,
-      });
-
-      throw new Error(
-        `Error invalidating entity ${entityName} with ID ${entityId}`,
-        { cause: error as Error }
-      );
-    }
+    await this.invalidateEntities(
+      [{ typename: entityName, id: entityId }],
+      networkId,
+      txHash,
+      jobContext
+    );
   }
 
+  /**
+   * Invalidate all hats in a tree using pattern matching on entity IDs.
+   * Note: This still requires SCAN since we need to find all hats starting with treeId.
+   */
   async invalidateHatsInTree(
     networkId: string,
     txHash: string,
@@ -130,7 +161,6 @@ export class RedisCacheClient {
     treeId: string,
     jobContext?: JobContext
   ): Promise<void> {
-    const entityPrefix = `${networkPrefix}_Hat.${treeId}`;
     logger.log({
       level: "info",
       message: `${networkId}-${txHash}: invalidating hats of tree ${treeId}`,
@@ -144,58 +174,53 @@ export class RedisCacheClient {
       await jobContext.job.log(`Invalidating hats of tree ${treeIdDecimal}`);
     }
 
-    const matchParam = `response-cache:*${entityPrefix}*`;
+    // Find all entity keys for hats in this tree
+    // Entity keys format: entity:{typename}:{id}
+    const typename = `${networkPrefix}Hat`;
+    const matchParam = `entity:${typename}:${treeId}*`;
     const stream = this._client.scanStream({
       match: matchParam,
       count: 100,
     });
 
-    const keysToDelete: string[] = [];
-    let pipeline = this._client.pipeline();
+    const entitiesToInvalidate: CacheEntity[] = [];
 
     try {
       await new Promise<void>((resolve, reject) => {
-        const execs: Promise<any>[] = [];
         stream.on("data", (resultKeys: string[]) => {
           for (let fullKey of resultKeys) {
-            // Keys already match via SCAN 'match'; no extra includes() check needed
-            keysToDelete.push(fullKey);
-            pipeline.unlink(fullKey); // non-blocking delete
-
-            if (pipeline.length >= 100) {
-              execs.push(pipeline.exec());
-              pipeline = this._client.pipeline();
+            // Extract entity ID from key: entity:{typename}:{id}
+            const parts = fullKey.split(':');
+            if (parts.length >= 3) {
+              const id = parts.slice(2).join(':'); // Handle IDs with colons
+              entitiesToInvalidate.push({ typename, id });
             }
           }
         });
 
-        stream.on("end", async () => {
-          try {
-            if (pipeline.length > 0) execs.push(pipeline.exec());
-            await Promise.all(execs);
-            resolve();
-          } catch (err) {
-            reject(err);
-          }
-        });
-        stream.on("error", async (err) => {
-          try {
-            if (pipeline.length > 0) execs.push(pipeline.exec());
-            await Promise.allSettled(execs);
-          } finally {
-            reject(err);
-          }
-        });
+        stream.on("end", () => resolve());
+        stream.on("error", (err) => reject(err));
       });
+
+      // Use entity-based invalidation for all found hats
+      if (entitiesToInvalidate.length > 0) {
+        await this.invalidateEntities(entitiesToInvalidate, networkId, txHash, jobContext);
+      } else {
+        logger.log({
+          level: "info",
+          message: `No hats found in tree ${treeId}`,
+          txHash: txHash,
+          networkId: networkId,
+        });
+      }
     } catch (error) {
       logger.log({
         level: "error",
-        message: `Invalidation error`,
+        message: `Invalidation error for tree`,
         txHash: txHash,
         networkId: networkId,
         treeId: treeId,
         networkPrefix: networkPrefix,
-        keysToDelete: keysToDelete,
         error: error,
       });
 
@@ -206,6 +231,10 @@ export class RedisCacheClient {
     }
   }
 
+  /**
+   * Invalidate all cache entries for a specific network.
+   * Finds all entity keys with the network prefix and invalidates them.
+   */
   async invalidateAllForNetwork(networkId: string): Promise<number> {
     logger.log({
       level: "info",
@@ -220,65 +249,56 @@ export class RedisCacheClient {
       throw new Error(`Unsupported network ID: ${networkId}`);
     }
 
-    const matchParam = `response-cache:*${networkPrefix}_*`;
+    // Match all entity keys for this network prefix
+    // Pattern: entity:{networkPrefix}*
+    const matchParam = `entity:${networkPrefix}*`;
     const stream = this._client.scanStream({
       match: matchParam,
       count: 100,
     });
 
-    const keysToDelete: string[] = [];
-    let pipeline = this._client.pipeline();
-    let deletedCount = 0;
+    const entitiesToInvalidate: CacheEntity[] = [];
 
     try {
       await new Promise<void>((resolve, reject) => {
-        const execs: Promise<any>[] = [];
         stream.on("data", (resultKeys: string[]) => {
           for (let fullKey of resultKeys) {
-            keysToDelete.push(fullKey);
-            pipeline.unlink(fullKey);
-            deletedCount++;
-
-            if (pipeline.length >= 100) {
-              execs.push(pipeline.exec());
-              pipeline = this._client.pipeline();
+            // Extract typename and ID from key: entity:{typename}:{id}
+            const parts = fullKey.split(':');
+            if (parts.length >= 3) {
+              const typename = parts[1];
+              const id = parts.slice(2).join(':');
+              entitiesToInvalidate.push({ typename, id });
             }
           }
         });
 
-        stream.on("end", async () => {
-          try {
-            if (pipeline.length > 0) execs.push(pipeline.exec());
-            await Promise.all(execs);
-            resolve();
-          } catch (err) {
-            reject(err);
-          }
-        });
-        stream.on("error", async (err) => {
-          try {
-            if (pipeline.length > 0) execs.push(pipeline.exec());
-            await Promise.allSettled(execs);
-          } finally {
-            reject(err);
-          }
-        });
+        stream.on("end", () => resolve());
+        stream.on("error", (err) => reject(err));
       });
+
+      if (entitiesToInvalidate.length > 0) {
+        await this.invalidateEntities(
+          entitiesToInvalidate,
+          networkId,
+          'invalidate-all',
+          undefined
+        );
+      }
 
       logger.log({
         level: "info",
-        message: `Successfully invalidated ${deletedCount} cache entries for network ${networkId}`,
+        message: `Successfully invalidated ${entitiesToInvalidate.length} entities for network ${networkId}`,
         networkId: networkId,
-        deletedCount: deletedCount,
+        deletedCount: entitiesToInvalidate.length,
       });
 
-      return deletedCount;
+      return entitiesToInvalidate.length;
     } catch (error) {
       logger.log({
         level: "error",
         message: `Error invalidating all cache entries for network ${networkId}`,
         networkId: networkId,
-        keysToDelete: keysToDelete,
         error: error,
       });
 

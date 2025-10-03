@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import { createBuiltMeshHTTPHandler } from "../.mesh";
+import { createGatewayRuntime } from "@graphql-hive/gateway";
+import { gatewayConfig } from "../gateway.config";
 import { CacheInvalidationManager } from "./invalidation";
 import { BullDashboardSetup } from "./bull-dashboard";
 import logger from "./log";
@@ -15,13 +16,17 @@ import {
 const cacheInvalidationManager = new CacheInvalidationManager();
 cacheInvalidationManager.startServices();
 
+// Initialize Hive Gateway
+const gateway = createGatewayRuntime(gatewayConfig as any); // Type mismatch between CLI and runtime config
+
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(cors({ maxAge: 86400 }));
-app.use(express.json());
+app.use(express.json()); // Parse JSON request bodies
 
-app.use("/graphql", createBuiltMeshHTTPHandler());
+// Mount GraphQL Gateway
+app.use(gateway.graphqlEndpoint, gateway);
 
 // Setup Bull Dashboard for queue monitoring
 const bullDashboardSetup = new BullDashboardSetup();

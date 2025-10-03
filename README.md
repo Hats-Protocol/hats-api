@@ -1,16 +1,22 @@
 # Hats Protocol GraphQL API
 
-This API uses GraphQL Mesh to unify multiple subgraphs across different networks into a single GraphQL endpoint. It provides a consistent interface for querying Hats Protocol data with additional computed fields.
+This API uses GraphQL Hive Gateway with GraphQL Mesh composition to unify multiple subgraphs across different networks into a single GraphQL endpoint. It provides a consistent interface for querying Hats Protocol data with additional computed fields.
 
 ## Structure
 
 ### Core Components
 
-- `.meshrc.yaml`: Configuration file that defines:
+- `mesh.config.ts`: Mesh composition configuration that defines:
 
   - Subgraph sources for each network
   - Type prefix transformations (e.g., `Eth_`, `Op_`)
   - Type extensions for computed fields
+
+- `gateway.config.ts`: Gateway server configuration that defines:
+
+  - Supergraph schema reference
+  - Custom resolver integration
+  - GraphiQL playground settings
 
 - `src/resolvers.ts`: Contains resolver implementations for computed fields
 
@@ -18,25 +24,20 @@ This API uses GraphQL Mesh to unify multiple subgraphs across different networks
   - Automatic resolver generation for all networks
   - Web3 utility function integration
 
-- `src/config/networks.ts`: Single source of truth for network configurations
-  - Chain IDs
-  - Network prefixes
-  - Subgraph endpoints
-  - Network-specific settings
-
 ### Directory Structure
 
 ```
 .
-├── .meshrc.yaml           # GraphQL Mesh configuration
+├── mesh.config.ts         # GraphQL Mesh composition config
+├── gateway.config.ts      # Gateway server config
+├── supergraph.graphql     # Generated unified schema (not committed)
 ├── src/
+│   ├── index.ts          # Main server entry point
 │   ├── resolvers.ts      # Resolver implementations
-│   ├── config/
-│   │   └── networks.ts   # Network configurations
 │   ├── utils/
 │   │   └── ipfs.ts       # IPFS utility functions
 │   └── web3.ts           # Web3 utility functions
-└── .mesh/                # Generated GraphQL Mesh files
+└── dist/                 # Compiled TypeScript output
 ```
 
 ## Extended Types
@@ -76,49 +77,53 @@ extend type [Network]_Hat {
 
 To add support for a new network:
 
-1. Update `src/config/networks.ts`:
+1. Add subgraph sources to `mesh.config.ts`:
 
 ```typescript
-export const NETWORKS: Record<string, NetworkConfig> = {
-  // ... existing networks ...
-  newNetwork: {
-    prefix: 'New_', // Prefix for GraphQL types
-    chainId: '12345', // Network chain ID
-    name: 'New Network', // Human-readable name
-    // mainSubgraphEndpoint: '...', // Main subgraph endpoint
-    // ancillarySubgraphEndpoint: '...', // Ancillary subgraph endpoint
-  },
-};
+export const composeConfig = defineConfig({
+  subgraphs: [
+    // ... existing networks ...
+
+    // New Network Main
+    {
+      sourceHandler: loadGraphQLHTTPSubgraph('NewNetwork_Main', {
+        endpoint: 'https://gateway.thegraph.com/api/subgraphs/id/...',
+        operationHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        },
+        schemaHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        }
+      }),
+      transforms: [
+        createPrefixTransform({
+          value: 'New_',
+          includeRootOperations: true
+        })
+      ]
+    },
+
+    // New Network Ancillary
+    {
+      sourceHandler: loadGraphQLHTTPSubgraph('NewNetwork_Ancillary', {
+        endpoint: 'https://api.studio.thegraph.com/query/...'
+      }),
+      transforms: [
+        createPrefixTransform({
+          value: 'New_',
+          includeRootOperations: true
+        })
+      ]
+    }
+  ],
+  // ...
+});
 ```
 
-2. Add sources to `.meshrc.yaml`:
+2. Add type extensions in `mesh.config.ts` `additionalTypeDefs`:
 
-```yaml
-sources:
-  - name: NewNetwork_Main
-    handler:
-      graphql:
-        endpoint: ${mainSubgraphEndpoint}
-    transforms:
-      - prefix:
-          mode: wrap
-          value: New_
-          includeRootOperations: true
-  - name: NewNetwork_Ancillary
-    handler:
-      graphql:
-        endpoint: ${ancillarySubgraphEndpoint}
-    transforms:
-      - prefix:
-          mode: wrap
-          value: New_
-          includeRootOperations: true
-```
-
-3. Add type extensions in `.meshrc.yaml`:
-
-```graphql
-additionalTypeDefs: |
+```typescript
+additionalTypeDefs: /* GraphQL */ `
   extend type New_Wearer {
     ensName: String
     isContract: Boolean!
@@ -128,8 +133,22 @@ additionalTypeDefs: |
     detailsMetadata: String
     authorities: New_HatAuthority!
     eligibleWearers: [String!]!
-    # ... other fields ...
+    eligibilityEnsName: String
+    toggleEnsName: String
+    isImageValid: Boolean!
+    nearestImage: String!
+    eligibilityIsContract: Boolean!
+    eligibilityContractName: String
+    toggleIsContract: Boolean!
+    toggleContractName: String
+    dynamicStatus: Boolean!
   }
+`
+
+3. Regenerate the supergraph schema:
+
+```bash
+pnpm build-mesh
 ```
 
 4. Add the invalidation service for the new network:
@@ -161,12 +180,15 @@ The resolvers will automatically work for the new network due to the pattern use
 ## Development
 
 ```bash
-pnpm build          # Build GraphQL Mesh and TypeScript
+pnpm build-mesh     # Generate supergraph.graphql from mesh.config.ts
+pnpm build          # Build supergraph and compile TypeScript
 pnpm start          # Start the server
-pnpm dev            # Development mode
+pnpm dev            # Development mode with auto-reload
 pnpm test           # Run tests
 pnpm test:coverage  # Run tests with coverage
 ```
+
+**Note:** The `supergraph.graphql` file is generated from `mesh.config.ts` and should not be committed to version control. Run `pnpm build-mesh` to generate it locally or in CI/CD before building.
 
 ### Testing
 
