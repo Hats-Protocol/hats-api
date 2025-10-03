@@ -4,19 +4,26 @@ This document provides guidance for AI agents working on the Hats Protocol Graph
 
 ## Repository Overview
 
-This is a GraphQL API server that provides access to Hats Protocol data across multiple blockchain networks. It uses GraphQL Mesh to combine on-chain data with subgraph indexing and includes a Redis-based caching layer with automated invalidation.
+This is a GraphQL API server that provides access to Hats Protocol data across multiple blockchain networks. It uses **GraphQL Hive Gateway** with **GraphQL Mesh composition** to combine on-chain data with subgraph indexing and includes a Redis-based caching layer with automated invalidation.
 
 ## Key Architecture Components
 
+### GraphQL Layer (v1 Migration - NEW)
+- **Composition** (`mesh.config.ts`): Defines subgraph sources and type extensions for all networks
+- **Gateway** (`gateway.config.ts`): Configures the unified GraphQL server with custom resolvers
+- **Supergraph** (`supergraph.graphql`): Generated unified schema (NOT committed - regenerate with `pnpm build-mesh`)
+- **Main Server** (`src/index.ts`): Express server with GraphQL gateway, BullMQ dashboard, and invalidation endpoints
+
 ### Core Services
-- **GraphQL Mesh** (`src/index.ts`): Main API server combining multiple data sources
 - **Cache Invalidation** (`src/invalidation.ts`): Monitors blockchain events to invalidate stale cache
 - **Redis Cache** (`src/redis.ts`): Pattern-based cache storage and invalidation
 - **BullMQ Processing** (`src/bullmq-transaction-processor.ts`): Queue-based transaction processing
+- **Custom Resolvers** (`src/resolvers.ts`): Additional computed fields for Hat and Wearer types
 
 ### Multi-Chain Support
-The system supports multiple networks (Mainnet, Polygon, Gnosis, Base, Optimism, Arbitrum, Celo, Sepolia). Each network has its own:
-- Subgraph endpoint
+The system supports multiple networks (Mainnet, Polygon, Gnosis, Base, Optimism, Arbitrum, Celo, Sepolia, Base Sepolia). Each network has its own:
+- Main and Ancillary subgraph endpoints
+- Type prefix (e.g., `Eth_`, `Op_`, `Base_`)
 - RPC endpoints (HTTP and WebSocket)
 - Cache invalidation service instance
 
@@ -35,6 +42,12 @@ The system supports multiple networks (Mainnet, Polygon, Gnosis, Base, Optimism,
 - Development: `.env`
 - Testing: `.env.test` (uses port 6380 for Redis to avoid conflicts)
 - Example: `example.env`
+
+### Build Process
+- **Composition**: `pnpm build-mesh` generates `supergraph.graphql` from `mesh.config.ts`
+- **Compilation**: `pnpm build` runs composition then compiles TypeScript
+- **Development**: `pnpm dev` runs with auto-reload (requires `supergraph.graphql` to exist)
+- **IMPORTANT**: `supergraph.graphql` is generated, not committed - must be built locally/CI
 
 ## Testing Requirements
 
@@ -133,17 +146,27 @@ logger.log({
 
 ## Network-Specific Considerations
 
-Each network has configuration in `src/constants.ts`:
+Each network has configuration in two places:
+
+### `mesh.config.ts` (Composition Layer)
+- Main and Ancillary subgraph sources with endpoints
+- Type prefix transforms (e.g., `Eth_`, `Op_`, `Base_`)
+- Extended type definitions for custom fields
+
+### `src/constants.ts` (Invalidation Layer)
 - `CHAIN_ID_TO_SOCKET_URL`: WebSocket RPC endpoints
-- `CHAIN_ID_TO_HTTP_URL`: HTTP RPC endpoints  
+- `CHAIN_ID_TO_HTTP_URL`: HTTP RPC endpoints
 - `CHAIN_ID_TO_MAIN_SUBGRAPH`: Subgraph endpoints
 - `CHAIN_ID_TO_ENTITY_PREFIX`: Entity naming prefixes
 
 When adding a new network:
-1. Add entries to all relevant maps in `constants.ts`
-2. Create invalidation service instance in `CacheInvalidationManager`
-3. Add case in `processTransaction` switch statement
-4. Test thoroughly with real network data
+1. Add subgraph sources to `mesh.config.ts` with proper prefix transform
+2. Add type extensions in `mesh.config.ts` `additionalTypeDefs`
+3. Regenerate supergraph: `pnpm build-mesh`
+4. Add entries to all relevant maps in `src/constants.ts`
+5. Create invalidation service instance in `CacheInvalidationManager`
+6. Add case in `processTransaction` switch statement
+7. Test thoroughly with real network data
 
 ## Debugging Tips
 
@@ -164,13 +187,38 @@ When adding a new network:
 - Ensure kebab-case naming is consistent
 - Look for circular dependencies
 
+## Getting Started
+
+### First Time Setup
+1. Install dependencies: `pnpm install`
+2. Copy environment file: `cp example.env .env` and configure
+3. Generate supergraph: `pnpm build-mesh`
+4. Build TypeScript: `pnpm build`
+5. Run development server: `pnpm dev`
+
+### Common Commands
+```bash
+pnpm build-mesh      # Generate supergraph.graphql
+pnpm build           # Build supergraph + TypeScript
+pnpm dev             # Development mode
+pnpm test:run        # Run tests once
+pnpm test:coverage   # Tests with coverage
+```
+
+### Understanding the GraphQL Layer
+- **Mesh Composition** (`mesh.config.ts`) combines multiple subgraphs into one supergraph
+- **Gateway Server** (`gateway.config.ts`) serves the supergraph with custom resolvers
+- **Resolvers** (`src/resolvers.ts`) add computed fields like `ensName`, `detailsMetadata`, etc.
+- The supergraph is like a compiled artifact - regenerate when changing `mesh.config.ts`
+
 ## Summary
 
 When working on this codebase:
-1. Follow existing patterns and conventions
-2. Test thoroughly with existing test suite
-3. Keep documentation accurate and concise
-4. Respect performance limits (cache sizes, scan limits)
-5. Handle errors gracefully with proper logging
-6. Use TypeScript types effectively
-7. Maintain consistency across multi-chain implementations
+1. **Always generate supergraph first** (`pnpm build-mesh`) when starting or changing mesh config
+2. Follow existing patterns and conventions
+3. Test thoroughly with existing test suite
+4. Keep documentation accurate and concise
+5. Respect performance limits (cache sizes, scan limits)
+6. Handle errors gracefully with proper logging
+7. Use TypeScript types effectively
+8. Maintain consistency across multi-chain implementations

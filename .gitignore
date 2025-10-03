@@ -9,3 +9,5 @@ dist
 
 # GraphQL Mesh generated files
 .mesh
+/exports
+/supergraph.graphql
