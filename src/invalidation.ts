@@ -20,6 +20,7 @@ import {
   SUBGRAPH_SYNC_TIMEOUT,
   WEBSOCKET_RETRY_ATTEMPTS,
   WEBSOCKET_RETRY_DELAY,
+  CHAIN_SPECIFIC_CONFIG,
 } from "./constants";
 import { RedisCacheClient } from "./redis";
 import logger from "./log";
@@ -266,6 +267,8 @@ export class CacheInvalidationService {
   private httpCircuitBreaker: CircuitBreaker;
   private subgraphCircuitBreaker: CircuitBreaker;
   private transactionProcessor: BullMQTransactionProcessor;
+  private blockNumberCache: { value: bigint | null; timestamp: number } | null = null;
+  private blockNumberCacheTTL = 5000; // Cache block number for 5 seconds
 
   constructor(cacheClient: RedisCacheClient, chainId: string) {
     this.cache = cacheClient;
@@ -306,7 +309,7 @@ export class CacheInvalidationService {
     const blockInfoProvider = {
       getCurrentBlock: async (): Promise<bigint | null> => {
         try {
-          return await this.publicHttpClient.getBlockNumber();
+          return await this.getCachedBlockNumber();
         } catch (error) {
           logger.log({
             level: 'warn',
@@ -348,88 +351,180 @@ export class CacheInvalidationService {
       message: `connecting network ${this.chainId}`,
     });
 
-    let socketRpcClient: any;
-    try {
-      socketRpcClient = await retryAsync(
-        async () => {
-          const client = await this.publicSocketClient.transport.getRpcClient();
-          if (!client || !client.socket) {
-            throw new Error("Invalid socket client received");
-          }
-          return client;
-        },
-        {
-          maxAttempts: WEBSOCKET_RETRY_ATTEMPTS,
-          baseDelay: WEBSOCKET_RETRY_DELAY,
-          maxDelay: 30000,
-        },
-        `Network ${this.chainId} socket connection`
-      );
-    } catch (error) {
-      logger.log({
-        level: "error",
-        message: `fetching rpc client in network ${this.chainId} failed after retries`,
-        error: error,
-      });
-      // Continue without socket client - will use HTTP fallback
-      socketRpcClient = null;
-    }
+    const chainConfig = CHAIN_SPECIFIC_CONFIG[this.chainId];
+    const shouldUseWebSocket = chainConfig?.useWebSocket ?? true;
 
-    // Set up event watchers only if socket client is available
+    let socketRpcClient: any;
     let unwatchClaimsHatter: (() => void) | undefined;
     let unwatchHats: (() => void) | undefined;
+    let pollingIntervalId: NodeJS.Timeout | undefined;
 
-    if (socketRpcClient && socketRpcClient.socket) {
+    if (shouldUseWebSocket) {
+      // Use WebSocket for low-volume chains
       try {
-        // watch Claims Hatters events
-        unwatchClaimsHatter = this.publicSocketClient.watchEvent({
-          events: CLAIMS_HATTER_EVENTS,
-          onLogs: (logs: any) => {
-            for (let i = 0; i < logs.length; i++) {
-              const log = logs[i];
-              const logTx: `0x${string}` = log.transactionHash;
-              try {
-                this.processTransaction(logTx.toLowerCase() as `0x${string}`);
-              } catch (error) {
-                continue;
-              }
+        socketRpcClient = await retryAsync(
+          async () => {
+            const client = await this.publicSocketClient.transport.getRpcClient();
+            if (!client || !client.socket) {
+              throw new Error("Invalid socket client received");
             }
+            return client;
           },
-        });
-
-        // watch Hats events
-        unwatchHats = this.publicSocketClient.watchEvent({
-          address: HATS_ADDRESS,
-          events: HATS_EVENTS,
-          onLogs: (logs: any) => {
-            for (let i = 0; i < logs.length; i++) {
-              const log = logs[i];
-              const logTx: `0x${string}` = log.transactionHash;
-              try {
-                this.processTransaction(logTx.toLowerCase() as `0x${string}`);
-              } catch (error) {
-                continue;
-              }
-            }
+          {
+            maxAttempts: WEBSOCKET_RETRY_ATTEMPTS,
+            baseDelay: WEBSOCKET_RETRY_DELAY,
+            maxDelay: 30000,
           },
-        });
-
-        logger.log({
-          level: "info",
-          message: `Event watchers set up for network ${this.chainId}`,
-        });
+          `Network ${this.chainId} socket connection`
+        );
       } catch (error) {
         logger.log({
           level: "error",
-          message: `Failed to set up event watchers for network ${this.chainId}`,
+          message: `fetching rpc client in network ${this.chainId} failed after retries`,
           error: error,
+        });
+        // Continue without socket client - will use HTTP fallback
+        socketRpcClient = null;
+      }
+
+      // Set up event watchers only if socket client is available
+      if (socketRpcClient && socketRpcClient.socket) {
+        try {
+          // watch Claims Hatters events
+          unwatchClaimsHatter = this.publicSocketClient.watchEvent({
+            events: CLAIMS_HATTER_EVENTS,
+            onLogs: (logs: any) => {
+              for (let i = 0; i < logs.length; i++) {
+                const log = logs[i];
+                const logTx: `0x${string}` = log.transactionHash;
+                try {
+                  this.processTransaction(logTx.toLowerCase() as `0x${string}`);
+                } catch (error) {
+                  continue;
+                }
+              }
+            },
+          });
+
+          // watch Hats events
+          unwatchHats = this.publicSocketClient.watchEvent({
+            address: HATS_ADDRESS,
+            events: HATS_EVENTS,
+            onLogs: (logs: any) => {
+              for (let i = 0; i < logs.length; i++) {
+                const log = logs[i];
+                const logTx: `0x${string}` = log.transactionHash;
+                try {
+                  this.processTransaction(logTx.toLowerCase() as `0x${string}`);
+                } catch (error) {
+                  continue;
+                }
+              }
+            },
+          });
+
+          logger.log({
+            level: "info",
+            message: `Event watchers set up for network ${this.chainId} (WebSocket)`,
+          });
+        } catch (error) {
+          logger.log({
+            level: "error",
+            message: `Failed to set up event watchers for network ${this.chainId}`,
+            error: error,
+          });
+        }
+      } else {
+        logger.log({
+          level: "warn",
+          message: `No socket connection available for network ${this.chainId}, event watching disabled`,
         });
       }
     } else {
+      // Use polling for high-volume chains
       logger.log({
-        level: "warn",
-        message: `No socket connection available for network ${this.chainId}, event watching disabled`,
+        level: "info",
+        message: `Using HTTP polling for high-volume chain ${this.chainId}`,
+        pollingInterval: chainConfig?.pollingInterval || 30000,
       });
+
+      let lastBlockChecked: bigint | null = null;
+
+      const pollForEvents = async () => {
+        try {
+          const currentBlock = await this.getCachedBlockNumber();
+
+          // Initialize lastBlockChecked on first poll
+          if (lastBlockChecked === null) {
+            lastBlockChecked = currentBlock;
+            return;
+          }
+
+          // Don't fetch if no new blocks
+          if (currentBlock <= lastBlockChecked) {
+            return;
+          }
+
+          // Limit the range to prevent overwhelming the RPC
+          const fromBlock = lastBlockChecked + 1n;
+          const toBlock = currentBlock;
+          const blockRange = toBlock - fromBlock;
+
+          // If range is too large (e.g., after downtime), limit it
+          const maxBlockRange = 100n;
+          const actualFromBlock = blockRange > maxBlockRange ? toBlock - maxBlockRange : fromBlock;
+
+          // Fetch logs for both Hats and Claims Hatter events
+          const [hatsLogs, claimsHatterLogs] = await Promise.all([
+            this.publicHttpClient.getLogs({
+              address: HATS_ADDRESS,
+              events: HATS_EVENTS,
+              fromBlock: actualFromBlock,
+              toBlock: toBlock,
+            }),
+            this.publicHttpClient.getLogs({
+              events: CLAIMS_HATTER_EVENTS,
+              fromBlock: actualFromBlock,
+              toBlock: toBlock,
+            }),
+          ]);
+
+          // Process unique transactions
+          const processedTxs = new Set<string>();
+
+          for (const log of [...hatsLogs, ...claimsHatterLogs]) {
+            const txHash = log.transactionHash?.toLowerCase();
+            if (txHash && !processedTxs.has(txHash)) {
+              processedTxs.add(txHash);
+              try {
+                this.processTransaction(txHash as `0x${string}`);
+              } catch (error) {
+                continue;
+              }
+            }
+          }
+
+          if (processedTxs.size > 0) {
+            logger.log({
+              level: "info",
+              message: `Polled ${processedTxs.size} transactions from blocks ${actualFromBlock}-${toBlock}`,
+              networkId: this.chainId,
+            });
+          }
+
+          lastBlockChecked = toBlock;
+        } catch (error) {
+          logger.log({
+            level: "error",
+            message: `Error polling for events on network ${this.chainId}`,
+            error: error,
+          });
+        }
+      };
+
+      // Start polling
+      pollingIntervalId = setInterval(pollForEvents, chainConfig?.pollingInterval || 30000);
+      pollForEvents(); // Initial poll
     }
 
     const heartbeat = () => {
@@ -452,7 +547,7 @@ export class CacheInvalidationService {
         );
     };
 
-    const intervalId = setInterval(heartbeat, 5 * 60 * 1000);
+    const intervalId = setInterval(heartbeat, 30 * 60 * 1000); // Reduced from 5 to 30 minutes to save RPC calls
 
     const onError = (ev: any) => {
       logger.log({
@@ -470,6 +565,11 @@ export class CacheInvalidationService {
           reason: ev.reason,
         });
         clearInterval(intervalId);
+
+        // Clean up polling interval if it exists
+        if (pollingIntervalId) {
+          clearInterval(pollingIntervalId);
+        }
 
         // Only clean up if socket client exists
         if (socketRpcClient && socketRpcClient.socket) {
@@ -523,6 +623,28 @@ export class CacheInvalidationService {
 
   private getCacheEntry(txHash: string): CacheEntry | undefined {
     return this.inMemCache.get(txHash);
+  }
+
+  private async getCachedBlockNumber(): Promise<bigint> {
+    const now = Date.now();
+
+    // Check if cache is valid
+    if (this.blockNumberCache && (now - this.blockNumberCache.timestamp) < this.blockNumberCacheTTL) {
+      if (this.blockNumberCache.value !== null) {
+        return this.blockNumberCache.value;
+      }
+    }
+
+    // Fetch new block number
+    const blockNumber = await this.publicHttpClient.getBlockNumber();
+
+    // Update cache
+    this.blockNumberCache = {
+      value: blockNumber,
+      timestamp: now
+    };
+
+    return blockNumber;
   }
 
   private setCacheEntry(txHash: string, state: TransactionCacheState, error?: string): void {
@@ -635,43 +757,14 @@ export class CacheInvalidationService {
 
     let transactionReceipt: TransactionReceipt;
 
-    // First, quickly check if transaction exists at all
-    try {
-      const tx = await this.publicHttpClient.getTransaction({ hash: txHash });
-      if (!tx) {
-        logger.log({
-          level: "error",
-          message: `Transaction \`${txHash}\` not found on blockchain`,
-          networkId: this.chainId,
-          txHash: txHash,
-        });
-        this.setCacheEntry(txHash, TransactionCacheState.FAILED, "Transaction not found");
-        throw new TransactionNotFoundError(
-          `Transaction ${txHash} not found on chain ${this.chainId}`
-        );
-      }
-    } catch (err) {
-      if (err instanceof TransactionNotFoundError) {
-        throw err; // Re-throw our custom error
-      }
-
-      logger.log({
-        level: "warn",
-        message: `Error checking transaction \`${txHash}\` existence, proceeding anyway`,
-        networkId: this.chainId,
-        txHash: txHash,
-        error: err,
-      });
-    }
-
-    // fetch transaction receipt with retry logic
+    // fetch transaction receipt with retry logic (this will fail if tx doesn't exist)
     try {
       transactionReceipt = await this.httpCircuitBreaker.execute(async () => {
         return await retryAsync(
           async () => {
             const receipt = await this.publicHttpClient.waitForTransactionReceipt({
               hash: txHash,
-              timeout: Math.min(TRANSACTION_PROCESSING_TIMEOUT, 30000), // Cap at 30 seconds
+              timeout: Math.min(TRANSACTION_PROCESSING_TIMEOUT, 15000), // Cap at 15 seconds for faster chains
             });
 
             if (!receipt) {
@@ -681,9 +774,9 @@ export class CacheInvalidationService {
             return receipt;
           },
           {
-            maxAttempts: 2, // Reduce from 3 to 2 attempts
-            baseDelay: 1000, // Reduce from 2000 to 1000ms
-            maxDelay: 5000,  // Reduce from 10000 to 5000ms
+            maxAttempts: 1, // Reduce from 2 to 1 attempt for faster failure
+            baseDelay: 500, // Reduce from 1000 to 500ms
+            maxDelay: 2000,  // Reduce from 5000 to 2000ms
           },
           `${this.chainId}-${txHash}: fetching transaction receipt`
         );

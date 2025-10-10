@@ -125,6 +125,37 @@ export const SUBGRAPH_SYNC_TIMEOUT = parseInt(process.env.SUBGRAPH_SYNC_TIMEOUT 
 export const WEBSOCKET_RETRY_ATTEMPTS = parseInt(process.env.WEBSOCKET_RETRY_ATTEMPTS || '3');
 export const WEBSOCKET_RETRY_DELAY = parseInt(process.env.WEBSOCKET_RETRY_DELAY || '30000');
 
+// Chain-specific optimizations for high-volume networks
+export const HIGH_VOLUME_CHAINS = new Set(['100', '8453', '137']); // Gnosis, Base, Polygon
+export const CHAIN_SPECIFIC_CONFIG: Record<string, {
+  useWebSocket: boolean;
+  pollingInterval?: number; // in milliseconds
+  transactionTimeout?: number; // in milliseconds
+}> = {
+  '100': { // Gnosis - 5 second blocks
+    useWebSocket: false,
+    pollingInterval: 30000, // Poll every 30 seconds instead of watching every block
+    transactionTimeout: 20000,
+  },
+  '8453': { // Base - 2 second blocks
+    useWebSocket: false,
+    pollingInterval: 30000, // Poll every 30 seconds
+    transactionTimeout: 15000,
+  },
+  '137': { // Polygon - fast blocks
+    useWebSocket: false,
+    pollingInterval: 30000, // Poll every 30 seconds
+    transactionTimeout: 20000,
+  },
+  // Low-volume chains use WebSocket by default
+  '1': { useWebSocket: true }, // Ethereum Mainnet
+  '10': { useWebSocket: true }, // Optimism
+  '42161': { useWebSocket: true }, // Arbitrum
+  '42220': { useWebSocket: true }, // Celo
+  '11155111': { useWebSocket: true }, // Sepolia
+  '84532': { useWebSocket: true }, // Base Sepolia
+};
+
 export const CLAIMS_HATTER_EVENTS = parseAbi([
   'event HatsClaimabilitySet(uint256[] hatIds, uint8[] claimTypes)',
   'event HatClaimabilitySet(uint256 hatId, uint8 claimType)',
