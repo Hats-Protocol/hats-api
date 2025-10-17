@@ -118,6 +118,8 @@ export const CHAIN_TO_ETHERSCAN_API_KEY: { [key: string]: string } = {
 };
 
 export const HATS_ADDRESS = '0x3bc1A0Ad72417f2d411118085256fC53CBdDd137';
+export const MODULE_PROXY_FACTORY_ADDRESS = '0x000000000000aDdB49795b0f9bA5BC298cDda236';
+export const HSG_V2_IMPLEMENTATION = '0x148057884AC910Bdd93693F230C5c35a8c47CA3b';
 
 // Timeout configuration
 export const TRANSACTION_PROCESSING_TIMEOUT = parseInt(process.env.TRANSACTION_PROCESSING_TIMEOUT || '60000');
@@ -159,6 +161,10 @@ export const CHAIN_SPECIFIC_CONFIG: Record<string, {
 export const CLAIMS_HATTER_EVENTS = parseAbi([
   'event HatsClaimabilitySet(uint256[] hatIds, uint8[] claimTypes)',
   'event HatClaimabilitySet(uint256 hatId, uint8 claimType)',
+]);
+
+export const MODULE_PROXY_FACTORY_EVENTS = parseAbi([
+  'event ModuleProxyCreation(address indexed proxy, address indexed masterCopy)',
 ]);
 
 // TODO export from @hatsprotocol/sdk-v1-core

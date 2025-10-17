@@ -10,6 +10,9 @@ import {
   HATS_ADDRESS,
   CLAIMS_HATTER_EVENTS,
   HATS_EVENTS,
+  MODULE_PROXY_FACTORY_ADDRESS,
+  MODULE_PROXY_FACTORY_EVENTS,
+  HSG_V2_IMPLEMENTATION,
   CHAIN_ID_TO_SOCKET_URL,
   CHAIN_ID_TO_HTTP_URL,
   CHAIN_ID_TO_ENTITY_PREFIX,
@@ -357,6 +360,7 @@ export class CacheInvalidationService {
     let socketRpcClient: any;
     let unwatchClaimsHatter: (() => void) | undefined;
     let unwatchHats: (() => void) | undefined;
+    let unwatchModuleProxy: (() => void) | undefined;
     let pollingIntervalId: NodeJS.Timeout | undefined;
 
     if (shouldUseWebSocket) {
@@ -423,6 +427,26 @@ export class CacheInvalidationService {
             },
           });
 
+          // watch Module Proxy Factory events for HSG v2 deployments
+          unwatchModuleProxy = this.publicSocketClient.watchEvent({
+            address: MODULE_PROXY_FACTORY_ADDRESS,
+            events: MODULE_PROXY_FACTORY_EVENTS,
+            onLogs: (logs: any) => {
+              for (let i = 0; i < logs.length; i++) {
+                const log = logs[i];
+                // Only process HSG v2 deployments
+                if (log.args?.masterCopy?.toLowerCase() === HSG_V2_IMPLEMENTATION.toLowerCase()) {
+                  const logTx: `0x${string}` = log.transactionHash;
+                  try {
+                    this.processTransaction(logTx.toLowerCase() as `0x${string}`);
+                  } catch (error) {
+                    continue;
+                  }
+                }
+              }
+            },
+          });
+
           logger.log({
             level: "info",
             message: `Event watchers set up for network ${this.chainId} (WebSocket)`,
@@ -474,8 +498,8 @@ export class CacheInvalidationService {
           const maxBlockRange = 100n;
           const actualFromBlock = blockRange > maxBlockRange ? toBlock - maxBlockRange : fromBlock;
 
-          // Fetch logs for both Hats and Claims Hatter events
-          const [hatsLogs, claimsHatterLogs] = await Promise.all([
+          // Fetch logs for Hats, Claims Hatter, and Module Proxy Factory events
+          const [hatsLogs, claimsHatterLogs, moduleProxyLogs] = await Promise.all([
             this.publicHttpClient.getLogs({
               address: HATS_ADDRESS,
               events: HATS_EVENTS,
@@ -487,12 +511,23 @@ export class CacheInvalidationService {
               fromBlock: actualFromBlock,
               toBlock: toBlock,
             }),
+            this.publicHttpClient.getLogs({
+              address: MODULE_PROXY_FACTORY_ADDRESS,
+              events: MODULE_PROXY_FACTORY_EVENTS,
+              fromBlock: actualFromBlock,
+              toBlock: toBlock,
+            }),
           ]);
+
+          // Filter module proxy logs to only include HSG v2 deployments
+          const hsgV2Logs = moduleProxyLogs.filter((log: any) => {
+            return log.args?.masterCopy?.toLowerCase() === HSG_V2_IMPLEMENTATION.toLowerCase();
+          });
 
           // Process unique transactions
           const processedTxs = new Set<string>();
 
-          for (const log of [...hatsLogs, ...claimsHatterLogs]) {
+          for (const log of [...hatsLogs, ...claimsHatterLogs, ...hsgV2Logs]) {
             const txHash = log.transactionHash?.toLowerCase();
             if (txHash && !processedTxs.has(txHash)) {
               processedTxs.add(txHash);
@@ -580,6 +615,7 @@ export class CacheInvalidationService {
         // Clean up event watchers
         if (unwatchClaimsHatter) unwatchClaimsHatter();
         if (unwatchHats) unwatchHats();
+        if (unwatchModuleProxy) unwatchModuleProxy();
 
         // Close socket client if it exists
         if (socketRpcClient) {
@@ -865,11 +901,14 @@ export class CacheInvalidationService {
     );
 
     let claimsHatterInstances: `0x${string}`[] = [];
+    let hsgV2Instances: `0x${string}`[] = [];
+
     for (
       let eventIndex = 0;
       eventIndex < transactionReceipt.logs.length;
       eventIndex++
     ) {
+      // Check for ClaimsHatter events
       try {
         const event = decodeEventLog({
           abi: CLAIMS_HATTER_EVENTS,
@@ -878,6 +917,26 @@ export class CacheInvalidationService {
         });
 
         claimsHatterInstances.push(transactionReceipt.logs[eventIndex].address);
+      } catch (err) {
+        // continue
+      }
+
+      // Check for ModuleProxyCreation events (HSG v2 deployments)
+      try {
+        const event = decodeEventLog({
+          abi: MODULE_PROXY_FACTORY_EVENTS,
+          data: transactionReceipt.logs[eventIndex].data,
+          topics: transactionReceipt.logs[eventIndex].topics,
+        });
+
+        // Only process HSG v2 deployments
+        if (event.eventName === 'ModuleProxyCreation') {
+          const masterCopy = (event.args as any).masterCopy;
+          const proxy = (event.args as any).proxy;
+          if (masterCopy?.toLowerCase() === HSG_V2_IMPLEMENTATION.toLowerCase()) {
+            hsgV2Instances.push(proxy);
+          }
+        }
       } catch (err) {
         // continue
       }
@@ -894,6 +953,12 @@ export class CacheInvalidationService {
       await this.handleClaimsHatterEvents(
         txHash,
         claimsHatterInstances,
+        CHAIN_ID_TO_ENTITY_PREFIX[this.chainId],
+        jobContext
+      );
+      await this.handleHSGEvents(
+        txHash,
+        hsgV2Instances,
         CHAIN_ID_TO_ENTITY_PREFIX[this.chainId],
         jobContext
       );
@@ -1226,6 +1291,68 @@ export class CacheInvalidationService {
         );
       })
     );
+  }
+
+  async handleHSGEvents(
+    txHash: string,
+    hsgInstances: `0x${string}`[],
+    entityPrefix: string,
+    jobContext?: JobContext
+  ) {
+    // Add BullMQ log for HSG instances found
+    if (jobContext && hsgInstances.length > 0) {
+      logger.log({
+        level: "info",
+        message: `BullMQ: Found ${hsgInstances.length} HSG v2 instance(s) to invalidate`,
+        jobId: jobContext.jobId,
+        chainId: this.chainId,
+        txHash: txHash,
+        hsgCount: hsgInstances.length,
+        attempt: jobContext.attempt,
+      });
+
+      // Log to job dashboard
+      if (jobContext.job) {
+        await jobContext.job.log(`Found ${hsgInstances.length} HSG v2 instance(s) to invalidate`);
+      }
+    }
+
+    await Promise.all(
+      hsgInstances.map((hsg) => {
+        logger.log({
+          level: "info",
+          message: `Processing HSG v2 deployment at address \`${hsg}\``,
+          txHash: txHash,
+          networkId: this.chainId,
+          entity: `${entityPrefix}_HatsSignerGateV2.${hsg.toLowerCase()}`,
+        });
+        return this.cache.invalidateEntity(
+          this.chainId,
+          txHash,
+          `${entityPrefix}_HatsSignerGateV2`,
+          hsg.toLowerCase(),
+          jobContext
+        );
+      })
+    );
+
+    // Add BullMQ summary for HSG events processing
+    if (jobContext && hsgInstances.length > 0) {
+      logger.log({
+        level: "info",
+        message: `BullMQ: HSG v2 instances invalidated`,
+        jobId: jobContext.jobId,
+        chainId: this.chainId,
+        txHash: txHash,
+        hsgInstancesInvalidated: hsgInstances.length,
+        attempt: jobContext.attempt,
+      });
+
+      // Log to job dashboard
+      if (jobContext.job) {
+        await jobContext.job.log(`${hsgInstances.length} HSG v2 instance(s) invalidated`);
+      }
+    }
   }
 
   async waitForBlockMainSubgraph(blockNumber: bigint): Promise<boolean> {
