@@ -23,7 +23,13 @@ export const composeConfig = defineConfig({
     // Ethereum Ancillary
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Ethereum_Ancillary', {
-        endpoint: 'https://api.studio.thegraph.com/query/55784/hats-v1-ethereum-ancillary/v0.0.27'
+        endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmZGW5e6tqSCn3M7YZ2JsrepCH16C6dTKpLrzoLfwf43Ea',
+        operationHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        },
+        schemaHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        }
       }),
       transforms: [
         createPrefixTransform({
@@ -53,7 +59,13 @@ export const composeConfig = defineConfig({
     // Optimism Ancillary
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Optimism_Ancillary', {
-        endpoint: 'https://api.studio.thegraph.com/query/55784/hats-v1-optimism-ancillary/v0.0.24'
+        endpoint: 'https://gateway.thegraph.com/api/deployments/id/Qma7GugAzyZ2ajnZZhLQJ5zivHs71BLtssfwmXiJjHjsw5',
+        operationHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        },
+        schemaHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        }
       }),
       transforms: [
         createPrefixTransform({
@@ -83,7 +95,13 @@ export const composeConfig = defineConfig({
     // Arbitrum Ancillary
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Arbitrum_Ancillary', {
-        endpoint: 'https://api.studio.thegraph.com/query/55784/hats-v1-arbitrum-ancillary/v0.0.24'
+        endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmWniKERfGiCC2qxVPyUsbWuJYBjAvNTUMSmhFKVQWvJfJ',
+        operationHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        },
+        schemaHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        }
       }),
       transforms: [
         createPrefixTransform({
@@ -113,7 +131,13 @@ export const composeConfig = defineConfig({
     // Gnosis Ancillary
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Gnosis_Ancillary', {
-        endpoint: 'https://api.studio.thegraph.com/query/55784/hats-v1-gnosis-chain-ancillary/v0.0.24'
+        endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmUNp1ETRWsACMBStYp3shs74TZwNSohyhRKowim9wZqiV',
+        operationHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        },
+        schemaHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        }
       }),
       transforms: [
         createPrefixTransform({
@@ -143,7 +167,13 @@ export const composeConfig = defineConfig({
     // Polygon Ancillary
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Polygon_Ancillary', {
-        endpoint: 'https://api.studio.thegraph.com/query/55784/hats-v1-polygon-ancillary/v0.0.24'
+        endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmdShtgvKUVZRehnsXCKnwGDQdkiC9cm4htBwU7jbBgGWB',
+        operationHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        },
+        schemaHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        }
       }),
       transforms: [
         createPrefixTransform({
@@ -173,7 +203,13 @@ export const composeConfig = defineConfig({
     // Base Ancillary
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Base_Ancillary', {
-        endpoint: 'https://api.studio.thegraph.com/query/55784/hats-v1-base-ancillary/v0.0.25'
+        endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmcYWJrsq6auFS4uGrP6MLognzNzeb1EtZHmRyMBh5dQzB',
+        operationHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        },
+        schemaHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        }
       }),
       transforms: [
         createPrefixTransform({
@@ -203,7 +239,13 @@ export const composeConfig = defineConfig({
     // Celo Ancillary
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Celo_Ancillary', {
-        endpoint: 'https://api.studio.thegraph.com/query/55784/hats-v1-celo-ancillary/v0.0.25'
+        endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmZXqnwo39NXTdtdqdSVVMwz3pJWXExTZKgNXjgUj8xuq7',
+        operationHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        },
+        schemaHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        }
       }),
       transforms: [
         createPrefixTransform({
@@ -233,7 +275,13 @@ export const composeConfig = defineConfig({
     // Sepolia Ancillary
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Sepolia_Ancillary', {
-        endpoint: 'https://api.studio.thegraph.com/query/55784/hats-v1-sepolia-ancillary/v0.0.25'
+        endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmdpsMh99K431gHar7jdCjU6NLc5S8Em8Po5eci6G3HAbM',
+        operationHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        },
+        schemaHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        }
       }),
       transforms: [
         createPrefixTransform({
@@ -246,6 +294,24 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Base_Sepolia_Main', {
         endpoint: 'https://gateway.thegraph.com/api/subgraphs/id/ErLvK6LwwsxkRqd8jvDJ258qfxn1hXhjFGnX78rq1g45',
+        operationHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        },
+        schemaHeaders: {
+          Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
+        }
+      }),
+      transforms: [
+        createPrefixTransform({
+          value: 'BaseSep_',
+          includeRootOperations: true
+        })
+      ]
+    },
+    // Base Sepolia Ancillary
+    {
+      sourceHandler: loadGraphQLHTTPSubgraph('Base_Sepolia_Ancillary', {
+        endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmXgU6qGCDGkACtDh4UCYB4wAjShETHbB2A4n7dwxQBzCG',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -422,6 +488,7 @@ export const composeConfig = defineConfig({
     }
     extend type BaseSep_Hat {
       detailsMetadata: String
+      authorities: BaseSep_HatAuthority!
       eligibleWearers: [String!]!
       eligibilityEnsName: String
       toggleEnsName: String
