@@ -9,19 +9,23 @@ import {
 } from './web3';
 import { fetchFromIpfs, validateIpfsImage } from './utils/ipfs';
 import { GraphQLResolveInfo } from 'graphql';
+import { createDataLoaders, DataLoaders } from './data-loaders';
 
-// Type definition for the gateway context containing subgraph resolvers
+// Type definition for the gateway context containing subgraph resolvers and DataLoaders
 type ResolverContext = {
-  [key: string]: {
-    Query: {
-      [queryName: string]: (args: {
-        root: any;
-        args: any;
-        context: ResolverContext;
-        info: GraphQLResolveInfo;
-      }) => Promise<any>;
-    };
-  };
+  dataLoaders?: DataLoaders;
+  [key: string]: any;
+};
+
+// WeakMap to store DataLoaders per context (request-scoped)
+const contextDataLoaders = new WeakMap<object, DataLoaders>();
+
+// Get or create DataLoaders for a context
+const getDataLoaders = (context: ResolverContext): DataLoaders => {
+  if (!contextDataLoaders.has(context)) {
+    contextDataLoaders.set(context, createDataLoaders());
+  }
+  return contextDataLoaders.get(context)!;
 };
 
 // match  the types in .meshrc.yaml
@@ -138,8 +142,10 @@ const createHatResolvers = (network: NetworkConfig) => {
     },
   },
   nearestImage: {
-    resolve: async (root: HatRoot) => {
-      return getHatImage(network.chainId, BigInt(root.id));
+    resolve: async (root: HatRoot, _args: unknown, context: ResolverContext) => {
+      // Get request-scoped DataLoaders
+      const dataLoaders = getDataLoaders(context);
+      return dataLoaders.hatImages[network.chainId].load(BigInt(root.id));
     },
   },
   eligibilityIsContract: {

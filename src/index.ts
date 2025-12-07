@@ -12,9 +12,13 @@ import {
   SubgraphSyncError,
   InvalidationError,
 } from "./errors";
+import { initializeRateLimiters } from "./rate-limiter";
 
 const cacheInvalidationManager = new CacheInvalidationManager();
 cacheInvalidationManager.startServices();
+
+// Initialize rate limiters for RPC calls
+initializeRateLimiters();
 
 // Initialize Hive Gateway
 const gateway = createGatewayRuntime(gatewayConfig as any); // Type mismatch between CLI and runtime config

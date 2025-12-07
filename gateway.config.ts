@@ -6,7 +6,7 @@ export const gatewayConfig = defineGatewayConfig({
 
   // TODO: Configure Redis cache properly for response caching
   // Response caching is currently disabled to allow endpoint testing
-  
+
   // Custom resolvers for extended fields
   additionalResolvers: resolvers,
 
