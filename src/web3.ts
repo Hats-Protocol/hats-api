@@ -9,6 +9,7 @@ import {
 } from "./constants";
 import type { PublicClient } from "viem";
 import axios from "axios";
+import { withRateLimit } from "./rate-limiter";
 
 export const publicClients: Record<string, PublicClient> = Object.keys(
   CHAIN_ID_TO_HTTP_URL
@@ -86,6 +87,40 @@ export const getHatImage = async (
   });
 
   return image;
+};
+
+export const getHatImages = async (
+  chain: string,
+  hatIds: bigint[]
+): Promise<string[]> => {
+  const publicClient = publicClients[chain];
+  const calls = hatIds.map((hatId) => ({
+    address: HATS_ADDRESS as `0x${string}`,
+    abi: [
+      {
+        inputs: [{ internalType: "uint256", name: "_hatId", type: "uint256" }],
+        name: "getImageURIForHat",
+        outputs: [{ internalType: "string", name: "", type: "string" }],
+        stateMutability: "view",
+        type: "function",
+      },
+    ] as const,
+    functionName: "getImageURIForHat",
+    args: [hatId],
+  }));
+
+  // Wrap multicall with rate limiting
+  const rateLimitedMulticall = withRateLimit(chain, async () =>
+    publicClient.multicall({ contracts: calls })
+  );
+
+  const results = await rateLimitedMulticall();
+  return results.map((result) => {
+    if (result.status === "success") {
+      return result.result;
+    }
+    return "";
+  });
 };
 
 export const isContract = async (chain: string, address: `0x${string}`) => {
