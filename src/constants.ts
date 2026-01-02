@@ -136,27 +136,27 @@ export const CHAIN_SPECIFIC_CONFIG: Record<string, {
 }> = {
   '100': { // Gnosis - 5 second blocks
     useWebSocket: false,
-    pollingInterval: 30000, // Poll every 30 seconds instead of watching every block
+    pollingInterval: 60000, // Poll every 60 seconds instead of watching every block
     transactionTimeout: 20000,
   },
   '8453': { // Base - 2 second blocks
     useWebSocket: false,
-    pollingInterval: 30000, // Poll every 30 seconds
+    pollingInterval: 60000, // Poll every 60 seconds
     transactionTimeout: 15000,
   },
   '137': { // Polygon - fast blocks
     useWebSocket: false,
-    pollingInterval: 30000, // Poll every 30 seconds
+    pollingInterval: 60000, // Poll every 60 seconds
     transactionTimeout: 20000,
   },
   '10': { // Optimism - 2 second blocks
     useWebSocket: false,
-    pollingInterval: 30000, // Poll every 30 seconds
+    pollingInterval: 60000, // Poll every 60 seconds
     transactionTimeout: 15000,
   },
   '42220': { // Celo - 5 second blocks
     useWebSocket: false,
-    pollingInterval: 30000, // Poll every 30 seconds
+    pollingInterval: 60000, // Poll every 60 seconds
     transactionTimeout: 20000,
   },
   '11155111': { // Sepolia testnet
