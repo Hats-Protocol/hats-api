@@ -495,7 +495,7 @@ export class CacheInvalidationService {
           const blockRange = toBlock - fromBlock;
 
           // If range is too large (e.g., after downtime), limit it
-          const maxBlockRange = 50n;
+          const maxBlockRange = 100n;
           const actualFromBlock = blockRange > maxBlockRange ? toBlock - maxBlockRange : fromBlock;
 
           // Fetch logs for Hats, Claims Hatter, and Module Proxy Factory events
