@@ -16,7 +16,10 @@ export const publicClients: Record<string, PublicClient> = Object.keys(
 ).reduce((acc, chainId) => {
   acc[chainId] = createPublicClient({
     chain: CHAIN_ID_TO_VIEM_CHAIN[chainId],
-    transport: http(CHAIN_ID_TO_HTTP_URL[chainId]),
+    transport: http(CHAIN_ID_TO_HTTP_URL[chainId], {
+      // Required to pass QuickNode endpoints' Referrer/Origin whitelist
+      fetchOptions: { headers: { Referer: "https://app.hatsprotocol.xyz" } },
+    }),
   });
   return acc;
 }, {} as Record<string, PublicClient>);
