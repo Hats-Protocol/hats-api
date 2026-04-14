@@ -286,7 +286,10 @@ export class CacheInvalidationService {
     });
     this.publicHttpClient = createPublicClient({
       chain: CHAIN_ID_TO_VIEM_CHAIN[chainId],
-      transport: http(CHAIN_ID_TO_HTTP_URL[chainId]),
+      transport: http(CHAIN_ID_TO_HTTP_URL[chainId], {
+        // Required to pass QuickNode endpoints' Referrer/Origin whitelist
+        fetchOptions: { headers: { Referer: "https://app.hatsprotocol.xyz" } },
+      }),
     });
     this.graphqlClient = new GraphQLClient(CHAIN_ID_TO_MAIN_SUBGRAPH[chainId], {
       headers: {
