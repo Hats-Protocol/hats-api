@@ -6,6 +6,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Ethereum_Main', {
         endpoint: 'https://gateway.thegraph.com/api/subgraphs/id/AtrhAMCcVfPbmejxTez3G59Kdfu5tMFoiPsTUjdCzpKx',
+        source: './schemas/main-ethereum.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -24,6 +25,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Ethereum_Ancillary', {
         endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmZGW5e6tqSCn3M7YZ2JsrepCH16C6dTKpLrzoLfwf43Ea',
+        source: './schemas/ancillary.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -42,6 +44,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Optimism_Main', {
         endpoint: 'https://gateway.thegraph.com/api/subgraphs/id/9nmXXk3ysDVY4sFygWQNQknwiJLCPnrUNzDRw8bxw61q',
+        source: './schemas/main-optimism.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -60,6 +63,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Optimism_Ancillary', {
         endpoint: 'https://gateway.thegraph.com/api/deployments/id/Qma7GugAzyZ2ajnZZhLQJ5zivHs71BLtssfwmXiJjHjsw5',
+        source: './schemas/ancillary.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -78,6 +82,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Arbitrum_Main', {
         endpoint: 'https://gateway.thegraph.com/api/subgraphs/id/4CiXQPjzKshBbyK2dgJiknTNWcj8cGUJsopTsXfm5HEk',
+        source: './schemas/main-arbitrum.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -96,6 +101,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Arbitrum_Ancillary', {
         endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmWniKERfGiCC2qxVPyUsbWuJYBjAvNTUMSmhFKVQWvJfJ',
+        source: './schemas/ancillary.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -114,6 +120,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Gnosis_Main', {
         endpoint: 'https://gateway.thegraph.com/api/subgraphs/id/2VPQUuAeS9Xy8VtinpjHRJEMnZS1sqzFQyCHAys1wb5n',
+        source: './schemas/main-gnosis.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -132,6 +139,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Gnosis_Ancillary', {
         endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmUNp1ETRWsACMBStYp3shs74TZwNSohyhRKowim9wZqiV',
+        source: './schemas/ancillary.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -150,6 +158,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Polygon_Main', {
         endpoint: 'https://gateway.thegraph.com/api/subgraphs/id/7MxsRb1p4UQNET8AgrWd93h3GUgeQ7NWrk5SHLEPCxBP',
+        source: './schemas/main-polygon.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -168,6 +177,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Polygon_Ancillary', {
         endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmdShtgvKUVZRehnsXCKnwGDQdkiC9cm4htBwU7jbBgGWB',
+        source: './schemas/ancillary.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -186,6 +196,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Base_Main', {
         endpoint: 'https://gateway.thegraph.com/api/subgraphs/id/FWeAqrp36QYqv9gDWLwr7em8vtvPnPrmRRQgnBb6QbBs',
+        source: './schemas/main-base.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -204,6 +215,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Base_Ancillary', {
         endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmcYWJrsq6auFS4uGrP6MLognzNzeb1EtZHmRyMBh5dQzB',
+        source: './schemas/ancillary.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -222,6 +234,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Celo_Main', {
         endpoint: 'https://gateway.thegraph.com/api/subgraphs/id/GpKseh3Z4nX2X8W5HjQPp5hpSSxPxsaQ3t1KpEjhvz7t',
+        source: './schemas/main-celo.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -240,6 +253,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Celo_Ancillary', {
         endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmZXqnwo39NXTdtdqdSVVMwz3pJWXExTZKgNXjgUj8xuq7',
+        source: './schemas/ancillary.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -258,6 +272,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Sepolia_Main', {
         endpoint: 'https://gateway.thegraph.com/api/subgraphs/id/GphqDnDUibK3keP5vNSDgnKxidvLKtdM7j9FA1Lpe6sX',
+        source: './schemas/main-sepolia.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -276,6 +291,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Sepolia_Ancillary', {
         endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmdpsMh99K431gHar7jdCjU6NLc5S8Em8Po5eci6G3HAbM',
+        source: './schemas/ancillary.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -294,6 +310,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Base_Sepolia_Main', {
         endpoint: 'https://gateway.thegraph.com/api/subgraphs/id/ErLvK6LwwsxkRqd8jvDJ258qfxn1hXhjFGnX78rq1g45',
+        source: './schemas/main-base-sepolia.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
@@ -312,6 +329,7 @@ export const composeConfig = defineConfig({
     {
       sourceHandler: loadGraphQLHTTPSubgraph('Base_Sepolia_Ancillary', {
         endpoint: 'https://gateway.thegraph.com/api/deployments/id/QmXgU6qGCDGkACtDh4UCYB4wAjShETHbB2A4n7dwxQBzCG',
+        source: './schemas/ancillary.graphql',
         operationHeaders: {
           Authorization: `Bearer ${process.env.GRAPH_NETWORK_API_KEY}`
         },
