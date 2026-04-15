@@ -146,7 +146,7 @@ export const CHAIN_SPECIFIC_CONFIG: Record<string, {
   },
   '137': { // Polygon - fast blocks
     useWebSocket: false,
-    pollingInterval: 60000, // Poll every 60 seconds
+    pollingInterval: 120000, // Poll every 120 seconds (bumped from 60s to cut QN credit burn)
     transactionTimeout: 20000,
   },
   '10': { // Optimism - 2 second blocks
@@ -156,7 +156,7 @@ export const CHAIN_SPECIFIC_CONFIG: Record<string, {
   },
   '42220': { // Celo - 5 second blocks
     useWebSocket: false,
-    pollingInterval: 60000, // Poll every 60 seconds
+    pollingInterval: 120000, // Poll every 120 seconds (bumped from 60s to cut QN credit burn)
     transactionTimeout: 20000,
   },
   '11155111': { // Sepolia testnet
